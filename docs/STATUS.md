@@ -1,6 +1,6 @@
 # Overnight run status
 
-Heartbeat: 2026-11-15 04:22 PST — run complete; see docs/MORNING.md
+Heartbeat: 2026-11-15 10:55 PST — steps 1,2,4 done; step 3 re-extract running; starting step 5
 
 ## Phase 0, setup
 - [x] preflight: all clear; WARN no DEV_DATABASE_URL (stage in shared DB), WARN no Google keys (sign-in off), WARN no local Docker
@@ -38,7 +38,7 @@ Heartbeat: 2026-11-15 04:22 PST — run complete; see docs/MORNING.md
 
 # Morning run (2026-11-15)
 
-Heartbeat: 2026-11-15 07:40 PST — steps 1–7 done except DB-bound items; waiting for the owner (docs/WAKEUP.md)
+Heartbeat: 2026-11-15 10:55 PST — steps 1,2,4 done; step 3 re-extract running; starting step 5
 
 ## 1. Data
 - [x] Load the data 1: index tier staged (160,122 and 3,056 rows) — ran by owner this morning, not rerun
@@ -83,12 +83,12 @@ Heartbeat: 2026-11-15 07:40 PST — steps 1–7 done except DB-bound items; wait
 
 # Final run (2026-11-15)
 
-Heartbeat: 2026-11-15 10:35 PST — step 2 done, starting step 3
+Heartbeat: 2026-11-15 10:55 PST — steps 1,2,4 done; step 3 re-extract running; starting step 5
 
 - [x] 1. Connectivity: database ok (8 s timeout)
 - [x] 2. Schedules and rules: weekly zillow_rent Thu 12:00 UTC; FMR_RULE_VERIFIED=True; HUD SAFMR refused (202 empty), fmr.yaml stays unverified; BD estimate ≈ $17–26/month in WAKEUP.md
 - [ ] 3. Facebook roommate offers + full-run re-extract (staging only)
-- [ ] 4. Live-query ZIP filter in api/db.py + test
+- [x] 4. Live-query ZIP filter in api/db.py (CORE_ZIPS) + api/tests/test_zip_filter.py (24 tests)
 - [ ] 5. Partner fixes a–g
 - [ ] 6. /privacy and /terms
 - [ ] 7. Docs (PLAN, DESIGN, ACCOUNTS)
