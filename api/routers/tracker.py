@@ -17,6 +17,7 @@ from contracts.api_models import (ListingDetail, ListingsResponse, ListingSource
 router = APIRouter(tags=["tracker"])
 MAX_IDS = 50
 MIN_MONTH_LISTINGS = 5
+MIN_CHANGE_LISTINGS = 30      # both months need this many listings before a listing-median % change is shown
 _RANGE_MONTHS = {"1m": 1, "3m": 3, "6m": 6, "1y": 12}
 _LABEL_TTL = 600
 _label_cache: dict = {}
@@ -334,7 +335,14 @@ def market(zip: str | None = Query(None, pattern=r"^\d{5}$"), beds: int | None =
     head = lp if beds is not None and lp else zp      # the headline value: the bedroom median when there is one
     cur = head[-1].value if head else None
     change = since = None
-    if len(head) > 1 and head[0].value:
+    if head is lp:   # a % change between listing medians only when both months have a solid sample
+        solid = [p for p in lp if (p.n_listings or 0) >= MIN_CHANGE_LISTINGS]
+        if len(solid) > 1 and solid[-1] is lp[-1]:
+            change, since = round((cur / solid[0].value - 1) * 100, 2), solid[0].month
+        elif len(lp) > 1:
+            notes.append(f"No percentage change is shown: earlier months have fewer than {MIN_CHANGE_LISTINGS} "
+                         f"{beds}-bedroom listings, too few to compare with today.")
+    elif len(head) > 1 and head[0].value:
         change, since = round((cur / head[0].value - 1) * 100, 2), head[0].month
 
     fc_rows = safe(db.forecast_latest, zip, default=[])
