@@ -244,13 +244,14 @@ def validate(post: dict, fields: dict | None, group: dict, zips: set[str], hoods
         avail = None
     hood = redact_text((fields.get("neighborhood") or "").strip()[:60]) or None
     amen = [k for k in AMENITY_FIELDS if fields.get(k) is True]
+    roommate = unit == "room" and fields.get("roommate_wanted") is True
     return {
         "post_id_hash": sha(str(post.get("post_id") or post.get("url") or post["text"][:200])),
         "post_url": clean_post_url(post.get("url")),
         "group_hash": group["url_hash"], "group_name": group["display_name"],
         "date_posted": posted.isoformat(), "text_hash": sha(normalize_text(post["text"])),
         "price_usd": price, "beds": beds, "baths": baths, "unit_type": unit, "zip": z, "zip_from": how,
-        "neighborhood": hood, "available_date": avail, "amenities": amen,
+        "neighborhood": hood, "available_date": avail, "amenities": amen, "roommate_wanted": roommate,
     }, "ok"
 
 
@@ -289,11 +290,14 @@ def upsert_offer(conn, o: dict, target: str, median=listing_site_median) -> str:
     extras = {"unit_type": o["unit_type"], "amenities": o["amenities"], "group_name": o["group_name"],
               "group_hash": o["group_hash"], "post_url": o["post_url"], "available_date": o["available_date"],
               "dedupe_key": key, "unusual_price": unusual, "trust_weight": TRUST, "zip_from": o["zip_from"],
-              "posted_at": o["date_posted"]}
+              "posted_at": o["date_posted"], "roommate_wanted": bool(o.get("roommate_wanted"))}
     if row:
         lid, old = row
         hashes = list((old or {}).get("post_hashes") or [])
         if o["post_id_hash"] in hashes:
+            if o.get("roommate_wanted") and not (old or {}).get("roommate_wanted"):   # re-extracted with the flag
+                conn.execute(f"UPDATE {L} SET extras = extras || '{{\"roommate_wanted\": true}}'::jsonb "
+                             "WHERE listing_id = %s", (lid,))
             return "seen"
         prev = conn.execute(f"SELECT price_usd FROM {PO} WHERE listing_id = %s AND observed_at <= %s "
                             "ORDER BY observed_at DESC LIMIT 1", (lid, posted)).fetchone()
@@ -450,7 +454,8 @@ def process(conn, raw_rows: list[dict], groups: list[dict], target: str, *, snap
 def summarize(offers: list[dict]) -> dict:
     return {"whole_units": sum(o["unit_type"] == "entire_unit" for o in offers),
             "rooms": sum(o["unit_type"] == "room" for o in offers),
-            "sublets": sum(o["unit_type"] == "sublet" for o in offers)}
+            "sublets": sum(o["unit_type"] == "sublet" for o in offers),
+            "roommate_wanted": sum(bool(o.get("roommate_wanted")) for o in offers)}
 
 
 def terms_checked(conn) -> bool:

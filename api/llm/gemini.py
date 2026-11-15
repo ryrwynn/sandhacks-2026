@@ -388,6 +388,7 @@ class PostFields(BaseModel):
     beds: int | None = None
     baths: float | None = None
     unit_type: str | None = None             # 'entire_unit' | 'room' | 'sublet'
+    roommate_wanted: bool | None = None      # the poster offers a room in a home they share ("roommate wanted")
     neighborhood: str | None = None
     zip: str | None = None
     available_date: str | None = None        # YYYY-MM-DD
@@ -403,14 +404,19 @@ class PostBatch(BaseModel):
 
 POSTS_PROMPT = (
     "Each numbered item below is a post from a San Diego housing group. For every item return one object "
-    "with its number i. is_rental_offer is true only when the post offers a place for rent (not someone "
-    "looking for a place or a roommate, not an ad for a service). price_usd is the monthly rent (the lowest "
-    "if several). beds: bedrooms offered (studio = 0; a single room for rent = 1). unit_type: 'entire_unit' "
-    "for a whole apartment or house, 'room' for a room in a shared home, 'sublet' for a temporary sublease. "
-    "neighborhood: the San Diego neighborhood or city named in the post. zip: only a 5-digit ZIP written in "
-    "the post. available_date as YYYY-MM-DD (today is {today}). laundry is true for in-unit or on-site "
-    "laundry. Use null for anything the post doesn't state; do not guess. Never include names, phone "
-    "numbers or emails.\n\n")
+    "with its number i. is_rental_offer is true when the post offers a place for rent: a whole apartment or "
+    "house, a sublet, or a room in a shared home. A post that offers a room and asks for a roommate "
+    "(\"roommate wanted\", \"room for rent\", \"looking for a roommate to fill our 2nd bedroom\") IS a "
+    "rental offer with unit_type 'room' and roommate_wanted true. is_rental_offer is false for a person "
+    "looking for a place or a room to rent (\"looking for a room\", \"ISO\", \"in search of\", \"need a place\"), "
+    "for someone looking to team up with others to find a place together, and for ads for services. "
+    "price_usd is the monthly rent (the lowest if several). beds: bedrooms offered (studio = 0; a single room "
+    "for rent = 1). unit_type: 'entire_unit' for a whole apartment or house, 'room' for a room in a shared "
+    "home, 'sublet' for a temporary sublease. roommate_wanted: true only when the poster offers a room in a "
+    "home they or others already live in, else false. neighborhood: the San Diego neighborhood or city named "
+    "in the post. zip: only a 5-digit ZIP written in the post. available_date as YYYY-MM-DD (today is {today}). "
+    "laundry is true for in-unit or on-site laundry. Use null for anything the post doesn't state; do not "
+    "guess. Never include names, phone numbers or emails.\n\n")
 
 
 def parse_posts(texts: list[str], today: str) -> list[dict] | None:

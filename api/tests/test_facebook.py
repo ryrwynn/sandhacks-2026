@@ -86,6 +86,8 @@ class FakeConn:
         elif s.startswith("SELECT last_seen <="):
             when, lid = params
             self._one = (self.listings[lid]["last_seen"] <= when,)
+        elif s.startswith("UPDATE") and not isinstance(params, dict):     # the roommate flag on a seen post
+            self.listings[params[0]]["extras"]["roommate_wanted"] = True
         elif s.startswith("UPDATE"):
             l = self.listings[params["id"]]
             l["last_seen"] = max(l["last_seen"], params["t"])
@@ -370,3 +372,44 @@ def test_one_bad_item_does_not_sink_the_batch():
     conn, stats, parse = run(rows, [G], answers)
     assert [len(c) for c in parse.calls] == [10, 2]
     assert stats["usable"] == 11
+
+
+# ---------------------------------------------------------------- roommate offers (final run)
+ROOM_TEXT = "Roommate wanted! Private room in our 3br house in North Park, $1,100/mo, utilities included."
+SEEKER_TEXT = "Looking for a room in North Park under $1,200, clean and quiet, ISO roommate situation."
+
+
+def test_prompt_treats_roommate_wanted_as_offer_and_seekers_as_not():
+    from api.llm import gemini
+    p = gemini.POSTS_PROMPT.lower()
+    assert "roommate wanted" in p and "room for rent" in p and "is a rental offer with unit_type 'room'" in p
+    assert "is_rental_offer is false for a person looking for a place or a room" in p
+    assert "roommate_wanted" in gemini.PostFields.model_fields
+    assert gemini.PostFields(i=0, roommate_wanted=True).roommate_wanted is True
+
+
+def test_roommate_wanted_room_is_an_offer_and_seekers_stay_out():
+    zips, hoods = fb.sd_zips(), fb.neighborhood_table()
+    room = {"post_id": "1", "url": None, "text": ROOM_TEXT, "date_posted": T0.isoformat()}
+    seek = {"post_id": "2", "url": None, "text": SEEKER_TEXT, "date_posted": T0.isoformat()}
+    o, why = fb.validate(room, answer(0, unit_type="room", beds=1, price_usd=1100, roommate_wanted=True), G, zips, hoods)
+    assert why == "ok" and o["unit_type"] == "room" and o["roommate_wanted"] is True
+    # the flag only means something on a room
+    o2, _ = fb.validate(room, answer(0, unit_type="entire_unit", roommate_wanted=True), G, zips, hoods)
+    assert o2["roommate_wanted"] is False
+    assert fb.validate(seek, answer(0, is_rental_offer=False, unit_type="room", price_usd=1200, beds=1),
+                       G, zips, hoods) == (None, "not_offer")
+
+
+def test_roommate_flag_is_stored_counted_and_added_on_re_extract():
+    rows = [post(1, ROOM_TEXT), post(2, SEEKER_TEXT)]
+    first = {0: answer(0, unit_type="room", beds=1, price_usd=1100)}            # old prompt: no flag
+    conn, stats, _ = run(rows, [G], lambda i, t: first.get(i, answer(i, is_rental_offer=False)))
+    (l,) = conn.listings.values()
+    assert l["extras"]["unit_type"] == "room" and l["extras"]["roommate_wanted"] is False
+    again = {0: answer(0, unit_type="room", beds=1, price_usd=1100, roommate_wanted=True)}
+    conn, stats, _ = run(rows, [G], lambda i, t: again.get(i, answer(i, is_rental_offer=False)), conn=conn)
+    assert len(conn.listings) == 1 and l["extras"]["roommate_wanted"] is True
+    assert stats["reasons"]["not_offer"] == 1
+    offers = [{"unit_type": "room", "roommate_wanted": True}, {"unit_type": "sublet"}, {"unit_type": "entire_unit"}]
+    assert fb.summarize(offers) == {"whole_units": 1, "rooms": 1, "sublets": 1, "roommate_wanted": 1}
