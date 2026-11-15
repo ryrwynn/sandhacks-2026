@@ -46,6 +46,9 @@ Either switch networks or VPN, or in the Tiger console add your current IP to th
    deploy. If not, answer "clear" and the job stays off.
 3. **Penal Code 396.** If you read the statute on leginfo and the 160%-of-Fair-Market-Rent rule is right, answer
    "verified" and the FMR path gives firm answers again. Otherwise it keeps answering "unclear" with an "Unverified" note.
+   Two more checks only a person can do (huduser.gov and the PDF refused automated downloads): download HUD's FY2026
+   Small Area FMRs for San Diego ZIPs (the county FMRs in `api/rules/data/fmr.yaml` come from a third-party mirror,
+   marked unverified), and read the Sept 2026 "Super El Niño" proclamation PDF. Note in the blank what you checked.
 
 ### E. PR #1
 
@@ -91,6 +94,12 @@ My decisions:
      in STATUS.md), then node scripts/ui-check.mjs against http://localhost:3000. Fix what fails, smallest
      change first, and rerun until every load passes. Look at the screenshots for Find filtered to Facebook,
      a Facebook apartment page, a ZIP page with Facebook data and the gouging page.
+   - Extend scripts/ui-check.mjs (page loads only, no form submits): on the home map at 375px, pan from San
+     Diego toward Orange County and confirm county shapes load (no failed /geo requests); for each theme, reload
+     and check the first paint already has that theme (no flash); with an empty localStorage and
+     prefers-color-scheme dark, the first visit gets Cocoa Night. Note whether map overlays and card shadows
+     are readable on the two dark themes.
+   - Run the capacity SQL in docs/TIGER_CAPACITY.md (read-only) and add the numbers there.
    - Google sign-in: if the keys are "set", restart the frontend with them and do steps 2 to 8 of
      docs/ACCOUNTS.md "Manual test" that don't need a real Google login: /auth/session answers with no email
      or name, the button appears, a wrong ACCOUNT_API_TOKEN fails quietly. Update step 2 there: with sign-in
