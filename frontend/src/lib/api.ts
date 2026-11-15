@@ -43,7 +43,7 @@ export function errorMessage(e: unknown): string {
   return e instanceof ApiError ? e.message : "Something went wrong. Please try again.";
 }
 
-async function call<T extends object>(path: string, fixture: T, init?: RequestInit): Promise<T> {
+export async function call<T extends object>(path: string, fixture: T, init?: RequestInit): Promise<T> {
   const mock = () => serveMock(fixture);
   if (FORCE_MOCKS) return mock();
   try {
@@ -58,7 +58,7 @@ async function call<T extends object>(path: string, fixture: T, init?: RequestIn
     clearTimeout(timer);
     if (!res.ok) {
       // A POST answer is about the user's own numbers: show the API's error, never sample data.
-      if (init?.method === "POST") {
+      if (init?.method === "POST" && res.status !== 501) {
         const detail = await res.json().then((j) => j?.detail, () => null);
         throw new ApiError(typeof detail === "string" ? detail : `Request failed (${res.status}). Please check your entries.`, res.status);
       }
@@ -71,7 +71,7 @@ async function call<T extends object>(path: string, fixture: T, init?: RequestIn
   }
 }
 
-const post = (body: unknown): RequestInit => ({ method: "POST", body: JSON.stringify(body) });
+export const post = (body: unknown): RequestInit => ({ method: "POST", body: JSON.stringify(body) });
 
 export const getHealth = () => call<C.HealthResponse>("/health", MOCK.health);
 export const getZips = () => call<C.ZipsResponse>("/zips", MOCK.zips);

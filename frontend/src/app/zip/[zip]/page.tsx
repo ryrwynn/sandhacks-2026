@@ -8,6 +8,8 @@ import ForecastChart from "@/components/ForecastChart";
 import ZipMap from "@/components/ZipMap";
 import { ScoreCard } from "@/components/cards";
 import { Card, Disclaimer, MockFlag } from "@/components/ui";
+import ScenarioPanel from "@/components/ScenarioPanel";
+import { ZipTrends } from "@/components/Trends";
 
 export const metadata: Metadata = { title: "ZIP profile | RentOrKnot" };
 
@@ -43,6 +45,8 @@ async function Zip({ params }: { params: Promise<{ zip: string }> }) {
       <ZipMap token={token} zips={all.zips} focus={p.zip} heightClass="h-56 sm:h-72" />
       <Card><ForecastChart series={rent} title="Typical rent" /></Card>
       <Card><ForecastChart series={value} title="Typical home value" /></Card>
+      <ScenarioPanel zip={p.zip} />
+      <ZipTrends zip={p.zip} />
       <section className="space-y-3">
         <h2 className="text-lg font-bold">Scores for this ZIP</h2>
         <div className="grid gap-3 sm:grid-cols-2">

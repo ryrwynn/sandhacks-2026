@@ -11,7 +11,7 @@ async function MapSection() {
   return (
     <>
       <MockFlag on={isMock(zips)} />
-      <ZipMap token={token} zips={zips.zips} />
+      <ZipMap token={token} zips={zips.zips} explore />
     </>
   );
 }

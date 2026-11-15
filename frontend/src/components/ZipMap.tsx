@@ -5,6 +5,9 @@ import Map, { Layer, NavigationControl, Source, type MapMouseEvent, type MapRef 
 import "mapbox-gl/dist/mapbox-gl.css";
 import type { ZipSummary } from "@/lib/contract";
 import { pct, rentOf, usd } from "@/lib/format";
+import { getGeoZips } from "@/lib/night-api";
+import AreaSearch from "./AreaSearch";
+import AddArea from "./AddArea";
 
 type Props = {
   /** Mapbox public token (pk...), read on the server at request time. Missing or invalid: a ranked list is shown. */
@@ -15,7 +18,12 @@ type Props = {
   /** Zoom to this ZIP (profile page). */
   focus?: string;
   heightClass?: string;
+  /** Home page: area search and "Add this area" under the map, and geometry that loads as the map moves. */
+  explore?: boolean;
 };
+
+/** ZIP of a feature: our files use `zip`; Census files use ZCTA5CE20 or GEOID20. */
+const zipOf = (f: GeoJSON.Feature) => { const p = (f.properties ?? {}) as Record<string, unknown>; return String(p.zip ?? p.ZCTA5CE20 ?? p.GEOID20 ?? p.GEOID ?? ""); };
 
 const SCALE = ["#ffe8d6", "#ddbea9", "#cb997e", "#8f5a3f"];
 
@@ -26,7 +34,13 @@ function forecastText(z: ZipSummary) {
 }
 
 export default function ZipMap(props: Props) {
-  return validToken(props.token) ? <MapView {...props} token={props.token} /> : <ZipList zips={props.zips} highlight={props.highlight} />;
+  if (validToken(props.token)) return <MapView {...props} token={props.token} />;
+  return (
+    <div className="space-y-3">
+      {props.explore && <AreaSearch />}
+      <ZipList zips={props.zips} highlight={props.highlight} />
+    </div>
+  );
 }
 
 function Legend({ min, max }: { min: number; max: number }) {
@@ -64,11 +78,13 @@ function Detail({ z }: { z: ZipSummary }) {
   );
 }
 
-function MapView({ token, zips, highlight = [], focus, heightClass = "h-72 sm:h-96" }: Props & { token: string }) {
+function MapView({ token, zips, highlight = [], focus, heightClass = "h-72 sm:h-96", explore }: Props & { token: string }) {
   const ref = useRef<MapRef>(null);
   const [shapes, setShapes] = useState<GeoJSON.FeatureCollection | null>(null);
   const [active, setActive] = useState<string | null>(focus ?? null);
   const [failed, setFailed] = useState(false);
+  const loadedFiles = useRef(new Set<string>());
+  const moveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     fetch("/zips.geojson")
@@ -76,6 +92,30 @@ function MapView({ token, zips, highlight = [], focus, heightClass = "h-72 sm:h-
       .then(setShapes)
       .catch(() => setFailed(true));
   }, []);
+
+  // Load county geometry as the viewport moves: ask GET /geo/zips which county files it needs, fetch any not yet loaded, merge by ZIP.
+  const loadViewport = () => {
+    const b = ref.current?.getBounds();
+    if (!explore || !b) return;
+    if (moveTimer.current) clearTimeout(moveTimer.current);
+    moveTimer.current = setTimeout(async () => {
+      try {
+        const g = await getGeoZips([b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]);
+        for (const f of g.files) {
+          if (loadedFiles.current.has(f.url) || !f.url.startsWith("/geo/")) continue;
+          loadedFiles.current.add(f.url);
+          const fc = await fetch(f.url).then((r) => (r.ok ? r.json() : null), () => null) as GeoJSON.FeatureCollection | null;
+          if (!fc?.features) { loadedFiles.current.delete(f.url); continue; }
+          setShapes((cur) => {
+            const have = new Set((cur?.features ?? []).map(zipOf));
+            const add = fc.features.filter((x) => zipOf(x) && !have.has(zipOf(x))).map((x) => ({ ...x, properties: { ...x.properties, zip: zipOf(x) } }));
+            return { type: "FeatureCollection", features: [...(cur?.features ?? []), ...add] };
+          });
+        }
+      } catch { /* geometry is optional: the base shapes stay */ }
+    }, 500);
+  };
+  useEffect(() => () => { if (moveTimer.current) clearTimeout(moveTimer.current); }, []);
 
   const byZip = useMemo(() => Object.fromEntries(zips.map((z) => [z.zip, z])), [zips]);
   const rents = zips.map(rentOf).filter((x): x is number => x != null);
@@ -116,6 +156,7 @@ function MapView({ token, zips, highlight = [], focus, heightClass = "h-72 sm:h-
 
   return (
     <div className="space-y-2">
+      {explore && <AreaSearch onPick={(a) => ref.current?.flyTo({ center: [a.centroid_lng!, a.centroid_lat!], zoom: 11.5 })} />}
       <div className={`relative w-full overflow-hidden rounded-xl shadow-[0_1px_3px_rgba(46,49,39,0.2)] ${heightClass}`}>
         <Map
           ref={ref}
@@ -125,7 +166,8 @@ function MapView({ token, zips, highlight = [], focus, heightClass = "h-72 sm:h-
           interactiveLayerIds={["zip-fill"]}
           onMouseMove={onMove}
           onClick={onMove}
-          onLoad={fit}
+          onLoad={() => { fit(); loadViewport(); }}
+          onMoveEnd={loadViewport}
           cooperativeGestures
           style={{ width: "100%", height: "100%" }}
         >
@@ -166,6 +208,7 @@ function MapView({ token, zips, highlight = [], focus, heightClass = "h-72 sm:h-
       ) : (
         <p className="text-sm text-slate-600">Hover or tap a ZIP to see its 12-month rent forecast.</p>
       )}
+      {explore && <AddArea compact />}
     </div>
   );
 }

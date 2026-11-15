@@ -6,6 +6,7 @@ import { Delta } from "./ApartmentCard";
 import { BacktestNote } from "./RentChart";
 import { cardCls } from "./styles";
 import { ErrorNote, MockFlag } from "./ui";
+import { ListingTrends } from "./Trends";
 import { errorMessage, getListing, isMock } from "@/lib/api";
 import { usd } from "@/lib/format";
 import { useSaved } from "@/lib/saved";
@@ -220,6 +221,8 @@ export default function ApartmentView({ id }: { id: string }) {
           <Link href={`/zip/${f.zip}`} className="inline-flex min-h-11 items-center font-semibold text-accent-strong underline underline-offset-2">See the {f.name} profile →</Link>
         </Section>
       )}
+
+      <Section id="trend-h" title="Price trends"><ListingTrends id={d.id} /></Section>
 
       {isRent && (
         <Section id="own-h" title="Renting here already?">
