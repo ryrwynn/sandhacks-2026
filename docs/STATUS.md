@@ -1,6 +1,6 @@
 # Overnight run status
 
-Heartbeat: 2026-11-15 01:10 PST — Phase 2: data, forecast, accounts running; rules merged (175 tests pass)
+Heartbeat: 2026-11-15 01:12 PST — Phase 2: data, forecast, accounts running; rules merged; match, web done awaiting merge
 
 ## Phase 0, setup
 - [x] preflight: all clear; WARN no DEV_DATABASE_URL (stage in shared DB), WARN no Google keys (sign-in off), WARN no local Docker
