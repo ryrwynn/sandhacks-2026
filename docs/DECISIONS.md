@@ -82,3 +82,30 @@ Dataset `gd_lfqkr8wm13ixtbd8f5` (Zillow properties listing information), the one
   aborted on job cancel" twice, so lane A stopped (same-error-twice rule). A retry with
   `python -m worker.run --source zillow_rent --zips 92101,92105,92126` may fill them; it costs credit, so it's
   left for a person to decide. The rent check (the demo) doesn't depend on listings.
+- **Merged:** lane/web. All five lanes are now in Setup.
+- **Generated types:** `npx openapi-typescript` was blocked in this environment (it downloads a package at run
+  time), so `scripts/gen-api-types.py` (no downloads) writes `frontend/src/lib/api.generated.ts` from
+  /api/openapi.json. `frontend/src/lib/contract.ts` now re-exports those types (same names the components use)
+  and keeps the enum aliases and disclaimers; `api.ts` imports the generated types. Rerun the script after any
+  change to contracts/api_models.py: `python3 scripts/gen-api-types.py [URL_OR_FILE]`.
+- **Comparables never mix bedroom counts.** The orchestrator's lane D brief said to widen to the whole ZIP under
+  5 comparables, which mixed studios into a 2-bedroom estimate. Now: same ZIP and beds only, at least 5, else
+  HTTP 503 "Not enough comparable listings in <zip>". 92105 (1 rental) hits this until more rentals load.
+  Estimates report the fair-rent run's median absolute error and 80% coverage.
+- **POST errors are never replaced by sample data.** The web client used to serve fixture data on any non-OK
+  answer, which could have shown a tenant the demo verdict for their own numbers. Now a POST error shows the
+  API's message; fixtures are used only when the API is unreachable (labeled "Showing sample data").
+- **Starter persona at the plan's $1,900 budget, 1 bedroom:** 0 ZIPs within budget, all 12 in the stretch list
+  (real typical 1-bedroom rents are above $1,900). Pick a higher demo budget or present the stretch list.
+- **Gemini text:** the listing-gap explanation came back empty on the first real call; the numbers still show.
+  Not retried (quota rules).
+
+### Deploy steps skipped (Vultr server not set up)
+
+- Pushing Setup to deploy and `./scripts/watch-deploy.sh` for the skeleton and the integrated build.
+- `./scripts/server-logs.sh api 200` on failures.
+- `./scripts/smoke.sh` against PUBLIC_URL. Instead it passed locally:
+  `SMOKE_API_URL=http://localhost:8000 ./scripts/smoke.sh http://localhost:3000` (uvicorn + `npm start`).
+- `docker compose` build and run (no Docker on this laptop); the compose file is only syntax-checked.
+- When the server is ready: docs/ORCHESTRATOR.md "Before you start" steps 2 to 4, `gh workflow enable deploy`,
+  push Setup, `./scripts/watch-deploy.sh`.

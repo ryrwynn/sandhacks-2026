@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { evaluateListing } from "@/lib/api";
+import { evaluateListing, errorMessage } from "@/lib/api";
 import type { ListingEvalResponse, PropertyType } from "@/lib/contract";
 import { btnCls, inputCls } from "./styles";
 import { BedsSelect, ErrorNote, Field, ZipSelect } from "./ui";
@@ -30,8 +30,8 @@ export default function ListingForm() {
           year_built: year ? Number(year) : null, property_type: ptype, text: text.trim() || null,
         })
       );
-    } catch {
-      setErr("Something went wrong. Please try again.");
+    } catch (e) {
+      setErr(errorMessage(e));
     } finally {
       setBusy(false);
     }

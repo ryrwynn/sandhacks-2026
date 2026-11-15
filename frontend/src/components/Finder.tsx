@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { rankNeighborhoods } from "@/lib/api";
+import { rankNeighborhoods, errorMessage } from "@/lib/api";
 import type { Persona, RankResponse, ZipSummary } from "@/lib/contract";
 import { btnCls, inputCls } from "./styles";
 import ZipMap from "./ZipMap";
@@ -23,8 +23,8 @@ export default function Finder({
     setBusy(true);
     try {
       setRes(await rankNeighborhoods({ persona, budget_usd: Number(b), beds: bd === "" ? null : Number(bd) }));
-    } catch {
-      setErr("Something went wrong. Please try again.");
+    } catch (e) {
+      setErr(errorMessage(e));
     } finally {
       setBusy(false);
     }

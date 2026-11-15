@@ -175,16 +175,15 @@ def fair_rent_metrics() -> dict:
 
 # ---------- comparables ----------
 def comparable_rents(zip_: str, beds: int | None, days: int = 90) -> list[float]:
-    """Latest price per rental listing in the last `days`; same ZIP and beds, widened to the ZIP if < 5."""
+    """Latest price per rental listing in the last `days`; same ZIP and, when given, same beds.
+    Never widened across bedroom counts: a studio isn't a comparable for a 2-bedroom."""
     base = ("SELECT DISTINCT ON (po.listing_id) po.price_usd FROM price_observations po "
             "JOIN sources s ON s.source_key = po.source_key "
             f"WHERE po.listing_type = 'rent' AND {LISTING_SITE_FILTER} AND po.zip = %s AND po.event <> 'removed' "
             "AND po.observed_at >= now() - make_interval(days => %s)")
     if beds is not None:
         rows = fetch(base + " AND po.beds = %s ORDER BY po.listing_id, po.observed_at DESC", (zip_, days, beds))
-        rents = [float(r["price_usd"]) for r in rows]
-        if len(rents) >= 5:
-            return rents
+        return [float(r["price_usd"]) for r in rows]
     rows = fetch(base + " ORDER BY po.listing_id, po.observed_at DESC", (zip_, days))
     return [float(r["price_usd"]) for r in rows]
 

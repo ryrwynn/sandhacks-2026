@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { postCheck, searchUnits } from "@/lib/api";
+import { postCheck, searchUnits, errorMessage } from "@/lib/api";
 import type { CheckResponse, PropertyType, UnitMatch } from "@/lib/contract";
 import { btnCls, btnGhostCls, inputCls } from "./styles";
 import { ErrorNote, Field, TriState, triToBool } from "./ui";
@@ -46,8 +46,8 @@ export default function CheckForm() {
           owner_is_corporate: triToBool(corp), other_exemption: other, increases_last_12mo: Number(incs) || 0,
         })
       );
-    } catch {
-      setErr("Something went wrong. Please try again.");
+    } catch (e) {
+      setErr(errorMessage(e));
     } finally {
       setBusy(false);
     }

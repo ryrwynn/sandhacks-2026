@@ -278,3 +278,10 @@ def test_owner_listing_analysis(monkeypatch):
     assert j["gaps"][0]["fact"] == "pets" and j["explanation"].startswith("Most") and j["n_comparables"] == 2
     r = client.post("/owner/listing-analysis", json={"zip": "92104", "beds": 2})
     assert r.status_code == 422
+
+
+def test_listing_evaluate_503_with_too_few_comparables(monkeypatch):
+    # One same-bedroom rental must not become a zero-width "typical range".
+    monkeypatch.setattr(db, "comparable_rents", lambda z, b, days=90: [1599.0])
+    r = client.post("/listings/evaluate", json=fx("requests/listings_evaluate.json"))
+    assert r.status_code == 503 and "Not enough comparable listings" in r.json()["detail"]

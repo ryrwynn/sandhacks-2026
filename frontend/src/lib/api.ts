@@ -63,6 +63,18 @@ function serveMock<T extends object>(fixture: T): T {
   return copy;
 }
 
+/** The API answered with an error (e.g. 422 bad input, 503 not enough data). Never replaced by sample data. */
+export class ApiError extends Error {
+  constructor(message: string, readonly status: number) {
+    super(message);
+  }
+}
+
+/** A message a form can show for an error thrown by one of these calls. */
+export function errorMessage(e: unknown): string {
+  return e instanceof ApiError ? e.message : "Something went wrong. Please try again.";
+}
+
 async function call<T extends object>(path: string, fixture: T, init?: RequestInit): Promise<T> {
   const mock = () => serveMock(fixture);
   if (FORCE_MOCKS) return mock();
@@ -76,10 +88,18 @@ async function call<T extends object>(path: string, fixture: T, init?: RequestIn
       headers: init?.body ? { "Content-Type": "application/json" } : undefined,
     });
     clearTimeout(timer);
-    if (!res.ok) return mock();
+    if (!res.ok) {
+      // A POST answer is about the user's own numbers: show the API's error, never sample data.
+      if (init?.method === "POST") {
+        const detail = await res.json().then((j) => j?.detail, () => null);
+        throw new ApiError(typeof detail === "string" ? detail : `Request failed (${res.status}). Please check your entries.`, res.status);
+      }
+      return mock();
+    }
     return (await res.json()) as T;
-  } catch {
-    return mock();
+  } catch (e) {
+    if (e instanceof ApiError) throw e;
+    return mock();   // API unreachable or timed out: labeled sample data
   }
 }
 

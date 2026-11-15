@@ -108,6 +108,17 @@ def _models():
     return _model_cache["models"]
 
 
+MIN_COMPS = 5   # fewer same-ZIP, same-bedroom rentals than this: no median estimate
+
+
+def _run_metrics() -> dict:
+    """Latest fair_rent run's error, reported as the plan's median absolute error when available."""
+    m = dict(safe(db.fair_rent_metrics, default={}) or {})
+    if m.get("median_ae_usd") is not None:
+        m["mae_usd"] = m["median_ae_usd"]
+    return m
+
+
 def estimate(row: dict) -> tuple[dict | None, list[float], dict]:
     """Returns (estimate dict incl. method, comparable rents, model metrics). estimate None when no data."""
     comps = safe(db.comparable_rents, row["zip"], row.get("beds"), default=[])
@@ -115,11 +126,13 @@ def estimate(row: dict) -> tuple[dict | None, list[float], dict]:
     if models:
         try:
             est = fair_rent.predict(models, row)
-            return {**est, "method": "model"}, comps, safe(db.fair_rent_metrics, default={})
+            return {**est, "method": "model"}, comps, _run_metrics()
         except Exception as e:
             log.warning("model predict failed, using median: %s", e)
+    if len(comps) < MIN_COMPS:
+        return None, comps, {}
     try:
         est = fair_rent.median_fallback(comps)
     except NotImplementedError:
         est = _local_fallback(comps)
-    return (None if est is None else {**est, "method": "zip_bed_median"}), comps, {}
+    return (None if est is None else {**est, "method": "zip_bed_median"}), comps, _run_metrics()

@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { getListingAnalysis, getPricePosition } from "@/lib/api";
+import { getListingAnalysis, getPricePosition, errorMessage } from "@/lib/api";
 import type { ListingAnalysisResponse, PricePositionResponse, PropertyType } from "@/lib/contract";
 import { pct, usd } from "@/lib/format";
 import { btnCls, inputCls } from "./styles";
@@ -39,8 +39,8 @@ export default function OwnerTools() {
           effective_date: occupied && date ? date : null, got_exemption_notice: triToBool(notice), owner_is_corporate: triToBool(corp),
         })
       );
-    } catch {
-      setErr("Something went wrong. Please try again.");
+    } catch (e) {
+      setErr(errorMessage(e));
     } finally {
       setBusy("");
     }
@@ -50,8 +50,8 @@ export default function OwnerTools() {
     setBusy("ana");
     try {
       setAna(await getListingAnalysis({ zip, beds: Number(beds), text: text.trim(), target_rent: target ? Number(target) : null }));
-    } catch {
-      setErr("Something went wrong. Please try again.");
+    } catch (e) {
+      setErr(errorMessage(e));
     } finally {
       setBusy("");
     }
