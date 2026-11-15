@@ -238,3 +238,122 @@ def insert_check(address: str, zip_: str | None, lowest: float, new: float, effe
 def get_check(check_id) -> dict | None:
     rows = fetch("SELECT * FROM rent_checks WHERE check_id = %s", (str(check_id),))
     return rows[0] if rows else None
+
+
+# ---------- tracker: listings, observations, market ----------
+PROPERTY_TYPES = {"apartment": ("apartment",), "condo": ("condo",), "house": ("single_family", "townhouse")}
+_SORTS = {
+    "recent": "t.last_seen DESC, t.listing_id DESC",
+    "price_asc": "t.cur ASC, t.listing_id",
+    "price_desc": "t.cur DESC, t.listing_id",
+    "biggest_drop": "(t.cur - t.first_price) ASC, t.listing_id",
+}
+_ACTIVE_SQL = ("l.last_seen >= (SELECT max(l2.last_seen) FROM listings l2 WHERE l2.source_key = l.source_key)"
+               " - interval '36 hours'")
+
+
+def _listing_filters(zip_, beds, type_, ids) -> tuple[str, dict]:
+    where, p = [], {}
+    if ids is not None:
+        where.append("l.listing_id = ANY(%(ids)s)")
+        p["ids"] = ids
+    else:
+        where.append("l.listing_type = 'rent'")
+    if zip_:
+        where.append("l.zip = %(zip)s")
+        p["zip"] = zip_
+    if beds is not None:
+        where.append("l.beds = %(beds)s")
+        p["beds"] = beds
+    if type_:
+        where.append("p.property_type = ANY(%(ptypes)s)")
+        p["ptypes"] = list(PROPERTY_TYPES[type_])
+    return " AND ".join(where), p
+
+
+def listing_page(zip_=None, beds=None, type_=None, max_price=None, sort="recent", limit=24, offset=0,
+                 ids: list[int] | None = None) -> list[dict]:
+    """One row per listing with first/current price, observation count and active flag; total in `total`."""
+    where, p = _listing_filters(zip_, beds, type_, ids)
+    having = ""
+    if max_price is not None:
+        having = "WHERE t.cur <= %(max_price)s"
+        p["max_price"] = max_price
+    p.update(limit=limit, offset=offset)
+    sql = f"""
+    SELECT t.*, count(*) OVER () AS total FROM (
+      SELECT l.listing_id, l.zip, l.listing_type, l.beds, l.baths, l.sqft, l.last_seen, p.address_norm,
+             p.unit_label, p.property_type, p.year_built, s.kind AS source_kind,
+             l.extras->>'source_url' AS source_url, {_ACTIVE_SQL} AS active,
+             o.n, o.cur, o.first_price, o.first_observed
+      FROM listings l
+      JOIN sources s ON s.source_key = l.source_key
+      LEFT JOIN properties p ON p.property_id = l.property_id
+      JOIN LATERAL (
+        SELECT count(*) AS n,
+               (array_agg(price_usd ORDER BY observed_at DESC) FILTER (WHERE event <> 'removed'))[1] AS cur,
+               (array_agg(price_usd ORDER BY observed_at) FILTER (WHERE event <> 'removed'))[1] AS first_price,
+               min(observed_at)::date AS first_observed
+        FROM price_observations po WHERE po.listing_id = l.listing_id) o ON o.cur IS NOT NULL
+      WHERE {where}) t
+    {having}
+    ORDER BY {_SORTS[sort]} LIMIT %(limit)s OFFSET %(offset)s"""
+    return fetch(sql, p)
+
+
+def listing_one(listing_id: int) -> dict | None:
+    rows = listing_page(ids=[listing_id], limit=1)
+    return rows[0] if rows else None
+
+
+def listing_observations(ids: list[int]) -> list[dict]:
+    return fetch("SELECT listing_id, observed_at, event, price_usd FROM price_observations "
+                 "WHERE listing_id = ANY(%s) ORDER BY listing_id, observed_at, event", (ids,))
+
+
+def listing_coords(listing_id: int) -> dict:
+    rows = fetch("SELECT p.lat, p.lng FROM listings l JOIN properties p ON p.property_id = l.property_id "
+                 "WHERE l.listing_id = %s", (listing_id,))
+    return rows[0] if rows else {}
+
+
+def last_scrape_at():
+    return fetch("SELECT max(last_seen) AS t FROM listings")[0]["t"]
+
+
+def active_rent_count(zip_=None, beds=None, type_=None) -> int:
+    where, p = _listing_filters(zip_, beds, type_, None)
+    return fetch("SELECT count(*) AS n FROM listings l LEFT JOIN properties p ON p.property_id = l.property_id "
+                 f"WHERE {where} AND {_ACTIVE_SQL}", p)[0]["n"]
+
+
+def zori_monthly(zip_: str | None) -> list[dict]:
+    """ZORI by month for a ZIP, or the mean across ZIPs; [{month, value}] oldest first."""
+    return fetch("SELECT period AS month, avg(value) AS value FROM area_metrics WHERE geo_type = 'zip' "
+                 "AND metric = 'zori' AND source_key = 'zillow_research' "
+                 "AND (%(z)s::text IS NULL OR geo_id = %(z)s) GROUP BY period ORDER BY period", {"z": zip_})
+
+
+def listing_monthly_medians(zip_, beds, type_) -> list[dict]:
+    """Per month: median of each listing's last non-removed observation in that month, and listing count."""
+    where, p = _listing_filters(zip_, beds, type_, None)
+    return fetch(
+        "SELECT month, percentile_cont(0.5) WITHIN GROUP (ORDER BY price_usd) AS value, count(*) AS n FROM ("
+        " SELECT DISTINCT ON (po.listing_id, date_trunc('month', po.observed_at)) "
+        "  date_trunc('month', po.observed_at)::date AS month, po.price_usd "
+        " FROM price_observations po JOIN listings l ON l.listing_id = po.listing_id "
+        " JOIN sources s ON s.source_key = l.source_key "
+        f" LEFT JOIN properties p ON p.property_id = l.property_id WHERE {where} AND {LISTING_SITE_FILTER} "
+        "  AND po.event <> 'removed' "
+        " ORDER BY po.listing_id, date_trunc('month', po.observed_at), po.observed_at DESC) t "
+        "GROUP BY month ORDER BY month", p)
+
+
+def forecast_latest(zip_: str | None) -> list[dict]:
+    """Latest forecast run's ZORI forecast by month (mean across ZIPs when zip_ is None)."""
+    return fetch(
+        "SELECT f.month, avg(f.mean_usd) AS value, avg(f.lo80_usd) AS lo80, avg(f.hi80_usd) AS hi80, "
+        "avg(f.backtest_mape) AS backtest_mape, (array_agg(f.run_id))[1] AS run_id FROM forecasts f "
+        "WHERE f.run_id = (SELECT run_id FROM model_runs WHERE kind = 'forecast' ORDER BY trained_at DESC LIMIT 1) "
+        "AND f.metric = 'zori' AND (%(z)s::text IS NULL OR f.zip = %(z)s) GROUP BY f.month ORDER BY f.month",
+        {"z": zip_})
