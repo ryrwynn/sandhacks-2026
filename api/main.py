@@ -1,11 +1,9 @@
-"""RentWatch API. Owner: lane D. This skeleton serves /health only until lane D lands."""
+"""RentWatch API (lane D). Caddy strips /api, so routes are served at /health, /zips, ... and docs at /api/docs."""
 from fastapi import FastAPI
 
-from contracts.api_models import HealthResponse
+from api.routers import checks, health, listings, neighborhoods, owner, zips
 
 app = FastAPI(title="RentWatch API", version="0.1.0", root_path="/api")
 
-
-@app.get("/health", response_model=HealthResponse)
-def health() -> HealthResponse:
-    return HealthResponse(status="degraded", database=False)
+for module in (health, zips, checks, listings, neighborhoods, owner):
+    app.include_router(module.router)
