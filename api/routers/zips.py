@@ -68,7 +68,7 @@ def zip_series(zip: str, metric: Metric = "zori") -> SeriesResponse:
     naive = None
     if run_id:
         m = safe(db.forecast_run_metrics, run_id, default={})
-        naive = m.get("naive_mape")
+        naive = (m.get("by_series") or {}).get(f"{zip}:{metric}", {}).get("naive_mape", m.get("naive_mape"))
     beats = (mape < naive) if mape is not None and naive is not None else None
     return SeriesResponse(zip=zip, metric=metric, points=points, run_id=run_id, backtest_mape=mape,
                           naive_mape=naive, beats_naive=beats)

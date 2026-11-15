@@ -71,3 +71,14 @@ Dataset `gd_lfqkr8wm13ixtbd8f5` (Zillow properties listing information), the one
   1.38% (mean 1.65%), but the model beat the naive "next year equals this month" forecast on only 7 of 24.
   Per the plan, the UI shows the band and the backtest error under every chart, describes it as a trend
   range, and only says "beats naive" on the series where it does. Fair rent: skipped until rentals load.
+- **Merged:** lane/data (864 rentals, 240 for-sale, ZORI/ZHVI/Census/amenities for all 12 ZIPs) and lane/api.
+  Four API tests assumed engine stubs; they now patch a missing engine explicitly.
+- **Per-series backtests:** worker/train.py now stores each series' mape, naive_mape and beats_naive in
+  model_runs.metrics.by_series, and GET /zips/{zip}/series reads them, so "beats naive" is per ZIP and metric.
+- **Fair rent (2026-11-14):** 864 rentals < 1,000, so the ZIP-and-bedroom median fallback is used. Leave-one-
+  building-out: median absolute error $343, mean $439, and only 47% of held-out rents inside the 80% range
+  (target 80%). Shown on screen with every estimate; the label stays "typical range", never "illegal".
+- **Thin rentals:** 92101 has 0, 92105 has 1 and 92126 has 2 rentals. Bright Data runs ended with "Crawl
+  aborted on job cancel" twice, so lane A stopped (same-error-twice rule). A retry with
+  `python -m worker.run --source zillow_rent --zips 92101,92105,92126` may fill them; it costs credit, so it's
+  left for a person to decide. The rent check (the demo) doesn't depend on listings.

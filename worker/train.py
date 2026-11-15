@@ -54,6 +54,7 @@ def load_series(conn, metric: str) -> dict[str, pd.Series]:
 
 def train_forecasts(conn, run_id: uuid.UUID, made_at: datetime) -> dict | None:
     mapes, beat, n_series, skipped = [], 0, 0, 0
+    by_series = {}   # "zip:metric" -> backtest; the series endpoint reads naive_mape from here
     rows = []
     for metric in ("zori", "zhvi"):
         for z, s in load_series(conn, metric).items():
@@ -67,6 +68,8 @@ def train_forecasts(conn, run_id: uuid.UUID, made_at: datetime) -> dict | None:
             n_series += 1
             mapes.append(bt["mape"])
             beat += bt["beats_naive"]
+            by_series[f"{z}:{metric}"] = {k: (bool(v) if k == "beats_naive" else round(float(v), 2))
+                                          for k, v in bt.items()}
             for month, r in fc.iterrows():
                 rows.append((str(run_id), made_at, month.date(), z, metric, round(r["mean"], 2),
                              round(r["pi_lower"], 2), round(r["pi_upper"], 2), round(bt["mape"], 2)))
@@ -78,7 +81,7 @@ def train_forecasts(conn, run_id: uuid.UUID, made_at: datetime) -> dict | None:
             " backtest_mape) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)", rows)
     metrics = {"series": n_series, "skipped": skipped, "median_mape": float(np.median(mapes)),
                "mean_mape": float(np.mean(mapes)), "beats_naive": int(beat),
-               "share_beats_naive": beat / n_series}
+               "share_beats_naive": beat / n_series, "by_series": by_series}
     record_run(conn, run_id, "forecast", len(rows), ["zillow_research"], metrics, None)
     return metrics
 
