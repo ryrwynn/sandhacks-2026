@@ -1,0 +1,19 @@
+# Zillow Research ZORI and ZHVI for every California ZIP (index tier: free, no listings). Disabled.
+# One raw record per ZIP and metric holding the last `months` monthly values; replay expands them into
+# area_metrics (staging_area_metrics until the morning merge) under the canonical key `loads_as`.
+source_key: zillow_research_ca
+kind: area_index
+trust_weight: 1.0
+loads_as: zillow_research
+fetch:
+  method: csv
+  zip_file: data/areas_ca.csv
+  months: 72
+  files:
+    - metric: zori
+      url: https://files.zillowstatic.com/research/public_csvs/zori/Zip_zori_uc_sfrcondomfr_sm_month.csv
+    - metric: zhvi
+      url: https://files.zillowstatic.com/research/public_csvs/zhvi/Zip_zhvi_uc_sfrcondo_tier_0.33_0.67_sm_sa_month.csv
+columns:
+  zip: RegionName
+period: first_of_month

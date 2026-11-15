@@ -1,0 +1,15 @@
+# Census ACS 5-year for every California ZCTA -> area_metrics (index tier). Disabled; loaded once.
+source_key: census_acs_ca
+kind: area_stats
+trust_weight: 1.0
+loads_as: census_acs
+fetch:
+  method: census_api
+  zip_file: data/areas_ca.csv
+  years: [2024, 2023]
+  url: "https://api.census.gov/data/{year}/acs/acs5"
+  key_env: CENSUS_API_KEY
+  cache: data/.cache/census_acs_ca.json
+variables:
+  B19013_001E: median_income
+  B25064_001E: acs_median_rent
