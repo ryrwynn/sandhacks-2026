@@ -12,7 +12,7 @@ export default function Finder({
   persona, token, zips, showMap = false, onPickZip,
 }: { persona: Persona; token?: string | null; zips?: ZipSummary[]; showMap?: boolean; onPickZip?: (zip: string) => void }) {
   const wealth = persona === "wealth";
-  const [budget, setBudget] = useState(wealth ? "900000" : "2200");
+  const [budget, setBudget] = useState(wealth ? "900000" : "3000");
   const [beds, setBeds] = useState("");
   const [res, setRes] = useState<RankResponse | null>(null);
   const [busy, setBusy] = useState(false);

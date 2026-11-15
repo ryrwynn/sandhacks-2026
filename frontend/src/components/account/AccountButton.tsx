@@ -81,13 +81,17 @@ export function AccountButton({ className = "" }: { className?: string }) {
   if (state === "off" || state === "unknown") return null;
   const base = `inline-flex min-h-11 items-center rounded-lg border border-line bg-surface px-3 text-sm font-medium text-ink hover:bg-slate-100 ${className}`;
   return (
-    <span className="inline-flex flex-col items-start">
+    <span className="inline-flex items-center gap-2">
       {state === "in" ? (
         <a href="/auth/signout" className={base} title="Your saves are synced to your Google account (no email or name is kept)">Signed in · Sign out</a>
       ) : (
         <a href="/auth/signin" className={base} title="Optional: keep your saves on every device">Sign in</a>
       )}
-      <span className="mt-0.5 text-xs text-muted">Sign-in stores only a hashed account ID · <a href="/privacy" className="underline">Privacy</a></span>
+      <a href="/privacy" className="inline-flex min-h-11 items-center text-xs text-muted underline"
+        title="Sign-in stores only a hashed account ID, never your email or name">
+        <span className="hidden xl:inline">Only a hashed ID is stored ·&nbsp;</span>Privacy
+        <span className="sr-only xl:hidden"> (sign-in stores only a hashed account ID)</span>
+      </a>
     </span>
   );
 }
