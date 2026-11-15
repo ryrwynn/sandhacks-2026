@@ -159,7 +159,7 @@ export default function ApartmentView({ id }: { id: string }) {
           <li><span className="mr-1 inline-block h-2 w-2 rounded-full bg-grid align-middle" />Seen again at the same price</li>
         </ul>
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[20rem] text-left text-sm">
+          <table className="w-full text-left text-sm">
             <caption className="sr-only">Every recorded price event for this apartment</caption>
             <thead className="text-muted"><tr><th className="py-2 pr-3 font-medium">Date</th><th className="py-2 pr-3 font-medium">Event</th><th className="py-2 pr-3 text-right font-medium">Price</th><th className="py-2 text-right font-medium">Change</th></tr></thead>
             <tbody>
@@ -169,7 +169,7 @@ export default function ApartmentView({ id }: { id: string }) {
                   <td className="py-2 pr-3">{x.kind}</td>
                   <td className="py-2 pr-3 text-right tabular-nums">{usd(x.price)}</td>
                   <td className={`py-2 text-right tabular-nums ${x.diff < 0 ? "text-good" : x.diff > 0 ? "text-warn" : "text-muted"}`}>
-                    {x.diff === 0 ? "–" : `${x.diff < 0 ? "↓ down " : "↑ up "}${usd(Math.abs(x.diff))}`}
+                    {x.diff === 0 ? "–" : <><span aria-hidden="true">{x.diff < 0 ? "↓" : "↑"} {usd(Math.abs(x.diff))}</span><span className="sr-only">{x.diff < 0 ? "down" : "up"} {usd(Math.abs(x.diff))}</span></>}
                   </td>
                 </tr>
               ))}
