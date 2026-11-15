@@ -1,6 +1,8 @@
 .env
-node_modules/
+*.env
 .venv/
+.idea
+node_modules/
 __pycache__/
 .next/
 models/*.joblib
@@ -9,3 +11,11 @@ models/*.joblib
 models/*
 !models/.gitkeep
 *.log
+.DS_Store
+*.pem
+*.tsbuildinfo
+npm-debug.log*
+/coverage
+/out/
+/build
+.vercel

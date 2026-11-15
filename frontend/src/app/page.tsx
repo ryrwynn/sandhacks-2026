@@ -1,48 +1,64 @@
+"use client";
 import Link from "next/link";
-import { Suspense } from "react";
-import { getZips, isMock } from "@/lib/api";
-import { mapboxToken } from "@/lib/server";
-import ZipMap from "@/components/ZipMap";
-import { MockFlag } from "@/components/ui";
+import { useEffect, useState } from "react";
+import FilterBar from "@/components/FilterBar";
+import RentChart from "@/components/RentChart";
+import ApartmentCard from "@/components/ApartmentCard";
+import { getListingsByIds, getMarket } from "@/lib/api";
+import { useSaved } from "@/lib/saved";
+import { DEFAULT_FILTERS, type Filters, type Listing, type Market } from "@/lib/types";
 
-const MODES = [
-  { href: "/renter", title: "I rent", body: "Check a rent increase, get a reply letter, test a listing's price, or find a place." },
-  { href: "/buyer", title: "I want to buy", body: "Find ZIPs that build wealth: expected appreciation, rental yield and fit to your budget." },
-  { href: "/owner", title: "I own", body: "See where your price sits, the legal maximum for an occupied unit, and how complete your listing is." },
-];
+export default function MarketOverview() {
+  const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
+  const [market, setMarket] = useState<Market | null>(null);
+  const [saved, setSaved] = useState<Listing[]>([]);
+  const { ids, has, toggle } = useSaved();
 
-async function MapSection() {
-  const token = await mapboxToken();
-  const zips = await getZips();
+  useEffect(() => { getMarket(filters).then(setMarket); }, [filters]);
+  useEffect(() => { getListingsByIds(ids.slice(0, 4)).then(setSaved); }, [ids]);
+
+  const s = market?.series ?? [];
+  const now = s[s.length - 1]?.median ?? 0;
+  const since = s.length ? ((now - s[0].median) / s[0].median) * 100 : 0;
+
   return (
     <>
-      <MockFlag on={isMock(zips)} />
-      <ZipMap token={token} zips={zips.zips} />
-    </>
-  );
-}
+      <section className="page-head">
+        <div>
+          <h1>Rental market overview</h1>
+          <p className="muted">See how asking rents change over time, then track the places you love.</p>
+        </div>
+        {market && <span className="muted small">Updated {market.updated}</span>}
+      </section>
 
-export default function Home() {
-  return (
-    <main className="space-y-6">
-      <section>
-        <h1 className="text-2xl font-bold leading-tight">San Diego rent and home prices, in plain numbers</h1>
-        <p className="mt-1 text-slate-700">Pick what you are doing. Every number comes with a range and the data behind it.</p>
+      <FilterBar value={filters} onChange={setFilters} />
+
+      <section className="card panel">
+        <p className="label">Median asking rent</p>
+        <div className="stat"><strong>${now.toLocaleString()}</strong><span className="muted"> / month</span></div>
+        <p className="muted small">
+          {since >= 0 ? "+" : ""}{since.toFixed(1)}% since Jan 2025 · Across {market?.activeListings.toLocaleString() ?? "–"} active listings
+        </p>
+        {market ? <RentChart key={filters.area + filters.beds} series={market.series} /> : <div className="skeleton" />}
       </section>
-      <div className="grid gap-3 sm:grid-cols-3">
-        {MODES.map((m) => (
-          <Link key={m.href} href={m.href} className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm active:bg-slate-50">
-            <h2 className="text-lg font-bold text-indigo-800">{m.title}</h2>
-            <p className="mt-1 text-sm text-slate-700">{m.body}</p>
-          </Link>
-        ))}
-      </div>
-      <section className="space-y-2">
-        <h2 className="text-lg font-bold">Typical rent by ZIP</h2>
-        <Suspense fallback={<div className="h-72 animate-pulse rounded-xl bg-slate-200" />}>
-          <MapSection />
-        </Suspense>
+
+      <section className="panel flat">
+        <div className="row-between">
+          <div>
+            <h2>Saved apartments <span className="muted small">{ids.length} tracked</span></h2>
+            <p className="muted small">Your watchlist, with asking-rent history at a glance.</p>
+          </div>
+          <Link href="/find" className="primary">+ Save apartment</Link>
+        </div>
+        {saved.length === 0 ? (
+          <p className="empty">Nothing saved yet. <Link href="/find">Find apartments</Link> to start a watchlist.</p>
+        ) : (
+          <div className="grid">
+            {saved.map((l) => <ApartmentCard key={l.id} listing={l} saved={has(l.id)} onToggle={() => toggle(l.id)} />)}
+          </div>
+        )}
+        <p className="right small"><Link href="/saved">View all saved apartments →</Link></p>
       </section>
-    </main>
+    </>
   );
 }

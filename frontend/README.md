@@ -1,4 +1,4 @@
-# RentWatch web (Next.js 16)
+# RentOrKnot web (Next.js 16)
 
 Read `AGENTS.md` and `node_modules/next/dist/docs/` before changing anything: this is not the Next.js you know.
 

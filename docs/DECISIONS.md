@@ -109,3 +109,23 @@ Dataset `gd_lfqkr8wm13ixtbd8f5` (Zillow properties listing information), the one
 - `docker compose` build and run (no Docker on this laptop); the compose file is only syntax-checked.
 - When the server is ready: docs/ORCHESTRATOR.md "Before you start" steps 2 to 4, `gh workflow enable deploy`,
   push Setup, `./scripts/watch-deploy.sh`.
+
+## Phase 2: RentOrKnot apartment tracker (2026-11-14)
+
+### Step 1: merge of origin/main
+
+- Merged origin/main into Setup. Conflicts: `.gitignore` (union of both), `frontend/README.md` (kept Setup's text,
+  heading now "RentOrKnot web"), `frontend/src/app/layout.tsx` (Setup's layout plus rynn's `SavedProvider`, title
+  "RentOrKnot"), `frontend/src/app/page.tsx` (rynn's market overview is now `/`).
+- Main's code imported `@/src/...`; Setup's tsconfig maps `@/*` to `./src/*`, so those imports were rewritten to `@/...`.
+- The previous mode-picker home (ZIP map and three mode cards) is kept as `/tools` until lane-web folds it into
+  the new navigation. rynn's `NavBar` is kept but unused; `ModeNav` is still the site nav.
+- `frontend/public/*.svg` boilerplate was deleted by main; nothing referenced it.
+- Not merged: origin/pipeline. It is Django-era scaffolding by a teammate: `pipeline/` (config, run, schema,
+  clean modules for Zillow, Trulia, Facebook and ZORI, plus committed `.pyc` files), `scrapper/brightdata.py`
+  (Bright Data job runner) and `scrapper/price_refresh.py` (collect-by-URL refresh of only the price of known zpids,
+  one credit per URL, accepting a result only if its zpid was requested), and it deletes `sandhacks/`, `django_app/`
+  and `.env.example`. It overlaps lane A's `worker/` (which already fetches, cleans and loads these sources), and
+  it posts to a Django prices endpoint we don't run. Idea worth borrowing later: the price-only refresh by zpid for
+  saved apartments, which is a cheaper way to extend price history than rerunning whole ZIP searches.
+- Lane A's work (`lane/data`: worker pipeline, source templates, fixtures, data caches) is also merged into Setup.
