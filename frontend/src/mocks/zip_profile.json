@@ -1,0 +1,30 @@
+{
+  "zip": "92105",
+  "name": "City Heights",
+  "typical_rent_usd": 2050.0,
+  "typical_home_value_usd": 610000.0,
+  "median_rent_by_beds": {
+    "0": 1476,
+    "1": 1742,
+    "2": 2050,
+    "3": 2665
+  },
+  "rent_forecast_change_pct": 2.4,
+  "value_forecast_change_pct": 3.1,
+  "median_income_usd": 56000.0,
+  "rent_burden_pct": 43.9,
+  "gross_yield_pct": 4.0,
+  "amenities": {
+    "groceries": 31,
+    "transit_stops": 212,
+    "parks": 14,
+    "food_drink": 148,
+    "gyms": 9,
+    "area_km2": 19.6
+  },
+  "persona_scores": {
+    "starter": 78.5,
+    "wealth": 64.0
+  },
+  "listings_30d": 96
+}

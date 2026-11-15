@@ -1,0 +1,16 @@
+{
+  "estimate": {
+    "low": 1980.0,
+    "expected": 2290.0,
+    "high": 2610.0,
+    "method": "zip_bed_median",
+    "mae_usd": null,
+    "coverage_80": null
+  },
+  "asking_rent": 2795.0,
+  "label": "above_typical_range",
+  "percentile": 91.0,
+  "n_comparables": 48,
+  "parsed_fields": null,
+  "disclaimer": "Estimates with ranges from public data, not financial advice or measured results."
+}

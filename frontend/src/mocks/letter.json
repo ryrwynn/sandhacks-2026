@@ -1,0 +1,16 @@
+{
+  "check_id": "3b8e2a4c-1d5f-4e6a-9b7c-8d0e1f2a3b4c",
+  "lang": "es",
+  "explanation": "Su edificio de 1978 est\u00e1 cubierto por la ley AB 1482. El aumento m\u00e1ximo permitido para diciembre de 2026 es 8.2%, as\u00ed que su renta no puede pasar de $2,272.20. La nueva renta de $2,350.00 supera ese l\u00edmite por $77.80 al mes. Esto no es asesor\u00eda legal; puede pedir ayuda a Legal Aid Society of San Diego.",
+  "letter_en": "[Date]\n\n[Landlord name]\n[Landlord address]\n\nRe: Rent increase notice for 4200 Fairmount Ave, San Diego, CA 92105\n\nDear [Landlord name],\n\nI received notice that my rent will rise from $2,100.00 to $2,350.00 effective December 1, 2026. Under California Civil Code 1947.12 (AB 1482), the increase for this period may not exceed 8.2% of the lowest rent charged in the prior 12 months, which sets a maximum of $2,272.20. The proposed rent exceeds that limit by $77.80 per month.\n\nPlease revise the increase to no more than $2,272.20 and confirm in writing.\n\nSincerely,\n[Tenant name]",
+  "figures": [
+    "$2,100.00",
+    "$2,350.00",
+    "$2,272.20",
+    "$77.80",
+    "$933.60",
+    "8.2%",
+    "11.9%"
+  ],
+  "disclaimer": "This is not legal advice. For help with a rent increase, contact the Legal Aid Society of San Diego (lassd.org, 877-534-2524)."
+}
