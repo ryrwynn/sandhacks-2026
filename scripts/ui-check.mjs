@@ -217,16 +217,19 @@ async function main() {
   mkdirSync(OUT, { recursive: true });
   const pages = process.env.UI_EXTRAS_ONLY === "1" ? [] : await targets();
   const results = [];
-  // One browser per theme: a long-lived Chromium runs out of software WebGL contexts after ~40 map pages.
-  for (const theme of THEMES) {
+  // A fresh browser every BATCH loads: a long-lived Chromium runs out of software WebGL contexts on map pages
+  // ("Failed to initialize WebGL"), which is a property of headless SwiftShader, not of the site.
+  const BATCH = Number(process.env.UI_BATCH || 12);
+  const jobs = [];
+  for (const theme of THEMES) for (const width of WIDTHS) for (const [name, path] of pages) jobs.push([theme, width, name, path]);
+  for (let start = 0; start < jobs.length; start += BATCH) {
     // Software WebGL (SwiftShader) so the Mapbox map renders without a GPU.
-    const browser = await chromium.launch({ args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"] });
-    const jobs = [];
-    for (const width of WIDTHS) for (const [name, path] of pages) jobs.push([theme, width, name, path]);
+    const browser = await chromium.launch({ args: GL_ARGS });
+    const chunk = jobs.slice(start, start + BATCH);
     let next = 0;
     await Promise.all(Array.from({ length: PARALLEL }, async () => {
-      while (next < jobs.length) {
-        const j = jobs[next++];
+      while (next < chunk.length) {
+        const j = chunk[next++];
         const r = await check(browser, ...j);
         results.push(r);
         process.stdout.write(r.problems.length ? "F" : ".");

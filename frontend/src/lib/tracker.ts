@@ -52,7 +52,9 @@ export const UNIT_TYPE_TEXT: Record<NonNullable<ListingSummary["unit_type"]>, st
 /** Address for listing sites; for Facebook, a title built from extracted fields ("2-bed apartment in North Park"). */
 export function listingTitle(l: ListingSummary): string {
   if (!isFacebook(l)) return [l.address ?? "Address not listed", l.unit_label ? `#${l.unit_label}` : null].filter(Boolean).join(" ");
-  const where = l.neighborhood ?? l.zip ?? "San Diego";
+  const hood = l.neighborhood && l.neighborhood === l.neighborhood.toLowerCase()   // "mira mesa" -> "Mira Mesa"
+    ? l.neighborhood.replace(/\b\p{L}/gu, (c) => c.toUpperCase()) : l.neighborhood;
+  const where = hood ?? l.zip ?? "San Diego";
   const size = l.beds == null ? null : l.beds === 0 ? "Studio" : `${l.beds}-bed`;
   if (l.unit_type === "room") return `Room in ${where}`;
   if (l.unit_type === "sublet") return `${size ? size + " sublet" : "Sublet"} in ${where}`;
