@@ -132,7 +132,7 @@ def estimate(row: dict) -> tuple[dict | None, list[float], dict]:
     if len(comps) < MIN_COMPS:
         return None, comps, {}
     try:
-        est = fair_rent.median_fallback(comps)
+        est = fair_rent.median_fallback(comps, _run_metrics().get("spread"))
     except NotImplementedError:
         est = _local_fallback(comps)
     return (None if est is None else {**est, "method": "zip_bed_median"}), comps, _run_metrics()
