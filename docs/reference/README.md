@@ -4,13 +4,14 @@ Agents read the short notes in this folder instead of browsing vendor docs, whic
 
 ## Drop raw docs here (not committed)
 
-`docs/reference/raw/` is gitignored, because vendor docs are copyrighted and the repo is public. Paste pages as `.md` or `.txt` (copy the page text, or use "Save as Markdown"), one file per page, in these folders:
+`docs/reference/raw/` is gitignored, because vendor docs are copyrighted and the repo is public. Each vendor folder already has a `public-docs-notes.md` summarizing the public docs; add account-specific facts beside it. Paste pages as `.md` or `.txt` (copy the page text, or use "Save as Markdown"), one file per page, in these folders:
 
 | Folder | What to put in it |
 | --- | --- |
 | `raw/brightdata/` | Web Scraper API: trigger, progress, snapshot download, delivery options and limits. The Zillow scraper's page: inputs, `discover_by` options, output fields, price per 1,000 records. The Facebook "posts by group URL" scraper's page: inputs, output fields, price. Any Facebook group discovery or SERP API page you have access to. The dataset marketplace or filter API, if Zillow data can be bought by state. A text file `account.txt` with your remaining credit, your zones, and the dataset IDs you see in the dashboard. |
 | `raw/tigerdata/` | Your service's plan and limits (storage, compute, connections) copied from the console. Docs pages on compression or columnstore, retention policies, continuous aggregates, pgvector / pgvectorscale / pgai, PostGIS, and forking a service. |
 | `raw/mastra/` | The sponsor docs: getting started, agents, tools, workflows, memory, model providers (Gemini), running inside Next.js, and the MLH prize rules for Mastra. |
+| `raw/gemini/` | Gemini API notes (models, limits, thinking, embeddings, errors). |
 | `raw/google-auth/` | Only if you want Google sign-in: anything specific about your OAuth client. Put the keys themselves in `.env`, never here. |
 | `raw/prizes/` | Judging criteria for the tracks you're targeting (Tiger Data, Bright Data, Mastra, Best Overall). |
 
@@ -23,6 +24,7 @@ Each note is under 250 lines. It covers only what this project needs: endpoints,
 | `brightdata.md` | `raw/brightdata/` plus Bright Data's public docs |
 | `tigerdata.md` | `raw/tigerdata/` plus Tiger Data's public docs |
 | `mastra.md` | `raw/mastra/` plus https://mastra.ai/docs |
+| `gemini.md` | `raw/gemini/` plus aistudio.google.com/docs |
 | `auth.md` | Auth.js docs (Google provider, `basePath`, JWT sessions) |
 | `public-sources.md` | The research list below |
 

@@ -29,7 +29,7 @@ Goals, in order of value:
 | --- | --- |
 | Claude usage | The orchestrator (Opus) plans, writes contracts and merges; lanes do the coding on Sonnet; `night-scout` condenses docs on Haiku so nobody re-reads raw docs. Run at most 4 lanes at once. Keep command output short (`-q`, `tail`). No screenshot loops: check pages with curl and the HTML. A lane that fails twice on the same error stops and reports. |
 | Bright Data | Spend at most `BRIGHTDATA_BUDGET_USD` (default 10 if unset) tonight. Before every trigger, estimate the cost from record counts and the per-record prices in docs/reference/brightdata.md; refuse if it would cross the budget. Try a 20-record sample of every new input type before running it in bulk. Record each run's records and estimated cost in `scrape_runs` (migration 002). Batch many inputs into one trigger, cap records per input, and poll progress with backoff instead of re-triggering. |
-| Gemini | Free tier, as CLAUDE.md says, plus at most 900 embedding requests tonight. Cache everything; tests mock the network. |
+| Gemini | Free tier, as CLAUDE.md says, plus at most 900 embedding requests tonight (the embedding quota is 1,000 a day). Cache everything; tests mock the network. Lowest thinking level: `minimal` on the Flash-Lite models, `low` on gemini-3.8-flash. A 429 with code `quota_exceeded` is the daily cap: don't retry it. |
 | Server | No new long-running services. The server has 1 GB of RAM, so prefer libraries already installed (statsmodels, scikit-learn, psycopg) and say in DECISIONS.md what any new dependency adds to the image. |
 
 ## Phases
@@ -94,7 +94,7 @@ Keep `docs/STATUS.md` current: one line per phase item with `[ ]` or `[x]`, plus
   - the dataset marketplace or filter API if docs/reference/brightdata.md shows it's cheaper for California-wide snapshots
   
   Write per-source cost notes to DECISIONS.md.
-- **Facebook rental groups by locality:**
+- **Facebook rental groups by locality:** Bright Data's group scraper has no post-count or date inputs, so cap each group with `limit_per_input` (at most 50), confirm the cap works on a sample, and keep a `date_posted` high-water mark per group.
   - Discover candidate public groups for each San Diego locality (and on-demand cities) with web search, or Bright Data's SERP API if a zone exists. Record them in `fb_groups` and `sources/facebook_groups/groups.yaml` with locality and ZIPs.
   - Collect only groups that the scraper reports as public. Use a new source key (`facebook_groups_sd`), registered disabled.
   - Use the existing template rules: drop author fields, hash post IDs, redact text, have Gemini extract price, beds, neighborhood and ZIP, and keep rental offers only.
@@ -128,13 +128,14 @@ Keep `docs/STATUS.md` current: one line per phase item with `[ ]` or `[x]`, plus
 ### Matching and the advisor (night-match)
 
 - **Needs parser:** Gemini turns a plain-language description into constraints (budget, beds, areas, must-haves such as pets, parking and laundry, nice-to-haves, commute anchors). It's cached by text.
-- **Ranking:** hard filters, then a score from price fit, amenity fit (OSM counts), fair-rent position and semantic similarity between the needs text and listing text (Gemini embeddings in pgvector; without pgvector, cosine similarity in Python over the cached vectors). Return the top results with the reasons each scored well. Never use who lives in a ZIP.
+- **Ranking:** hard filters, then a score from price fit, amenity fit (OSM counts), fair-rent position and semantic similarity between the needs text and listing text (Gemini `gemini-embedding-2` at 768 dimensions, with the documented text prefixes instead of task_type, stored in pgvector; without pgvector, cosine similarity in Python over the cached vectors). Return the top results with the reasons each scored well. Never use who lives in a ZIP.
 - **Owner reach** (`POST /owner/reach`):
   - Build a fixed, documented set of renter-need profiles from the listing data itself: common price bands, bed counts and stated must-haves among comparables.
   - Score how many profiles would shortlist the listing at each price point and with each missing fact filled in.
   - Return the price and completeness changes with the biggest reach gain. It's an estimate, and it says so.
 - **Mastra advisor:**
-  - A TypeScript agent per docs/reference/mastra.md, using Gemini through Mastra's provider support with `GEMINI_API_KEY`. Its tools call our API: `/match`, `/listings`, `/market`, `/checks`, `/checks/gouging`, `/zips/{zip}/series`.
+  - A TypeScript agent per docs/reference/mastra.md, using Gemini through Mastra's model router with an explicit `apiKey: process.env.GEMINI_API_KEY` (Mastra otherwise reads GOOGLE_API_KEY). Add `serverExternalPackages: ['@mastra/*']` to next.config.ts. Keep it stateless, or store memory in Postgres in its own `mastra` schema; no local file database.
+  - For the Mastra prize, show a multi-step workflow (parse needs, search, rank, explain), tools over our API, and a scorer. Its tools call our API: `/match`, `/listings`, `/market`, `/checks`, `/checks/gouging`, `/zips/{zip}/series`.
   - Code lives in `frontend/src/advisor/`, served from `frontend/src/app/advisor/chat/route.ts`. It must not live under `/api`, because Caddy sends all of `/api/*` to FastAPI.
   - At most 4 tool steps per message, answers cached, and figures only from tool results.
 
@@ -166,7 +167,7 @@ Keep `docs/STATUS.md` current: one line per phase item with `[ ]` or `[x]`, plus
 
 ## Defaults when information is missing
 
-- No Bright Data prices in the notes: budget at $3 per 1,000 records and say so.
+- Bright Data prices: $1.50 per 1,000 delivered records (pay as you go; bad inputs are billed too). The account also has 5,000 free credits a month. The dataset marketplace has a $250 minimum order, so don't use it tonight.
 - No `DEV_DATABASE_URL`: stage new data as Safety rules say.
 - No Google OAuth keys: build sign-in behind the flag, off.
 - No Mastra docs: build the advisor on Mastra's public docs (https://mastra.ai/docs) and note what to verify.
