@@ -81,6 +81,21 @@ on with the others. Report at each gate: what's merged, test output and live URL
 a short report: what works, the live URL, the test and smoke-test output, and anything skipped.
 ```
 
+## If the Vultr server isn't ready
+
+Turn off the deploy workflow so each push doesn't produce a failed run (`gh workflow disable deploy`), and put this paragraph at the top of the prompt:
+
+```text
+The Vultr server isn't set up yet, so preflight FAILs for Vultr, the domain and the GitHub secrets
+are expected. Skip every deploy step: don't run ./scripts/watch-deploy.sh or ./scripts/server-logs.sh,
+and list the skipped deploy steps in the final report. Still write docker-compose.yml, the Caddyfile,
+scripts/deploy.sh and scripts/smoke.sh. In place of the live smoke test, run the API with uvicorn and
+the web app with `npm run build && npm start` on this machine, and make smoke.sh pass against them;
+let smoke.sh take the API's base URL separately (SMOKE_API_URL) for this local run.
+```
+
+When the server is ready: do steps 2 to 4 of "Before you start", run `gh workflow enable deploy`, then tell the orchestrator (or a fresh session) "The server is ready: push Setup and run ./scripts/watch-deploy.sh until the smoke test passes on PUBLIC_URL."
+
 ## Switching to main later
 
 Change `branches: [Setup]` in `.github/workflows/deploy.yml`, the default `DEPLOY_BRANCH` in `scripts/*.sh`, and the "Branches and deploy" section of `CLAUDE.md`. The server switches branches on its next deploy.
