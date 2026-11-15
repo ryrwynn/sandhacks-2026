@@ -19,6 +19,7 @@ export default function PrivacyPage() {
           <li>Clear this site&apos;s data in your browser to remove the local copy.</li>
           <li>Email <Contact /> to have the server copy deleted.</li>
         </ul>) },
+        { h: "Rent increase checks", body: <>When you run a rent increase check, the server stores what you entered (the address, rents, dates and year built) with the result, so the reply letter can be made from it. It is not linked to you or your account. To have a check deleted, email us with the address and date.</> },
         { h: "Ads and tracking", body: <p>There are no ads, no tracking or analytics scripts, and we do not sell data.</p> },
         { h: "Data from public sources", body: (<>
           <p>We collect public data: Zillow listings (through a data provider), Zillow Research indexes, Census data, OpenStreetMap, and public Facebook groups.</p>
