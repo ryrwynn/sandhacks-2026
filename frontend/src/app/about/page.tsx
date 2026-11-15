@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { getHealth, isMock } from "@/lib/api";
@@ -96,6 +97,7 @@ export default function AboutPage() {
         <Disclaimer kind="legal" />
         <Disclaimer kind="estimate" />
       </Card>
+      <p className="text-sm text-muted">See our <Link href="/privacy" className="underline">Privacy</Link> and <Link href="/terms" className="underline">Terms</Link>.</p>
     </main>
   );
 }
