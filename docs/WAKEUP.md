@@ -1,6 +1,58 @@
-# Final run (2026-11-15, afternoon)
+# Final run (2026-11-15, ends 11:25 AM PST): ready to merge
+
+Branch `night`, PR #2 marked ready for review (not merged). Nothing pushed to Setup or main; no deploy, no change to
+deploy.yml, secrets or the server. Local servers stopped. Facebook rows are in staging only (not replayed to shared).
+
+## Results
+
+| Step | Result |
+| --- | --- |
+| 1. Database | Reachable (8 s timeout). |
+| 2. Schedules and rules | `zillow_rent` weekly, Thursday 12:00 UTC (4:00 AM PST, 5:00 AM during daylight time); `zillow_sale` and train unchanged. The active window (latest scrape per source minus 36 h) and Price alerts work with a weekly scrape; UI says "Updated weekly". `FMR_RULE_VERIFIED = True`. **HUD's SAFMR file was refused again** (HTTP 202, empty body), so `fmr.yaml` stays unverified and the 160% path still answers "unclear". |
+| 3. Facebook | Prompt fixed: rooms offered in a shared home are offers (`unit_type` room, `roommate_wanted`); people looking for a place stay out. Full run re-extracted with no new scrape (~30 Flash Lite calls). See the counts below. |
+| 4. 12-ZIP guard | Every live market, listing, median, comparable and `zip_features` query in `api/db.py` filters to `data/zips.txt`; 24 tests in `api/tests/test_zip_filter.py`. |
+| 5. Partner fixes | a: /buyer values at most 2 decimals, ratios as % (yield, % of budget). b: "Find a place" tab removed; Starter finder is a "Not sure where to look?" panel on /find whose "Show listings in {area}" sets the area filter. c: Save button pinned to the card bottom, cards equal height. d: logo favicon (`app/icon.svg`, `apple-icon.png`), `favicon.ico` removed. e: `ListingSummary.tags` (≤ 4; Zillow washer/dryer, dishwasher, hardwood; Facebook amenities; area tags "(ZIP)" for the top third per km²) and `roommate_wanted` (contract change, fixtures, types). f: /saved multi-select (shift / Ctrl / Cmd-click, Select mode with checkboxes, action bar with open-in-tabs plus a blocked-links list, remove with undo, Escape). g: "Roommate wanted" / "Sublet" tags; unit filter "Roommate wanted (rooms)". |
+| 6. Privacy and terms | /privacy and /terms (Last updated November 15, 2026), linked from a new footer, /about and the sign-in button. Privacy also says that rent increase checks are stored. **A lawyer has not reviewed either page.** |
+| 7. Docs | PLAN "Current state", DESIGN (Find, cards, Saved, sign-in, footer), ACCOUNTS step 2 (`{"enabled": false}`). |
+| 8. Checks | See below. |
+
+### Facebook (full run `sd_mwhxcv0l15owbti9eg`, re-extracted)
+
+6 public groups (UCSD group private, skipped), **290 posts, 133 usable (45.9%)**: **18 whole units, 94 rooms (all 94
+roommate-wanted), 21 sublets, 0 unusual prices**. Dropped: 70 not offers (people looking, services), 47 no ZIP, 40 no
+price or beds. After dedupe and reposts, staging holds **107 listings** (13 whole, 78 rooms, 16 sublets), **52 in
+the 12 ZIPs** (those are what `replay --target shared` will load), and 134 price observations. The sample wasn't
+re-extracted on its own: all 40 of its posts are in the full run.
+
+## Checks
+
+- `./scripts/preflight.sh`: all OK except **FAIL "on battery"** (this laptop's power) and WARNs (no DEV_DATABASE_URL,
+  extra non-app tables, no local Docker). Nothing it checks was changed.
+- `uv run pytest api/tests -q`: **299 passed** (new: roommate extraction 3, ZIP filter 24, area/listing tags 2,
+  FMR verified 2).
+- `npm run build` and `npx tsc --noEmit`: pass.
+- `node scripts/ui-check.mjs` (API with `RENTORKNOT_READ_STAGING=1`, production build): **186/186**. That covers 22
+  pages (now with /privacy, /terms and a Facebook room) × 2 widths × 4 themes, plus the new checks: a pan from San Diego
+  that loads the Orange County shapes at 375px, first paint in each theme with no flash, a first visit with
+  prefers-color-scheme dark getting Cocoa Night, two shift-clicks on /saved showing the action bar (Escape clears it),
+  and the Find Starter panel. Earlier runs failed only on headless Chromium running out of software WebGL contexts;
+  the script now starts a fresh browser every batch. Use `UI_BATCH=6 UI_PARALLEL=2` for a clean run.
+- Screenshots reviewed: Find (tags, aligned Save buttons, Starter panel), Find filtered to Facebook, a Facebook room,
+  /saved with a selection, /buyer, /gouging, /privacy, the map pan. Fixed from that review: the sign-in note overflowed
+  the 375px header (now a compact "Privacy" link, and "Sign in" doesn't wrap); the Starter default budget ($2,200)
+  matched no ZIP (now $3,000); lowercase neighborhood names in Facebook titles are title-cased.
+- Capacity SQL (read-only parts): database 126 MB; hot queries 17 ms and 3 ms (docs/TIGER_CAPACITY.md).
+- Google sign-in (keys loaded): `/auth/session` is `null` when signed out (no email or name), the provider list is
+  Google only, the button shows, `/auth/saves` answers 401 without a session, and a wrong `ACCOUNT_API_TOKEN` gets a
+  401 that the button ignores (local saves untouched). The real sign-in is left to you.
+
+## Costs
+
+- Gemini today in this run: ~30 Flash Lite requests (Facebook re-extract) plus a few cached ranking summaries.
+- Bright Data in this run: $0 (no scrape; snapshots were only downloaded).
 
 ## Bright Data cost after the merge (from Bright Data's snapshot list, `dataset_size`)
+ (from Bright Data's snapshot list, `dataset_size`)
 
 Zillow dataset `gd_lfqkr8wm13ixtbd8f5` snapshots today (UTC): `zillow_rent` 06:00 **486**, 09:00 **759**, 12:00
 **1,777**, 15:00 **1,777**, 18:00 **348**; `zillow_sale` 04:30 **240**; county sample 14:11 96. At $1.50 per 1,000 records:
@@ -13,6 +65,24 @@ Zillow dataset `gd_lfqkr8wm13ixtbd8f5` snapshots today (UTC): `zillow_rent` 06:0
 | **Total** | | ≈ 11,000–17,500 | **≈ $17–$26** (was ≈ $650) |
 
 Until the merge deploys, the server still runs `zillow_rent` every 3 hours (each run up to ≈ $2.70).
+
+
+## Not done
+
+- HUD FY2026 Small Area FMRs: huduser.gov refuses automated downloads. Download the file by hand into
+  `api/rules/data/` and set `verified: true` with the source to give firm 160% answers.
+- Step 3 of the capacity study (scratch schema) was skipped because it writes to the shared database.
+- The privacy and terms pages haven't had a legal review.
+
+## Ready-to-merge checklist (for "go")
+
+1. Say **go**: merge PR #2 into Setup; follow the deploy with `./scripts/watch-deploy.sh $(git rev-parse origin/Setup)`.
+2. After the smoke test passes: `uv run python -m worker.facebook replay --target shared --confirm-shared` (52 listings
+   in the 12 ZIPs).
+3. `./scripts/smoke.sh https://rentorknot.us` and `node scripts/ui-check.mjs https://rentorknot.us`.
+4. Then sign in with Google once on the live site (docs/ACCOUNTS.md steps 3–7) and add
+   `https://rentorknot.us/privacy` and `https://rentorknot.us/terms` to the Google consent screen.
+5. The server keeps running `zillow_rent` every 3 hours until the merge deploys the weekly crontab.
 
 # Wake-up report: morning run, 2026-11-15 (earlier)
 

@@ -1,6 +1,6 @@
 # Overnight run status
 
-Heartbeat: 2026-11-15 12:20 PST — step 8 running (full ui-check)
+Heartbeat: 2026-11-15 11:25 PST (real clock; earlier heartbeat times in this section were estimates and ran ahead) — steps 1–9 done; waiting for "go"
 
 ## Phase 0, setup
 - [x] preflight: all clear; WARN no DEV_DATABASE_URL (stage in shared DB), WARN no Google keys (sign-in off), WARN no local Docker
@@ -38,7 +38,7 @@ Heartbeat: 2026-11-15 12:20 PST — step 8 running (full ui-check)
 
 # Morning run (2026-11-15)
 
-Heartbeat: 2026-11-15 12:20 PST — step 8 running (full ui-check)
+Heartbeat: 2026-11-15 11:25 PST (real clock; earlier heartbeat times in this section were estimates and ran ahead) — steps 1–9 done; waiting for "go"
 
 ## 1. Data
 - [x] Load the data 1: index tier staged (160,122 and 3,056 rows) — ran by owner this morning, not rerun
@@ -83,7 +83,7 @@ Heartbeat: 2026-11-15 12:20 PST — step 8 running (full ui-check)
 
 # Final run (2026-11-15)
 
-Heartbeat: 2026-11-15 12:20 PST — step 8 running (full ui-check)
+Heartbeat: 2026-11-15 11:25 PST (real clock; earlier heartbeat times in this section were estimates and ran ahead) — steps 1–9 done; waiting for "go"
 
 - [x] 1. Connectivity: database ok (8 s timeout)
 - [x] 2. Schedules and rules: weekly zillow_rent Thu 12:00 UTC; FMR_RULE_VERIFIED=True; HUD SAFMR refused (202 empty), fmr.yaml stays unverified; BD estimate ≈ $17–26/month in WAKEUP.md
@@ -92,13 +92,13 @@ Heartbeat: 2026-11-15 12:20 PST — step 8 running (full ui-check)
 - [x] 5. Partner fixes a–g (a buyer values, b Starter in Find, c Save at bottom, d favicon, e tags API+UI, f /saved multi-select [lane], g Roommate wanted/Sublet)
 - [x] 6. /privacy and /terms [lane] + footer, /about, sign-in links; added rent-check storage to privacy
 - [x] 7. Docs (PLAN current state, DESIGN, ACCOUNTS step 2)
-- [ ] 8. Checks
+- [x] 8. Checks
   - [x] preflight: all OK except FAIL "on battery" (laptop power) and WARNs (no DEV_DATABASE_URL, extra tables, no local Docker)
   - [x] pytest 299 passed; build + tsc pass
   - [x] local servers: API :8000 (RENTORKNOT_READ_STAGING=1) pid 92617; web :3000 pids 93238
   - [x] interaction checks 10/10 (map pan loads Orange County, first paint x4 themes + dark first visit, /saved shift-click, Find Starter)
-  - [ ] full ui-check
+  - [x] full ui-check 186/186 (UI_BATCH=6 UI_PARALLEL=2); earlier 150 and 181 failed only on headless WebGL contexts
   - [x] capacity SQL (read-only) recorded in TIGER_CAPACITY.md
   - [x] sign-in: /auth/session null signed out (no email/name), button shows, /auth/saves 401 without session, wrong token 401 handled quietly
-- [ ] 9. Stop servers, commit, push night, PR #2 ready, WAKEUP.md
+- [x] 9. Servers stopped, night pushed, PR #2 ready for review, WAKEUP.md final-run section
 - [ ] 10. Wait for "go"
