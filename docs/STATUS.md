@@ -1,6 +1,6 @@
 # Overnight run status
 
-Heartbeat: 2026-11-15 01:07 PST — Phase 2: data, forecast, web, rules running; no secrets available to agents (see DECISIONS)
+Heartbeat: 2026-11-15 01:08 PST — Phase 2: data, forecast, rules, accounts running; match and web done
 
 ## Phase 0, setup
 - [x] preflight: all clear; WARN no DEV_DATABASE_URL (stage in shared DB), WARN no Google keys (sign-in off), WARN no local Docker
@@ -17,9 +17,9 @@ Heartbeat: 2026-11-15 01:07 PST — Phase 2: data, forecast, web, rules running;
 - [ ] night-data (running)
 - [ ] night-forecast (running)
 - [x] night-match (done, branch worktree-agent-ade3964715f2939f5; merge after rules, forecast, data)
-- [ ] night-web (running)
+- [x] night-web (done, branch worktree-agent-a558ba42fb0d711d1)
 - [ ] night-rules (running)
-- [ ] night-accounts
+- [ ] night-accounts (running)
 
 ## Phase 3, integrate
 - [ ] merge rules, forecast, data, match, accounts, web
