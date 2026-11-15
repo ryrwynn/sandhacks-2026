@@ -1,7 +1,8 @@
 # Public Facebook rental groups by San Diego locality (night-data). The scraper only collects entries with a url.
-# No url is filled in yet: two web searches (2026-11-15) found business pages and Marketplace, not community
-# groups, and many local housing groups are private. A person must confirm each group is PUBLIC (visible when
-# logged out) and its rules allow reading, then paste the url. The app never joins or posts in a group.
+# Group URLs below were supplied by Ray on 2026-11-15. Each is collected only if the scraper reports it as a
+# public group (group_category == "Public group"); is_public stays null until then. The app never joins or
+# posts in a group. Left out on purpose: "Housing: San Diego Conscious Community" (groups/286085031551318),
+# described as a private group. Locality entries without a url are still unfilled.
 # The url is stored only as a hash in fb_groups; limit_per_input is capped at 50 posts per group per run.
 groups:
   - {locality: La Jolla, zips: ["92037"], url: null, search: "La Jolla rentals housing"}
@@ -14,3 +15,12 @@ groups:
   - {locality: Coronado, zips: ["92118"], url: null, search: "Coronado rentals"}
   - {locality: North County, zips: ["92008", "92054", "92075", "92081"], url: null, search: "North County San Diego rentals"}
   - {locality: East County, zips: ["91942", "92020", "92071"], url: null, search: "East County San Diego rentals"}
+  # County-wide groups: no fixed ZIPs; each post's ZIP comes from its text (Gemini extraction).
+  - {locality: San Diego (county-wide), zips: [], name: "San Diego Housing, Rooms, Apartments, Sublets", url: "https://www.facebook.com/groups/1564217847175771/", is_public: null}
+  - {locality: San Diego (county-wide), zips: [], name: "San Diego Apartments & Housing (NO SPAM)", url: "https://www.facebook.com/groups/apartments.sd/", is_public: null}
+  - {locality: San Diego (county-wide), zips: [], name: "San Diego Housing, Rooms, Apartments, Sublets, Roomster", url: "https://www.facebook.com/groups/1434975863216222/", is_public: null}
+  - {locality: San Diego (county-wide), zips: [], name: "San Diego Housing, Rooms, Apartments, Sublets (Neighborly Group)", url: "https://www.facebook.com/groups/sandiegoroomapartment/", is_public: null}
+  - {locality: San Diego (county-wide), zips: [], name: "San Diego Sublets", url: "https://www.facebook.com/groups/797964597054309/", is_public: null}
+  - {locality: San Diego (county-wide), zips: [], name: "San Diego Roommates", url: "https://www.facebook.com/groups/1706761616054320/", is_public: null}
+  # University City / UTC student housing (UCSD).
+  - {locality: University City / UTC, zips: ["92122", "92037"], name: "UCSD Student Off-Campus Housing", url: "https://www.facebook.com/groups/2387457222/", is_public: null}
