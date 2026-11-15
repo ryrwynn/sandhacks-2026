@@ -80,3 +80,18 @@ Heartbeat: 2026-11-15 07:40 PST — steps 1–7 done except DB-bound items; wait
 ## 7. Hand-off
 - [x] servers stopped (8000 and 3000 free), night pushed, docs/WAKEUP.md written. Waiting for the owner.
 - NOTE: preflight hung on the DB (laptop can't reach it since ~07:00; same error twice, thread stopped)
+
+# Final run (2026-11-15)
+
+Heartbeat: 2026-11-15 — step 1 done, starting step 2
+
+- [x] 1. Connectivity: database ok (8 s timeout)
+- [ ] 2. Schedules and rules (weekly zillow_rent, FMR rule verified, HUD SAFMR download, Bright Data estimate)
+- [ ] 3. Facebook roommate offers + full-run re-extract (staging only)
+- [ ] 4. Live-query ZIP filter in api/db.py + test
+- [ ] 5. Partner fixes a–g
+- [ ] 6. /privacy and /terms
+- [ ] 7. Docs (PLAN, DESIGN, ACCOUNTS)
+- [ ] 8. Checks (preflight, pytest, build/tsc, ui-check, capacity SQL, sign-in)
+- [ ] 9. Stop servers, commit, push night, PR #2 ready, WAKEUP.md
+- [ ] 10. Wait for "go"
