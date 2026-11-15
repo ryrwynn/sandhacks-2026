@@ -4,7 +4,6 @@ Inputs are prices, listing text, area amenity counts (OSM) and embeddings only. 
 Points: price_fit 30, amenity_fit 25, fair_rent 20, semantic 25 (total 100). Without embeddings the
 semantic 25 points come from keyword overlap and the response says method = "keywords".
 """
-import re
 
 from api import db
 from api.llm import gemini
