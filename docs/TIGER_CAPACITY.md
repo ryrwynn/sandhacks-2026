@@ -101,3 +101,19 @@ psql "$DATABASE_URL" -c "SELECT * FROM hypertable_compression_stats('price_obser
 ```
 After steps 1 to 3, replace each **E** above with the measured value and record the console's storage and
 connection limits.
+
+## Measured (final run, 2026-11-15, read-only)
+
+Steps 1, 2 and 4 above, run in a read-only transaction. Step 3 (scratch schema) was skipped: it writes to the shared
+database.
+
+| What | Measured |
+| --- | --- |
+| Database size | **126 MB** |
+| Largest tables | `raw_records` 31 MB (10,964 rows), `staging_area_metrics` 23 MB (163,178 rows: the index tier), hypertables `price_observations` 20 MB, `area_metrics` 15 MB, `forecasts` 984 kB; `listings` 4.9 MB (2,051), `properties` 720 kB, `staging_listings` 392 kB (203), `listing_embeddings` 800 kB (140) |
+| Latest ZORI/ZHVI per ZIP (`area_metrics`, live size) | 17 ms execution, 23 ms planning |
+| 30-day rent medians (`price_observations`) | 3 ms execution, 1 ms planning |
+| Compression (`hypertable_compression_stats('price_observations')`) | no compressed chunks (columnstore not enabled) |
+
+The index tier landed at 23 MB, in line with the 25 MB estimate above. Both hot queries are well under 50 ms. Storage
+is not the constraint; Bright Data cost is (docs/WAKEUP.md).
