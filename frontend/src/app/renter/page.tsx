@@ -25,8 +25,8 @@ async function Tabs({ searchParams }: { searchParams: Q }) {
 export default function RenterPage({ searchParams }: { searchParams: Q }) {
   return (
     <main className="space-y-4">
-      <h1 className="text-2xl font-bold">Rent increase check</h1>
-      <p className="text-muted">Renter tools: check an increase against California&apos;s AB 1482 cap, test a listing&apos;s price, or find a place.</p>
+      <h1 className="text-xl font-bold sm:text-2xl">Rent increase check</h1>
+      <p className="text-muted">Renter tools: check an increase against California&apos;s AB 1482 cap, or test a listing&apos;s price. Looking for a place? Try “Not sure where to look?” on Find apartments.</p>
       <Suspense fallback={<div className="skeleton h-96" />}>
         <Tabs searchParams={searchParams} />
       </Suspense>

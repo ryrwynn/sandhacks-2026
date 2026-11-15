@@ -33,13 +33,13 @@ function Tip({ active, payload, label }: TipProps) {
   const r = active ? payload?.[0]?.payload : undefined;
   if (!r || !label) return null;
   return (
-    <div className="rounded-lg bg-ink px-3 py-2 text-sm text-white shadow-lg">
+    <div className="rounded-lg bg-ink px-3 py-2 text-sm text-on-ink shadow-lg">
       <div className="font-semibold">{fmtMonth(label)}</div>
       {r.actual != null && (
-        <div>{usd(r.actual)}<span className="text-white/70"> {r.basis === "zori" ? "Zillow typical rent" : `median asking${r.n ? `, ${r.n} listings` : ""}`}</span></div>
+        <div>{usd(r.actual)}<span className="text-on-ink/70"> {r.basis === "zori" ? "Zillow typical rent" : `median asking${r.n ? `, ${r.n} listings` : ""}`}</span></div>
       )}
       {r.band && (
-        <div>Forecast {usd(r.forecast)}<span className="block text-white/70">80% range {usd(r.band[0])} to {usd(r.band[1])}</span></div>
+        <div>Forecast {usd(r.forecast)}<span className="block text-on-ink/70">80% range {usd(r.band[0])} to {usd(r.band[1])}</span></div>
       )}
     </div>
   );
@@ -91,7 +91,7 @@ export default function RentChart({ market, range, onRange, loading }: {
                     return (
                       <g transform={`translate(${x},${y})`}>
                         <rect width="62" height="22" rx="4" fill="var(--ink)" />
-                        <text x="31" y="15" textAnchor="middle" fill="#fff" fontSize="12" fontWeight="600">{usd(last.value)}</text>
+                        <text x="31" y="15" textAnchor="middle" fill="var(--on-ink)" fontSize="12" fontWeight="600">{usd(last.value)}</text>
                       </g>
                     );
                   }} />

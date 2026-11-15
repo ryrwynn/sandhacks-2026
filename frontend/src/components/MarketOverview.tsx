@@ -11,10 +11,12 @@ import { useSaved } from "@/lib/saved";
 import { DEFAULT_FILTERS, type Filters } from "@/lib/types";
 import { fmtDate, fmtMonth, type MarketRange, type MarketResponse } from "@/lib/tracker";
 import { ErrorNote } from "./ui";
+import { SourceBreakdownView } from "./SourceBreakdown";
 
 export default function MarketOverview({ map }: { map: ReactNode }) {
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [range, setRange] = useState<MarketRange>("1y");
+  const [sitesOnly, setSitesOnly] = useState(false);
   const [market, setMarket] = useState<MarketResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
@@ -26,12 +28,12 @@ export default function MarketOverview({ map }: { map: ReactNode }) {
     let cancelled = false;
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
-    getMarket({ zip: filters.zip, beds: filters.beds, type: filters.type, range })
+    getMarket({ zip: filters.zip, beds: filters.beds, type: filters.type, range, listingSitesOnly: sitesOnly })
       .then((m) => { if (!cancelled) { setMarket(m); setErr(""); } })
       .catch((e) => { if (!cancelled) setErr(errorMessage(e)); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [filters.zip, filters.beds, filters.type, range]);
+  }, [filters.zip, filters.beds, filters.type, range, sitesOnly]);
 
   const updated = market?.updated_at ?? scrape;
   const last = market?.points[market.points.length - 1];
@@ -43,10 +45,10 @@ export default function MarketOverview({ map }: { map: ReactNode }) {
     <main className="space-y-6">
       <section className="flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Rental market overview</h1>
+          <h1 className="text-xl font-bold tracking-tight sm:text-2xl">Rental market overview</h1>
           <p className="text-muted">See how asking rents change over time, then track the places you love.</p>
         </div>
-        {updated && <p className="text-sm text-muted">Updated {fmtDate(updated)}</p>}
+        {updated && <p className="text-sm text-muted">Updated weekly · last {fmtDate(updated)}</p>}
       </section>
 
       <FilterBar value={filters} onChange={setFilters} />
@@ -59,7 +61,7 @@ export default function MarketOverview({ map }: { map: ReactNode }) {
           <>
             <h2 id="market-h" className="text-sm font-medium text-muted">{label}</h2>
             <p className="mt-1">
-              <strong className="text-4xl font-bold tabular-nums tracking-tight">{market.current_value != null ? usd(market.current_value) : "n/a"}</strong>
+              <strong className="text-3xl font-bold tabular-nums tracking-tight">{market.current_value != null ? usd(market.current_value) : "n/a"}</strong>
               <span className="text-muted"> / month</span>
             </p>
             <p className="mb-3 text-sm text-muted">
@@ -72,6 +74,9 @@ export default function MarketOverview({ map }: { map: ReactNode }) {
               Across {market.active_listings.toLocaleString()} active listings
             </p>
             <RentChart market={market} range={range} onRange={setRange} loading={loading} />
+            <div className="mt-3 border-t border-line pt-3">
+              <SourceBreakdownView sources={market.sources} sitesOnly={sitesOnly} onToggle={setSitesOnly} />
+            </div>
             <ul className="mt-3 space-y-1 text-sm text-muted">
               {market.notes.map((n) => <li key={n}>{n}</li>)}
               <li>
@@ -90,7 +95,7 @@ export default function MarketOverview({ map }: { map: ReactNode }) {
             <h2 id="saved-h" className="text-xl font-bold">Saved apartments <span className="text-base font-normal text-muted">· {items.length} tracked</span></h2>
             <p className="text-muted">Your watchlist, with asking-rent history at a glance.</p>
           </div>
-          <Link href="/find" className="inline-flex min-h-11 items-center rounded-lg bg-primary px-4 font-semibold text-white hover:bg-primary-hover">+ Save apartment</Link>
+          <Link href="/find" className="inline-flex min-h-11 items-center rounded-lg bg-primary px-4 font-semibold text-on-primary hover:bg-primary-hover">+ Save apartment</Link>
         </div>
         {!ready || (savedLoading && shown.length === 0) ? (
           <CardSkeletons />

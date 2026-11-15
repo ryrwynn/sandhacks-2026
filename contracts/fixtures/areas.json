@@ -1,0 +1,49 @@
+{
+  "areas": [
+    {
+      "geo_type": "zip",
+      "geo_id": "92104",
+      "name": "North Park",
+      "county": "San Diego",
+      "tier": "core",
+      "centroid_lat": 32.74,
+      "centroid_lng": -117.13,
+      "has_listings": true,
+      "typical_rent_usd": 2650.0,
+      "typical_home_value_usd": 850000.0,
+      "last_scraped_at": "2026-11-15T06:00:00Z"
+    },
+    {
+      "geo_type": "zip",
+      "geo_id": "92037",
+      "name": "La Jolla",
+      "county": "San Diego",
+      "tier": "county",
+      "centroid_lat": 32.85,
+      "centroid_lng": -117.25,
+      "has_listings": true,
+      "typical_rent_usd": 3900.0,
+      "typical_home_value_usd": 2100000.0,
+      "last_scraped_at": null
+    },
+    {
+      "geo_type": "zip",
+      "geo_id": "94110",
+      "name": "San Francisco (Mission)",
+      "county": "San Francisco",
+      "tier": "index",
+      "centroid_lat": null,
+      "centroid_lng": null,
+      "has_listings": false,
+      "typical_rent_usd": 3700.0,
+      "typical_home_value_usd": 1400000.0,
+      "last_scraped_at": null
+    }
+  ],
+  "total": 3,
+  "counts_by_tier": {
+    "core": 12,
+    "county": 1,
+    "index": 1
+  }
+}

@@ -43,7 +43,7 @@ export function errorMessage(e: unknown): string {
   return e instanceof ApiError ? e.message : "Something went wrong. Please try again.";
 }
 
-async function call<T extends object>(path: string, fixture: T, init?: RequestInit): Promise<T> {
+export async function call<T extends object>(path: string, fixture: T, init?: RequestInit): Promise<T> {
   const mock = () => serveMock(fixture);
   if (FORCE_MOCKS) return mock();
   try {
@@ -58,7 +58,7 @@ async function call<T extends object>(path: string, fixture: T, init?: RequestIn
     clearTimeout(timer);
     if (!res.ok) {
       // A POST answer is about the user's own numbers: show the API's error, never sample data.
-      if (init?.method === "POST") {
+      if (init?.method === "POST" && res.status !== 501) {
         const detail = await res.json().then((j) => j?.detail, () => null);
         throw new ApiError(typeof detail === "string" ? detail : `Request failed (${res.status}). Please check your entries.`, res.status);
       }
@@ -71,7 +71,7 @@ async function call<T extends object>(path: string, fixture: T, init?: RequestIn
   }
 }
 
-const post = (body: unknown): RequestInit => ({ method: "POST", body: JSON.stringify(body) });
+export const post = (body: unknown): RequestInit => ({ method: "POST", body: JSON.stringify(body) });
 
 export const getHealth = () => call<C.HealthResponse>("/health", MOCK.health);
 export const getZips = () => call<C.ZipsResponse>("/zips", MOCK.zips);
@@ -104,8 +104,11 @@ export const getListingAnalysis = (req: C.ListingAnalysisRequest) =>
 // Tracker endpoints (docs/DESIGN.md). Same fallback rule as above: sample data only when the API is
 // unreachable or errors on a GET, and it is labeled. Nothing is invented in the real path.
 // ---------------------------------------------------------------------------
+export type ListingSourceFilter = "all" | "listing_sites" | "facebook";
+export type UnitTypeFilter = "any" | "entire_unit" | "room" | "sublet";
 export type ListingQuery = {
   zip?: string; beds?: string; type?: string; maxPrice?: number; sort?: ListingSort; limit?: number; offset?: number; minObservations?: number;
+  source?: ListingSourceFilter; unitType?: UnitTypeFilter;
 };
 
 function query(params: Record<string, string | number | undefined | null>) {
@@ -115,8 +118,7 @@ function query(params: Record<string, string | number | undefined | null>) {
   return s ? `?${s}` : "";
 }
 
-// Property-type filter values in the UI map onto the API's property_type strings.
-const API_TYPE: Record<string, string> = { apartment: "apartment", condo: "condo", house: "single_family" };
+// The API takes the UI's property-type values as they are (apartment | condo | house).
 
 export const getListings = (q: ListingQuery = {}) => {
   const fx = MOCK.listings;
@@ -124,10 +126,12 @@ export const getListings = (q: ListingQuery = {}) => {
     (l) =>
       (!q.zip || l.zip === q.zip) &&
       (q.beds === undefined || q.beds === "any" || l.beds === Number(q.beds)) &&
-      (!q.maxPrice || l.current_price_usd <= q.maxPrice),
+      (!q.maxPrice || l.current_price_usd <= q.maxPrice) &&
+      (!q.source || q.source === "all" || (q.source === "facebook") === (l.source_kind === "social")) &&
+      (!q.unitType || q.unitType === "any" || (l.unit_type ?? "entire_unit") === q.unitType),
   );
   return call<ListingsResponse>(
-    `/listings${query({ zip: q.zip, beds: q.beds, type: q.type ? API_TYPE[q.type] : undefined, max_price: q.maxPrice, sort: q.sort, limit: q.limit, offset: q.offset, min_observations: q.minObservations })}`,
+    `/listings${query({ zip: q.zip, beds: q.beds, type: q.type, max_price: q.maxPrice, sort: q.sort, limit: q.limit, offset: q.offset, min_observations: q.minObservations, source: q.source === "all" ? undefined : q.source, unit_type: q.unitType })}`,
     { ...fx, items, total: items.length },
   );
 };
@@ -154,9 +158,9 @@ function mockDetail(id: number): ListingDetail {
 }
 export const getListing = (id: number) => call<ListingDetail>(`/listings/${id}`, mockDetail(id));
 
-export type MarketQuery = { zip?: string; beds?: string; type?: string; range?: MarketRange };
+export type MarketQuery = { zip?: string; beds?: string; type?: string; range?: MarketRange; listingSitesOnly?: boolean };
 export const getMarket = (q: MarketQuery = {}) =>
   call<MarketResponse>(
-    `/market${query({ zip: q.zip, beds: q.beds, type: q.type ? API_TYPE[q.type] : undefined, range: q.range })}`,
+    `/market${query({ zip: q.zip, beds: q.beds, type: q.type, range: q.range, listing_sites_only: q.listingSitesOnly ? "true" : undefined })}`,
     { ...MOCK.market, zip: q.zip || null, beds: q.beds && q.beds !== "any" ? Number(q.beds) : null, range: q.range ?? "1y" },
   );

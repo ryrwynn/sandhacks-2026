@@ -129,7 +129,7 @@ def test_detail_not_enough_comps_and_404(monkeypatch):
 def patch_market(monkeypatch):
     zori = [{"month": date(2026, m, 1), "value": Decimal(2500 + m * 10)} for m in range(1, 11)]
     monkeypatch.setattr(db, "zori_monthly", lambda z: zori)
-    monkeypatch.setattr(db, "listing_monthly_medians", lambda z, b, t: [
+    monkeypatch.setattr(db, "listing_monthly_medians", lambda z, b, t, *a: [
         {"month": date(2026, 8, 1), "value": Decimal("2590"), "n": 12},
         {"month": date(2026, 9, 1), "value": Decimal("2605"), "n": 3},
         {"month": date(2026, 11, 1), "value": Decimal("2650"), "n": 9}])
@@ -137,7 +137,9 @@ def patch_market(monkeypatch):
         {"month": date(2026, 11, 1), "value": Decimal("2618"), "lo80": Decimal("2500"), "hi80": Decimal("2740"),
          "backtest_mape": Decimal("3.1"), "run_id": RUN}])
     monkeypatch.setattr(db, "forecast_run_metrics", lambda r: {"by_series": {"92104:zori": {"naive_mape": 2.4}}})
-    monkeypatch.setattr(db, "active_rent_count", lambda z, b, t: 136)
+    monkeypatch.setattr(db, "active_by_source", lambda z, b, t: [
+        {"kind": "listing_site", "source_key": "zillow_rent", "unit_type": None, "unusual": False, "cur": 2600,
+         "w": 1.0}] * 136)
     monkeypatch.setattr(db, "last_scrape_at", lambda: T(2026, 11, 14))
 
 
@@ -171,3 +173,41 @@ def test_market_validation_and_db_down():
 def test_pretty_address():
     assert tracker.pretty_address("1234 W 5TH ST") == "1234 W 5th St"
     assert tracker.pretty_address(None) is None
+
+
+# ---------------------------------------------------------------- card tags (final run)
+def _feats():
+    # 12 ZIPs, 1 km² each, with groceries 1..12, transit 12..1, parks all equal except one
+    from api import db as _db
+    zs = sorted(_db.ZIP_NAMES)
+    return {z: {"groceries": i + 1, "transit_stops": 12 - i, "parks": 5, "area_km2": 1.0} for i, z in enumerate(zs)}
+
+
+def test_area_tags_are_top_third_per_km2():
+    from api.routers import tracker as t
+    from api import db as _db
+    zs = sorted(_db.ZIP_NAMES)
+    tags = t.area_tags_by_zip(_feats())
+    groc = {z for z, ls in tags.items() if "Groceries nearby (ZIP)" in ls}
+    trans = {z for z, ls in tags.items() if "Transit stops nearby (ZIP)" in ls}
+    assert groc == set(zs[-4:]) and trans == set(zs[:4])       # top third of 12 = 4 ZIPs
+    assert all("(ZIP)" in l for ls in tags.values() for l in ls)
+    assert not any("Parks nearby (ZIP)" in ls for ls in tags.values())      # all tied: no ZIP stands out
+    small = {z: {**f, "area_km2": 0.05 if z == zs[0] else 1.0} for z, f in _feats().items()}  # 1 / 0.05 = 20
+    assert "Groceries nearby (ZIP)" in t.area_tags_by_zip(small).get(zs[0], [])   # density, not raw count
+
+
+def test_listing_tags_real_data_only_and_capped(monkeypatch):
+    from api.routers import tracker as t
+    from api import db as _db
+    zs = sorted(_db.ZIP_NAMES)
+    monkeypatch.setattr(_db, "zip_features", lambda: _feats())
+    t._area_cache.update(at=0.0, tags={})
+    z = zs[0]                                       # transit top third only
+    tags = t.listing_tags(["Washer", "Dryer", "Oven", "Tile", "Dishwasher"], False, z)
+    assert [(x.label, x.kind) for x in tags] == [("Washer & dryer", "listing"), ("Dishwasher", "listing"),
+                                                  ("Transit stops nearby (ZIP)", "area")]
+    fb = t.listing_tags(["parking", "laundry", "pets_allowed", "utilities_included"], True, z)
+    assert len(fb) == 4 and [x.kind for x in fb] == ["listing"] * 4          # at most 4, listing first
+    assert t.listing_tags([], False, None) == []
+    assert t.listing_tags(["parking"], False, "99999") == []                  # FB names don't tag Zillow rows

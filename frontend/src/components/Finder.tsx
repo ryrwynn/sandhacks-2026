@@ -9,10 +9,10 @@ import { BedsSelect, Disclaimer, ErrorNote, Field } from "./ui";
 
 /** Starter finder (renter) and Wealth builder finder (buyer): budget and bedrooms in, ranked ZIPs out. */
 export default function Finder({
-  persona, token, zips, showMap = false,
-}: { persona: Persona; token?: string | null; zips?: ZipSummary[]; showMap?: boolean }) {
+  persona, token, zips, showMap = false, onPickZip,
+}: { persona: Persona; token?: string | null; zips?: ZipSummary[]; showMap?: boolean; onPickZip?: (zip: string) => void }) {
   const wealth = persona === "wealth";
-  const [budget, setBudget] = useState(wealth ? "900000" : "2200");
+  const [budget, setBudget] = useState(wealth ? "900000" : "3000");
   const [beds, setBeds] = useState("");
   const [res, setRes] = useState<RankResponse | null>(null);
   const [busy, setBusy] = useState(false);
@@ -54,12 +54,12 @@ export default function Finder({
           </p>
           <div className="space-y-3">
             {res.ranked.length === 0 && <p className="text-sm text-slate-700">No ZIPs fit this budget. See the stretch list below.</p>}
-            {res.ranked.map((z) => <RankedZipCard key={z.zip} z={z} priceLabel={priceLabel} />)}
+            {res.ranked.map((z) => <RankedZipCard key={z.zip} z={z} priceLabel={priceLabel} onPick={onPickZip} />)}
           </div>
           {res.stretch.length > 0 && (
             <div className="space-y-3">
               <h2 className="font-semibold">Stretch: above your budget</h2>
-              {res.stretch.map((z) => <RankedZipCard key={z.zip} z={z} stretch priceLabel={priceLabel} />)}
+              {res.stretch.map((z) => <RankedZipCard key={z.zip} z={z} stretch priceLabel={priceLabel} onPick={onPickZip} />)}
             </div>
           )}
           <Disclaimer kind="estimate" text={res.disclaimer} />

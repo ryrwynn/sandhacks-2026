@@ -2,9 +2,10 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { usd } from "@/lib/format";
-import { bedsText, changeOf, FAIR_LABEL, fmtDate, fmtMonth, type ListingSummary } from "@/lib/tracker";
+import { bedsText, changeOf, FAIR_LABEL, FB_BADGE, fmtDate, fmtMonth, isFacebook, listingTitle, UNIT_TYPE_TEXT, type ListingSummary } from "@/lib/tracker";
 import { cardCls } from "./styles";
 import Sparkline from "./Sparkline";
+import PropertyIcon from "./PropertyIcon";
 
 /** "↓ $100 (3.3%)" with words for screen readers, colored good for drops and warn for rises. */
 export function Delta({ now, then, suffix }: { now: number; then: number; suffix?: string }) {
@@ -58,13 +59,25 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
   sinceSaved?: number;            // price when saved; shows "since you saved it"
 }) {
   const isRent = l.listing_type === "rent";
-  const title = [l.address ?? "Address not listed", l.unit_label ? `#${l.unit_label}` : null].filter(Boolean).join(" ");
-  const facts = [l.neighborhood, bedsText(l.beds), l.sqft ? `${l.sqft.toLocaleString()} sq ft` : null].filter(Boolean).join(" · ");
+  const fb = isFacebook(l);
+  const title = listingTitle(l);
+  const facts = fb
+    ? [l.unit_type ? UNIT_TYPE_TEXT[l.unit_type] : null, l.zip, l.posted_at ? `Posted ${fmtDate(l.posted_at, { month: "short", day: "numeric" })}` : null].filter(Boolean).join(" · ")
+    : [l.neighborhood, bedsText(l.beds), l.sqft ? `${l.sqft.toLocaleString()} sq ft` : null].filter(Boolean).join(" · ");
+  // Facebook rooms are offered by someone looking for a roommate; sublets are temporary.
+  const kindTag = fb && l.unit_type === "room" ? "Roommate wanted" : fb && l.unit_type === "sublet" ? "Sublet" : null;
+  const tags = (l.tags ?? []).slice(0, 4);
   const many = l.sparkline.length > 1 && l.n_observations > 1;
   const first = l.sparkline[0], last = l.sparkline[l.sparkline.length - 1];
   return (
-    <article className={`${cardCls} relative flex flex-col p-4 transition-shadow focus-within:outline focus-within:outline-2 focus-within:outline-primary hover:shadow-[0_2px_6px_rgba(46,49,39,0.18),0_8px_22px_rgba(46,49,39,0.08)]`}>
+    <article className={`${cardCls} relative flex h-full flex-col p-4 transition-shadow focus-within:outline focus-within:outline-2 focus-within:outline-primary hover:shadow-[0_2px_6px_rgba(46,49,39,0.18),0_8px_22px_rgba(46,49,39,0.08)]`}>
       {note && <p className="mb-2 w-fit rounded-full bg-line px-2.5 py-0.5 text-xs font-medium text-ink">{note}</p>}
+      {fb && (
+        <p className="mb-2 text-xs text-muted">
+          <span className="mr-1.5 inline-block rounded-full bg-line px-2.5 py-0.5 font-medium text-ink">{FB_BADGE}</span>
+          {l.group_name && <span className="break-words">{l.group_name}</span>}
+        </p>
+      )}
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <h3 className="text-base font-bold leading-snug">
@@ -72,7 +85,7 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
               {title}
             </Link>
           </h3>
-          {facts && <p className="text-sm text-muted">{facts}</p>}
+          {(facts || l.property_type) && <p className="flex items-center gap-1.5 text-sm text-muted">{l.property_type && <PropertyIcon type={l.property_type} />}<span className="min-w-0">{facts}</span></p>}
         </div>
         <div className="relative z-10 -mr-2 -mt-2 flex shrink-0">
           {l.source_url && (
@@ -86,7 +99,7 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
       </div>
 
       <div className="mt-3 flex items-end justify-between gap-3">
-        <p><strong className="text-2xl font-bold tabular-nums tracking-tight">{usd(l.current_price_usd)}</strong><span className="text-sm text-muted">{isRent ? " / mo" : " asking price"}</span></p>
+        <p><strong className="text-xl font-bold tabular-nums tracking-tight">{usd(l.current_price_usd)}</strong><span className="text-sm text-muted">{isRent ? " / mo" : " asking price"}</span></p>
         <div className="text-right">
           {sinceSaved !== undefined ? (
             <Delta now={l.current_price_usd} then={sinceSaved} suffix="since you saved it" />
@@ -107,15 +120,34 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
         </div>
       </div>
 
-      {isRent && l.fair_rent_label && (
-        <p className="mt-3 w-fit rounded-full bg-bg px-2.5 py-1 text-xs font-medium text-ink">{FAIR_LABEL[l.fair_rent_label]}</p>
+      {(isRent && l.fair_rent_label) || l.unusual_price || kindTag || tags.length > 0 ? (
+        <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Tags">
+          {isRent && l.fair_rent_label && <li className="rounded-full bg-bg px-2.5 py-1 text-xs font-medium text-ink">{FAIR_LABEL[l.fair_rent_label]}</li>}
+          {kindTag && <li className="rounded-full bg-line px-2.5 py-1 text-xs font-medium text-ink">{kindTag}</li>}
+          {l.unusual_price && <li className="rounded-full bg-bg px-2.5 py-1 text-xs font-medium text-warn">Unusual price</li>}
+          {tags.map((t) => (
+            <li key={t.label} title={t.kind === "area" ? "About the ZIP code, not this listing" : undefined}
+              className={`rounded-full px-2.5 py-1 text-xs font-medium ${t.kind === "area" ? "border border-line text-muted" : "bg-bg text-ink"}`}>
+              {t.label}
+            </li>
+          ))}
+        </ul>
+      ) : null}
+
+      {fb && l.post_url && (
+        <a href={l.post_url} target="_blank" rel="noopener noreferrer"
+          className="relative z-10 mt-3 inline-flex min-h-11 w-fit items-center text-sm font-semibold text-primary underline underline-offset-2">
+          View post on Facebook<span className="sr-only"> (opens in a new tab)</span>
+        </a>
       )}
 
       {showSave && onToggle && (
-        <button type="button" onClick={onToggle} aria-pressed={!!saved}
-          className={`relative z-10 mt-4 min-h-11 w-full rounded-lg px-4 text-base font-semibold ${saved ? "bg-line text-ink" : "bg-primary text-white hover:bg-primary-hover"}`}>
-          {saved ? "Saved ✓" : "+ Save apartment"}
-        </button>
+        <div className="mt-auto pt-4">
+          <button type="button" onClick={onToggle} aria-pressed={!!saved} data-testid="save-toggle"
+            className={`relative z-10 min-h-11 w-full rounded-lg px-4 text-base font-semibold ${saved ? "bg-line text-ink" : "bg-primary text-on-primary hover:bg-primary-hover"}`}>
+            {saved ? "Saved ✓" : "+ Save apartment"}
+          </button>
+        </div>
       )}
     </article>
   );

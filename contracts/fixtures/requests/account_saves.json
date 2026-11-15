@@ -1,0 +1,11 @@
+{
+  "items": [
+    {
+      "listing_id": 101,
+      "saved_at": "2026-11-15T07:00:00Z",
+      "price_at_save": 2500.0,
+      "target": null
+    }
+  ],
+  "merge": true
+}

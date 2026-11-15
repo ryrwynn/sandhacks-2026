@@ -13,6 +13,7 @@ Plan: docs/PLAN.md is the source of truth for the engine, data and API. docs/DES
 ## Branches and deploy
 - `Setup` is the working branch and the only one that deploys. Lanes branch from it and the orchestrator merges into it. Don't push to or merge into `main`.
 - Every push to `Setup` runs .github/workflows/deploy.yml: the Vultr server (`/opt/rentwatch`) checks out `Setup`, runs `docker compose up -d --build`, then `scripts/smoke.sh` runs against PUBLIC_URL.
+- Overnight runs on the `night` branch follow docs/NIGHT.md, which overrides these branch, deploy and lane rules (no deploys, nothing pushed to Setup or main, new data staged).
 
 ## Commands
 - Keys and services check: `./scripts/preflight.sh` (prints OK/FAIL only)

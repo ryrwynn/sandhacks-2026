@@ -1,0 +1,13 @@
+# FRED series -> macro_series. Keyless CSV endpoint. Run explicitly: python -m worker.macro fred
+# Not a listing source: it is not registered in `sources`, so the live worker never runs it.
+source_key: fred
+kind: macro
+fetch:
+  method: csv
+  url: https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}
+  user_agent: RentOrKnot-data/1.0
+series:
+  - {id: CASAND5URN, name: San Diego County unemployment rate, units: percent, freq: monthly, key: ur, publisher: BLS via FRED}
+  - {id: SDXRSA, name: Case-Shiller CA-San Diego home price index (SA), units: index, freq: monthly, key: hpi, publisher: S&P Dow Jones Indices via FRED}
+  - {id: MORTGAGE30US, name: 30-year fixed mortgage rate US (weekly; stored as the monthly mean in series MORTGAGE30US_M), units: percent, freq: weekly, key: mort, publisher: Freddie Mac PMMS via FRED}
+  - {id: CUSR0000SAH1, name: CPI shelter US city average (SA), units: index, freq: monthly, key: cpi_shelter, publisher: BLS via FRED, note: verified to exist 2026-11-15; context only, not a model regressor}

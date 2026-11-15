@@ -8,6 +8,10 @@ import ForecastChart from "@/components/ForecastChart";
 import ZipMap from "@/components/ZipMap";
 import { ScoreCard } from "@/components/cards";
 import { Card, Disclaimer, MockFlag } from "@/components/ui";
+import ScenarioPanel from "@/components/ScenarioPanel";
+import { ZipTrends } from "@/components/Trends";
+import { ZipSourceCard } from "@/components/SourceBreakdown";
+import { getZipSeriesScenarios } from "@/lib/night-api";
 
 export const metadata: Metadata = { title: "ZIP profile | RentOrKnot" };
 
@@ -30,10 +34,13 @@ async function Zip({ params }: { params: Promise<{ zip: string }> }) {
   const token = await mapboxToken();
   const [p, rent, value, all] = await Promise.all([getZipProfile(zip), getZipSeries(zip, "zori"), getZipSeries(zip, "zhvi"), getZips()]);
   const mock = [p, rent, value, all].some(isMock);
+  // Measured 80% coverage from the latest training (served baseline); shown on each chart.
+  const [covRent, covValue] = await Promise.all((["zori", "zhvi"] as const).map((m) =>
+    getZipSeriesScenarios(zip, m, "baseline").then((r) => (isMock(r) ? null : r.coverage_80 ?? null)).catch(() => null)));
   return (
     <>
       <MockFlag on={mock} />
-      <h1 className="text-2xl font-bold">{p.zip} {p.name}</h1>
+      <h1 className="text-xl font-bold sm:text-2xl">{p.zip} {p.name}</h1>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Stat label="Typical rent" value={usd(p.typical_rent_usd)} note={`${pct(p.rent_forecast_change_pct, 1, true)} in 12 months`} />
         <Stat label="Typical home value" value={usd(p.typical_home_value_usd)} note={`${pct(p.value_forecast_change_pct, 1, true)} in 12 months`} />
@@ -41,8 +48,11 @@ async function Zip({ params }: { params: Promise<{ zip: string }> }) {
         <Stat label="Listings, last 30 days" value={String(p.listings_30d)} />
       </div>
       <ZipMap token={token} zips={all.zips} focus={p.zip} heightClass="h-56 sm:h-72" />
-      <Card><ForecastChart series={rent} title="Typical rent" /></Card>
-      <Card><ForecastChart series={value} title="Typical home value" /></Card>
+      <ZipSourceCard zip={p.zip} />
+      <Card><ForecastChart series={rent} title="Typical rent" coverage={covRent} /></Card>
+      <Card><ForecastChart series={value} title="Typical home value" coverage={covValue} /></Card>
+      <ScenarioPanel zip={p.zip} />
+      <ZipTrends zip={p.zip} />
       <section className="space-y-3">
         <h2 className="text-lg font-bold">Scores for this ZIP</h2>
         <div className="grid gap-3 sm:grid-cols-2">
@@ -53,6 +63,7 @@ async function Zip({ params }: { params: Promise<{ zip: string }> }) {
       </section>
       <Card>
         <h2 className="mb-2 text-lg font-bold">Rent by bedrooms (listings, last 30 days)</h2>
+        <p className="mb-2 text-xs text-muted">Listing sites, plus whole units from Facebook groups at half weight. Rooms, sublets and unusual prices are left out.</p>
         <dl className="grid grid-cols-4 gap-2 text-center text-sm">
           {(["0", "1", "2", "3"] as const).map((b) => (
             <div key={b}><dt className="text-xs text-slate-600">{b === "0" ? "Studio" : `${b} bed`}</dt><dd className="font-semibold tabular-nums">{usd(p.median_rent_by_beds[b])}</dd></div>

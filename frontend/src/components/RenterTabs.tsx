@@ -2,12 +2,10 @@
 import { useState } from "react";
 import CheckForm from "./CheckForm";
 import ListingForm from "./ListingForm";
-import Finder from "./Finder";
 
 const TABS = [
   { id: "check", label: "Check my increase" },
   { id: "listing", label: "Check a listing" },
-  { id: "find", label: "Find a place" },
 ] as const;
 
 export type Prefill = { address: string; zip: string; year: string };
@@ -16,7 +14,7 @@ export default function RenterTabs({ prefill }: { prefill?: Prefill }) {
   const [tab, setTab] = useState<(typeof TABS)[number]["id"]>("check");
   return (
     <div className="space-y-4">
-      <div role="tablist" aria-label="Renter tools" className="grid grid-cols-3 gap-1 rounded-xl bg-slate-200 p-1">
+      <div role="tablist" aria-label="Renter tools" className="grid grid-cols-2 gap-1 rounded-xl bg-slate-200 p-1">
         {TABS.map((t) => (
           <button
             key={t.id}
@@ -34,7 +32,6 @@ export default function RenterTabs({ prefill }: { prefill?: Prefill }) {
       <div role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`}>
         {tab === "check" && <CheckForm prefill={prefill} />}
         {tab === "listing" && <ListingForm />}
-        {tab === "find" && <Finder persona="starter" />}
       </div>
     </div>
   );

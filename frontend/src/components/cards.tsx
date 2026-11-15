@@ -1,14 +1,33 @@
+import type React from "react";
 import Link from "next/link";
 import type { CheckResponse, Contribution, ListingAnalysisResponse, ListingEvalResponse, RankedZip, Verdict } from "@/lib/contract";
 import { pct, usd } from "@/lib/format";
 import { Bar, Card, Disclaimer } from "./ui";
 
+/** A contribution's raw value in words: at most 2 decimals, ratios as percentages. Unknown features show nothing. */
+export function contributionValue(c: Contribution): string | null {
+  const v = c.value;
+  if (v == null || !Number.isFinite(v)) return null;
+  switch (c.feature) {
+    case "value_forecast": return `${pct(v, 1, true)} in 12 months`;
+    case "rent_forecast": return `${pct(v, 1, true)} in 12 months`;
+    case "gross_yield": return `${pct(v * 100, 2)} gross yield`;
+    case "value_vs_budget": return `${pct(v * 100, 0)} of your budget`;
+    case "volatility": return `prices move about ${pct(v, 2)} a month`;
+    case "rent": return `${usd(v)} / month`;
+    case "basics_density":
+    case "other_amenities_density": return `${v.toFixed(1)} per km²`;
+    case "listings_30d": return `${Math.round(v)} listings`;
+    default: return null;
+  }
+}
+
 /** Score 0 to 100 with the points each factor added. Used for ranked ZIPs and persona scores. */
 export function ScoreCard({
-  title, score, subtitle, contributions, summary, href, stretch,
+  title, score, subtitle, contributions, summary, href, stretch, action,
 }: {
   title: string; score: number | null | undefined; subtitle?: string; contributions?: Contribution[];
-  summary?: string | null; href?: string; stretch?: boolean;
+  summary?: string | null; href?: string; stretch?: boolean; action?: React.ReactNode;
 }) {
   return (
     <Card className={stretch ? "border-dashed" : ""}>
@@ -18,7 +37,7 @@ export function ScoreCard({
           {subtitle && <p className="text-sm text-slate-600">{subtitle}</p>}
         </div>
         <div className="text-right" aria-label={`Score ${score == null ? "not available" : Math.round(score)} out of 100`}>
-          <div className="text-2xl font-bold tabular-nums text-indigo-800">{score == null ? "n/a" : Math.round(score)}</div>
+          <div className="text-xl font-bold tabular-nums text-indigo-800">{score == null ? "n/a" : Math.round(score)}</div>
           <div className="text-xs text-slate-500">of 100</div>
         </div>
       </div>
@@ -27,17 +46,23 @@ export function ScoreCard({
         <ul className="mt-3 space-y-1 text-sm text-slate-700">
           {contributions.map((c) => (
             <li key={c.feature} className="flex justify-between gap-2">
-              <span>{c.label}</span>
-              <span className="tabular-nums text-slate-500">+{c.points.toFixed(1)} pts</span>
+              <span>
+                {c.label}
+                {contributionValue(c) && <span className="block text-xs text-slate-500">{contributionValue(c)}</span>}
+              </span>
+              <span className="shrink-0 tabular-nums text-slate-500">+{c.points.toFixed(1)} pts</span>
             </li>
           ))}
         </ul>
       )}
+      {action && <div className="mt-3">{action}</div>}
     </Card>
   );
 }
 
-export function RankedZipCard({ z, stretch, priceLabel }: { z: RankedZip; stretch?: boolean; priceLabel: string }) {
+export function RankedZipCard({ z, stretch, priceLabel, onPick }: {
+  z: RankedZip; stretch?: boolean; priceLabel: string; onPick?: (zip: string) => void;
+}) {
   return (
     <ScoreCard
       title={`${z.rank}. ${z.zip} ${z.name}`}
@@ -47,6 +72,12 @@ export function RankedZipCard({ z, stretch, priceLabel }: { z: RankedZip; stretc
       summary={z.summary}
       href={`/zip/${z.zip}`}
       stretch={stretch}
+      action={onPick && (
+        <button type="button" onClick={() => onPick(z.zip)}
+          className="min-h-11 w-full rounded-lg bg-primary px-4 font-semibold text-on-primary hover:bg-primary-hover">
+          Show listings in {z.name}
+        </button>
+      )}
     />
   );
 }
@@ -79,7 +110,7 @@ export function VerdictCard({ r, letterHref }: { r: CheckResponse; letterHref?: 
         {r.reasons.map((x) => <li key={x}>{x}</li>)}
       </ul>
       {letterHref && (
-        <Link href={letterHref} className="inline-flex min-h-11 items-center rounded-lg bg-indigo-700 px-4 py-2 font-semibold text-white">
+        <Link href={letterHref} className="inline-flex min-h-11 items-center rounded-lg bg-indigo-700 px-4 py-2 font-semibold text-on-primary">
           Get a reply letter
         </Link>
       )}

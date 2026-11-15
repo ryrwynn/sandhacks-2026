@@ -29,11 +29,13 @@ def pct_change(forecast, latest):
     return round((forecast / latest - 1) * 100, 2)
 
 
-def zip_data() -> dict[str, dict]:
-    """One dict per ZIP with everything the ZIP endpoints and ranking need; missing data is None."""
+def zip_data(listing_sites_only: bool = False) -> dict[str, dict]:
+    """One dict per ZIP with everything the ZIP endpoints and ranking need; missing data is None.
+    Medians include whole-unit Facebook listings at half weight unless listing_sites_only."""
     latest = safe(db.latest_index_values, default={})
     fc = safe(db.forecast_end_values, default={})
-    meds = safe(db.median_rent_by_beds, default={})
+    meds = (safe(db.median_rent_by_beds, 30, True, default={}) if listing_sites_only
+            else safe(db.median_rent_by_beds, default={}))
     feats = safe(db.zip_features, default={})
     vol = safe(db.zhvi_volatility, default={})
     out = {}

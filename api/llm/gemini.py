@@ -330,11 +330,13 @@ def draft_letter(check: dict, address: str) -> str | None:
 def zip_summary(zip_name: str, persona: str, contributions: list[dict]) -> str | None:
     """'Why this ZIP': two plain sentences from the top 3 contributions."""
     try:
+        # Labels only: the raw values are model inputs (ratios, 0-1 scores) that read as noise in a sentence.
+        reasons = [c.get("label") for c in contributions if c.get("label")]
         prompt = (f"In exactly two plain sentences, say why {zip_name} scores well for the '{persona}' "
-                  "profile, using only the contributions below. Do not mention who lives there. "
-                  "Use only dollar amounts and percentages that appear below.\n\n"
-                  + json.dumps(contributions, indent=1, default=str))
-        return generate_text("zip_summary", prompt, _numbers(contributions))
+                  "profile, using only the reasons below. Do not mention who lives there. Do not write any "
+                  "numbers.\n\n" + json.dumps(reasons, indent=1))
+        text = generate_text("zip_summary", prompt, set())
+        return text if text and not re.search(r"\d\.\d{3,}", text) else None
     except Exception:
         return None
 
@@ -349,3 +351,176 @@ def explain_gaps(listing_text: str, gaps: list[dict]) -> str | None:
         return generate_text("listing_gaps", prompt, _numbers(gaps, listing_text))
     except Exception:
         return None
+
+
+# ---- needs parsing (PARSE_MODEL): plain language to constraints (night-match) ----
+class NeedsFields(BaseModel):
+    budget_min_usd: float | None = None
+    budget_max_usd: float | None = None
+    beds_min: int | None = None
+    beds_max: int | None = None
+    zips: list[str] = []
+    areas: list[str] = []
+    property_types: list[str] = []      # 'apartment' | 'condo' | 'single_family' | 'townhouse'
+    must_haves: list[str] = []          # lowercase single words: pets, parking, laundry, ...
+    nice_to_haves: list[str] = []
+    commute_anchors: list[str] = []
+
+
+def parse_needs(text: str) -> dict | None:
+    """Constraints from a renter's description, cached by text. None when Gemini gives nothing usable."""
+    try:
+        prompt = ("Turn this renter's description into search constraints. Use null or an empty list when "
+                  "something isn't stated; do not guess. Studio means beds 0. Must-haves are things the "
+                  "renter requires (pets, parking, laundry, ...); nice-to-haves are preferences. Commute "
+                  "anchors are places they want to be near. Describe only the home; ignore anything about "
+                  "the renter as a person.\n\n" + text)
+        return _cached_call("parse_needs", prompt, None, "PARSE_MODEL", NeedsFields)
+    except Exception:
+        return None
+
+
+# ---- Facebook group posts, about 10 per request (PARSE_MODEL, a Flash Lite model on the free tier) ----
+class PostFields(BaseModel):
+    i: int                                   # the post's number in the prompt
+    is_rental_offer: bool | None = None
+    price_usd: int | None = None
+    beds: int | None = None
+    baths: float | None = None
+    unit_type: str | None = None             # 'entire_unit' | 'room' | 'sublet'
+    roommate_wanted: bool | None = None      # the poster offers a room in a home they share ("roommate wanted")
+    neighborhood: str | None = None
+    zip: str | None = None
+    available_date: str | None = None        # YYYY-MM-DD
+    pets_allowed: bool | None = None
+    parking: bool | None = None
+    laundry: bool | None = None
+    utilities_included: bool | None = None
+
+
+class PostBatch(BaseModel):
+    posts: list[PostFields] = []
+
+
+POSTS_PROMPT = (
+    "Each numbered item below is a post from a San Diego housing group. For every item return one object "
+    "with its number i. is_rental_offer is true when the post offers a place for rent: a whole apartment or "
+    "house, a sublet, or a room in a shared home. A post that offers a room and asks for a roommate "
+    "(\"roommate wanted\", \"room for rent\", \"looking for a roommate to fill our 2nd bedroom\") IS a "
+    "rental offer with unit_type 'room' and roommate_wanted true. is_rental_offer is false for a person "
+    "looking for a place or a room to rent (\"looking for a room\", \"ISO\", \"in search of\", \"need a place\"), "
+    "for someone looking to team up with others to find a place together, and for ads for services. "
+    "price_usd is the monthly rent (the lowest if several). beds: bedrooms offered (studio = 0; a single room "
+    "for rent = 1). unit_type: 'entire_unit' for a whole apartment or house, 'room' for a room in a shared "
+    "home, 'sublet' for a temporary sublease. roommate_wanted: true only when the poster offers a room in a "
+    "home they or others already live in, else false. neighborhood: the San Diego neighborhood or city named "
+    "in the post. zip: only a 5-digit ZIP written in the post. available_date as YYYY-MM-DD (today is {today}). "
+    "laundry is true for in-unit or on-site laundry. Use null for anything the post doesn't state; do not "
+    "guess. Never include names, phone numbers or emails.\n\n")
+
+
+def parse_posts(texts: list[str], today: str) -> list[dict] | None:
+    """Fields for a batch of (already redacted) posts, cached by the batch. None when Gemini gives nothing.
+    Callers validate each returned item on its own: a bad item never sinks the batch."""
+    try:
+        body = "\n\n".join(f"[{i}] {t.strip()[:1500]}" for i, t in enumerate(texts))
+        out = _cached_call("parse_fb_posts", POSTS_PROMPT.format(today=today) + body, None, "PARSE_MODEL",
+                           PostBatch)
+        return list(out.get("posts") or []) if out else None
+    except Exception:
+        return None
+
+
+# ---- embeddings (gemini-embedding-2, 768 dimensions, at most EMBED_REQUEST_BUDGET requests) ----
+EMBED_MODEL = "gemini-embedding-2"
+EMBED_DIMS = 768
+QUERY_PREFIX = "task: search result | query: "
+_embed_spent = 0                          # requests this process has sent (the DB row below is the total)
+_BUDGET_KEY = "embed_requests_total"
+
+
+def embed_budget() -> int:
+    try:
+        return int(os.environ.get("EMBED_REQUEST_BUDGET", "900"))
+    except ValueError:
+        return 900
+
+
+def embed_spent() -> int:
+    """Total embedding requests sent so far (persisted in llm_cache so it survives restarts)."""
+    conn = _connect()
+    if conn is not None:
+        try:
+            with conn, conn.cursor() as cur:
+                cur.execute("SELECT response FROM llm_cache WHERE key = %s", (_BUDGET_KEY,))
+                row = cur.fetchone()
+                return max(int(row[0].get("n", 0)) if row else 0, _embed_spent)
+        except Exception:
+            pass
+    return _embed_spent
+
+
+def _embed_bump() -> None:
+    global _embed_spent
+    _embed_spent += 1
+    conn = _connect()
+    if conn is None:
+        return
+    try:
+        from psycopg.types.json import Jsonb
+        with conn, conn.cursor() as cur:
+            cur.execute("INSERT INTO llm_cache (key, job, model, response) VALUES (%s, 'embed_budget', %s, %s) "
+                        "ON CONFLICT (key) DO UPDATE SET response = jsonb_set(llm_cache.response, '{n}', "
+                        "to_jsonb(COALESCE((llm_cache.response->>'n')::int, 0) + 1))",
+                        (_BUDGET_KEY, EMBED_MODEL, Jsonb({"n": 1})))
+    except Exception:
+        pass
+
+
+def embed_texts(texts: list[str]) -> list[list[float]] | None:
+    """One request, one 768-number vector per text (texts already carry their prefix). None when the
+    budget or the daily quota is used up, or on any failure: never retried, so no loop can drain quota."""
+    if not texts or _is_used_up(EMBED_MODEL) or embed_spent() >= embed_budget():
+        return None
+    started = time.monotonic()
+    status = "ok"
+    try:
+        from google.genai import types
+        _embed_bump()
+        res = _get_client().models.embed_content(
+            model=EMBED_MODEL,
+            contents=[types.Content(parts=[types.Part.from_text(text=t)]) for t in texts],
+            config=types.EmbedContentConfig(output_dimensionality=EMBED_DIMS))
+        vecs = [list(e.values) for e in res.embeddings]
+        if len(vecs) != len(texts) or any(len(v) != EMBED_DIMS for v in vecs):
+            status = "bad_shape"
+            return None
+        return vecs
+    except Exception as e:
+        status = str(getattr(e, "code", None) or type(e).__name__)
+        if _classify(e) == "daily" or getattr(e, "code", None) == 429:
+            _used_up[EMBED_MODEL] = _next_midnight_pacific()
+        return None
+    finally:
+        log.info("gemini call job=embed model=%s status=%s duration_ms=%d cache_hit=False n=%d",
+                 EMBED_MODEL, status, (time.monotonic() - started) * 1000, len(texts))
+
+
+def embed_query(text: str) -> list[float] | None:
+    """Vector for a needs description, cached by text (a repeat question spends no request)."""
+    try:
+        key = cache_key("embed_query", QUERY_PREFIX + text, f"{EMBED_MODEL}:{EMBED_DIMS}")
+        hit = _cache_get(key)
+        if isinstance(hit, dict) and isinstance(hit.get("v"), list):
+            return hit["v"]
+        got = embed_texts([QUERY_PREFIX + text])
+        if not got:
+            return None
+        _cache_put(key, "embed_query", EMBED_MODEL, {"v": got[0]})
+        return got[0]
+    except Exception:
+        return None
+
+
+def document_text(title: str | None, text: str) -> str:
+    return f"title: {title or 'none'} | text: {text}"

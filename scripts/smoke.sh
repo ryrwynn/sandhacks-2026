@@ -103,6 +103,36 @@ else
   fail "GET /market 92104: HTTP $code, ${np:-0} points"; head -c 300 "$TMP/market" 2>/dev/null; echo
 fi
 
+# 7. Overnight endpoints (docs/NIGHT.md). None spends Gemini quota except /match, whose parse is cached by text.
+code=$(curl -sS -o "$TMP/goug" -w '%{http_code}' --max-time 30 -H 'Content-Type: application/json' \
+  --data '{"zip":"92104","new_rent":2800,"pre_emergency_rent":2400,"offer_date":"2026-11-01","is_demo":true}' \
+  "$API/checks/gouging" 2>/dev/null)
+v=$(json "$TMP/goug" 'd["verdict"]')
+if [ "$code" = 200 ] && [ -n "$v" ]; then ok "POST /checks/gouging: $v"; else fail "POST /checks/gouging: HTTP $code"; fi
+code=$(curl -sS -o "$TMP/geo" -w '%{http_code}' --max-time 30 "$API/geo/zips?bbox=-117.3,32.7,-117.1,32.9" 2>/dev/null)
+nf=$(json "$TMP/geo" 'len(d["files"])')
+if [ "$code" = 200 ] && [ "${nf:-0}" -gt 0 ]; then ok "GET /geo/zips: $nf county file(s)"; else fail "GET /geo/zips: HTTP $code"; fi
+code=$(curl -sS -o "$TMP/areas" -w '%{http_code}' --max-time 30 "$API/areas?limit=3" 2>/dev/null)
+if [ "$code" = 200 ]; then ok "GET /areas: total $(json "$TMP/areas" 'd["total"]')"; else fail "GET /areas: HTTP $code"; fi
+code=$(curl -sS -o "$TMP/trends" -w '%{http_code}' --max-time 30 "$API/zips/92104/trends" 2>/dev/null)
+if [ "$code" = 200 ]; then ok "GET /zips/92104/trends"; else fail "GET /zips/92104/trends: HTTP $code"; fi
+code=$(curl -sS -o "$TMP/scen" -w '%{http_code}' --max-time 30 "$API/zips/92104/series?scenario=baseline" 2>/dev/null)
+case "$code" in
+  200) ok "GET /zips/92104/series?scenario=baseline: $(json "$TMP/scen" 'len(d["scenarios"])') scenarios" ;;
+  404) ok "GET /zips/92104/series?scenario=baseline: 404, no scenario run loaded yet (worker.train scenarios)" ;;
+  *)   fail "GET /zips/92104/series?scenario=baseline: HTTP $code" ;;
+esac
+code=$(curl -sS -o "$TMP/match" -w '%{http_code}' --max-time 60 -H 'Content-Type: application/json' \
+  --data @"$FX/match.json" "$API/match" 2>/dev/null)
+if [ "$code" = 200 ]; then ok "POST /match: $(json "$TMP/match" 'len(d["results"])') results ($(json "$TMP/match" 'd["method"]'))"; else fail "POST /match: HTTP $code"; fi
+code=$(curl -sS -o "$TMP/reach" -w '%{http_code}' --max-time 30 -H 'Content-Type: application/json' \
+  --data @"$FX/owner_reach.json" "$API/owner/reach" 2>/dev/null)
+if [ "$code" = 200 ]; then ok "POST /owner/reach: reach $(json "$TMP/reach" 'd["current_reach_pct"]')%"; else fail "POST /owner/reach: HTTP $code"; fi
+for page in gouging scenarios advisor areas owner/reach; do
+  code=$(curl -sS -o /dev/null -w '%{http_code}' --max-time 30 "$URL/$page" 2>/dev/null)
+  if [ "$code" = 200 ]; then ok "page /$page"; else fail "page /$page: HTTP $code"; fi
+done
+
 echo
 [ $FAILS -eq 0 ] && { echo "Smoke test passed."; exit 0; }
 echo "$FAILS check(s) failed."; exit 1

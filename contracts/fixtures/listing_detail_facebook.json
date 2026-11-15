@@ -1,0 +1,96 @@
+{
+  "id": 9001,
+  "address": null,
+  "unit_label": null,
+  "neighborhood": "North Park",
+  "zip": "92104",
+  "beds": 2,
+  "baths": 1.0,
+  "sqft": null,
+  "property_type": null,
+  "listing_type": "rent",
+  "current_price_usd": 2650.0,
+  "first_price_usd": 2750.0,
+  "first_observed": "2026-10-20",
+  "n_observations": 2,
+  "sparkline": [
+    {
+      "month": "2026-10-01",
+      "price_usd": 2750
+    },
+    {
+      "month": "2026-11-01",
+      "price_usd": 2650
+    }
+  ],
+  "fair_rent_label": "in_range",
+  "last_seen": "2026-11-12T17:05:00Z",
+  "active": true,
+  "source_url": null,
+  "source_kind": "social",
+  "source_label": "Facebook group",
+  "unit_type": "entire_unit",
+  "location_precision": "zip",
+  "post_url": "https://www.facebook.com/groups/apartments.sd/posts/1000000000000001/",
+  "group_name": "San Diego Apartments & Housing (NO SPAM)",
+  "posted_at": "2026-11-12T17:05:00Z",
+  "available_date": "2026-12-01",
+  "amenities": [
+    "parking",
+    "laundry"
+  ],
+  "unusual_price": false,
+  "trust_weight": 0.5,
+  "observations": [
+    {
+      "date": "2026-10-20",
+      "event": "posted",
+      "price_usd": 2750.0
+    },
+    {
+      "date": "2026-11-12",
+      "event": "price_change",
+      "price_usd": 2650.0
+    }
+  ],
+  "year_built": null,
+  "estimate": {
+    "low": 2150.0,
+    "expected": 2480.0,
+    "high": 2900.0,
+    "method": "model",
+    "mae_usd": 212.0,
+    "coverage_80": 0.8
+  },
+  "percentile": 38.0,
+  "n_comparables": 61,
+  "forecast": {
+    "zip": "92104",
+    "name": "North Park",
+    "metric": "zori",
+    "latest_usd": 2610.0,
+    "forecast_12m_usd": 2680.0,
+    "change_pct": 2.7,
+    "lo80_usd": 2480.0,
+    "hi80_usd": 2890.0,
+    "backtest_mape": 3.1,
+    "naive_mape": 2.4,
+    "beats_naive": false
+  },
+  "disclaimer": "Estimates with ranges from public data, not financial advice or measured results.",
+  "roommate_wanted": false,
+  "tags": [
+    {
+      "label": "Parking",
+      "kind": "listing"
+    },
+    {
+      "label": "Laundry",
+      "kind": "listing"
+    },
+    {
+      "label": "Transit stops nearby (ZIP)",
+      "kind": "area"
+    }
+  ]
+}

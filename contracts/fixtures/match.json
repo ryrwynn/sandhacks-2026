@@ -1,0 +1,88 @@
+{
+  "needs": {
+    "budget_min_usd": null,
+    "budget_max_usd": 2400.0,
+    "beds_min": 1,
+    "beds_max": 1,
+    "zips": [
+      "92122"
+    ],
+    "areas": [
+      "University City"
+    ],
+    "property_types": [],
+    "must_haves": [
+      "pets",
+      "parking"
+    ],
+    "nice_to_haves": [
+      "quiet"
+    ],
+    "commute_anchors": [
+      "UCSD"
+    ],
+    "parsed_by": "gemini"
+  },
+  "results": [
+    {
+      "listing": {
+        "id": 101,
+        "address": "2519 El Cajon Blvd",
+        "unit_label": "210",
+        "neighborhood": "North Park",
+        "zip": "92104",
+        "beds": 1,
+        "baths": 1.0,
+        "sqft": 453,
+        "property_type": "apartment",
+        "listing_type": "rent",
+        "current_price_usd": 2395.0,
+        "first_price_usd": 2670.0,
+        "first_observed": "2024-09-25",
+        "n_observations": 10,
+        "sparkline": [
+          {
+            "month": "2024-09-01",
+            "price_usd": 2670.0
+          },
+          {
+            "month": "2024-11-01",
+            "price_usd": 2195.0
+          },
+          {
+            "month": "2024-12-01",
+            "price_usd": 2195.0
+          },
+          {
+            "month": "2026-02-01",
+            "price_usd": 2570.0
+          },
+          {
+            "month": "2026-10-01",
+            "price_usd": 2395.0
+          }
+        ],
+        "fair_rent_label": "in_range",
+        "last_seen": "2026-11-14T18:30:00Z",
+        "active": true,
+        "source_url": "https://www.zillow.com/apartments/san-diego-ca/niima/CkBCxR/"
+      },
+      "score": 82.5,
+      "components": {
+        "price_fit": 30.0,
+        "amenity_fit": 18.0,
+        "fair_rent": 14.5,
+        "semantic": 20.0
+      },
+      "reasons": [
+        "$150 under your budget",
+        "States cats allowed and parking"
+      ],
+      "unconfirmed": []
+    }
+  ],
+  "n_candidates": 420,
+  "n_after_filters": 37,
+  "method": "embeddings",
+  "disclaimer": "Estimates with ranges from public data, not financial advice or measured results."
+}

@@ -3,7 +3,8 @@ from fastapi import APIRouter, HTTPException
 from api import db
 from api.ml import scoring
 from api.routers._common import safe, zip_data, score_rows
-from contracts.api_models import (AmenityCounts, Metric, SeriesPoint, SeriesResponse, ZipProfile, ZipsResponse,
+from api.routers import forecasts, tracker
+from contracts.api_models import (AmenityCounts, Metric, Scenario, SeriesPoint, SeriesResponse, ZipProfile, ZipsResponse,
                                   ZipSummary)
 
 router = APIRouter(prefix="/zips", tags=["zips"])
@@ -26,8 +27,8 @@ def _int(v):
 
 
 @router.get("/{zip}", response_model=ZipProfile)
-def zip_profile(zip: str) -> ZipProfile:
-    data = zip_data()
+def zip_profile(zip: str, listing_sites_only: bool = False) -> ZipProfile:
+    data = zip_data(listing_sites_only)
     if zip not in data:
         raise HTTPException(404, f"{zip} is not one of the {len(data)} ZIPs RentOrKnot covers")
     d = data[zip]
@@ -52,13 +53,18 @@ def zip_profile(zip: str) -> ZipProfile:
         amenities=AmenityCounts(groceries=_int(f.get("groceries")), transit_stops=_int(f.get("transit_stops")),
                                 parks=_int(f.get("parks")), food_drink=_int(f.get("food_drink")),
                                 gyms=_int(f.get("gyms")), area_km2=f.get("area_km2")),
-        persona_scores=scores, listings_30d=d["listings_30d"])
+        persona_scores=scores, listings_30d=d["listings_30d"],
+        sources=tracker.source_breakdown(safe(db.active_by_source, zip, None, None, default=[]) or [],
+                                         listing_sites_only),
+        listing_sites_only=listing_sites_only)
 
 
 @router.get("/{zip}/series", response_model=SeriesResponse)
-def zip_series(zip: str, metric: Metric = "zori") -> SeriesResponse:
+def zip_series(zip: str, metric: Metric = "zori", scenario: Scenario | None = None) -> SeriesResponse:
     if zip not in db.ZIP_NAMES:
         raise HTTPException(404, f"{zip} is not one of the ZIPs RentOrKnot covers")
+    if scenario is not None:   # overnight: scenario forecasts (night-forecast); default response unchanged
+        return forecasts.scenario_series(zip, metric, scenario)
     rows = safe(db.series, zip, metric, default=[])
     points = [SeriesPoint(month=r["month"], value=float(r["value"]),
                           lo80=db.num(r["lo80"]), hi80=db.num(r["hi80"]), kind=r["kind"]) for r in rows]

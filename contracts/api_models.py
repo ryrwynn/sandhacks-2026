@@ -36,12 +36,20 @@ class ModelRunSummary(BaseModel):
     metrics: dict = Field(default_factory=dict)   # e.g. {"mae_usd": 212.0, "coverage_80": 0.79}
 
 
+class SourceCount(BaseModel):                     # per-source listing counts (morning run)
+    source_key: str
+    kind: str                                       # 'listing_site' | 'social' | ...
+    listings: int
+    active: int
+
+
 class HealthResponse(BaseModel):
     status: Literal["ok", "degraded"]
     database: bool
     last_scrape_at: datetime | None = None
     row_counts: dict[str, int] = Field(default_factory=dict)   # table or source_key -> rows
     model_runs: list[ModelRunSummary] = Field(default_factory=list)
+    sources: list[SourceCount] = Field(default_factory=list)
 
 
 # ---------- GET /zips ----------
@@ -84,6 +92,8 @@ class ZipProfile(BaseModel):
     amenities: AmenityCounts
     persona_scores: dict[Persona, float | None]     # 0 to 100, default weights, no budget filter
     listings_30d: int = 0
+    sources: "SourceBreakdown | None" = None        # morning run: active listings by source
+    listing_sites_only: bool = False
 
 
 # ---------- GET /zips/{zip}/series?metric= ----------
@@ -95,6 +105,19 @@ class SeriesPoint(BaseModel):
     kind: Literal["actual", "forecast"]
 
 
+Scenario = Literal["baseline", "recession", "growth"]
+
+
+class ScenarioPath(BaseModel):                  # one macro scenario's forecast (night: scenario_forecasts)
+    scenario: Scenario
+    model: str                                  # 'sarimax_x' | 'pooled_x' | 'ets'
+    points: list[SeriesPoint]                   # forecast months only, kind = 'forecast'
+    change_12m_pct: float | None = None         # 12-month change from the latest actual
+    backtest_mape: float | None = None
+    coverage_80: float | None = None            # held-out share of actuals inside the 80% band
+    assumptions: list[str] = Field(default_factory=list)   # e.g. 'Unemployment peaks at 10% (Fed severely adverse)'
+
+
 class SeriesResponse(BaseModel):
     zip: str
     metric: Metric
@@ -103,6 +126,12 @@ class SeriesResponse(BaseModel):
     backtest_mape: float | None = None      # 12-month holdout error of the model, in %
     naive_mape: float | None = None         # same holdout, "next year equals this month"
     beats_naive: bool | None = None
+    # Overnight additions. Without ?scenario= these stay null/empty and the response is as before.
+    # With ?scenario=X, `points` carries actuals plus scenario X's forecast (its cone), and `scenarios`
+    # carries every scenario's path so the UI can show them side by side.
+    scenario: Scenario | None = None
+    scenarios: list[ScenarioPath] = Field(default_factory=list)
+    coverage_80: float | None = None
 
 
 # ---------- POST /checks ----------
@@ -311,6 +340,19 @@ class SparkPoint(BaseModel):
     price_usd: float                            # the last observed asking rent in that month
 
 
+SourceKind = Literal["listing_site", "social"]
+UnitType = Literal["entire_unit", "room", "sublet"]
+LocationPrecision = Literal["address", "street", "zip", "neighborhood", "city"]
+ListingSource = Literal["all", "listing_sites", "facebook"]
+
+
+class ListingTag(BaseModel):
+    """A short card tag from real data only. 'listing': the listing's own amenities (Zillow unit amenities,
+    Facebook extracted ones). 'area': a ZIP-level feature from OpenStreetMap counts, labelled '(ZIP)'."""
+    label: str                                  # 'Parking', 'Washer & dryer', 'Groceries nearby (ZIP)'
+    kind: Literal["listing", "area"]
+
+
 class ListingSummary(BaseModel):                # GET /listings items; also the head of GET /listings/{id}
     id: int                                     # listings.listing_id
     address: str | None = None                  # display address, e.g. '2519 El Cajon Blvd'
@@ -329,8 +371,23 @@ class ListingSummary(BaseModel):                # GET /listings items; also the 
     sparkline: list[SparkPoint]                 # monthly, from real observations only; may be a single point
     fair_rent_label: FairRentLabel | None = None   # null when there aren't enough comparables
     last_seen: datetime
-    active: bool                                # seen in the latest scrape
+    active: bool                                # seen in the latest scrape; Facebook: posted in the last 21 days
     source_url: str | None = None               # public listing-site page; null for social posts and unknown
+    # Morning run: Facebook group listings. Never post text, author names, profile links or photos.
+    source_kind: SourceKind = "listing_site"
+    source_label: str | None = None             # 'Zillow', 'Facebook group'
+    unit_type: UnitType | None = None           # Facebook only; listing-site rows are whole units
+    location_precision: LocationPrecision = "address"
+    post_url: str | None = None                 # Facebook: the public group post, so a renter can act on it
+    group_name: str | None = None               # Facebook: the group's public name
+    posted_at: datetime | None = None           # Facebook: the latest post (or repost)
+    available_date: date | None = None
+    amenities: list[str] = Field(default_factory=list)   # Facebook: pets_allowed, parking, laundry, utilities_included
+    unusual_price: bool = False                 # below 40% or above 250% of the ZIP's listing-site median
+    trust_weight: float = 1.0                   # Facebook 0.5
+    # Final run: card tags (at most 4, listing amenities first, then area tags) and the roommate flag.
+    roommate_wanted: bool = False               # Facebook room offered in a shared home ("roommate wanted")
+    tags: list[ListingTag] = Field(default_factory=list)
 
 
 class ListingsResponse(BaseModel):
@@ -384,7 +441,21 @@ class MarketForecastPoint(BaseModel):
     hi80: float
 
 
-class MarketResponse(BaseModel):                # GET /market?zip=&beds=&type=&range=
+class SourceStat(BaseModel):
+    count: int = 0
+    median_usd: float | None = None
+
+
+class SourceBreakdown(BaseModel):               # active rental listings by where they came from
+    listing_sites: SourceStat = Field(default_factory=SourceStat)
+    facebook: SourceStat = Field(default_factory=SourceStat)        # whole units; median excludes unusual prices
+    facebook_rooms: SourceStat = Field(default_factory=SourceStat)  # rooms and sublets, never in unit medians
+    facebook_unusual: int = 0                   # whole units flagged "unusual price" (counted, not in the median)
+    facebook_weight: float = 0.5
+    listing_sites_only: bool = False            # when true, Facebook rows are left out of counts and medians
+
+
+class MarketResponse(BaseModel):                # GET /market?zip=&beds=&type=&range=&listing_sites_only=
     zip: str | None = None                      # null = all 12 ZIPs
     beds: int | None = None
     property_type: str | None = None
@@ -402,3 +473,286 @@ class MarketResponse(BaseModel):                # GET /market?zip=&beds=&type=&r
     beats_naive: bool | None = None
     notes: list[str] = Field(default_factory=list)   # e.g. which months fell back to ZORI and why
     disclaimer: str = DISCLAIMER_ESTIMATE
+    sources: SourceBreakdown = Field(default_factory=SourceBreakdown)
+    listing_sites_only: bool = False
+
+
+# ======================================================================================
+# Overnight additions (docs/NIGHT.md, Phase 1). One fixture each in contracts/fixtures/.
+# ======================================================================================
+
+# ---------- Coverage: GET /areas, POST /areas/requests, GET /areas/requests/{id}, GET /geo/zips ----------
+Tier = Literal["core", "county", "index", "on_demand"]
+GeoType = Literal["zip", "city"]
+AreaRequestState = Literal["queued", "scraping", "loaded", "failed", "over_budget"]
+
+
+class AreaSummary(BaseModel):
+    geo_type: GeoType
+    geo_id: str                                 # '92037' or a city slug
+    name: str
+    county: str | None = None
+    tier: Tier
+    centroid_lat: float | None = None
+    centroid_lng: float | None = None
+    has_listings: bool = False                  # core/county/loaded on_demand; index tier is ZORI/ZHVI/ACS only
+    typical_rent_usd: float | None = None       # latest ZORI
+    typical_home_value_usd: float | None = None # latest ZHVI
+    last_scraped_at: datetime | None = None
+
+
+class AreasResponse(BaseModel):                 # GET /areas?tier=&county=&q=&limit=
+    areas: list[AreaSummary]
+    total: int
+    counts_by_tier: dict[str, int] = Field(default_factory=dict)
+
+
+class AreaRequestCreate(BaseModel):             # POST /areas/requests
+    query: str = Field(min_length=2, max_length=80)   # a California ZIP or city name
+
+
+class AreaRequestStatus(BaseModel):             # POST /areas/requests and GET /areas/requests/{id}
+    request_id: UUID
+    geo_type: GeoType
+    geo_id: str
+    name: str
+    query: str
+    status: AreaRequestState
+    est_records: int | None = None
+    est_cost_usd: float | None = None
+    queue_position: int | None = None           # 1 = next; null once started
+    budget_remaining_usd: float | None = None   # today's on-demand budget left
+    requested_at: datetime
+    finished_at: datetime | None = None
+    message: str                                # plain sentence for the UI, e.g. 'Queued: 3rd in line, about $0.45'
+    already_covered: bool = False               # the area is already core/county/loaded
+
+
+class GeoFile(BaseModel):
+    county: str                                 # 'San Diego'
+    url: str                                    # '/geo/san-diego.geojson' (served by the frontend)
+    n_zips: int
+
+
+class GeoZipsResponse(BaseModel):               # GET /geo/zips?bbox=minLng,minLat,maxLng,maxLat
+    bbox: list[float]                           # the bbox echoed back
+    files: list[GeoFile]                        # county files the viewport needs
+    zips: list[str]                             # ZCTAs that intersect the bbox
+    index_url: str = "/geo/index.json"
+
+
+# ---------- Trends: GET /zips/{zip}/trends, GET /listings/{id}/trends ----------
+TREND_DISCLAIMER = "Market signals from public data, not legal findings or financial advice."
+SignalKind = Literal["fast_rise", "fast_fall", "accelerating", "decelerating", "volatile",
+                     "above_zip_trend", "below_zip_trend", "relist_jump", "repeated_cuts"]
+
+
+class TrendSignal(BaseModel):
+    kind: SignalKind
+    label: str                                  # 'Rents rising faster than 90% of San Diego ZIPs'
+    detail: str | None = None
+
+
+class TrendMetrics(BaseModel):
+    metric: Metric
+    as_of: date
+    latest_usd: float
+    yoy_pct: float | None = None                # 12-month change
+    momentum_3m_pct: float | None = None        # 3-month change, annualized
+    acceleration_pp: float | None = None        # change in YoY vs 3 months earlier, percentage points
+    volatility_pct: float | None = None         # std of monthly % changes over 24 months
+    county_percentile: float | None = None      # YoY's percentile among county ZIPs, 0 to 100
+
+
+class ZipTrendsResponse(BaseModel):
+    zip: str
+    name: str
+    rent: TrendMetrics | None = None
+    value: TrendMetrics | None = None
+    signals: list[TrendSignal] = Field(default_factory=list)
+    disclaimer: str = TREND_DISCLAIMER
+
+
+class PriceChange(BaseModel):
+    date: date
+    from_usd: float
+    to_usd: float
+    change_pct: float
+    kind: Literal["cut", "raise", "relist_jump"]   # relist_jump: back on market at a higher price after removal
+    days_since_previous: int | None = None
+
+
+class ListingTrendsResponse(BaseModel):
+    listing_id: int
+    zip: str | None = None
+    first_price_usd: float
+    current_price_usd: float
+    total_change_pct: float
+    zip_change_pct: float | None = None         # the ZIP's ZORI change over the same dates
+    vs_zip_pp: float | None = None              # total_change_pct - zip_change_pct
+    changes: list[PriceChange] = Field(default_factory=list)
+    signals: list[TrendSignal] = Field(default_factory=list)
+    n_observations: int
+    disclaimer: str = TREND_DISCLAIMER
+
+
+# ---------- Gouging: POST /checks/gouging (California Penal Code 396) ----------
+GougingVerdict = Literal["likely_violation", "within_limit", "not_covered", "unclear"]
+
+
+class Link(BaseModel):
+    label: str
+    url: str
+
+
+GOUGING_LINKS = [
+    Link(label="Legal Aid Society of San Diego", url="https://www.lassd.org/"),
+    Link(label="California Attorney General: price gouging", url="https://oag.ca.gov/consumers/pricegougingduringdisasters"),
+]
+DISCLAIMER_GOUGING = (
+    "This is not legal advice. Penal Code 396 applies only during a declared emergency; for help, contact the "
+    "Legal Aid Society of San Diego or the California Attorney General."
+)
+
+
+class GougingRequest(BaseModel):
+    zip: str | None = None
+    county: str | None = None                   # derived from zip when null
+    new_rent: float = Field(gt=0)
+    offer_date: date                            # when the new price was charged or offered
+    pre_emergency_rent: float | None = Field(default=None, gt=0)   # null = not rented or offered before
+    beds: int | None = Field(default=None, ge=0)                    # for the HUD FMR rule
+    is_demo: bool = False
+
+
+class EmergencyInfo(BaseModel):
+    title: str                                  # 'Los Angeles County wildfires'
+    counties: list[str]
+    declared_on: date
+    protections_until: date | None = None       # after extensions
+    extensions: list[date] = Field(default_factory=list)
+    source_url: str
+
+
+class GougingResponse(BaseModel):
+    verdict: GougingVerdict
+    county: str | None = None
+    limit_usd: float | None = None              # the highest price allowed
+    increase_pct: float | None = None           # vs pre_emergency_rent
+    basis: Literal["pre_emergency_plus_10", "fmr_160", "none"]
+    fmr_usd: float | None = None                # HUD (Small Area) FMR used for the 160% rule
+    fmr_source: str | None = None               # 'HUD SAFMR FY2026, ZIP 92104, 1 bedroom'
+    emergency: EmergencyInfo | None = None
+    reasons: list[str]
+    unverified: list[str] = Field(default_factory=list)   # morning run: unchecked inputs; any -> verdict 'unclear'
+    links: list[Link] = Field(default_factory=lambda: list(GOUGING_LINKS))
+    disclaimer: str = DISCLAIMER_GOUGING
+
+
+# ---------- Matching: POST /match ----------
+class MatchRequest(BaseModel):
+    text: str = Field(min_length=3, max_length=2000)   # 'quiet 1BR under $2,400 near UCSD, cat ok, parking'
+    limit: int = Field(default=10, ge=1, le=50)
+    budget_max_usd: float | None = None         # overrides what the parser read, when the UI has a slider
+    beds_min: int | None = None
+
+
+class ParsedNeeds(BaseModel):
+    budget_min_usd: float | None = None
+    budget_max_usd: float | None = None
+    beds_min: int | None = None
+    beds_max: int | None = None
+    zips: list[str] = Field(default_factory=list)
+    areas: list[str] = Field(default_factory=list)          # names the user gave ('North Park')
+    property_types: list[PropertyType] = Field(default_factory=list)
+    must_haves: list[str] = Field(default_factory=list)     # 'pets', 'parking', 'laundry', ...
+    nice_to_haves: list[str] = Field(default_factory=list)
+    commute_anchors: list[str] = Field(default_factory=list)  # 'UCSD', 'Downtown'
+    parsed_by: Literal["gemini", "rules"] = "rules"
+
+
+class MatchResult(BaseModel):
+    listing: ListingSummary
+    score: float                                # 0 to 100
+    components: dict[str, float]                # 'price_fit', 'amenity_fit', 'fair_rent', 'semantic' -> points
+    reasons: list[str]                          # why it scored well, plain sentences
+    unconfirmed: list[str] = Field(default_factory=list)   # must-haves the listing doesn't state
+
+
+class MatchResponse(BaseModel):
+    needs: ParsedNeeds
+    results: list[MatchResult]
+    n_candidates: int
+    n_after_filters: int
+    method: Literal["embeddings", "keywords"]   # keywords when embeddings are unavailable
+    disclaimer: str = DISCLAIMER_ESTIMATE
+
+
+# ---------- Owner reach: POST /owner/reach ----------
+class OwnerReachRequest(BaseModel):
+    zip: str
+    beds: int = Field(ge=0)
+    target_rent: float = Field(gt=0)
+    listing_id: int | None = None
+    text: str | None = None
+    stated: dict[str, bool] | None = None       # fact -> stated; parsed from text/listing when null
+    baths: float | None = None
+    sqft: int | None = None
+
+
+class ReachProfile(BaseModel):                  # a fixed, documented renter-need profile built from listings
+    id: str                                     # 'p2_1br_2400_pets'
+    label: str                                  # '1 bedroom, up to $2,400, needs pets allowed'
+    beds: int
+    max_rent_usd: float
+    must_haves: list[str]
+    weight: float                               # share of comparable demand this profile stands for, 0 to 1
+
+
+class ReachPoint(BaseModel):
+    rent_usd: float
+    reach_pct: float                            # weighted share of profiles that would shortlist it
+
+
+class ReachChange(BaseModel):
+    kind: Literal["price", "fact"]
+    label: str                                  # 'Lower the rent to $2,350' / 'State whether pets are allowed'
+    new_rent_usd: float | None = None
+    fact: str | None = None
+    reach_before_pct: float
+    reach_after_pct: float
+    gain_pts: float
+
+
+class OwnerReachResponse(BaseModel):
+    current_reach_pct: float
+    curve: list[ReachPoint]                     # reach at a range of prices around target_rent
+    best_changes: list[ReachChange]             # biggest gains first
+    profiles: list[ReachProfile]
+    n_comparables: int
+    method_note: str
+    disclaimer: str = "An estimate from comparable listings and fixed renter profiles, not measured demand."
+
+
+# ---------- Accounts: GET /account/saves, PUT /account/saves ----------
+# Called only by the Next.js server (never the browser) with two headers:
+#   X-Account-Token: the shared ACCOUNT_API_TOKEN (env); missing or wrong -> 401
+#   X-Subject-Hash:  sha256 hex of (AUTH_SECRET + Google subject ID); no email or name ever reaches the API
+# With ACCOUNT_API_TOKEN unset the endpoints return 404 (feature off).
+class SavedItem(BaseModel):
+    listing_id: int
+    saved_at: datetime
+    price_at_save: float | None = None
+    target: float | None = None                 # target-rent alert, dollars
+
+
+class AccountSavesResponse(BaseModel):
+    items: list[SavedItem]
+
+
+class PutSavesRequest(BaseModel):
+    items: list[SavedItem]
+    merge: bool = True                          # true: union with stored saves (first sign-in); false: replace
+
+
+ZipProfile.model_rebuild()   # SourceBreakdown is defined after ZipProfile

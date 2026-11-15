@@ -1,0 +1,8 @@
+{
+  "name": "rentorknot-scripts",
+  "private": true,
+  "description": "Dev-only tools (browser check). Not part of any Docker image: node_modules is dockerignored and the web image copies frontend/ only.",
+  "devDependencies": {
+    "playwright": "1.48.2"
+  }
+}

@@ -26,5 +26,23 @@
     "starter": 78.5,
     "wealth": 64.0
   },
-  "listings_30d": 96
+  "listings_30d": 96,
+  "sources": {
+    "listing_sites": {
+      "count": 136,
+      "median_usd": 2600.0
+    },
+    "facebook": {
+      "count": 9,
+      "median_usd": 2550.0
+    },
+    "facebook_rooms": {
+      "count": 6,
+      "median_usd": 1250.0
+    },
+    "facebook_unusual": 1,
+    "facebook_weight": 0.5,
+    "listing_sites_only": false
+  },
+  "listing_sites_only": false
 }

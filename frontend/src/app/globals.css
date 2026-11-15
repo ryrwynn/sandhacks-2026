@@ -1,10 +1,151 @@
 @import "tailwindcss";
 
-/* RentOrKnot palette (docs/DESIGN.md). Contrast ratios are listed there; keep them at least this high. */
-:root {
-  --bg: #ffe8d6; --surface: #fffaf5; --line: #ddbea9; --grid: #b7b7a4; --sage: #a5a58d;
-  --accent: #cb997e; --accent-strong: #8f5a3f; --primary: #6b705c; --primary-hover: #4e5341;
-  --ink: #2e3127; --muted: #5c604f; --good: #4e5341; --warn: #8c3b22;
+/* Themes (one source of truth). scripts/check-contrast.mjs parses the blocks below; keep the --key: #hex; form.
+   Desert Clay is the default and the :root fallback; the others switch with <html data-theme="...">. */
+:root,
+[data-theme="desert-clay"] {
+  color-scheme: light;
+  --theme-font: var(--font-geist), system-ui, sans-serif;
+  --bg: #ffe8d6;
+  --surface: #fffaf5;
+  --line: #ddbea9;
+  --grid: #b7b7a4;
+  --sage: #a5a58d;
+  --accent: #cb997e;
+  --accent-strong: #8f5a3f;
+  --primary: #646953;
+  --primary-hover: #4e5341;
+  --ink: #2e3127;
+  --muted: #5c604f;
+  --good: #4e5341;
+  --warn: #8c3b22;
+  --on-primary: #ffffff;
+  --on-ink: #fffaf5;
+  --tint: #f6e3d3;
+  --tint-soft: #fff4ea;
+  --line-strong: #cfae98;
+  --faint: #6f7262;
+  --text2: #3e4136;
+  --warn-bg: #f8e3d8;
+  --warn-line: #d9a58f;
+  --caution-bg: #fbeacb;
+  --caution-bg2: #f6e0b8;
+  --caution-line: #d9b36a;
+  --caution-text: #5a3a10;
+  --caution-mark: #b7791f;
+  --ok-bg: #e6e9d8;
+  --ok-bg2: #d7dbc2;
+  --ok-line: #a5a58d;
+  --skel1: #f3dccb;
+  --skel2: #f9eadc;
+}
+[data-theme="sage-linen"] {
+  color-scheme: light;
+  --theme-font: var(--font-nunito), system-ui, sans-serif;
+  --bg: #eceee0;
+  --surface: #fbfcf6;
+  --line: #cdd2b9;
+  --grid: #aab097;
+  --sage: #9aa883;
+  --accent: #b88a5c;
+  --accent-strong: #7a5326;
+  --primary: #46633f;
+  --primary-hover: #33492e;
+  --ink: #232a1f;
+  --muted: #505945;
+  --good: #33492e;
+  --warn: #8c3b22;
+  --on-primary: #ffffff;
+  --on-ink: #fbfcf6;
+  --tint: #e1e5d0;
+  --tint-soft: #f4f6ea;
+  --line-strong: #b5bc9d;
+  --faint: #647058;
+  --text2: #363f30;
+  --warn-bg: #f6e1d6;
+  --warn-line: #d9a58f;
+  --caution-bg: #f7ebcc;
+  --caution-bg2: #f0e0b3;
+  --caution-line: #d0b062;
+  --caution-text: #5a3a10;
+  --caution-mark: #b7791f;
+  --ok-bg: #dde8d2;
+  --ok-bg2: #cbdbbc;
+  --ok-line: #8fb07c;
+  --skel1: #e1e5d0;
+  --skel2: #f0f3e4;
+}
+[data-theme="cocoa-night"] {
+  color-scheme: dark;
+  --theme-font: var(--font-dm-sans), system-ui, sans-serif;
+  --bg: #1f1a17;
+  --surface: #2a2420;
+  --line: #4d4037;
+  --grid: #8a7a6c;
+  --sage: #8a8c75;
+  --accent: #c48a6a;
+  --accent-strong: #e8b48f;
+  --primary: #b2b998;
+  --primary-hover: #cdd3b4;
+  --ink: #f4e9de;
+  --muted: #c4b6a8;
+  --good: #c3cba6;
+  --warn: #f2a98d;
+  --on-primary: #1f1a17;
+  --on-ink: #1f1a17;
+  --tint: #352d28;
+  --tint-soft: #2f2824;
+  --line-strong: #65564b;
+  --faint: #a8998b;
+  --text2: #e0d2c5;
+  --warn-bg: #4a2a20;
+  --warn-line: #8c5340;
+  --caution-bg: #463818;
+  --caution-bg2: #54421c;
+  --caution-line: #8c7230;
+  --caution-text: #f0d38f;
+  --caution-mark: #e0a93c;
+  --ok-bg: #2f3626;
+  --ok-bg2: #3a432e;
+  --ok-line: #6f7a55;
+  --skel1: #352d28;
+  --skel2: #41372f;
+}
+[data-theme="harbor-dusk"] {
+  color-scheme: dark;
+  --theme-font: var(--font-atkinson), system-ui, sans-serif;
+  --bg: #131b25;
+  --surface: #1b2531;
+  --line: #34455a;
+  --grid: #6f8299;
+  --sage: #7f96ad;
+  --accent: #d9a066;
+  --accent-strong: #efc08c;
+  --primary: #8fb6dc;
+  --primary-hover: #b4d0ea;
+  --ink: #e8eef5;
+  --muted: #b4c1d0;
+  --good: #a9d1b0;
+  --warn: #f5a58f;
+  --on-primary: #0f1620;
+  --on-ink: #0f1620;
+  --tint: #243142;
+  --tint-soft: #1f2a38;
+  --line-strong: #4a5f78;
+  --faint: #9aabbd;
+  --text2: #d3dde8;
+  --warn-bg: #46261f;
+  --warn-line: #8a4f42;
+  --caution-bg: #443a1a;
+  --caution-bg2: #524520;
+  --caution-line: #8a7230;
+  --caution-text: #f0d38f;
+  --caution-mark: #e0a93c;
+  --ok-bg: #1f3a30;
+  --ok-bg2: #264a3c;
+  --ok-line: #4f8a70;
+  --skel1: #243142;
+  --skel2: #2d3b4f;
 }
 
 @theme inline {
@@ -12,31 +153,52 @@
   --color-sage: var(--sage); --color-accent: var(--accent); --color-accent-strong: var(--accent-strong);
   --color-primary: var(--primary); --color-primary-hover: var(--primary-hover); --color-ink: var(--ink);
   --color-muted: var(--muted); --color-good: var(--good); --color-warn: var(--warn);
-  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono);
+  --color-on-primary: var(--on-primary); --color-on-ink: var(--on-ink);
+  --font-sans: var(--theme-font);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* The engine pages use slate/indigo/red/amber/emerald utilities; these scales point at theme tokens so every theme recolors them. */
+  --color-slate-50: var(--tint-soft); --color-slate-100: var(--tint); --color-slate-200: var(--line); --color-slate-300: var(--line-strong);
+  --color-slate-400: var(--faint); --color-slate-500: var(--muted); --color-slate-600: var(--muted); --color-slate-700: var(--text2);
+  --color-slate-800: var(--ink); --color-slate-900: var(--ink);
+  --color-indigo-300: var(--sage); --color-indigo-600: var(--primary); --color-indigo-700: var(--primary);
+  --color-indigo-800: var(--primary-hover); --color-indigo-900: var(--ink);
+  --color-red-50: var(--warn-bg); --color-red-300: var(--warn-line); --color-red-800: var(--warn);
+  --color-amber-50: var(--caution-bg); --color-amber-100: var(--caution-bg2); --color-amber-300: var(--caution-line);
+  --color-amber-500: var(--caution-mark); --color-amber-900: var(--caution-text);
+  --color-emerald-50: var(--ok-bg); --color-emerald-100: var(--ok-bg2); --color-emerald-300: var(--ok-line);
+  --color-emerald-800: var(--good); --color-emerald-900: var(--good);
 }
 
-/* The engine pages (renter, buyer, owner, ZIP, about) were written with slate/indigo utilities.
-   Re-pointing those scales at the palette makes the whole site one product without rewriting each page. */
-@theme {
-  --color-slate-50: #fff4ea; --color-slate-100: #f6e3d3; --color-slate-200: #ddbea9; --color-slate-300: #cfae98;
-  --color-slate-400: #8a8d7b; --color-slate-500: #5c604f; --color-slate-600: #5c604f; --color-slate-700: #3e4136;
-  --color-slate-800: #2e3127; --color-slate-900: #2e3127;
-  --color-indigo-50: #f3f1e8; --color-indigo-100: #e6e4d6; --color-indigo-200: #cbccb7; --color-indigo-300: #a5a58d;
-  --color-indigo-400: #8c9078; --color-indigo-500: #7c8168; --color-indigo-600: #6b705c; --color-indigo-700: #6b705c;
-  --color-indigo-800: #4e5341; --color-indigo-900: #2e3127;
-  --color-red-50: #f8e3d8; --color-red-300: #d9a58f; --color-red-800: #8c3b22;
-  --color-amber-50: #fbeacb; --color-amber-100: #f6e0b8; --color-amber-300: #d9b36a; --color-amber-900: #5a3a10;
-  --color-emerald-50: #e6e9d8; --color-emerald-300: #a5a58d; --color-emerald-800: #4e5341;
+/* One control size scale in rem. Components size their padding in em so it follows the font size. */
+:root {
+  --ctl: 2.75rem;      /* default control height, also the touch target */
+  --ctl-sm: 2.25rem;   /* compact controls inside dense rows */
+  --ctl-font: 1rem;
+  --ctl-font-sm: 0.875rem;
 }
 
-html { color-scheme: light; }
-body { background: var(--bg); color: var(--ink); font-size: 16px; line-height: 1.5; }
+body { background: var(--bg); color: var(--ink); font-family: var(--theme-font); font-size: 16px; line-height: 1.5; }
 :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 button, [role="button"], select, summary { cursor: pointer; }
-.skeleton { background: linear-gradient(90deg, #f3dccb, #f9eadc, #f3dccb); background-size: 200% 100%; border-radius: 12px; }
+
+/* Select chevron: two gradients in the muted color; 2.25em of right padding keeps it clear of the text and the edge. */
+select {
+  appearance: none; -webkit-appearance: none;
+  padding-right: 2.25em;
+  background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+  background-position: calc(100% - 1.15em) 50%, calc(100% - 0.8em) 50%;
+  background-size: 0.35em 0.35em, 0.35em 0.35em;
+  background-repeat: no-repeat;
+  text-overflow: ellipsis;
+}
+select:disabled { opacity: 0.6; }
+img, svg, video, canvas { max-width: 100%; }
+
+.skeleton { background: linear-gradient(90deg, var(--skel1), var(--skel2), var(--skel1)); background-size: 200% 100%; border-radius: 12px; }
 @media (prefers-reduced-motion: no-preference) {
   .skeleton { animation: shimmer 1.4s ease-in-out infinite; }
   @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
 }
 @media print { nav, .no-print { display: none !important; } }
+
