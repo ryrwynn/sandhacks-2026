@@ -13,12 +13,13 @@ function TargetForm({ id, target, price }: { id: number; target?: number | null;
   const n = Number(v);
   return (
     <form
+      noValidate
       className="flex flex-wrap items-end gap-2"
-      onSubmit={(e) => { e.preventDefault(); setTarget(id, v.trim() === "" ? null : n > 0 ? n : null); }}
+      onSubmit={(e) => { e.preventDefault(); setTarget(id, v.trim() === "" ? null : n > 0 ? Math.round(n) : null); }}
     >
       <label className="block">
         <span className="mb-1 block text-sm font-medium">Alert me at or below ($ / month)</span>
-        <input className={`${inputCls} w-44`} type="number" inputMode="numeric" min="1" step="25" value={v} placeholder={String(Math.round(price * 0.95 / 25) * 25)} onChange={(e) => setV(e.target.value)} />
+        <input className={`${inputCls} w-44`} type="number" inputMode="numeric" min="0" step="25" value={v} placeholder={String(Math.round(price * 0.95 / 25) * 25)} onChange={(e) => setV(e.target.value)} />
       </label>
       <button className="min-h-11 rounded-lg bg-primary px-4 font-semibold text-on-primary hover:bg-primary-hover">Set target</button>
       {target != null && (
