@@ -29,15 +29,19 @@ if [ -n "$DATABASE_URL" ]; then
     fail "connects, but the timescaledb_toolkit extension isn't available"
   else
     ok "connects; timescaledb_toolkit $out available"
-    plan="'sources','raw_records','properties','listings','price_observations','area_metrics','zip_features','forecasts','listing_weekly_zip','model_runs','rent_caps','rent_checks','listing_analyses'"
-    clash=$(psql "$DATABASE_URL" -tAc "select string_agg(table_name, ', ' order by table_name) from information_schema.tables where table_schema='public' and table_name in ($plan)" 2>/dev/null)
-    other=$(psql "$DATABASE_URL" -tAc "select string_agg(table_name, ', ' order by table_name) from information_schema.tables where table_schema='public' and table_name not in ($plan)" 2>/dev/null)
-    if [ -n "$clash" ]; then
-      fail "plan tables already exist: $clash. 001_init.sql will fail on them; drop them (if they're test data) or ask whoever made them"
+    plan="'sources','raw_records','properties','listings','price_observations','area_metrics','zip_features','forecasts','listing_weekly_zip','model_runs','rent_caps','rent_checks','listing_analyses','llm_cache'"
+    nplan=14
+    have=$(psql "$DATABASE_URL" -tAc "select count(*) from information_schema.tables where table_schema='public' and table_name in ($plan)" 2>/dev/null)
+    missing=$(psql "$DATABASE_URL" -tAc "select string_agg(t, ', ') from unnest(array[$plan]) t where t not in (select table_name from information_schema.tables where table_schema='public')" 2>/dev/null)
+    other=$(psql "$DATABASE_URL" -tAc "select string_agg(table_name, ', ' order by table_name) from information_schema.tables where table_schema='public' and table_name not in ($plan) and table_name not like 'pg\_%'" 2>/dev/null)
+    if [ "${have:-0}" -eq "$nplan" ]; then
+      ok "schema already migrated (all $nplan tables from 001_init.sql exist); never drop them, the live site uses them"
+    elif [ "${have:-0}" -eq 0 ]; then
+      ok "public schema has none of the plan's tables yet; 001_init.sql will create them"
     else
-      ok "no plan table names taken yet"
+      fail "partial schema: $have of $nplan plan tables exist (missing: $missing); check before migrating, and don't drop anything"
     fi
-    [ -n "$other" ] && warn "other tables in public (left alone by the plan): $other"
+    [ -n "$other" ] && warn "other tables in public, not the app's: $other (conditions is Tiger's quickstart sample)"
   fi
 fi
 
