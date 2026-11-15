@@ -4,7 +4,7 @@ import { mergeSaves, type RemoteSave } from "@/lib/auth/merge";
 import type { SavedItem } from "@/lib/saved";
 
 /**
- * Optional Google sign-in button. Renders nothing when sign-in is off (the server answers 404 on /auth/session),
+ * Optional Google sign-in button. Renders nothing when sign-in is off (/auth/session answers {enabled: false}),
  * when the check fails, or until the check finishes, so the site looks exactly as it did without accounts.
  * While signed in it also keeps this browser's saves and the server copy in step (see lib/auth/merge.ts).
  * Local saving stays the source of truth: any failure here leaves localStorage untouched.
@@ -58,8 +58,9 @@ export function AccountButton({ className = "" }: { className?: string }) {
     let cancelled = false;
     fetch("/auth/session", { cache: "no-store" })
       .then(async (r) => {
-        if (!r.ok) return "off" as const;                       // 404: sign-in is off
+        if (!r.ok) return "off" as const;                       // 404: older servers with sign-in off
         const s = await r.json().catch(() => null);
+        if (s && typeof s === "object" && (s as { enabled?: boolean }).enabled === false) return "off" as const;
         return s && typeof s === "object" && "expires" in s ? ("in" as const) : ("out" as const);
       })
       .catch(() => "off" as const)

@@ -5,7 +5,10 @@ import { authEnabled } from "@/lib/auth/enabled";
 const off = () => new Response("Sign-in is off", { status: 404 });
 
 export async function GET(req: NextRequest) {
-  return authEnabled() ? getAuth().handlers.GET(req) : off();
+  if (authEnabled()) return getAuth().handlers.GET(req);
+  // The account button asks for the session on every page; answer "off" without an error status.
+  if (req.nextUrl.pathname.endsWith("/auth/session")) return Response.json({ enabled: false });
+  return off();
 }
 export async function POST(req: NextRequest) {
   return authEnabled() ? getAuth().handlers.POST(req) : off();

@@ -130,6 +130,7 @@ def run(rows, groups, answers, conn=None):
     parse = stub_parse(answers)
     stats = fb.process(conn, rows, groups, "staging", parse=parse, sleep=lambda s: None, today="2026-11-15")
     offers = stats.pop("offers")
+    stats.pop("conn")
     fb.load_offers(conn, offers, "staging")
     return conn, stats, parse
 

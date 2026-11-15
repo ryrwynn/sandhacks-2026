@@ -38,7 +38,7 @@ Heartbeat: 2026-11-15 04:22 PST — run complete; see docs/MORNING.md
 
 # Morning run (2026-11-15)
 
-Heartbeat: 2026-11-15 start — morning orchestrator on `night`; nothing pushed to Setup or main.
+Heartbeat: 2026-11-15 07:05 PST — step 4/5; BLOCKED on database reachability from this laptop (see 3a)
 
 ## 1. Data
 - [x] Load the data 1: index tier staged (160,122 and 3,056 rows) — ran by owner this morning, not rerun
@@ -54,16 +54,21 @@ Heartbeat: 2026-11-15 start — morning orchestrator on `night`; nothing pushed 
 
 ## 3. Facebook listings
 - [x] commit groups.yaml (7 group URLs)
-- [ ] a. collect (CLI, 2-group sample, gates, full run, fb_groups)
-- [ ] b. extract (Gemini batches of ~10, neighborhood→ZIP table)
-- [ ] c. listings in staging (dedupe, reposts → price observations, inactive after 21 days)
-- [ ] d. API (filters, medians, source breakdown, health counts, contracts, staging flag)
-- [ ] e. UI
-- [ ] f. freshness cron (Mon/Thu, gated on terms_checked_on)
-- [ ] g. tests
+- [x] a. collect: worker/facebook.py. Sample 2 groups x 20 = 40 records (= cap, $0.06), 23/40 usable (57.5%), staged.
+      Full run snapshot sd_mwhxcv0l15owbti9eg: 301 records (cap 350, ~$0.45); 6 groups public, UCSD group private (skipped).
+- [ ] a2. full-run processing: FAILED twice on the same error — DB unreachable from this laptop (TCP to the DB port times
+      out; DNS ok, internet ok, live server still reaches the DB). Thread stopped per the rules. Resume, no new cost:
+      `uv run python -m worker.facebook collect --snapshot sd_mwhxcv0l15owbti9eg` (Gemini answers are cached).
+- [x] b. extract: api.llm.gemini.parse_posts (10/request, Flash Lite), per-item validation, data/fb_neighborhood_zips.csv (77 single-ZIP names)
+- [x] c. listings in staging (migration 003 staging_price_observations; dedupe, reposts, 21-day inactive) — sample's 23 loaded
+- [x] d. API (source/unit_type filters, weighted medians, source breakdown, /health sources, contracts, RENTORKNOT_READ_STAGING=1)
+- [x] e. UI (card, apartment page, Find filters, Alerts, market + ZIP breakdown, /about)
+- [x] f. freshness cron (Mon/Thu 15:00 UTC, --cron gate on terms_checked_on)
+- [x] g. tests: api/tests/test_facebook.py (18)
 
 ## 4. Browser check
-- [ ] Playwright + scripts/ui-check.mjs, screenshots reviewed
+- [x] Playwright (scripts/package.json) + scripts/ui-check.mjs. Run 2: 133/152; all 19 failures = WebGL contexts exhausted (fixed: browser per theme). Fixed: /auth/session 404 on every page, /listings/{id}/trends 500 for ZIPs without ZORI
+- [ ] screenshots reviewed
 
 ## 5. Fixes
 - [ ] renter flow, Find/Saved, map, buyer, owner, advisor, themes

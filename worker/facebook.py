@@ -413,17 +413,18 @@ def process(conn, raw_rows: list[dict], groups: list[dict], target: str, *, snap
     posts_by, errors_by = split_by_group(raw_rows, groups)
     zips, hoods = sd_zips(), neighborhood_table()
     stats = {"groups_collected": [], "groups_skipped": [], "posts": 0, "usable": 0, "reasons": {}}
-    offers = []
+    offers, group_rows = [], []
+    # Gemini first, with no database work in between (a long idle connection can time out); writes after.
     for g in groups:
         posts = posts_by.get(g["slug"], [])
         if not posts:
             err = (errors_by.get(g["slug"]) or ["returned nothing"])[0]
             private = bool(re.search(r"(?i)login|log in|private|permission|access", err))
-            record_group(conn, g, False if private else None, None)
+            group_rows.append((g, False if private else None, None))
             stats["groups_skipped"].append({"name": g["display_name"], "reason": err})
             continue
         last = max((d for d in (parse_date(p.get("date_posted")) for p in posts) if d), default=None)
-        record_group(conn, g, True, last)
+        group_rows.append((g, True, last))
         stats["groups_collected"].append({"name": g["display_name"], "posts": len(posts)})
         for p, fields in extract(posts, today, parse=parse, sleep=sleep):
             stats["posts"] += 1
@@ -431,6 +432,10 @@ def process(conn, raw_rows: list[dict], groups: list[dict], target: str, *, snap
             stats["reasons"][why] = stats["reasons"].get(why, 0) + 1
             if o:
                 offers.append(o)
+    if callable(conn):          # a factory: open a fresh connection now that the slow part is done
+        conn = conn()
+    for g, pub, last in group_rows:
+        record_group(conn, g, pub, last)
     conn.commit()
     stats["usable"] = len(offers)
     for o in offers:
@@ -438,6 +443,7 @@ def process(conn, raw_rows: list[dict], groups: list[dict], target: str, *, snap
     conn.commit()
     stats["usable_share"] = round(len(offers) / stats["posts"], 3) if stats["posts"] else 0.0
     stats["offers"] = offers
+    stats["conn"] = conn
     return stats
 
 
@@ -463,6 +469,14 @@ def replay(conn, target: str) -> dict:
     return {"offers": len(offers), **res, **summarize(offers)}
 
 
+def connect():
+    """DATABASE_URL with TCP keepalives: Bright Data and Gemini waits leave the connection idle for minutes."""
+    import os
+    import psycopg
+    return psycopg.connect(os.environ["DATABASE_URL"], autocommit=False, keepalives=1, keepalives_idle=30,
+                           keepalives_interval=10, keepalives_count=6)
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("cmd", choices=["sample", "collect", "replay"])
@@ -471,12 +485,13 @@ def main(argv=None) -> int:
     ap.add_argument("--confirm-shared", action="store_true")
     ap.add_argument("--cron", action="store_true", help="refuse unless sources.terms_checked_on is set")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--snapshot", help="reprocess a ready snapshot (download only; no new trigger, no new cost)")
     a = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO)
     if a.target == "shared" and not a.confirm_shared:
         print("--target shared writes the live tables; add --confirm-shared", file=sys.stderr)
         return 2
-    conn = load.connect()
+    conn = connect()
     if a.cron and not terms_checked(conn):
         print(f"{SOURCE}: terms_checked_on is not set; refusing to run", file=sys.stderr)
         return 3
@@ -495,13 +510,21 @@ def main(argv=None) -> int:
     if a.dry_run:
         print({"groups": [g["display_name"] for g in groups], "limit": limit, "est_records": est[0], "est_usd": est[1]})
         return 0
-    try:
-        snap = run_snapshot(conn, groups, limit, sample=a.cmd == "sample")
-    except CapExceeded as e:
-        print(f"STOP: {e}", file=sys.stderr)
-        return 4
-    stats = process(conn, snap["rows"], groups, a.target, snapshot_id=snap["snapshot_id"])
-    offers = stats.pop("offers")
+    if a.snapshot:
+        rows = bd.BrightDataClient().snapshot(a.snapshot)
+        if len(rows) > len(groups) * limit:
+            print(f"STOP: snapshot {a.snapshot} has {len(rows)} records over its cap", file=sys.stderr)
+            return 4
+        snap = {"snapshot_id": a.snapshot, "rows": rows, "records": len(rows), "usd": 0.0, "cap": len(groups) * limit}
+    else:
+        try:
+            snap = run_snapshot(conn, groups, limit, sample=a.cmd == "sample")
+        except CapExceeded as e:
+            print(f"STOP: {e}", file=sys.stderr)
+            return 4
+    conn.close()
+    stats = process(connect, snap["rows"], groups, a.target, snapshot_id=snap["snapshot_id"])
+    offers, conn = stats.pop("offers"), stats.pop("conn")
     out = {"records": snap["records"], "usd": snap["usd"], "cap": snap["cap"], **stats, **summarize(offers)}
     if a.cmd == "sample" and stats["usable_share"] < MIN_USABLE_SHARE:
         print({**out, "STOP": f"usable share {stats['usable_share']} < {MIN_USABLE_SHARE}"})

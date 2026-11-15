@@ -96,3 +96,10 @@ def test_listing_trends_endpoint(monkeypatch):
     kinds = [s["kind"] for s in j["signals"]]
     assert "repeated_cuts" in kinds and "below_zip_trend" in kinds
     assert client.get("/listings/2/trends").status_code == 404
+
+
+def test_zip_change_without_index_data_is_none(monkeypatch):
+    from api import db
+    from api.ml import trends as t
+    monkeypatch.setattr(db, "zori_monthly", lambda z: [])
+    assert t._zip_change("92021", "2026-10-01", "2026-11-01") is None

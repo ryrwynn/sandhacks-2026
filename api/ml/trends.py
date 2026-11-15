@@ -11,6 +11,8 @@ NOTE = {"zori": "Rents", "zhvi": "Home values"}
 
 
 def _monthly(rows: list[tuple]) -> pd.Series:
+    if not rows:               # a ZIP with no index data (e.g. a Facebook listing outside the 12 ZIPs)
+        return pd.Series(dtype=float)
     s = pd.Series({pd.Timestamp(d): float(v) for d, v in rows}).sort_index()
     s.index = s.index.to_period("M").to_timestamp()
     return s[~s.index.duplicated(keep="last")].asfreq("MS").interpolate(limit_area="inside").dropna()

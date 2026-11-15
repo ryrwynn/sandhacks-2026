@@ -15,8 +15,7 @@ const FB_GROUPS = [
   "San Diego Housing, Rooms, Apartments, Sublets (Neighborly Group)",
   "San Diego Sublets",
   "San Diego Roommates",
-  "UCSD Student Off-Campus Housing",
-];
+];   // "UCSD Student Off-Campus Housing" is private (checked 2026-11-15), so it is not read.
 
 const SOURCES = [
   ["Zillow rental and for-sale listings", "Rent, bedrooms, size, year built and price history, collected every few hours for 12 San Diego ZIP codes."],

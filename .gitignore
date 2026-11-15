@@ -20,3 +20,6 @@ npm-debug.log*
 /build
 .vercel
 docs/reference/raw/
+
+# Browser-check screenshots (scripts/ui-check.mjs)
+docs/screens/
