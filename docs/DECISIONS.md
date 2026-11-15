@@ -60,3 +60,14 @@ Dataset `gd_lfqkr8wm13ixtbd8f5` (Zillow properties listing information), the one
     or from the tenant on the check form; when unknown, the verdict is `unclear` and the form asks for it.
     (3) Days on market in Owner mode can use the "Listed for rent" / "Listing removed" events where they exist.
   - `limit_per_input` is not a hard per-input cap: 2 requested, 11 rentals returned. Budget runs accordingly.
+
+## Phase 3: integration
+
+- **Merged:** lane/rules (54 tests), lane/models (73 tests total after merge).
+- **Rent check with unknown year built:** lane B's engine treats the building as covered when `year_built`
+  is null (the plan's decision order only exempts known-new buildings). This replaces the earlier note that an
+  unknown year gives `unclear`; the form still asks for year built and prefills it from /units/search.
+- **First real forecast run (2026-11-14):** 24 series (12 ZIPs × ZORI, ZHVI), median 12-month backtest MAPE
+  1.38% (mean 1.65%), but the model beat the naive "next year equals this month" forecast on only 7 of 24.
+  Per the plan, the UI shows the band and the backtest error under every chart, describes it as a trend
+  range, and only says "beats naive" on the series where it does. Fair rent: skipped until rentals load.
