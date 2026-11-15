@@ -49,6 +49,10 @@ MAPE in percent, 80% coverage as a share. Held-out test origins: 9 for ZORI (sho
 - ZHVI: the macro model beats naive (3.30 vs 4.56) but **not** ETS (3.04), so ETS stays the served baseline for home values. The oracle result (2.05) shows the macro regressors have real signal when the macro path is known, which is what the scenario toggle uses them for.
 - Not compared with Zillow's own published forecasts: those files were not fetched tonight, so no claim is made against them.
 - Coverage: ZHVI baseline 0.75 and ZORI baseline 0.92 are the calibrated cone's held-out numbers. ZHVI is a little under 0.80 (the rolling factor lags regime changes); ZORI is over 0.80 on only 9 origins, so it is noisy. ETS's own interval is closer to 0.80 for ZHVI (0.79) and too wide for ZORI (0.95).
+- Decision (morning run, 2026-11-15): the ZHVI cone is **not** widened. Instead each ZIP page's "Typical home value"
+  and "Typical rent" charts print the measured held-out coverage of the served baseline from the latest training
+  (`coverage_80` of `/zips/{zip}/series?scenario=baseline`), and add "the target is 80%, so treat it as a little
+  narrow" when it is below 80%. Widening needs a retrain against the database; revisit if a rerun stays under 0.78.
 - Recession and growth coverage against actual outcomes is low by construction (the scenarios did not happen). Do not read it as miscalibration.
 
 Per-ZIP tables (MAPE %, then coverage; the last row is the all-ZIP mean):

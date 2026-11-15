@@ -5,7 +5,8 @@ import { monthLabel, pct, usd } from "@/lib/format";
 
 type Row = { month: string; actual?: number; forecast?: number; band?: [number, number] };
 
-export default function ForecastChart({ series, title }: { series: SeriesResponse; title: string }) {
+/** `coverage`: measured share of held-out actuals inside the 80% band, from the latest training (null = unknown). */
+export default function ForecastChart({ series, title, coverage }: { series: SeriesResponse; title: string; coverage?: number | null }) {
   const rows: Row[] = series.points.map((p) => (p.kind === "actual" ? { month: p.month, actual: p.value } : { month: p.month, forecast: p.value, band: p.lo80 != null && p.hi80 != null ? [p.lo80, p.hi80] : undefined }));
   // Join the dashed forecast to the last actual point.
   const lastActual = [...rows].reverse().find((r) => r.actual != null);
@@ -42,6 +43,12 @@ export default function ForecastChart({ series, title }: { series: SeriesRespons
           </>
         )}
       </p>
+      {coverage != null && (
+        <p className="text-xs text-muted">
+          In past tests, {Math.round(coverage * (coverage <= 1 ? 100 : 1))}% of actual values fell inside the shaded range
+          {Math.round(coverage * (coverage <= 1 ? 100 : 1)) < 80 ? " (the target is 80%, so treat it as a little narrow)" : ""}.
+        </p>
+      )}
     </figure>
   );
 }

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ApartmentCard, { CardSkeletons } from "@/components/ApartmentCard";
 import FilterBar from "@/components/FilterBar";
 import AddArea from "@/components/AddArea";
@@ -38,17 +38,20 @@ export default function Find() {
     }
   }, []);
 
+  const seq = useRef(0);   // only the latest request may update the list (filters can change mid-flight)
   const load = (from: number) => {
+    const mine = ++seq.current;
     setLoading(true);
     getListings({ zip: filters.zip, beds: filters.beds, type: filters.type, maxPrice: filters.maxPrice || undefined, sort, limit: PAGE, offset: from, source: filters.source, unitType: filters.unitType })
       .then((r) => {
+        if (mine !== seq.current) return;
         setErr("");
         setTotal(r.total);
         setOffset(from + r.items.length);
         setItems((cur) => (from === 0 ? r.items : [...cur, ...r.items]));
       })
-      .catch((e) => setErr(errorMessage(e)))
-      .finally(() => setLoading(false));
+      .catch((e) => { if (mine === seq.current) setErr(errorMessage(e)); })
+      .finally(() => { if (mine === seq.current) setLoading(false); });
   };
   // Reload from the top whenever a filter or the sort changes.
   // eslint-disable-next-line react-hooks/exhaustive-deps

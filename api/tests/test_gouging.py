@@ -101,7 +101,8 @@ def test_emergency_not_covering_rent_is_not_covered(monkeypatch):
     assert chk("2600")["verdict"] == "not_covered"
 
 
-def test_fmr_160_uses_zip_safmr():
+def test_fmr_160_uses_zip_safmr(monkeypatch):
+    monkeypatch.setattr(gouging, "FMR_RULE_VERIFIED", True)
     r = chk("4160.00", pre_emergency_rent=None, beds=1)  # 160% of 2600
     assert r["verdict"] == "within_limit" and r["basis"] == "fmr_160"
     assert r["limit_usd"] == D("4160.00") and r["fmr_usd"] == D("2600")
@@ -109,10 +110,20 @@ def test_fmr_160_uses_zip_safmr():
     assert chk("4160.01", pre_emergency_rent=None, beds=1)["verdict"] == "likely_violation"
 
 
-def test_fmr_160_falls_back_to_county_fmr():
+def test_fmr_160_falls_back_to_county_fmr(monkeypatch):
+    monkeypatch.setattr(gouging, "FMR_RULE_VERIFIED", True)
     r = chk("4000.01", zip_="92011", pre_emergency_rent=None, beds=1)  # county 2500 * 1.6 = 4000
     assert r["verdict"] == "likely_violation" and r["limit_usd"] == D("4000.00")
     assert r["fmr_usd"] == D("2500")
+
+
+def test_unverified_rule_or_data_answers_unclear_and_says_so(monkeypatch):
+    r = chk("4160.01", pre_emergency_rent=None, beds=1)            # statute's 160% rule not verified yet
+    assert r["verdict"] == "unclear" and r["limit_usd"] == D("4160.00")
+    assert any("160%" in u for u in r["unverified"]) and "not verified" in r["reasons"][-1]
+    monkeypatch.setattr(gouging, "load_emergencies", lambda: [{**EMERG[0], "verified": False}])
+    r = chk("2600")
+    assert r["verdict"] == "unclear" and r["unverified"] == ["the emergency declaration"]
 
 
 def test_fmr_needs_beds():

@@ -634,6 +634,7 @@ class GougingResponse(BaseModel):
     fmr_source: str | None = None               # 'HUD SAFMR FY2026, ZIP 92104, 1 bedroom'
     emergency: EmergencyInfo | None = None
     reasons: list[str]
+    unverified: list[str] = Field(default_factory=list)   # morning run: unchecked inputs; any -> verdict 'unclear'
     links: list[Link] = Field(default_factory=lambda: list(GOUGING_LINKS))
     disclaimer: str = DISCLAIMER_GOUGING
 

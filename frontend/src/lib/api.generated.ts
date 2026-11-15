@@ -154,6 +154,7 @@ export interface GougingResponse {
   fmr_source: string | null;
   emergency: EmergencyInfo | null;
   reasons: string[];
+  unverified: string[];
   links: Link[];
   disclaimer: string;
 }

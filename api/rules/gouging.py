@@ -25,6 +25,7 @@ class GougingResult(TypedDict):
     fmr_source: str | None
     emergency: dict | None           # keys of contracts.api_models.EmergencyInfo
     reasons: list[str]
+    unverified: list[str]            # inputs not yet checked against their official source
 
 
 def _yaml(name: str) -> dict:
@@ -67,9 +68,22 @@ def _canon_county(name: str, known: set[str]) -> str:
     return next((k for k in known if k.lower() == n), name.strip().title())
 
 
-def _result(verdict, county, reasons, *, limit=None, pct=None, basis="none", fmr=None, fmr_source=None, em=None):
+FMR_RULE_UNVERIFIED = "the 160%-of-Fair-Market-Rent rule (statute text not yet checked)"
+FMR_RULE_VERIFIED = False      # flip after reading Penal Code 396 on leginfo (MORNING.md "Gouging data")
+
+
+def _result(verdict, county, reasons, *, limit=None, pct=None, basis="none", fmr=None, fmr_source=None, em=None,
+            unverified=None):
+    """`unverified` names each input the answer rests on that hasn't been checked against its official source."""
+    unv = list(unverified or [])
+    if basis == "fmr_160" and not FMR_RULE_VERIFIED and FMR_RULE_UNVERIFIED not in unv:
+        unv.append(FMR_RULE_UNVERIFIED)
+    if unv and verdict in ("likely_violation", "within_limit"):   # never a firm answer on unchecked data
+        reasons = list(reasons) + [f"Because {' and '.join(unv)} {'is' if len(unv) == 1 else 'are'} not verified "
+                                   "yet, we can't give a firm answer."]
+        verdict = "unclear"
     return GougingResult(verdict=verdict, county=county, limit_usd=limit, increase_pct=pct, basis=basis,
-                         fmr_usd=fmr, fmr_source=fmr_source, emergency=em, reasons=reasons)
+                         fmr_usd=fmr, fmr_source=fmr_source, emergency=em, reasons=reasons, unverified=unv)
 
 
 def check_gouging(new_rent: Decimal, offer_date: date, *, zip_: str | None = None, county: str | None = None,
@@ -111,8 +125,10 @@ def check_gouging(new_rent: Decimal, offer_date: date, *, zip_: str | None = Non
           "source_url": e["source_url"]}
     inside = (f"{e['title']} was declared on {e['declared_on']:%B %d, %Y}; protections run through "
               f"{e['protections_until']:%B %d, %Y}.")
+    unv = []
     if not e.get("verified", False):
         inside += " This declaration has not been fully verified against the official proclamation."
+        unv.append("the emergency declaration")
 
     if pre_emergency_rent is not None:
         limit = _down(pre_emergency_rent * Decimal("1.10"))
@@ -125,12 +141,12 @@ def check_gouging(new_rent: Decimal, offer_date: date, *, zip_: str | None = Non
                     "show added repair costs or the tenant agreed to it before the emergency."
                     if over else f"{_money(new_rent)} is at or under the limit.")]
         return _result("likely_violation" if over else "within_limit", county, reasons, limit=limit, pct=pct,
-                       basis="pre_emergency_plus_10", em=em)
+                       basis="pre_emergency_plus_10", em=em, unverified=unv)
 
     if beds is None or beds < 0:
         return _result("unclear", county, [
             inside, "This unit wasn't rented or offered before the emergency, so the limit is 160% of HUD's Fair "
-                    "Market Rent. Tell us the number of bedrooms."], basis="fmr_160", em=em)
+                    "Market Rent. Tell us the number of bedrooms."], basis="fmr_160", em=em, unverified=unv)
     fmr_data = load_fmr()
     entry = src = None
     safmr = (fmr_data.get("safmr") or {}).get(z)
@@ -142,16 +158,17 @@ def check_gouging(new_rent: Decimal, offer_date: date, *, zip_: str | None = Non
     if entry is None:
         return _result("unclear", county, [
             inside, "We don't have a HUD Fair Market Rent for this place and bedroom count, so we can't compute "
-                    "the 160% limit."], basis="fmr_160", em=em)
+                    "the 160% limit."], basis="fmr_160", em=em, unverified=unv)
     fmr = entry["rents"][beds]
     limit = _down(fmr * Decimal("1.60"))
     reasons = [inside, f"This unit wasn't rented or offered before the emergency, so the limit is 160% of HUD's "
                        f"Fair Market Rent: 160% of {_money(fmr)} is {_money(limit)}."]
     over = new_rent > limit
     if not entry.get("verified", False):
+        unv = unv + ["the HUD Fair Market Rent figure"]
         reasons.append("That Fair Market Rent figure has not been checked against HUD's own file, so we can't give "
                        f"a firm answer. {_money(new_rent)} is {'above' if over else 'at or under'} the estimated limit.")
-        return _result("unclear", county, reasons, limit=limit, basis="fmr_160", fmr=fmr, fmr_source=src, em=em)
+        return _result("unclear", county, reasons, limit=limit, basis="fmr_160", fmr=fmr, fmr_source=src, em=em, unverified=unv)
     reasons.append(f"{_money(new_rent)} is {'above that, so this is a likely violation' if over else 'at or under the limit'}.")
     return _result("likely_violation" if over else "within_limit", county, reasons, limit=limit, basis="fmr_160",
-                   fmr=fmr, fmr_source=src, em=em)
+                   fmr=fmr, fmr_source=src, em=em, unverified=unv)

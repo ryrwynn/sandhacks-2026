@@ -11,6 +11,7 @@ import { Card, Disclaimer, MockFlag } from "@/components/ui";
 import ScenarioPanel from "@/components/ScenarioPanel";
 import { ZipTrends } from "@/components/Trends";
 import { ZipSourceCard } from "@/components/SourceBreakdown";
+import { getZipSeriesScenarios } from "@/lib/night-api";
 
 export const metadata: Metadata = { title: "ZIP profile | RentOrKnot" };
 
@@ -33,6 +34,9 @@ async function Zip({ params }: { params: Promise<{ zip: string }> }) {
   const token = await mapboxToken();
   const [p, rent, value, all] = await Promise.all([getZipProfile(zip), getZipSeries(zip, "zori"), getZipSeries(zip, "zhvi"), getZips()]);
   const mock = [p, rent, value, all].some(isMock);
+  // Measured 80% coverage from the latest training (served baseline); shown on each chart.
+  const [covRent, covValue] = await Promise.all((["zori", "zhvi"] as const).map((m) =>
+    getZipSeriesScenarios(zip, m, "baseline").then((r) => (isMock(r) ? null : r.coverage_80 ?? null)).catch(() => null)));
   return (
     <>
       <MockFlag on={mock} />
@@ -45,8 +49,8 @@ async function Zip({ params }: { params: Promise<{ zip: string }> }) {
       </div>
       <ZipMap token={token} zips={all.zips} focus={p.zip} heightClass="h-56 sm:h-72" />
       <ZipSourceCard zip={p.zip} />
-      <Card><ForecastChart series={rent} title="Typical rent" /></Card>
-      <Card><ForecastChart series={value} title="Typical home value" /></Card>
+      <Card><ForecastChart series={rent} title="Typical rent" coverage={covRent} /></Card>
+      <Card><ForecastChart series={value} title="Typical home value" coverage={covValue} /></Card>
       <ScenarioPanel zip={p.zip} />
       <ZipTrends zip={p.zip} />
       <section className="space-y-3">

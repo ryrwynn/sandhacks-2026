@@ -53,6 +53,12 @@ export function GougingResult({ r }: { r: GougingResponse }) {
         </Card>
       )}
       <ul className="list-disc space-y-1 pl-5 text-sm">{r.reasons.map((x) => <li key={x}>{x}</li>)}</ul>
+      {(r.unverified ?? []).length > 0 && (
+        <p className="rounded-lg border border-line bg-bg px-3 py-2 text-sm">
+          <span className="mr-1.5 inline-block rounded-full bg-line px-2 py-0.5 text-xs font-semibold uppercase tracking-wide">Unverified</span>
+          This answer relies on {(r.unverified ?? []).join(" and ")}, which we have not yet checked against the official source.
+        </p>
+      )}
       <Card className="space-y-1">
         <h3 className="font-semibold">Where to get help</h3>
         <ul className="text-sm">

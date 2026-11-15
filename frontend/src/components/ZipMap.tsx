@@ -46,7 +46,7 @@ export default function ZipMap(props: Props) {
 function Legend({ min, max }: { min: number; max: number }) {
   return (
     <div className="rounded-lg bg-surface/95 p-2 text-xs shadow" aria-label="Legend: typical monthly rent">
-      <div className="mb-1 font-medium text-slate-700">Typical monthly rent</div>
+      <div className="mb-1 font-medium text-ink">Typical monthly rent</div>
       <div className="flex h-2.5 w-36 overflow-hidden rounded">
         {SCALE.map((c) => (
           <div key={c} className="flex-1" style={{ background: c }} />
@@ -199,7 +199,7 @@ function MapView({ token, zips, highlight = [], focus, heightClass = "h-72 sm:h-
             </Source>
           )}
         </Map>
-        <div className="pointer-events-none absolute bottom-2 left-2">
+        <div className="pointer-events-none absolute bottom-9 left-2">
           <Legend min={min} max={max} />
         </div>
       </div>

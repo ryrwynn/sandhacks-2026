@@ -330,11 +330,13 @@ def draft_letter(check: dict, address: str) -> str | None:
 def zip_summary(zip_name: str, persona: str, contributions: list[dict]) -> str | None:
     """'Why this ZIP': two plain sentences from the top 3 contributions."""
     try:
+        # Labels only: the raw values are model inputs (ratios, 0-1 scores) that read as noise in a sentence.
+        reasons = [c.get("label") for c in contributions if c.get("label")]
         prompt = (f"In exactly two plain sentences, say why {zip_name} scores well for the '{persona}' "
-                  "profile, using only the contributions below. Do not mention who lives there. "
-                  "Use only dollar amounts and percentages that appear below.\n\n"
-                  + json.dumps(contributions, indent=1, default=str))
-        return generate_text("zip_summary", prompt, _numbers(contributions))
+                  "profile, using only the reasons below. Do not mention who lives there. Do not write any "
+                  "numbers.\n\n" + json.dumps(reasons, indent=1))
+        text = generate_text("zip_summary", prompt, set())
+        return text if text and not re.search(r"\d\.\d{3,}", text) else None
     except Exception:
         return None
 
