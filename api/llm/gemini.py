@@ -344,11 +344,16 @@ def zip_summary(zip_name: str, persona: str, contributions: list[dict]) -> str |
 def explain_gaps(listing_text: str, gaps: list[dict]) -> str | None:
     """2 to 4 sentences on what's missing and why it matters; never a rewritten listing."""
     try:
+        # Shares as "79%": Gemini writes "79% of comparable listings", and figures_ok must allow "79%"
+        # (a raw 0.79 made every answer fail the check, so no explanation was ever shown).
+        shown = [{"fact": g.get("fact"), "percent_of_comparable_listings_that_state_it":
+                  f"{round(float(g['share_of_comparables']) * 100)}%" if g.get("share_of_comparables") is not None else None}
+                 for g in gaps]
         prompt = ("In 2 to 4 plain sentences, explain what is missing from this rental listing and why it "
                   "matters to renters. Do not rewrite the listing. Use only dollar amounts and percentages "
-                  f"that appear below.\n\nGaps found:\n{json.dumps(gaps, indent=1, default=str)}\n\n"
+                  f"that appear below.\n\nGaps found:\n{json.dumps(shown, indent=1, default=str)}\n\n"
                   f"Listing:\n{listing_text}")
-        return generate_text("listing_gaps", prompt, _numbers(gaps, listing_text))
+        return generate_text("listing_gaps", prompt, _numbers(shown, listing_text))
     except Exception:
         return None
 

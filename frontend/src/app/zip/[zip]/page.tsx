@@ -69,12 +69,12 @@ const AMENITIES: [keyof import("@/lib/contract").AmenityCounts, string][] = [
 async function Zip({ params }: { params: Promise<{ zip: string }> }) {
   const { zip } = await params;
   const token = await mapboxToken();
-  const [p, rent, value, all] = await Promise.all([getZipProfile(zip), getZipSeries(zip, "zori"), getZipSeries(zip, "zhvi"), getZips()]);
-  // Full profiles exist for the 12 core ZIPs. Any other ZIP: show what coverage knows (or say it isn't covered)
-  // instead of sample data.
-  if (isMock(p) && /^\d{5}$/.test(zip) && !isMock(all) && !all.zips.some((z) => z.zip === zip)) {
+  const all = await getZips();
+  // Full profiles exist for the 12 core ZIPs. Any other ZIP: show what coverage knows (or say it isn't covered).
+  if (!all.zips.some((z) => z.zip === zip)) {
     return <CoveredZip zip={zip} token={token} all={all.zips} />;
   }
+  const [p, rent, value] = await Promise.all([getZipProfile(zip), getZipSeries(zip, "zori"), getZipSeries(zip, "zhvi")]);
   const mock = [p, rent, value, all].some(isMock);
   // Measured 80% coverage from the latest training (served baseline); shown on each chart.
   const [covRent, covValue] = await Promise.all((["zori", "zhvi"] as const).map((m) =>
