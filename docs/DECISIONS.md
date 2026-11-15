@@ -213,3 +213,18 @@ Dataset `gd_lfqkr8wm13ixtbd8f5` (Zillow properties listing information), the one
   leginfo and HUD refused automated fetches, so the statute text and the 160%-of-FMR rule are `verified: false`, and the
   San Diego FMRs come from the scout's third-party mirror. The 160% path therefore answers `unclear` with the estimated
   limit and says the figure is unchecked. ZIP-to-county covers San Diego County only; others are `unclear` without a county.
+
+### Overnight run, Phase 3: integrate (2026-11-15)
+
+- Merged in order rules, forecast, data, match, accounts, web with no conflicts. Regenerated api.generated.ts from the
+  merged app's OpenAPI (65 types, 25 operations); night-web's hand-written types now re-export the generated ones and tsc
+  is clean. AccountButton sits in the nav slot. The /advisor page goes through night-match's JSON client (`{text}`),
+  sending the latest question plus the previous one, because the advisor is stateless and the `{messages}` stream is
+  AI SDK event frames, not plain text.
+- **POST /owner/reach answers 422 below 5 comparables.** It had returned a reach figure built from spread-out guesses
+  around the target rent (disclosed only in the method note); a number from no data would be invented.
+- smoke.sh checks the new endpoints and pages. `?scenario=` accepts 404 until `worker.train scenarios` has run, so a
+  deploy after the merge doesn't fail before the morning commands. Local run (no database here): every new endpoint and
+  page passes; the 4 failures (listings, market, trends, scenario series) need the database.
+- Ports 8000 and 3000 were held by processes started outside this run (an older uvicorn and a node server); I left them
+  and tested on 8001/3001.

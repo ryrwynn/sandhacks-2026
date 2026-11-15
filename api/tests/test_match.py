@@ -190,3 +190,10 @@ def test_routes(comps):
     c = TestClient(app)
     assert c.post("/match", json={"text": "1BR under $2,400 with pets"}).status_code == 200
     assert c.post("/owner/reach", json={"zip": "92104", "beds": 1, "target_rent": 2400}).status_code == 200
+
+
+def test_reach_route_refuses_without_comparables(monkeypatch):
+    monkeypatch.setattr(db, "comparable_rents", lambda z, b, days=90: [])
+    monkeypatch.setattr(db, "comparable_texts", lambda z, b, limit=200: [])
+    r = TestClient(app).post("/owner/reach", json={"zip": "92104", "beds": 1, "target_rent": 2500})
+    assert r.status_code == 422 and "comparable" in r.json()["detail"]
