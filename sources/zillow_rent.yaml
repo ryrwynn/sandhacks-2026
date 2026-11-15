@@ -1,0 +1,83 @@
+# Zillow rentals via Bright Data dataset gd_lfqkr8wm13ixtbd8f5 (discover_by=url with search URLs).
+source_key: zillow_rent
+kind: listing_site
+listing_type: rent
+trust_weight: 1.0
+fetch:
+  method: brightdata_dataset
+  dataset_id: gd_lfqkr8wm13ixtbd8f5
+  discover_by: url
+  zip_file: data/zips.txt
+  input_url: "https://www.zillow.com/san-diego-ca-{zip}/rentals/"
+  # Not a hard cap: buildings expand into one record per unit. The credit is shared; keep it low.
+  limit_per_input: 30
+# Never stored: contact people, phones, brokerages; bulk fields we don't use.
+drop_fields:
+  - listing_provided_by
+  - management_company_phone_number
+  - postingContact
+  - brokerageName
+  - attributionInfo
+  - agentName
+  - agentPhoneNumber
+  - brokerPhoneNumber
+  - contact_recipients
+  - photos
+  - nearbyHomes
+  - schools
+  - nearbyCities
+  - nearbyNeighborhoods
+  - nearbyZipcodes
+  - zestimate_history
+  - taxHistory
+  - streetViewMetadataUrlMediaWallLatLong
+  - streetViewMetadataUrlMediaWallAddress
+  - publish_url
+redact_fields: [description]      # scrubbed of phones, emails and names before storing
+hash_ignore: [timestamp, days_on_zillow, daysOnZillow, overview, num_of_contacts, num_of_applications]
+keep_if:
+  homeStatus: [FOR_RENT]
+zip_filter: data/zips.txt
+map:
+  external_id: zpid
+  price_usd: price|base_rent
+  beds: bedrooms
+  baths: bathrooms
+  sqft: sqft|livingArea
+  year_built: yearBuilt
+  property_type: homeType
+  address_norm: streetAddress
+  unit_label: unit_number
+  zip: zipcode
+  lat: latitude
+  lng: longitude
+  text: description
+property_types:
+  APARTMENT: apartment
+  CONDO: condo
+  SINGLE_FAMILY: single_family
+  TOWNHOUSE: townhouse
+  MULTI_FAMILY: multi_family
+  MANUFACTURED: manufactured
+extras_map:
+  amenities: unit_amenities
+  special_offer: special_offer
+  availability_date: availability_date
+  walk_score: getting_around.walk.score
+  transit_score: getting_around.transit.score
+  home_status: homeStatus
+  days_on_zillow: days_on_zillow|daysOnZillow
+  tags: tags
+history:
+  path: priceHistory
+  date: date
+  price: price
+  event: event
+  keep_events: ["Listed for rent", "Price change", "Listing removed"]
+  building_level_check: true     # drop when other units at the same address carry the same history
+location_precision: address
+# Zillow rentals never carry yearBuilt. Ask Gemini only when the text states a build year.
+llm_extract:
+  from: text
+  fields: [year_built]
+  only_if_text_matches: '(?i)(built|constructed|completed|opened|circa)\D{0,25}(19|20)\d\d|(19|20)\d\d\s+(build|construction|vintage)'

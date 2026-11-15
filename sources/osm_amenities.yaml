@@ -1,0 +1,17 @@
+# OpenStreetMap amenity counts per ZIP polygon -> area_metrics. One Overpass query per ZIP, cached.
+source_key: osm_amenities
+kind: area_stats
+trust_weight: 1.0
+fetch:
+  method: overpass
+  zip_file: data/zips.txt
+  url: https://overpass-api.de/api/interpreter
+  boundaries: data/zips.geojson        # Census ZCTA polygons, written by worker/zip_boundaries.py
+  cache: data/amenities.json
+  sleep_seconds: 10
+tags:                                  # metric -> any of these key=value selectors
+  groceries: ["shop=supermarket", "shop=grocery", "shop=greengrocer"]
+  transit_stops: ["highway=bus_stop", "railway=tram_stop", "railway=station", "railway=halt"]
+  parks: ["leisure=park"]
+  food_drink: ["amenity=cafe", "amenity=restaurant"]
+  gyms: ["leisure=fitness_centre", "amenity=gym"]

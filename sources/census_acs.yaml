@@ -1,0 +1,14 @@
+# Census ACS 5-year by ZIP code tabulation area -> area_metrics. Loaded once.
+source_key: census_acs
+kind: area_stats
+trust_weight: 1.0
+fetch:
+  method: census_api
+  zip_file: data/zips.txt
+  years: [2024, 2023]                  # first year the API answers wins
+  url: "https://api.census.gov/data/{year}/acs/acs5"
+  key_env: CENSUS_API_KEY
+  cache: data/census_acs.json
+variables:
+  B19013_001E: median_income
+  B25064_001E: acs_median_rent

@@ -1,0 +1,17 @@
+# Zillow Research ZIP-level monthly indexes -> area_metrics (zori, zhvi). Loaded once.
+source_key: zillow_research
+kind: area_index
+trust_weight: 1.0
+fetch:
+  method: csv
+  zip_file: data/zips.txt
+  files:
+    - metric: zori
+      url: https://files.zillowstatic.com/research/public_csvs/zori/Zip_zori_uc_sfrcondomfr_sm_month.csv
+      extract: data/zillow_zori_sd.csv       # committed extract for the 12 ZIPs only
+    - metric: zhvi
+      url: https://files.zillowstatic.com/research/public_csvs/zhvi/Zip_zhvi_uc_sfrcondo_tier_0.33_0.67_sm_sa_month.csv
+      extract: data/zillow_zhvi_sd.csv
+columns:
+  zip: RegionName
+period: first_of_month                       # every YYYY-MM-DD column is one monthly value
