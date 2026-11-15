@@ -23,7 +23,7 @@ from worker.zip_boundaries import area_km2, contains
 ROOT = Path(__file__).resolve().parents[2]
 FIX = ROOT / "contracts" / "fixtures" / "sources"
 NOW = datetime(2026, 11, 14, 12, 0, tzinfo=timezone.utc)
-LISTING_SOURCES = ["zillow_rent", "zillow_sale", "apartments_com", "facebook_groups"]
+LISTING_SOURCES = ["zillow_rent", "zillow_sale", "apartments_com", "facebook_groups", "facebook_groups_sd"]
 ALL_SOURCES = LISTING_SOURCES + ["zillow_research", "census_acs", "osm_amenities"]
 PHONE_OR_EMAIL = re.compile(r"\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}|[\w.+-]+@[\w-]+\.\w+")
 
@@ -91,7 +91,7 @@ def test_every_source_has_a_template_matching_the_seed():
         m = re.search(rf"'{key}',\s*'(\w+)',\s*'(\w+)',\s*'sources/{key}.yaml',\s*([\d.]+),\s*(true|false)", seed)
         assert m, key
         assert float(m.group(3)) == t["trust_weight"]
-    for key in ("apartments_com", "facebook_groups"):
+    for key in ("apartments_com", "facebook_groups", "facebook_groups_sd"):
         assert re.search(rf"'{key}'.*false\)", seed)
         assert len(list((FIX / key).glob("rec*.json"))) == 3
 

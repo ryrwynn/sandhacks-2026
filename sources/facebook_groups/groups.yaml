@@ -1,0 +1,16 @@
+# Public Facebook rental groups by San Diego locality (night-data). The scraper only collects entries with a url.
+# No url is filled in yet: two web searches (2026-11-15) found business pages and Marketplace, not community
+# groups, and many local housing groups are private. A person must confirm each group is PUBLIC (visible when
+# logged out) and its rules allow reading, then paste the url. The app never joins or posts in a group.
+# The url is stored only as a hash in fb_groups; limit_per_input is capped at 50 posts per group per run.
+groups:
+  - {locality: La Jolla, zips: ["92037"], url: null, search: "La Jolla rentals housing"}
+  - {locality: Pacific Beach, zips: ["92109"], url: null, search: "Pacific Beach rentals"}
+  - {locality: Ocean Beach / Point Loma, zips: ["92107", "92106"], url: null, search: "Ocean Beach Point Loma rentals"}
+  - {locality: North Park / Hillcrest, zips: ["92104", "92103"], url: null, search: "North Park Hillcrest apartments"}
+  - {locality: Downtown / Little Italy, zips: ["92101"], url: null, search: "Downtown San Diego apartments"}
+  - {locality: Mira Mesa / Clairemont, zips: ["92126", "92117"], url: null, search: "Mira Mesa Clairemont rentals"}
+  - {locality: Chula Vista, zips: ["91910"], url: null, search: "Chula Vista apartments"}
+  - {locality: Coronado, zips: ["92118"], url: null, search: "Coronado rentals"}
+  - {locality: North County, zips: ["92008", "92054", "92075", "92081"], url: null, search: "North County San Diego rentals"}
+  - {locality: East County, zips: ["91942", "92020", "92071"], url: null, search: "East County San Diego rentals"}

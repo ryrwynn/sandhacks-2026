@@ -1,0 +1,18 @@
+{
+ "attachments": [
+  {
+   "url": "https://example.com/img.jpg"
+  }
+ ],
+ "content": "Looking for a room under $1200 near SDSU, anyone?",
+ "date_posted": "2026-11-11T09:30:00Z",
+ "num_likes": 3,
+ "post_id": "p2",
+ "profile_id": "1000p2",
+ "url": "https://www.facebook.com/groups/example/posts/p2",
+ "user_id": "up2",
+ "user_is_verified": false,
+ "user_name": "Example Person",
+ "user_url": "https://www.facebook.com/user/p2",
+ "user_username_raw": "user_p2"
+}
