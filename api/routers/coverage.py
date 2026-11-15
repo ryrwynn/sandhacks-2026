@@ -4,7 +4,7 @@ A request for an area the app doesn't cover yet enters area_requests with a cost
 position. worker.ondemand scrapes the queue inside the daily budget. Nothing here calls Bright Data.
 """
 import re
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from uuid import UUID
 
 from fastapi import APIRouter, HTTPException
@@ -15,6 +15,19 @@ from worker import bd
 
 router = APIRouter(prefix="/areas", tags=["coverage"])
 COVERED = ("core", "county")
+FRESH_DAYS = 30           # an area added on request counts as covered this long (worker/ondemand.py too)
+
+
+def is_covered(a: dict) -> bool:
+    """Core and county ZIPs always; a ZIP added on request while its scrape is under FRESH_DAYS old."""
+    if a.get("tier") in COVERED:
+        return True
+    t = a.get("last_scraped_at")
+    if a.get("tier") == "on_demand" and t is not None:
+        if t.tzinfo is None:
+            t = t.replace(tzinfo=timezone.utc)
+        return datetime.now(timezone.utc) - t < timedelta(days=FRESH_DAYS)
+    return False
 ORDINAL = {1: "next", 2: "2nd", 3: "3rd"}
 
 
@@ -41,6 +54,7 @@ def list_areas(tier: Tier | None = None, county: str | None = None, q: str | Non
         by_tier = {r["tier"]: r["n"] for r in db.fetch("SELECT tier, count(*) AS n FROM areas GROUP BY tier")}
         ids = [r["geo_id"] for r in rows]
         latest: dict[tuple[str, str], float] = {}
+        sampled: dict[str, tuple[int, float]] = {}
         if ids:
             for m in db.fetch(
                     "SELECT DISTINCT ON (geo_id, metric) geo_id, metric, value FROM ("
@@ -50,13 +64,21 @@ def list_areas(tier: Tier | None = None, county: str | None = None, q: str | Non
                     "  AND geo_id = ANY(%s) AND metric IN ('zori','zhvi')) u ORDER BY geo_id, metric, period DESC",
                     (ids, ids)):
                 latest[(m["geo_id"], m["metric"])] = float(m["value"])
+            # Listings sampled for county and on-request ZIPs (staging only; the live listing pages cover the 12).
+            for m in db.fetch(
+                    "SELECT zip, count(*) AS n, percentile_cont(0.5) WITHIN GROUP (ORDER BY price_usd) AS med "
+                    "FROM staging_listings WHERE listing_type = 'rent' AND zip = ANY(%s) AND price_usd IS NOT NULL "
+                    "AND source_key <> %s GROUP BY zip", (ids, db.FB_SOURCE)):
+                sampled[m["zip"].strip()] = (int(m["n"]), float(m["med"]))
     except db.DBUnavailable:
         return AreasResponse(areas=[], total=0, counts_by_tier={})
     areas = [AreaSummary(
         geo_type=r["geo_type"], geo_id=r["geo_id"], name=r["name"], county=r["county"], tier=r["tier"],
-        centroid_lat=r["centroid_lat"], centroid_lng=r["centroid_lng"], has_listings=r["tier"] in COVERED,
+        centroid_lat=r["centroid_lat"], centroid_lng=r["centroid_lng"], has_listings=is_covered(r),
         typical_rent_usd=latest.get((r["geo_id"], "zori")), typical_home_value_usd=latest.get((r["geo_id"], "zhvi")),
-        last_scraped_at=r["last_scraped_at"]) for r in rows]
+        last_scraped_at=r["last_scraped_at"],
+        listings_sampled=sampled.get(r["geo_id"], (None, None))[0],
+        median_asking_rent_usd=(round(sampled[r["geo_id"]][1]) if r["geo_id"] in sampled else None)) for r in rows]
     return AreasResponse(areas=areas, total=total, counts_by_tier=by_tier)
 
 
@@ -112,7 +134,7 @@ def _queue_info(request_id, requested_at) -> tuple[int | None, float]:
 def request_area(req: AreaRequestCreate) -> AreaRequestStatus:
     try:
         gtype, gid, name, areas = resolve(req.query)
-        todo = [a for a in areas if a["tier"] not in COVERED]
+        todo = [a for a in areas if not is_covered(a)]
         covered = not todo
         existing = db.fetch("SELECT * FROM area_requests WHERE geo_type=%s AND geo_id=%s AND status IN "
                             "('queued','scraping') ORDER BY requested_at LIMIT 1", (gtype, gid))

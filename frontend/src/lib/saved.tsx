@@ -53,6 +53,7 @@ type Ctx = {
   listings: Record<number, ListingSummary>;    // current data for saved ids
   loading: boolean;
   sample: boolean;                             // the listing data came from sample fixtures
+  failed: boolean;                             // the latest refresh of saved listings failed (API down)
   has: (id: number) => boolean;
   toggle: (l: ListingSummary) => void;
   remove: (id: number) => void;
@@ -63,7 +64,7 @@ type Ctx = {
 };
 
 const SavedCtx = createContext<Ctx>({
-  ready: false, items: [], listings: {}, loading: false, sample: false,
+  ready: false, items: [], listings: {}, loading: false, sample: false, failed: false,
   has: () => false, toggle: () => {}, remove: () => {}, restore: () => {}, setTarget: () => {}, markSeen: () => {}, alertCount: 0,
 });
 
@@ -73,10 +74,16 @@ export function SavedProvider({ children }: { children: ReactNode }) {
   const [listings, setListings] = useState<Record<number, ListingSummary>>({});
   const [loading, setLoading] = useState(false);
   const [sample, setSample] = useState(false);
+  const [failed, setFailed] = useState(false);
   const seeded = useRef(false);
+  // The latest list, updated synchronously: several changes in one event (e.g. "Remove selected") must each
+  // start from the previous change, not from the list captured at render time.
+  const latest = useRef<SavedItem[]>([]);
+  useEffect(() => { latest.current = items; }, [items]);
 
   const commit = useCallback((next: SavedItem[]) => {
     seeded.current = true;
+    latest.current = next;
     setItems(next);
     write({ items: next, seeded: true });
   }, []);
@@ -121,23 +128,26 @@ export function SavedProvider({ children }: { children: ReactNode }) {
       .then((res) => {
         if (cancelled) return;
         setSample(isMock(res));
+        setFailed(false);
         setListings((cur) => ({ ...cur, ...Object.fromEntries(res.items.map((l) => [l.id, l])) }));
       })
-      .catch(() => {})
+      .catch(() => { if (!cancelled) setFailed(true); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, [ready, idKey]);
 
   const value = useMemo<Ctx>(() => {
     const has = (id: number) => items.some((i) => i.id === id);
-    const remove = (id: number) => commit(items.filter((i) => i.id !== id));
+    const cur = () => latest.current;
+    const remove = (id: number) => commit(cur().filter((i) => i.id !== id));
     return {
-      ready, items, listings, loading, sample, has, remove,
+      ready, items, listings, loading, sample, failed, has, remove,
       toggle: (l) =>
         has(l.id)
           ? remove(l.id)
-          : commit([{ id: l.id, savedAt: new Date().toISOString(), priceAtSave: l.current_price_usd }, ...items]),
+          : commit([{ id: l.id, savedAt: new Date().toISOString(), priceAtSave: l.current_price_usd }, ...cur()]),
       restore: (back, order) => {
+        const items = cur();
         const have = new Set(items.map((i) => i.id));
         const add = back.filter((b) => !have.has(b.id));
         if (!add.length) return;
@@ -148,14 +158,14 @@ export function SavedProvider({ children }: { children: ReactNode }) {
         const fresh = items.filter((i) => !inOld.has(i.id));
         commit(order ? [...fresh, ...old.map((i) => byId.get(i.id)!)] : [...add, ...items]);
       },
-      setTarget: (id, target) => commit(items.map((i) => (i.id === id ? { ...i, target } : i))),
+      setTarget: (id, target) => commit(cur().map((i) => (i.id === id ? { ...i, target } : i))),
       markSeen: (id) => {
         const l = listings[id];
-        if (l) commit(items.map((i) => (i.id === id ? { ...i, seenPrice: l.current_price_usd } : i)));
+        if (l) commit(cur().map((i) => (i.id === id ? { ...i, seenPrice: l.current_price_usd } : i)));
       },
       alertCount: items.filter((i) => alertOf(i, listings[i.id])).length,
     };
-  }, [ready, items, listings, loading, sample, commit]);
+  }, [ready, items, listings, loading, sample, failed, commit]);
 
   return <SavedCtx.Provider value={value}>{children}</SavedCtx.Provider>;
 }

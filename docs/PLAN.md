@@ -873,3 +873,10 @@ What is true now, where it differs from the plan above:
   the Google subject (docs/ACCOUNTS.md). With sign-in off, `/auth/session` answers `{"enabled": false}`.
 - **Pages added since the plan:** `/find`, `/saved`, `/alerts`, `/apartments/[id]`, `/gouging`, `/areas`,
   `/scenarios`, `/advisor`, `/privacy`, `/terms` (linked from the footer and `/about`).
+- **Areas added on request** (`/areas` "Add this area"). `POST /areas/requests` queues a ZIP or city unless it is
+  covered: core and county ZIPs, or a ZIP added on request within the last 30 days. A second request for a queued
+  area returns the same request. `worker.ondemand` runs daily (13:30 UTC) within `ONDEMAND_DAILY_USD`: one batched
+  Bright Data trigger, raw records, a replay into `staging_listings`, then tier `on_demand` and `last_scraped_at`.
+  After 30 days a new request refreshes the area. Added and county ZIPs show their sampled listing count and median
+  asking rent on `/zip/[zip]` (`AreaSummary.listings_sampled`, `median_asking_rent_usd`); the listing tracker itself
+  stays on the 12 ZIPs.

@@ -191,3 +191,17 @@ def test_no_key_no_crash(env, monkeypatch):
     monkeypatch.setattr(g, "_get_client", lambda: (_ for _ in ()).throw(RuntimeError("no key")))
     assert g.explain_verdict(CHECK, "en") is None
     assert g.zip_summary("92101", "starter", []) is None
+
+
+def test_explain_gaps_allows_the_percentages_it_sends(monkeypatch):
+    """Shares go to Gemini as '79%', so an answer quoting them passes figures_ok (0.79 made every answer fail)."""
+    from api.llm import gemini as g
+    seen = {}
+
+    def fake(job, prompt, allowed, model_env="LETTER_MODEL"):
+        seen["allowed"], seen["prompt"] = set(allowed), prompt
+        return "Most comparable listings (79%) say whether utilities are included."
+    monkeypatch.setattr(g, "generate_text", fake)
+    out = g.explain_gaps("Sunny 1 bedroom.", [{"fact": "utilities", "share_of_comparables": 0.79}])
+    assert out and "79%" in seen["allowed"] and "0.79" not in seen["prompt"]
+    assert g.figures_ok(out, seen["allowed"])

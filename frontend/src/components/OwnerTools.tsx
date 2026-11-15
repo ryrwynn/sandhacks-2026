@@ -7,7 +7,7 @@ import { btnCls, inputCls } from "./styles";
 import { Bar, BedsSelect, Card, Disclaimer, ErrorNote, Field, TriState, triToBool, ZipSelect } from "./ui";
 import { ListingAnalysisCard } from "./cards";
 
-const LABELS = { low: "Low (10th percentile)", expected: "Expected", high: "High (90th percentile)", target: "Your target" } as const;
+const LABELS = { low: "Low end of the estimate", expected: "Expected", high: "High end of the estimate", target: "Your target" } as const;
 
 export default function OwnerTools() {
   const [zip, setZip] = useState("92104");

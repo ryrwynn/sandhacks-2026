@@ -13,7 +13,7 @@ const focusCls = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-v
 const above = "bottom-[calc(3.5rem+env(safe-area-inset-bottom))] md:bottom-0";
 
 export default function Saved() {
-  const { items, listings, ready, loading, has, remove, restore } = useSaved();
+  const { items, listings, ready, loading, failed, has, remove, restore } = useSaved();
   const [sort, setSort] = useState<Sort>("recent");
 
   const rows = useMemo(() => {
@@ -182,7 +182,10 @@ export default function Saved() {
           </div>
         </>
       )}
-      {ready && items.length > 0 && rows.length < items.length && !loading && (
+      {ready && failed && items.length > 0 && (
+        <p role="alert" className="text-sm text-warn">We couldn&apos;t load the latest prices for your saved apartments. Your list is safe in this browser; try again in a moment.</p>
+      )}
+      {ready && !failed && items.length > 0 && rows.length < items.length && !loading && (
         <p className="text-sm text-muted">{items.length - rows.length} saved apartment{items.length - rows.length === 1 ? " is" : "s are"} no longer in our data and can&apos;t be shown.</p>
       )}
 

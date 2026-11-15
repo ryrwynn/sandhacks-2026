@@ -49,6 +49,8 @@ export interface AreaSummary {
   typical_rent_usd: number | null;
   typical_home_value_usd: number | null;
   last_scraped_at: string | null;
+  listings_sampled: number | null;
+  median_asking_rent_usd: number | null;
 }
 
 export interface AreasResponse {

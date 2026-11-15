@@ -44,6 +44,9 @@ async function CoveredZip({ zip, token, all }: { zip: string; token: string | nu
         <Stat label="Typical rent (ZORI)" value={usd(a.typical_rent_usd)} />
         <Stat label="Typical home value (ZHVI)" value={usd(a.typical_home_value_usd)} />
         {a.last_scraped_at && <Stat label="Listings last sampled" value={new Date(a.last_scraped_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })} />}
+        {a.listings_sampled != null && a.median_asking_rent_usd != null && (
+          <Stat label="Median asking rent (sampled)" value={usd(a.median_asking_rent_usd)} note={`${a.listings_sampled} listings sampled`} />
+        )}
       </div>
       <ZipMap token={token} zips={all} focus={zip} focusCenter={center} heightClass="h-56 sm:h-72" />
       <Disclaimer kind="estimate" />
@@ -69,12 +72,12 @@ const AMENITIES: [keyof import("@/lib/contract").AmenityCounts, string][] = [
 async function Zip({ params }: { params: Promise<{ zip: string }> }) {
   const { zip } = await params;
   const token = await mapboxToken();
-  const [p, rent, value, all] = await Promise.all([getZipProfile(zip), getZipSeries(zip, "zori"), getZipSeries(zip, "zhvi"), getZips()]);
-  // Full profiles exist for the 12 core ZIPs. Any other ZIP: show what coverage knows (or say it isn't covered)
-  // instead of sample data.
-  if (isMock(p) && /^\d{5}$/.test(zip) && !isMock(all) && !all.zips.some((z) => z.zip === zip)) {
+  const all = await getZips();
+  // Full profiles exist for the 12 core ZIPs. Any other ZIP: show what coverage knows (or say it isn't covered).
+  if (!all.zips.some((z) => z.zip === zip)) {
     return <CoveredZip zip={zip} token={token} all={all.zips} />;
   }
+  const [p, rent, value] = await Promise.all([getZipProfile(zip), getZipSeries(zip, "zori"), getZipSeries(zip, "zhvi")]);
   const mock = [p, rent, value, all].some(isMock);
   // Measured 80% coverage from the latest training (served baseline); shown on each chart.
   const [covRent, covValue] = await Promise.all((["zori", "zhvi"] as const).map((m) =>

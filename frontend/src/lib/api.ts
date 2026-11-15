@@ -8,8 +8,9 @@ import { markMock } from "./mockflag";
 // RentOrKnot contract endpoints (docs/PLAN.md "API contract and pages").
 // Browser: relative /api/... (Caddy strips the prefix in production; next.config rewrites locally).
 // Server: API_INTERNAL_URL read at request time, no /api prefix.
-// If the API is unreachable, or NEXT_PUBLIC_USE_MOCKS=true, the contract fixtures are served and the
-// result is registered with isMock() so pages can label it as sample data.
+// Live data only: if the API is unreachable or answers with an error, the call throws ApiError and the page
+// shows an error state (never sample numbers). NEXT_PUBLIC_USE_MOCKS=true (local UI work only) serves the
+// contract fixtures instead, registered with isMock() so pages label them as sample data.
 // ---------------------------------------------------------------------------
 const FORCE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS === "true";
 const mocked = new WeakSet<object>();
@@ -57,17 +58,17 @@ export async function call<T extends object>(path: string, fixture: T, init?: Re
     });
     clearTimeout(timer);
     if (!res.ok) {
-      // A POST answer is about the user's own numbers: show the API's error, never sample data.
-      if (init?.method === "POST" && res.status !== 501) {
-        const detail = await res.json().then((j) => j?.detail, () => null);
+      const detail = await res.json().then((j) => j?.detail, () => null);
+      if (init?.method === "POST") {
         throw new ApiError(typeof detail === "string" ? detail : `Request failed (${res.status}). Please check your entries.`, res.status);
       }
-      return mock();
+      throw new ApiError(res.status === 404 ? "Not found." : "We couldn't load this data right now. Please try again in a moment.", res.status);
     }
     return (await res.json()) as T;
   } catch (e) {
     if (e instanceof ApiError) throw e;
-    return mock();   // API unreachable or timed out: labeled sample data
+    // API unreachable or timed out: an error, never sample data.
+    throw new ApiError("We couldn't reach our data service. Please try again in a moment.", 0);
   }
 }
 
