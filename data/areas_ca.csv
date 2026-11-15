@@ -1,0 +1,1803 @@
+zip,name,city,city_slug,county,tier,lat,lng
+90001,Florence-Graham,Florence-Graham,florence-graham,Los Angeles,index,+33.9736648,-118.2490388
+90002,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+33.9489868,-118.2467796
+90003,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+33.9640773,-118.2736836
+90004,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0762187,-118.3109634
+90005,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0593736,-118.3089617
+90006,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0480942,-118.2940452
+90007,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0281645,-118.2848289
+90008,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0103650,-118.3428122
+90010,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0620783,-118.3131861
+90011,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0069108,-118.2585708
+90012,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0667289,-118.2388213
+90013,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0443117,-118.2400266
+90014,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0430056,-118.2518996
+90015,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0393093,-118.2662548
+90016,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0287688,-118.3542922
+90017,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0530983,-118.2645052
+90018,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0286320,-118.3173467
+90019,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0486264,-118.3388842
+90020,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0663822,-118.3098315
+90021,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0290795,-118.2389067
+90022,East Los Angeles,East Los Angeles,east-los-angeles,Los Angeles,index,+34.0245290,-118.1560593
+90023,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0226380,-118.1998873
+90024,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0656447,-118.4352837
+90025,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0455351,-118.4458117
+90026,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0788503,-118.2637062
+90027,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1251712,-118.2904963
+90028,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0998114,-118.3268365
+90029,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0898749,-118.2946307
+90031,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0812331,-118.2108252
+90032,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0793131,-118.1783356
+90033,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0511890,-118.2116184
+90034,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0306239,-118.3993545
+90035,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0514263,-118.3857654
+90036,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0701780,-118.3497584
+90037,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0026603,-118.2875072
+90038,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0887831,-118.3266674
+90039,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1124562,-118.2615480
+90040,90040,,,Los Angeles,index,+33.9931665,-118.1489007
+90041,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1375460,-118.2074407
+90042,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1147494,-118.1919645
+90043,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+33.9887679,-118.3352594
+90044,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+33.9526526,-118.2920125
+90045,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+33.9530094,-118.4002981
+90046,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1075914,-118.3657120
+90047,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+33.9545377,-118.3090195
+90048,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0728769,-118.3726545
+90049,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0874991,-118.4897746
+90052,90052,,,Los Angeles,index,+33.9783040,-118.2589068
+90056,Ladera Heights,Ladera Heights,ladera-heights,Los Angeles,index,+33.9935808,-118.3688386
+90057,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0620568,-118.2770492
+90058,90058,,,Los Angeles,index,+34.0026125,-118.2144985
+90059,Willowbrook,Willowbrook,willowbrook,Los Angeles,index,+33.9270290,-118.2491105
+90061,Willowbrook,Willowbrook,willowbrook,Los Angeles,index,+33.9203522,-118.2739342
+90062,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0034933,-118.3090927
+90063,East Los Angeles,East Los Angeles,east-los-angeles,Los Angeles,index,+34.0452484,-118.1857803
+90064,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0358208,-118.4265006
+90065,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1086636,-118.2281108
+90066,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0016696,-118.4310061
+90067,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0564373,-118.4136903
+90068,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1279717,-118.3290444
+90069,West Hollywood,West Hollywood,west-hollywood,Los Angeles,index,+34.0939535,-118.3815304
+90071,90071,,,Los Angeles,index,+34.0523793,-118.2552091
+90073,90073,,,Los Angeles,index,+34.0573301,-118.4595342
+90077,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1054039,-118.4559539
+90079,90079,,,Los Angeles,index,+34.0405870,-118.2554035
+90089,90089,,,Los Angeles,index,+34.0215432,-118.2855741
+90094,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+33.9752679,-118.4182681
+90095,90095,,,Los Angeles,index,+34.0711826,-118.4434044
+90201,Bell,Bell,bell,Los Angeles,index,+33.9711193,-118.1709231
+90210,Beverly Hills,Beverly Hills,beverly-hills,Los Angeles,index,+34.1025082,-118.4150722
+90211,Beverly Hills,Beverly Hills,beverly-hills,Los Angeles,index,+34.0649562,-118.3829813
+90212,Beverly Hills,Beverly Hills,beverly-hills,Los Angeles,index,+34.0621605,-118.4018817
+90220,90220,,,Los Angeles,index,+33.8805843,-118.2359355
+90221,90221,,,Los Angeles,index,+33.8854542,-118.2061709
+90222,90222,,,Los Angeles,index,+33.9120938,-118.2372336
+90230,Culver City,Culver City,culver-city,Los Angeles,index,+33.9969705,-118.3947783
+90232,Culver City,Culver City,culver-city,Los Angeles,index,+34.0186473,-118.3915775
+90240,90240,,,Los Angeles,index,+33.9563764,-118.1180141
+90241,Downey,Downey,downey,Los Angeles,index,+33.9407201,-118.1295825
+90242,Downey,Downey,downey,Los Angeles,index,+33.9220933,-118.1416696
+90245,El Segundo,El Segundo,el-segundo,Los Angeles,index,+33.9170892,-118.4015267
+90247,Gardena,Gardena,gardena,Los Angeles,index,+33.8915773,-118.2973475
+90248,90248,,,Los Angeles,index,+33.8768717,-118.2836579
+90249,Gardena,Gardena,gardena,Los Angeles,index,+33.9015151,-118.3170646
+90250,Hawthorne,Hawthorne,hawthorne,Los Angeles,index,+33.9138121,-118.3499512
+90254,Hermosa Beach,Hermosa Beach,hermosa-beach,Los Angeles,index,+33.8648081,-118.3992715
+90255,Huntington Park,Huntington Park,huntington-park,Los Angeles,index,+33.9769700,-118.2172764
+90260,Lawndale,Lawndale,lawndale,Los Angeles,index,+33.8876659,-118.3495258
+90262,Lynwood,Lynwood,lynwood,Los Angeles,index,+33.9238313,-118.2013519
+90263,90263,,,Los Angeles,index,+34.0392805,-118.7081459
+90265,Malibu,Malibu,malibu,Los Angeles,index,+34.0702487,-118.8456591
+90266,Manhattan Beach,Manhattan Beach,manhattan-beach,Los Angeles,index,+33.8916143,-118.4033236
+90270,Maywood,Maywood,maywood,Los Angeles,index,+33.9885572,-118.1876880
+90272,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.0793554,-118.5444933
+90274,Rolling Hills Estates,Rolling Hills Estates,rolling-hills-estates,Los Angeles,index,+33.7776968,-118.3722988
+90275,Rancho Palos Verdes,Rancho Palos Verdes,rancho-palos-verdes,Los Angeles,index,+33.7515520,-118.3670511
+90277,Redondo Beach,Redondo Beach,redondo-beach,Los Angeles,index,+33.8296245,-118.3871662
+90278,Redondo Beach,Redondo Beach,redondo-beach,Los Angeles,index,+33.8736054,-118.3702644
+90280,South Gate,South Gate,south-gate,Los Angeles,index,+33.9445044,-118.1925053
+90290,Topanga,Topanga,topanga,Los Angeles,index,+34.0972636,-118.6125031
+90291,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+33.9932838,-118.4652299
+90292,Marina del Rey,Marina del Rey,marina-del-rey,Los Angeles,index,+33.9770270,-118.4496027
+90293,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+33.9464576,-118.4410950
+90301,Inglewood,Inglewood,inglewood,Los Angeles,index,+33.9564643,-118.3586812
+90302,Inglewood,Inglewood,inglewood,Los Angeles,index,+33.9747266,-118.3556587
+90303,Inglewood,Inglewood,inglewood,Los Angeles,index,+33.9360043,-118.3311555
+90304,Inglewood,Inglewood,inglewood,Los Angeles,index,+33.9373602,-118.3587951
+90305,Inglewood,Inglewood,inglewood,Los Angeles,index,+33.9582989,-118.3311200
+90401,Santa Monica,Santa Monica,santa-monica,Los Angeles,index,+34.0160989,-118.4924539
+90402,Santa Monica,Santa Monica,santa-monica,Los Angeles,index,+34.0349647,-118.5046657
+90403,Santa Monica,Santa Monica,santa-monica,Los Angeles,index,+34.0302285,-118.4914025
+90404,Santa Monica,Santa Monica,santa-monica,Los Angeles,index,+34.0266494,-118.4738350
+90405,Santa Monica,Santa Monica,santa-monica,Los Angeles,index,+34.0110566,-118.4722614
+90501,Torrance,Torrance,torrance,Los Angeles,index,+33.8336078,-118.3142124
+90502,Torrance,Torrance,torrance,Los Angeles,index,+33.8350240,-118.2929072
+90503,Torrance,Torrance,torrance,Los Angeles,index,+33.8408874,-118.3537710
+90504,Torrance,Torrance,torrance,Los Angeles,index,+33.8669375,-118.3313538
+90505,Torrance,Torrance,torrance,Los Angeles,index,+33.8090206,-118.3477571
+90506,90506,,,Los Angeles,index,+33.8849127,-118.3304737
+90601,Whittier,Whittier,whittier,Los Angeles,index,+34.0078361,-118.0328740
+90602,Whittier,Whittier,whittier,Los Angeles,index,+33.9731812,-118.0233672
+90603,90603,,,Los Angeles,index,+33.9448663,-117.9923377
+90604,Whittier,Whittier,whittier,Los Angeles,index,+33.9300832,-118.0122315
+90605,Whittier,Whittier,whittier,Los Angeles,index,+33.9520628,-118.0208881
+90606,Whittier,Whittier,whittier,Los Angeles,index,+33.9773948,-118.0660847
+90620,Buena Park,Buena Park,buena-park,Orange,index,+33.8461465,-118.0117806
+90621,Buena Park,Buena Park,buena-park,Orange,index,+33.8739453,-117.9934845
+90623,90623,,,Orange,index,+33.8503602,-118.0408728
+90630,Cypress,Cypress,cypress,Orange,index,+33.8181400,-118.0381441
+90631,La Habra,La Habra,la-habra,Orange,index,+33.9426612,-117.9512599
+90638,La Mirada,La Mirada,la-mirada,Los Angeles,index,+33.9023657,-118.0090907
+90639,90639,,,Los Angeles,index,+33.9057464,-118.0149070
+90640,Montebello,Montebello,montebello,Los Angeles,index,+34.0150099,-118.1110508
+90650,Norwalk,Norwalk,norwalk,Los Angeles,index,+33.9070220,-118.0825014
+90660,Pico Rivera,Pico Rivera,pico-rivera,Los Angeles,index,+33.9887026,-118.0910637
+90670,90670,,,Los Angeles,index,+33.9328315,-118.0626132
+90680,Stanton,Stanton,stanton,Orange,index,+33.8011398,-117.9953266
+90701,90701,,,Los Angeles,index,+33.8676054,-118.0806306
+90703,Cerritos,Cerritos,cerritos,Los Angeles,index,+33.8679584,-118.0687317
+90704,90704,,,Los Angeles,index,+33.3898345,-118.4489270
+90706,Bellflower,Bellflower,bellflower,Los Angeles,index,+33.8880236,-118.1270875
+90710,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+33.7980659,-118.2992177
+90712,Lakewood,Lakewood,lakewood,Los Angeles,index,+33.8489540,-118.1468692
+90713,Lakewood,Lakewood,lakewood,Los Angeles,index,+33.8480221,-118.1127458
+90715,Lakewood,Lakewood,lakewood,Los Angeles,index,+33.8403268,-118.0788295
+90716,90716,,,Los Angeles,index,+33.8304734,-118.0729587
+90717,Lomita,Lomita,lomita,Los Angeles,index,+33.7934561,-118.3170541
+90720,Los Alamitos,Los Alamitos,los-alamitos,Orange,index,+33.7957264,-118.0634280
+90723,Paramount,Paramount,paramount,Los Angeles,index,+33.8976503,-118.1650961
+90731,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+33.7303043,-118.2760431
+90732,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+33.7374054,-118.3130613
+90740,Seal Beach,Seal Beach,seal-beach,Orange,index,+33.7536806,-118.0729895
+90742,90742,,,Orange,index,+33.7171684,-118.0748394
+90743,90743,,,Orange,index,+33.7278081,-118.0896927
+90744,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+33.7782057,-118.2608948
+90745,Carson,Carson,carson,Los Angeles,index,+33.8211807,-118.2646029
+90746,Carson,Carson,carson,Los Angeles,index,+33.8585119,-118.2551634
+90747,90747,,,Los Angeles,index,+33.8637854,-118.2513536
+90755,Signal Hill,Signal Hill,signal-hill,Los Angeles,index,+33.8027151,-118.1674577
+90802,Long Beach,Long Beach,long-beach,Los Angeles,index,+33.7505346,-118.2093706
+90803,Long Beach,Long Beach,long-beach,Los Angeles,index,+33.7546697,-118.1322041
+90804,Long Beach,Long Beach,long-beach,Los Angeles,index,+33.7822549,-118.1490718
+90805,Long Beach,Long Beach,long-beach,Los Angeles,index,+33.8649373,-118.1805268
+90806,Long Beach,Long Beach,long-beach,Los Angeles,index,+33.8081913,-118.1779766
+90807,Long Beach,Long Beach,long-beach,Los Angeles,index,+33.8309693,-118.1811384
+90808,Long Beach,Long Beach,long-beach,Los Angeles,index,+33.8240621,-118.1123431
+90810,Long Beach,Long Beach,long-beach,Los Angeles,index,+33.8190582,-118.2209590
+90813,Long Beach,Long Beach,long-beach,Los Angeles,index,+33.7823322,-118.1965229
+90814,Long Beach,Long Beach,long-beach,Los Angeles,index,+33.7715806,-118.1433606
+90815,Long Beach,Long Beach,long-beach,Los Angeles,index,+33.7957645,-118.1158797
+90822,90822,,,Los Angeles,index,+33.7784357,-118.1186480
+90831,90831,,,Los Angeles,index,+33.7683078,-118.2007622
+90840,90840,,,Los Angeles,index,+33.7845657,-118.1213125
+91001,Altadena,Altadena,altadena,Los Angeles,index,+34.1951937,-118.1385980
+91006,Arcadia,Arcadia,arcadia,Los Angeles,index,+34.1351722,-118.0266625
+91007,Arcadia,Arcadia,arcadia,Los Angeles,index,+34.1283836,-118.0481766
+91008,91008,,,Los Angeles,index,+34.1536308,-117.9685428
+91010,Duarte,Duarte,duarte,Los Angeles,index,+34.1411345,-117.9591773
+91011,La Canada Flintridge,La Canada Flintridge,la-canada-flintridge,Los Angeles,index,+34.2175576,-118.2034276
+91016,Monrovia,Monrovia,monrovia,Los Angeles,index,+34.1524939,-118.0006547
+91020,La Crescenta-Montrose,La Crescenta-Montrose,la-crescenta-montrose,Los Angeles,index,+34.2113702,-118.2306878
+91024,Sierra Madre,Sierra Madre,sierra-madre,Los Angeles,index,+34.1717087,-118.0466075
+91030,South Pasadena,South Pasadena,south-pasadena,Los Angeles,index,+34.1103024,-118.1574383
+91040,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.2586303,-118.3346126
+91042,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.3068630,-118.2570043
+91046,91046,,,Los Angeles,index,+34.2116769,-118.2409217
+91101,Pasadena,Pasadena,pasadena,Los Angeles,index,+34.1467715,-118.1389217
+91103,Pasadena,Pasadena,pasadena,Los Angeles,index,+34.1674269,-118.1644470
+91104,Pasadena,Pasadena,pasadena,Los Angeles,index,+34.1676428,-118.1234329
+91105,Pasadena,Pasadena,pasadena,Los Angeles,index,+34.1404996,-118.1671245
+91106,Pasadena,Pasadena,pasadena,Los Angeles,index,+34.1385709,-118.1282505
+91107,Pasadena,Pasadena,pasadena,Los Angeles,index,+34.1592511,-118.0868585
+91108,91108,,,Los Angeles,index,+34.1223356,-118.1135671
+91125,91125,,,Los Angeles,index,+34.1376436,-118.1249524
+91201,Glendale,Glendale,glendale,Los Angeles,index,+34.1703805,-118.2889622
+91202,Glendale,Glendale,glendale,Los Angeles,index,+34.1822514,-118.2675676
+91203,Glendale,Glendale,glendale,Los Angeles,index,+34.1529081,-118.2635168
+91204,Glendale,Glendale,glendale,Los Angeles,index,+34.1355570,-118.2609400
+91205,Glendale,Glendale,glendale,Los Angeles,index,+34.1367762,-118.2433999
+91206,Glendale,Glendale,glendale,Los Angeles,index,+34.1607382,-118.2130514
+91207,Glendale,Glendale,glendale,Los Angeles,index,+34.1687058,-118.2447599
+91208,Glendale,Glendale,glendale,Los Angeles,index,+34.1932590,-118.2383161
+91210,91210,,,Los Angeles,index,+34.1446528,-118.2580607
+91214,La Crescenta-Montrose,La Crescenta-Montrose,la-crescenta-montrose,Los Angeles,index,+34.2375495,-118.2478097
+91301,Agoura Hills,Agoura Hills,agoura-hills,Los Angeles,index,+34.1231574,-118.7568604
+91302,Calabasas,Calabasas,calabasas,Los Angeles,index,+34.1229747,-118.6719115
+91303,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1978222,-118.6016982
+91304,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.2247086,-118.6324963
+91306,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.2092125,-118.5754737
+91307,Bell Canyon,Bell Canyon,bell-canyon,Los Angeles,index,+34.2017851,-118.6622281
+91311,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.2901130,-118.6077322
+91316,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1583267,-118.5165848
+91320,Thousand Oaks,Thousand Oaks,thousand-oaks,Ventura,index,+34.1733772,-118.9479768
+91321,Santa Clarita,Santa Clarita,santa-clarita,Los Angeles,index,+34.3647748,-118.4922164
+91324,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.2385696,-118.5501475
+91325,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.2363360,-118.5177558
+91326,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.2801449,-118.5564369
+91330,91330,,,Los Angeles,index,+34.2445219,-118.5266770
+91331,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.2560278,-118.4193967
+91335,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.2010560,-118.5407080
+91340,San Fernando,San Fernando,san-fernando,Los Angeles,index,+34.2866697,-118.4348171
+91342,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.3177948,-118.3920692
+91343,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.2383807,-118.4807552
+91344,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.2899062,-118.5047059
+91345,91345,,,Los Angeles,index,+34.2659156,-118.4594835
+91350,Santa Clarita,Santa Clarita,santa-clarita,Los Angeles,index,+34.4303151,-118.5025621
+91351,Santa Clarita,Santa Clarita,santa-clarita,Los Angeles,index,+34.4326068,-118.4629095
+91352,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.2318387,-118.3660143
+91354,Santa Clarita,Santa Clarita,santa-clarita,Los Angeles,index,+34.4604174,-118.5528292
+91355,Santa Clarita,Santa Clarita,santa-clarita,Los Angeles,index,+34.4237671,-118.5843792
+91356,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1549990,-118.5475590
+91360,Thousand Oaks,Thousand Oaks,thousand-oaks,Ventura,index,+34.2147577,-118.8773631
+91361,Westlake Village,Westlake Village,westlake-village,Ventura,index,+34.1401553,-118.8839908
+91362,Thousand Oaks,Thousand Oaks,thousand-oaks,Ventura,index,+34.1924314,-118.8194861
+91364,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1548025,-118.5948161
+91367,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1770659,-118.6152311
+91371,91371,,,Los Angeles,index,+34.1850148,-118.5760882
+91377,Oak Park,Oak Park,oak-park,Ventura,index,+34.1847243,-118.7665166
+91381,Stevenson Ranch,Stevenson Ranch,stevenson-ranch,Los Angeles,index,+34.3752981,-118.6074426
+91384,91384,,,Los Angeles,index,+34.5160336,-118.6728515
+91387,Santa Clarita,Santa Clarita,santa-clarita,Los Angeles,index,+34.3970702,-118.3706734
+91390,Santa Clarita,Santa Clarita,santa-clarita,Los Angeles,index,+34.5315595,-118.4066309
+91401,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1780440,-118.4318859
+91402,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.2240900,-118.4448119
+91403,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1472054,-118.4630822
+91405,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.2015494,-118.4487208
+91406,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1978905,-118.4899087
+91411,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1785171,-118.4596299
+91423,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1491873,-118.4323795
+91436,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1521532,-118.4905353
+91501,Burbank,Burbank,burbank,Los Angeles,index,+34.1947627,-118.2943134
+91502,Burbank,Burbank,burbank,Los Angeles,index,+34.1768368,-118.3093604
+91504,Burbank,Burbank,burbank,Los Angeles,index,+34.2135059,-118.3148031
+91505,Burbank,Burbank,burbank,Los Angeles,index,+34.1758872,-118.3469255
+91506,Burbank,Burbank,burbank,Los Angeles,index,+34.1713096,-118.3238268
+91601,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1682712,-118.3722557
+91602,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1508283,-118.3662569
+91604,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1398679,-118.3942729
+91605,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.2069664,-118.4006571
+91606,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1865232,-118.3886066
+91607,Los Angeles,Los Angeles,los-angeles,Los Angeles,index,+34.1663458,-118.3998640
+91608,91608,,,Los Angeles,index,+34.1383599,-118.3527967
+91701,Rancho Cucamonga,Rancho Cucamonga,rancho-cucamonga,San Bernardino,index,+34.1378332,-117.6003470
+91702,Azusa,Azusa,azusa,Los Angeles,index,+34.2412675,-117.8262034
+91706,Baldwin Park,Baldwin Park,baldwin-park,Los Angeles,index,+34.0962160,-117.9686189
+91708,Chino,Chino,chino,San Bernardino,index,+33.9512862,-117.6450943
+91709,Chino Hills,Chino Hills,chino-hills,San Bernardino,index,+33.9509590,-117.7254529
+91710,Chino,Chino,chino,San Bernardino,index,+34.0050967,-117.6825243
+91711,Claremont,Claremont,claremont,Los Angeles,index,+34.1283718,-117.7152559
+91722,91722,,,Los Angeles,index,+34.0972915,-117.9061859
+91723,Covina,Covina,covina,Los Angeles,index,+34.0849603,-117.8865576
+91724,Covina,Covina,covina,Los Angeles,index,+34.0805027,-117.8550922
+91730,Rancho Cucamonga,Rancho Cucamonga,rancho-cucamonga,San Bernardino,index,+34.1002333,-117.5811021
+91731,El Monte,El Monte,el-monte,Los Angeles,index,+34.0791547,-118.0404903
+91732,El Monte,El Monte,el-monte,Los Angeles,index,+34.0724071,-118.0145239
+91733,South El Monte,South El Monte,south-el-monte,Los Angeles,index,+34.0454566,-118.0530828
+91737,Rancho Cucamonga,Rancho Cucamonga,rancho-cucamonga,San Bernardino,index,+34.1552383,-117.5780976
+91739,Rancho Cucamonga,Rancho Cucamonga,rancho-cucamonga,San Bernardino,index,+34.1621495,-117.5155536
+91740,Glendora,Glendora,glendora,Los Angeles,index,+34.1188129,-117.8533867
+91741,Glendora,Glendora,glendora,Los Angeles,index,+34.1646623,-117.8320288
+91744,La Puente,La Puente,la-puente,Los Angeles,index,+34.0291216,-117.9373459
+91745,Hacienda Heights,Hacienda Heights,hacienda-heights,Los Angeles,index,+33.9992497,-117.9722519
+91746,91746,,,Los Angeles,index,+34.0439099,-117.9878090
+91748,Rowland Heights,Rowland Heights,rowland-heights,Los Angeles,index,+33.9769080,-117.8992184
+91750,La Verne,La Verne,la-verne,Los Angeles,index,+34.1491661,-117.7665217
+91752,Jurupa Valley,Jurupa Valley,jurupa-valley,Riverside,index,+33.9957366,-117.5339876
+91754,Monterey Park,Monterey Park,monterey-park,Los Angeles,index,+34.0509981,-118.1444993
+91755,Monterey Park,Monterey Park,monterey-park,Los Angeles,index,+34.0483341,-118.1149370
+91759,91759,,,Los Angeles,index,+34.2540733,-117.6919403
+91761,Ontario,Ontario,ontario,San Bernardino,index,+34.0354014,-117.5914964
+91762,Ontario,Ontario,ontario,San Bernardino,index,+34.0276395,-117.6430307
+91763,Montclair,Montclair,montclair,San Bernardino,index,+34.0720602,-117.6982882
+91764,Ontario,Ontario,ontario,San Bernardino,index,+34.0753489,-117.6015218
+91765,Diamond Bar,Diamond Bar,diamond-bar,Los Angeles,index,+33.9872677,-117.8147415
+91766,Pomona,Pomona,pomona,Los Angeles,index,+34.0419322,-117.7570197
+91767,Pomona,Pomona,pomona,Los Angeles,index,+34.0814263,-117.7386837
+91768,Pomona,Pomona,pomona,Los Angeles,index,+34.0635854,-117.7893848
+91770,Rosemead,Rosemead,rosemead,Los Angeles,index,+34.0639147,-118.0835900
+91773,San Dimas,San Dimas,san-dimas,Los Angeles,index,+34.1072142,-117.8092825
+91775,San Gabriel,San Gabriel,san-gabriel,Los Angeles,index,+34.1145148,-118.0894876
+91776,San Gabriel,San Gabriel,san-gabriel,Los Angeles,index,+34.0898428,-118.0951733
+91780,Temple City,Temple City,temple-city,Los Angeles,index,+34.1015089,-118.0558587
+91784,Upland,Upland,upland,San Bernardino,index,+34.1410407,-117.6583706
+91786,Upland,Upland,upland,San Bernardino,index,+34.1052502,-117.6620703
+91789,Walnut,Walnut,walnut,Los Angeles,index,+34.0185980,-117.8540900
+91790,West Covina,West Covina,west-covina,Los Angeles,index,+34.0672293,-117.9378608
+91791,West Covina,West Covina,west-covina,Los Angeles,index,+34.0612901,-117.8941979
+91792,West Covina,West Covina,west-covina,Los Angeles,index,+34.0258869,-117.8999393
+91801,Alhambra,Alhambra,alhambra,Los Angeles,index,+34.0909238,-118.1277610
+91803,Alhambra,Alhambra,alhambra,Los Angeles,index,+34.0748784,-118.1462429
+91901,Alpine,Alpine,alpine,San Diego,county,+32.8146706,-116.7192831
+91902,91902,,,San Diego,county,+32.6748121,-117.0047549
+91905,91905,,,San Diego,county,+32.6776373,-116.3073137
+91906,91906,,,San Diego,county,+32.6623311,-116.4725331
+91910,Chula Vista,Chula Vista,chula-vista,San Diego,core,+32.6365372,-117.0629781
+91911,Chula Vista,Chula Vista,chula-vista,San Diego,county,+32.6068512,-117.0498899
+91913,Chula Vista,Chula Vista,chula-vista,San Diego,county,+32.6217349,-116.9860831
+91914,Chula Vista,Chula Vista,chula-vista,San Diego,county,+32.6660395,-116.9542404
+91915,Chula Vista,Chula Vista,chula-vista,San Diego,county,+32.6226267,-116.9500953
+91916,91916,,,San Diego,county,+32.9110353,-116.6320047
+91917,91917,,,San Diego,county,+32.6267554,-116.7190251
+91931,91931,,,San Diego,county,+32.8375964,-116.5803049
+91932,Imperial Beach,Imperial Beach,imperial-beach,San Diego,county,+32.5678180,-117.1194600
+91934,91934,,,San Diego,county,+32.6648539,-116.1682588
+91935,91935,,,San Diego,county,+32.7021637,-116.7872185
+91941,La Mesa,La Mesa,la-mesa,San Diego,county,+32.7596581,-116.9924844
+91942,La Mesa,La Mesa,la-mesa,San Diego,county,+32.7772675,-117.0213425
+91945,Lemon Grove,Lemon Grove,lemon-grove,San Diego,county,+32.7331470,-117.0340679
+91948,91948,,,San Diego,county,+32.8751133,-116.4707610
+91950,National City,National City,national-city,San Diego,county,+32.6695196,-117.0931911
+91962,91962,,,San Diego,county,+32.7924566,-116.4804128
+91963,91963,,,San Diego,county,+32.6479501,-116.5963564
+91977,Spring Valley,Spring Valley,spring-valley,San Diego,county,+32.7238848,-116.9963356
+91978,Spring Valley,Spring Valley,spring-valley,San Diego,county,+32.7121107,-116.9410987
+91980,91980,,,San Diego,county,+32.5869308,-116.6190252
+92003,92003,,,San Diego,county,+33.2870215,-117.1997474
+92004,92004,,,San Diego,county,+33.1847170,-116.1564626
+92007,Encinitas,Encinitas,encinitas,San Diego,county,+33.0218963,-117.2747217
+92008,Carlsbad,Carlsbad,carlsbad,San Diego,county,+33.1436310,-117.3184078
+92009,Carlsbad,Carlsbad,carlsbad,San Diego,county,+33.0953394,-117.2457689
+92010,Carlsbad,Carlsbad,carlsbad,San Diego,county,+33.1567527,-117.2842364
+92011,Carlsbad,Carlsbad,carlsbad,San Diego,county,+33.1070489,-117.2945978
+92014,San Diego,San Diego,san-diego,San Diego,county,+32.9674177,-117.2500360
+92019,El Cajon,El Cajon,el-cajon,San Diego,county,+32.7788413,-116.8714179
+92020,El Cajon,El Cajon,el-cajon,San Diego,county,+32.7956045,-116.9697536
+92021,El Cajon,El Cajon,el-cajon,San Diego,county,+32.8351241,-116.8746687
+92024,Encinitas,Encinitas,encinitas,San Diego,county,+33.0572455,-117.2577861
+92025,Escondido,Escondido,escondido,San Diego,county,+33.0849700,-117.0296393
+92026,Escondido,Escondido,escondido,San Diego,county,+33.2110995,-117.1115573
+92027,Escondido,Escondido,escondido,San Diego,county,+33.1326000,-116.9833462
+92028,Fallbrook,Fallbrook,fallbrook,San Diego,county,+33.3861436,-117.2265339
+92029,Escondido,Escondido,escondido,San Diego,county,+33.0855130,-117.1288428
+92036,92036,,,San Diego,county,+33.0114062,-116.3766214
+92037,San Diego,San Diego,san-diego,San Diego,county,+32.8548655,-117.2532021
+92040,Lakeside,Lakeside,lakeside,San Diego,county,+32.9066407,-116.8887696
+92054,Oceanside,Oceanside,oceanside,San Diego,county,+33.1935065,-117.3575935
+92055,92055,,,San Diego,county,+33.3811334,-117.4286299
+92056,Oceanside,Oceanside,oceanside,San Diego,county,+33.2019496,-117.2893365
+92057,Oceanside,Oceanside,oceanside,San Diego,county,+33.2532471,-117.2870236
+92058,Oceanside,Oceanside,oceanside,San Diego,county,+33.2827317,-117.3434582
+92059,92059,,,San Diego,county,+33.3827941,-117.0519829
+92060,92060,,,San Diego,county,+33.3503507,-116.8644214
+92061,92061,,,San Diego,county,+33.3003525,-116.9305229
+92064,Poway,Poway,poway,San Diego,county,+32.9803854,-117.0174708
+92065,Ramona,Ramona,ramona,San Diego,county,+33.0473432,-116.8438409
+92066,92066,,,San Diego,county,+33.2154121,-116.5358340
+92067,92067,,,San Diego,county,+33.0208448,-117.1921001
+92069,San Marcos,San Marcos,san-marcos,San Diego,county,+33.1753026,-117.1576205
+92070,92070,,,San Diego,county,+33.1851293,-116.7407130
+92071,Santee,Santee,santee,San Diego,county,+32.8504703,-116.9947955
+92075,Solana Beach,Solana Beach,solana-beach,San Diego,county,+32.9972543,-117.2595151
+92078,San Marcos,San Marcos,san-marcos,San Diego,county,+33.1183168,-117.1855213
+92081,Vista,Vista,vista,San Diego,county,+33.1645491,-117.2405496
+92082,92082,,,San Diego,county,+33.2518226,-117.0027976
+92083,Vista,Vista,vista,San Diego,county,+33.1980901,-117.2483645
+92084,Vista,Vista,vista,San Diego,county,+33.2244930,-117.2033002
+92086,92086,,,San Diego,county,+33.2971723,-116.6416379
+92091,92091,,,San Diego,county,+33.0343580,-117.1969659
+92092,92092,,,San Diego,county,+32.8755426,-117.2361441
+92093,92093,,,San Diego,county,+32.8821192,-117.2370823
+92096,92096,,,San Diego,county,+33.1281557,-117.1561943
+92101,Downtown,San Diego,san-diego,San Diego,core,+32.7161151,-117.1858394
+92102,San Diego,San Diego,san-diego,San Diego,county,+32.7159810,-117.1174946
+92103,Hillcrest,San Diego,san-diego,San Diego,core,+32.7478157,-117.1673324
+92104,North Park,San Diego,san-diego,San Diego,core,+32.7419328,-117.1278140
+92105,City Heights,San Diego,san-diego,San Diego,core,+32.7375629,-117.0919131
+92106,San Diego,San Diego,san-diego,San Diego,county,+32.7101772,-117.2376344
+92107,Ocean Beach,San Diego,san-diego,San Diego,core,+32.7392275,-117.2455918
+92108,Mission Valley,San Diego,san-diego,San Diego,core,+32.7742491,-117.1410769
+92109,Pacific Beach,San Diego,san-diego,San Diego,core,+32.7861868,-117.2341436
+92110,San Diego,San Diego,san-diego,San Diego,county,+32.7652481,-117.1996624
+92111,Linda Vista,San Diego,san-diego,San Diego,core,+32.8064823,-117.1689655
+92113,San Diego,San Diego,san-diego,San Diego,county,+32.6959234,-117.1202167
+92114,San Diego,San Diego,san-diego,San Diego,county,+32.7077518,-117.0552987
+92115,San Diego,San Diego,san-diego,San Diego,county,+32.7615498,-117.0719022
+92116,San Diego,San Diego,san-diego,San Diego,county,+32.7648411,-117.1231244
+92117,Clairemont,San Diego,san-diego,San Diego,core,+32.8248829,-117.1997050
+92118,Coronado,Coronado,coronado,San Diego,county,+32.6714209,-117.1682525
+92119,San Diego,San Diego,san-diego,San Diego,county,+32.8089597,-117.0323231
+92120,San Diego,San Diego,san-diego,San Diego,county,+32.7952859,-117.0731910
+92121,San Diego,San Diego,san-diego,San Diego,county,+32.8972098,-117.2021798
+92122,University City,San Diego,san-diego,San Diego,core,+32.8567860,-117.2101611
+92123,San Diego,San Diego,san-diego,San Diego,county,+32.8096148,-117.1342012
+92124,San Diego,San Diego,san-diego,San Diego,county,+32.8282552,-117.0852620
+92126,Mira Mesa,San Diego,san-diego,San Diego,core,+32.9119910,-117.1434207
+92127,San Diego,San Diego,san-diego,San Diego,county,+33.0191248,-117.1233846
+92128,San Diego,San Diego,san-diego,San Diego,county,+32.9969246,-117.0730689
+92129,San Diego,San Diego,san-diego,San Diego,county,+32.9635357,-117.1262210
+92130,San Diego,San Diego,san-diego,San Diego,county,+32.9476156,-117.2058249
+92131,San Diego,San Diego,san-diego,San Diego,county,+32.8960294,-117.0573974
+92132,92132,,,San Diego,county,+32.7136722,-117.1720388
+92134,92134,,,San Diego,county,+32.7250551,-117.1454146
+92135,92135,,,San Diego,county,+32.6949898,-117.1943055
+92136,92136,,,San Diego,county,+32.6825427,-117.1230777
+92139,San Diego,San Diego,san-diego,San Diego,county,+32.6800314,-117.0488864
+92140,92140,,,San Diego,county,+32.7403521,-117.1984472
+92145,92145,,,San Diego,county,+32.8629167,-117.1457766
+92147,92147,,,San Diego,county,+32.7247448,-117.2187498
+92154,San Diego,San Diego,san-diego,San Diego,county,+32.5779484,-116.9663022
+92155,92155,,,San Diego,county,+32.6611911,-117.1621292
+92161,92161,,,San Diego,county,+32.8740717,-117.2315635
+92173,San Diego,San Diego,san-diego,San Diego,county,+32.5555802,-117.0511954
+92179,92179,,,San Diego,county,+32.5839037,-116.9334746
+92182,92182,,,San Diego,county,+32.7749830,-117.0742275
+92201,Indio,Indio,indio,Riverside,index,+33.7080588,-116.2350186
+92203,Indio,Indio,indio,Riverside,index,+33.7516006,-116.2414256
+92210,Indian Wells,Indian Wells,indian-wells,Riverside,index,+33.7036748,-116.3395128
+92211,Palm Desert,Palm Desert,palm-desert,Riverside,index,+33.7659339,-116.3324391
+92220,Banning,Banning,banning,Riverside,index,+33.9399186,-116.8393314
+92222,92222,,,Imperial,index,+32.7834493,-114.5495304
+92223,Beaumont,Beaumont,beaumont,Riverside,index,+33.9381679,-116.9813606
+92225,Blythe,Blythe,blythe,Riverside,index,+33.7160658,-114.6564031
+92227,Brawley,Brawley,brawley,Imperial,index,+32.9868852,-115.3338870
+92230,92230,,,Riverside,index,+33.9087654,-116.7687910
+92231,92231,,,Imperial,index,+32.6876362,-115.5643729
+92233,92233,,,Imperial,index,+33.1473583,-115.5068626
+92234,Cathedral City,Cathedral City,cathedral-city,Riverside,index,+33.8138071,-116.4666238
+92236,92236,,,Riverside,index,+33.7027649,-116.0724402
+92239,92239,,,Riverside,index,+33.8742660,-115.2441976
+92240,Desert Hot Springs,Desert Hot Springs,desert-hot-springs,Riverside,index,+33.9528617,-116.5194192
+92241,92241,,,Riverside,index,+33.8463392,-116.2832888
+92242,92242,,,San Bernardino,index,+34.1901284,-114.3076942
+92243,El Centro,El Centro,el-centro,Imperial,index,+32.7728648,-115.6006682
+92249,92249,,,Imperial,index,+32.7260677,-115.4821502
+92250,92250,,,Imperial,index,+32.7919971,-115.2345728
+92251,Imperial,Imperial,imperial,Imperial,index,+32.8712519,-115.7182225
+92252,Joshua Tree,Joshua Tree,joshua-tree,San Bernardino,index,+34.1479700,-116.2842223
+92253,La Quinta,La Quinta,la-quinta,Riverside,index,+33.6556512,-116.2879091
+92254,92254,,,Riverside,index,+33.5436985,-116.0000040
+92256,92256,,,San Bernardino,index,+34.0720603,-116.6176658
+92257,92257,,,Imperial,index,+33.3397306,-115.5279829
+92258,92258,,,Riverside,index,+33.9179355,-116.5600378
+92259,92259,,,Imperial,index,+32.7347932,-115.9464000
+92260,Palm Desert,Palm Desert,palm-desert,Riverside,index,+33.6984070,-116.4052705
+92262,Palm Springs,Palm Springs,palm-springs,Riverside,index,+33.8628715,-116.5574932
+92264,Palm Springs,Palm Springs,palm-springs,Riverside,index,+33.7356141,-116.5053760
+92266,92266,,,Imperial,index,+33.1750161,-114.9255287
+92267,92267,,,San Bernardino,index,+34.2976234,-114.2013814
+92268,92268,,,San Bernardino,index,+34.1614600,-116.5500142
+92270,Rancho Mirage,Rancho Mirage,rancho-mirage,Riverside,index,+33.7640346,-116.4270189
+92273,92273,,,Imperial,index,+32.8080637,-115.6959599
+92274,92274,,,Riverside,index,+33.4701820,-116.1137446
+92275,92275,,,Imperial,index,+33.2078171,-115.8808174
+92276,92276,,,Riverside,index,+33.8323157,-116.3864146
+92277,Twentynine Palms,Twentynine Palms,twentynine-palms,San Bernardino,index,+34.1124366,-115.6879303
+92278,92278,,,San Bernardino,index,+34.2350560,-116.0582682
+92280,92280,,,San Bernardino,index,+34.1398298,-114.8465279
+92281,92281,,,Imperial,index,+33.0503434,-115.6126511
+92282,92282,,,Riverside,index,+33.9625750,-116.6582957
+92283,92283,,,Imperial,index,+32.8373952,-114.7944352
+92284,Yucca Valley,Yucca Valley,yucca-valley,San Bernardino,index,+34.1600756,-116.4247167
+92285,92285,,,San Bernardino,index,+34.3376546,-116.5136717
+92301,Adelanto,Adelanto,adelanto,San Bernardino,index,+34.6517864,-117.5261012
+92304,92304,,,San Bernardino,index,+34.5306210,-115.6593695
+92305,92305,,,San Bernardino,index,+34.1702130,-116.8323128
+92307,Apple Valley,Apple Valley,apple-valley,San Bernardino,index,+34.5907570,-117.1412520
+92308,Apple Valley,Apple Valley,apple-valley,San Bernardino,index,+34.4200343,-117.1555738
+92309,92309,,,San Bernardino,index,+35.2491956,-116.1562359
+92310,92310,,,San Bernardino,index,+35.3344112,-116.7630136
+92311,Barstow,Barstow,barstow,San Bernardino,index,+34.9718500,-117.0102213
+92313,Grand Terrace,Grand Terrace,grand-terrace,San Bernardino,index,+34.0315397,-117.3139067
+92314,Big Bear City,Big Bear City,big-bear-city,San Bernardino,index,+34.2576050,-116.8007364
+92315,Big Bear Lake,Big Bear Lake,big-bear-lake,San Bernardino,index,+34.2200945,-116.9530342
+92316,92316,,,San Bernardino,index,+34.0575617,-117.3907379
+92317,92317,,,San Bernardino,index,+34.2450764,-117.2087315
+92320,92320,,,Riverside,index,+33.9873714,-117.0503104
+92321,92321,,,San Bernardino,index,+34.2474223,-117.1468870
+92322,92322,,,San Bernardino,index,+34.2541707,-117.3225759
+92324,Colton,Colton,colton,San Bernardino,index,+34.0339818,-117.2901423
+92325,Crestline,Crestline,crestline,San Bernardino,index,+34.2455282,-117.2750758
+92327,92327,,,San Bernardino,index,+34.8662418,-116.8430944
+92328,92328,,,Inyo,index,+36.3938805,-117.0274123
+92332,92332,,,San Bernardino,index,+34.9070906,-115.3644590
+92333,92333,,,San Bernardino,index,+34.2694950,-116.9628006
+92335,Fontana,Fontana,fontana,San Bernardino,index,+34.0873327,-117.4651580
+92336,Fontana,Fontana,fontana,San Bernardino,index,+34.1368622,-117.4603364
+92337,Fontana,Fontana,fontana,San Bernardino,index,+34.0496647,-117.4714714
+92338,92338,,,San Bernardino,index,+34.7877209,-116.2512079
+92339,92339,,,San Bernardino,index,+34.0819265,-116.8384024
+92341,92341,,,San Bernardino,index,+34.2400383,-117.0680555
+92342,Helendale,Helendale,helendale,San Bernardino,index,+34.7608187,-117.3379318
+92344,Hesperia,Hesperia,hesperia,San Bernardino,index,+34.3917695,-117.4065676
+92345,Hesperia,Hesperia,hesperia,San Bernardino,index,+34.3641257,-117.3098425
+92346,Highland,Highland,highland,San Bernardino,index,+34.1262686,-117.1791866
+92347,92347,,,San Bernardino,index,+34.9500139,-117.2580469
+92350,92350,,,San Bernardino,index,+34.0529395,-117.2615994
+92352,Lake Arrowhead,Lake Arrowhead,lake-arrowhead,San Bernardino,index,+34.2681964,-117.1848559
+92354,Loma Linda,Loma Linda,loma-linda,San Bernardino,index,+34.0493156,-117.2511255
+92356,92356,,,San Bernardino,index,+34.4962515,-116.8925302
+92358,92358,,,San Bernardino,index,+34.2462324,-117.5676375
+92359,92359,,,San Bernardino,index,+34.0829336,-117.0703410
+92363,92363,,,San Bernardino,index,+34.7082930,-114.5751421
+92364,92364,,,San Bernardino,index,+35.3566678,-115.4373976
+92365,92365,,,San Bernardino,index,+34.8885365,-116.5411633
+92368,92368,,,San Bernardino,index,+34.6551080,-117.3089320
+92369,92369,,,San Bernardino,index,+34.1394113,-117.2196639
+92371,92371,,,San Bernardino,index,+34.4383377,-117.5425936
+92372,92372,,,San Bernardino,index,+34.4509743,-117.6285817
+92373,Redlands,Redlands,redlands,San Bernardino,index,+34.0064754,-117.1535309
+92374,Redlands,Redlands,redlands,San Bernardino,index,+34.0673888,-117.1748549
+92376,Rialto,Rialto,rialto,San Bernardino,index,+34.1105366,-117.3800214
+92377,92377,,,San Bernardino,index,+34.1523669,-117.4040633
+92378,92378,,,San Bernardino,index,+34.2319955,-117.2248872
+92382,Running Springs,Running Springs,running-springs,San Bernardino,index,+34.2060174,-117.1128167
+92384,92384,,,Inyo,index,+35.9825294,-116.1505487
+92385,92385,,,San Bernardino,index,+34.2134443,-117.2305884
+92386,92386,,,San Bernardino,index,+34.2370359,-116.8252914
+92389,92389,,,Inyo,index,+35.8290681,-116.2482762
+92391,92391,,,San Bernardino,index,+34.2396894,-117.2366687
+92392,Victorville,Victorville,victorville,San Bernardino,index,+34.4790095,-117.4088307
+92394,Victorville,Victorville,victorville,San Bernardino,index,+34.5629438,-117.3541846
+92395,Victorville,Victorville,victorville,San Bernardino,index,+34.5003034,-117.2947628
+92397,Wrightwood,Wrightwood,wrightwood,Los Angeles,index,+34.3621317,-117.6913472
+92398,92398,,,San Bernardino,index,+34.9717663,-116.8380845
+92399,Yucaipa,Yucaipa,yucaipa,San Bernardino,index,+34.0446880,-117.0039957
+92401,92401,,,San Bernardino,index,+34.1059063,-117.2918137
+92404,San Bernardino,San Bernardino,san-bernardino,San Bernardino,index,+34.1786309,-117.2389255
+92405,San Bernardino,San Bernardino,san-bernardino,San Bernardino,index,+34.1457811,-117.3022171
+92407,San Bernardino,San Bernardino,san-bernardino,San Bernardino,index,+34.2239662,-117.3883700
+92408,San Bernardino,San Bernardino,san-bernardino,San Bernardino,index,+34.0844488,-117.2653346
+92410,San Bernardino,San Bernardino,san-bernardino,San Bernardino,index,+34.1065590,-117.2957657
+92411,92411,,,San Bernardino,index,+34.1221602,-117.3229278
+92415,92415,,,San Bernardino,index,+34.1050543,-117.2868479
+92501,Riverside,Riverside,riverside,Riverside,index,+33.9950401,-117.3734942
+92503,Riverside,Riverside,riverside,Riverside,index,+33.8830941,-117.4522117
+92504,Riverside,Riverside,riverside,Riverside,index,+33.9061457,-117.3985663
+92505,Riverside,Riverside,riverside,Riverside,index,+33.9266658,-117.4928043
+92506,Riverside,Riverside,riverside,Riverside,index,+33.9347606,-117.3668818
+92507,Riverside,Riverside,riverside,Riverside,index,+33.9746806,-117.3223505
+92508,Riverside,Riverside,riverside,Riverside,index,+33.8903893,-117.3282568
+92509,Jurupa Valley,Jurupa Valley,jurupa-valley,Riverside,index,+34.0029181,-117.4454485
+92518,92518,,,Riverside,index,+33.8960247,-117.2771517
+92521,92521,,,Riverside,index,+33.9679054,-117.3272237
+92530,Lake Elsinore,Lake Elsinore,lake-elsinore,Riverside,index,+33.6338474,-117.3795030
+92532,Lake Elsinore,Lake Elsinore,lake-elsinore,Riverside,index,+33.6905588,-117.3024408
+92536,92536,,,Riverside,index,+33.4879360,-116.8153668
+92539,92539,,,Riverside,index,+33.5158089,-116.6443331
+92543,Hemet,Hemet,hemet,Riverside,index,+33.6986453,-116.9791613
+92544,Hemet,Hemet,hemet,Riverside,index,+33.6457809,-116.8603070
+92545,Hemet,Hemet,hemet,Riverside,index,+33.7310980,-117.0358865
+92548,92548,,,Riverside,index,+33.7639084,-117.1090324
+92549,92549,,,Riverside,index,+33.8088370,-116.7122014
+92551,Moreno Valley,Moreno Valley,moreno-valley,Riverside,index,+33.8815003,-117.2251828
+92553,Moreno Valley,Moreno Valley,moreno-valley,Riverside,index,+33.9233498,-117.2453332
+92555,Moreno Valley,Moreno Valley,moreno-valley,Riverside,index,+33.9132994,-117.1086289
+92557,Moreno Valley,Moreno Valley,moreno-valley,Riverside,index,+33.9685505,-117.2570337
+92561,92561,,,Riverside,index,+33.6370317,-116.5743609
+92562,Murrieta,Murrieta,murrieta,Riverside,index,+33.5358048,-117.3510525
+92563,Murrieta,Murrieta,murrieta,Riverside,index,+33.5843434,-117.1445715
+92567,92567,,,Riverside,index,+33.8237800,-117.1030881
+92570,Perris,Perris,perris,Riverside,index,+33.7837787,-117.3173594
+92571,Perris,Perris,perris,Riverside,index,+33.8418286,-117.1952270
+92582,92582,,,Riverside,index,+33.8049051,-117.0187406
+92583,San Jacinto,San Jacinto,san-jacinto,Riverside,index,+33.7965914,-116.9318411
+92584,Menifee,Menifee,menifee,Riverside,index,+33.6616609,-117.1807965
+92585,Menifee,Menifee,menifee,Riverside,index,+33.7421648,-117.1672379
+92586,Menifee,Menifee,menifee,Riverside,index,+33.7076780,-117.2004327
+92587,Canyon Lake,Canyon Lake,canyon-lake,Riverside,index,+33.6946716,-117.2519389
+92590,Temecula,Temecula,temecula,Riverside,index,+33.4839383,-117.2207584
+92591,Temecula,Temecula,temecula,Riverside,index,+33.5343315,-117.1092109
+92592,Temecula,Temecula,temecula,Riverside,index,+33.5109304,-117.0241523
+92595,Wildomar,Wildomar,wildomar,Riverside,index,+33.6163487,-117.2603462
+92596,Winchester,Winchester,winchester,Riverside,index,+33.6473932,-117.0764083
+92602,Irvine,Irvine,irvine,Orange,index,+33.7264962,-117.7287144
+92603,Irvine,Irvine,irvine,Orange,index,+33.6292589,-117.7940798
+92604,Irvine,Irvine,irvine,Orange,index,+33.6879115,-117.7888943
+92606,Irvine,Irvine,irvine,Orange,index,+33.6984883,-117.8123377
+92610,Lake Forest,Lake Forest,lake-forest,Orange,index,+33.6833629,-117.6540797
+92612,Irvine,Irvine,irvine,Orange,index,+33.6598353,-117.8245642
+92614,Irvine,Irvine,irvine,Orange,index,+33.6817122,-117.8331388
+92617,92617,,,Orange,index,+33.6419726,-117.8410455
+92618,Irvine,Irvine,irvine,Orange,index,+33.6673066,-117.7335801
+92620,Irvine,Irvine,irvine,Orange,index,+33.7066009,-117.7569481
+92624,92624,,,Orange,index,+33.4566288,-117.6663946
+92625,Newport Beach,Newport Beach,newport-beach,Orange,index,+33.6010582,-117.8661843
+92626,Costa Mesa,Costa Mesa,costa-mesa,Orange,index,+33.6789424,-117.9084201
+92627,Costa Mesa,Costa Mesa,costa-mesa,Orange,index,+33.6478565,-117.9205043
+92629,Dana Point,Dana Point,dana-point,Orange,index,+33.4748054,-117.7055864
+92630,Lake Forest,Lake Forest,lake-forest,Orange,index,+33.6470738,-117.6842906
+92637,Laguna Woods,Laguna Woods,laguna-woods,Orange,index,+33.6079885,-117.7279353
+92646,Huntington Beach,Huntington Beach,huntington-beach,Orange,index,+33.6642930,-117.9673835
+92647,Huntington Beach,Huntington Beach,huntington-beach,Orange,index,+33.7239531,-118.0068483
+92648,Huntington Beach,Huntington Beach,huntington-beach,Orange,index,+33.6779147,-118.0116756
+92649,Huntington Beach,Huntington Beach,huntington-beach,Orange,index,+33.7195143,-118.0453973
+92651,Laguna Beach,Laguna Beach,laguna-beach,Orange,index,+33.5607787,-117.7745846
+92653,Laguna Hills,Laguna Hills,laguna-hills,Orange,index,+33.5927092,-117.6998852
+92655,92655,,,Orange,index,+33.7460289,-117.9876019
+92656,Aliso Viejo,Aliso Viejo,aliso-viejo,Orange,index,+33.5752015,-117.7303522
+92657,Newport Beach,Newport Beach,newport-beach,Orange,index,+33.5943755,-117.8320681
+92660,Newport Beach,Newport Beach,newport-beach,Orange,index,+33.6337913,-117.8750510
+92661,Newport Beach,Newport Beach,newport-beach,Orange,index,+33.5998001,-117.9015946
+92662,Newport Beach,Newport Beach,newport-beach,Orange,index,+33.6055047,-117.8921860
+92663,Newport Beach,Newport Beach,newport-beach,Orange,index,+33.6221179,-117.9324194
+92672,San Clemente,San Clemente,san-clemente,San Diego,county,+33.3831986,-117.5422655
+92673,San Clemente,San Clemente,san-clemente,Orange,index,+33.4660680,-117.6120459
+92675,San Juan Capistrano,San Juan Capistrano,san-juan-capistrano,Orange,index,+33.4997737,-117.6537035
+92676,92676,,,Orange,index,+33.7530777,-117.6353155
+92677,Laguna Niguel,Laguna Niguel,laguna-niguel,Orange,index,+33.5278052,-117.7052292
+92678,92678,,,Orange,index,+33.6463154,-117.5065817
+92679,Coto de Caza,Coto de Caza,coto-de-caza,Orange,index,+33.6526848,-117.5606461
+92683,Westminster,Westminster,westminster,Orange,index,+33.7524276,-117.9938699
+92688,Rancho Santa Margarita,Rancho Santa Margarita,rancho-santa-margarita,Orange,index,+33.6173286,-117.6113129
+92691,Mission Viejo,Mission Viejo,mission-viejo,Orange,index,+33.6105149,-117.6662735
+92692,Mission Viejo,Mission Viejo,mission-viejo,Orange,index,+33.6094835,-117.6439423
+92694,Ladera Ranch,Ladera Ranch,ladera-ranch,Orange,index,+33.5148536,-117.5805202
+92697,92697,,,Orange,index,+33.6505901,-117.8508549
+92701,Santa Ana,Santa Ana,santa-ana,Orange,index,+33.7486219,-117.8587143
+92703,Santa Ana,Santa Ana,santa-ana,Orange,index,+33.7485203,-117.9061618
+92704,Santa Ana,Santa Ana,santa-ana,Orange,index,+33.7203524,-117.9080548
+92705,North Tustin,North Tustin,north-tustin,Orange,index,+33.7549413,-117.8149393
+92706,Santa Ana,Santa Ana,santa-ana,Orange,index,+33.7660024,-117.8816932
+92707,Santa Ana,Santa Ana,santa-ana,Orange,index,+33.7100035,-117.8704537
+92708,Fountain Valley,Fountain Valley,fountain-valley,Orange,index,+33.7104601,-117.9513148
+92780,Tustin,Tustin,tustin,Orange,index,+33.7368080,-117.8196781
+92782,Tustin,Tustin,tustin,Orange,index,+33.7283748,-117.7974744
+92801,Anaheim,Anaheim,anaheim,Orange,index,+33.8443927,-117.9518022
+92802,Anaheim,Anaheim,anaheim,Orange,index,+33.8083143,-117.9236894
+92804,Anaheim,Anaheim,anaheim,Orange,index,+33.8180099,-117.9751929
+92805,Anaheim,Anaheim,anaheim,Orange,index,+33.8300530,-117.9056831
+92806,Anaheim,Anaheim,anaheim,Orange,index,+33.8387826,-117.8705596
+92807,Anaheim,Anaheim,anaheim,Orange,index,+33.8499944,-117.7894620
+92808,Anaheim,Anaheim,anaheim,Orange,index,+33.8562467,-117.7402317
+92821,Brea,Brea,brea,Orange,index,+33.9299895,-117.8698244
+92823,Brea,Brea,brea,Orange,index,+33.9253154,-117.8004981
+92831,Fullerton,Fullerton,fullerton,Orange,index,+33.8795102,-117.8960355
+92832,Fullerton,Fullerton,fullerton,Orange,index,+33.8687719,-117.9290932
+92833,Fullerton,Fullerton,fullerton,Orange,index,+33.8805141,-117.9611302
+92835,Fullerton,Fullerton,fullerton,Orange,index,+33.9017128,-117.9153523
+92840,Garden Grove,Garden Grove,garden-grove,Orange,index,+33.7858384,-117.9320203
+92841,Garden Grove,Garden Grove,garden-grove,Orange,index,+33.7868327,-117.9820405
+92843,Garden Grove,Garden Grove,garden-grove,Orange,index,+33.7639633,-117.9315377
+92844,Garden Grove,Garden Grove,garden-grove,Orange,index,+33.7655987,-117.9695064
+92845,Garden Grove,Garden Grove,garden-grove,Orange,index,+33.7829069,-118.0263729
+92860,Norco,Norco,norco,Riverside,index,+33.9261747,-117.5492322
+92861,92861,,,Orange,index,+33.8180603,-117.8102216
+92865,Orange,Orange,orange,Orange,index,+33.8288548,-117.8492453
+92866,Orange,Orange,orange,Orange,index,+33.7845375,-117.8447915
+92867,Orange,Orange,orange,Orange,index,+33.8144203,-117.7961728
+92868,Orange,Orange,orange,Orange,index,+33.7879671,-117.8763428
+92869,Orange,Orange,orange,Orange,index,+33.7947700,-117.7621647
+92870,Placentia,Placentia,placentia,Orange,index,+33.8808699,-117.8552304
+92879,Corona,Corona,corona,Riverside,index,+33.8797983,-117.5357043
+92880,Eastvale,Eastvale,eastvale,Riverside,index,+33.9209894,-117.6104577
+92881,Corona,Corona,corona,Riverside,index,+33.8216343,-117.5676171
+92882,Corona,Corona,corona,Riverside,index,+33.8636785,-117.5998599
+92883,Corona,Corona,corona,Riverside,index,+33.7599133,-117.4782359
+92886,Yorba Linda,Yorba Linda,yorba-linda,Orange,index,+33.8951000,-117.8017308
+92887,Yorba Linda,Yorba Linda,yorba-linda,Orange,index,+33.8872230,-117.7339242
+93001,Ventura,Ventura,ventura,Ventura,index,+34.3520040,-119.3200151
+93003,Ventura,Ventura,ventura,Ventura,index,+34.2843580,-119.2225645
+93004,Ventura,Ventura,ventura,Ventura,index,+34.2790078,-119.1653611
+93010,Camarillo,Camarillo,camarillo,Ventura,index,+34.2300719,-119.0743476
+93012,Camarillo,Camarillo,camarillo,Ventura,index,+34.2051784,-118.9931389
+93013,Carpinteria,Carpinteria,carpinteria,Santa Barbara,index,+34.4267421,-119.4805373
+93015,93015,,,Ventura,index,+34.4097024,-118.8780674
+93021,Moorpark,Moorpark,moorpark,Ventura,index,+34.3041724,-118.8827743
+93022,93022,,,Ventura,index,+34.4032764,-119.2983551
+93023,Ojai,Ojai,ojai,Ventura,index,+34.5037404,-119.2485129
+93030,Oxnard,Oxnard,oxnard,Ventura,index,+34.2050972,-119.1753202
+93033,Oxnard,Oxnard,oxnard,Ventura,index,+34.1538448,-119.1232400
+93035,Oxnard,Oxnard,oxnard,Ventura,index,+34.1895278,-119.2300902
+93036,Oxnard,Oxnard,oxnard,Ventura,index,+34.2491272,-119.1597871
+93040,93040,,,Ventura,index,+34.5932836,-118.9362827
+93041,Port Hueneme,Port Hueneme,port-hueneme,Ventura,index,+34.1488091,-119.1757839
+93042,93042,,,Ventura,index,+33.4136301,-119.4309407
+93043,93043,,,Ventura,index,+34.1701614,-119.2029293
+93060,Santa Paula,Santa Paula,santa-paula,Ventura,index,+34.3654274,-119.0956737
+93063,Simi Valley,Simi Valley,simi-valley,Ventura,index,+34.3091713,-118.6904183
+93064,93064,,,Ventura,index,+34.2452721,-118.6998492
+93065,Simi Valley,Simi Valley,simi-valley,Ventura,index,+34.2620198,-118.7715616
+93066,93066,,,Ventura,index,+34.2885117,-119.0285114
+93067,93067,,,Santa Barbara,index,+34.4216181,-119.5930451
+93101,Santa Barbara,Santa Barbara,santa-barbara,Santa Barbara,index,+34.4192588,-119.7080491
+93103,Santa Barbara,Santa Barbara,santa-barbara,Santa Barbara,index,+34.4386530,-119.6815960
+93105,Santa Barbara,Santa Barbara,santa-barbara,Santa Barbara,index,+34.5270402,-119.7607820
+93106,93106,,,Santa Barbara,index,+34.4172586,-119.8513017
+93108,Montecito,Montecito,montecito,Santa Barbara,index,+34.4492535,-119.6040280
+93109,Santa Barbara,Santa Barbara,santa-barbara,Santa Barbara,index,+34.4060469,-119.7260273
+93110,Santa Barbara,Santa Barbara,santa-barbara,Santa Barbara,index,+34.4389027,-119.7666523
+93111,Santa Barbara,Santa Barbara,santa-barbara,Santa Barbara,index,+34.4489387,-119.8022882
+93117,Goleta,Goleta,goleta,Santa Barbara,index,+34.4907388,-120.0822912
+93201,93201,,,Tulare,index,+35.8554713,-119.4834087
+93202,93202,,,Kings,index,+36.3186861,-119.7075200
+93203,93203,,,Kern,index,+35.1214949,-118.8468057
+93204,93204,,,Kings,index,+35.9080722,-120.0676982
+93205,93205,,,Kern,index,+35.5386865,-118.4546027
+93206,93206,,,Kern,index,+35.4439778,-119.4756783
+93207,93207,,,Tulare,index,+35.8872060,-118.6315493
+93208,93208,,,Tulare,index,+36.1297775,-118.6397774
+93210,93210,,,Fresno,index,+36.1950567,-120.4323502
+93212,93212,,,Kings,index,+36.0165119,-119.5694266
+93215,93215,,,Kern,index,+35.7764176,-119.1883349
+93218,93218,,,Tulare,index,+35.8619351,-119.0382324
+93219,93219,,,Tulare,index,+35.8790946,-119.2882075
+93220,93220,,,Kern,index,+35.3705391,-118.7836840
+93221,93221,,,Tulare,index,+36.2963943,-119.0299352
+93222,93222,,,Kern,index,+34.8983638,-119.2597757
+93223,93223,,,Tulare,index,+36.3011122,-119.2078750
+93224,93224,,,Kern,index,+35.2168519,-119.5808312
+93225,93225,,,Ventura,index,+34.7854061,-119.0419225
+93226,93226,,,Kern,index,+35.7475782,-118.7346168
+93227,93227,,,Tulare,index,+36.3444448,-119.4185620
+93230,Hanford,Hanford,hanford,Kings,index,+36.2895924,-119.6251586
+93234,93234,,,Fresno,index,+36.1960921,-120.0848069
+93235,93235,,,Tulare,index,+36.3850670,-119.2231243
+93237,93237,,,Tulare,index,+36.4744993,-118.9042680
+93238,93238,,,Tulare,index,+35.8279126,-118.4712598
+93239,93239,,,Kings,index,+36.0327691,-119.9864092
+93240,93240,,,Kern,index,+35.6242602,-118.4644675
+93241,93241,,,Kern,index,+35.2492073,-118.9122446
+93242,93242,,,Fresno,index,+36.4411371,-119.7302784
+93243,93243,,,Kern,index,+34.8405473,-118.8176176
+93244,93244,,,Tulare,index,+36.3908043,-118.9972454
+93245,Lemoore,Lemoore,lemoore,Kings,index,+36.2861047,-119.8340541
+93246,93246,,,Kings,index,+36.3191931,-119.9313619
+93247,93247,,,Tulare,index,+36.2023507,-119.0827776
+93249,93249,,,Kern,index,+35.6703063,-119.8580423
+93250,93250,,,Kern,index,+35.6645517,-119.2027349
+93251,93251,,,Kern,index,+35.3706028,-119.6973400
+93252,93252,,,Ventura,index,+34.8064851,-119.3462830
+93254,93254,,,Santa Barbara,index,+34.9249684,-119.7481398
+93255,93255,,,Kern,index,+35.6829085,-118.0798446
+93256,93256,,,Tulare,index,+35.9680474,-119.3125254
+93257,Porterville,Porterville,porterville,Tulare,index,+35.9870654,-118.8948233
+93258,93258,,,Tulare,index,+36.0583321,-119.1520938
+93260,93260,,,Tulare,index,+35.8190859,-118.6611890
+93261,93261,,,Tulare,index,+35.8114805,-119.1167378
+93262,93262,,,Tulare,index,+36.5025303,-118.6810645
+93263,Shafter,Shafter,shafter,Kern,index,+35.4872475,-119.2783243
+93265,93265,,,Tulare,index,+36.2071585,-118.7087249
+93266,93266,,,Kings,index,+36.1717293,-119.8563037
+93267,93267,,,Tulare,index,+36.1428200,-119.0741265
+93268,Taft,Taft,taft,Kern,index,+35.1672238,-119.4078445
+93270,93270,,,Tulare,index,+35.9470456,-119.0566735
+93271,93271,,,Tulare,index,+36.4365660,-118.8689998
+93272,93272,,,Tulare,index,+36.0481892,-119.3453779
+93274,Tulare,Tulare,tulare,Tulare,index,+36.1798040,-119.3794568
+93276,93276,,,Kern,index,+35.3175973,-119.4093065
+93277,Visalia,Visalia,visalia,Tulare,index,+36.2996578,-119.3813949
+93280,Wasco,Wasco,wasco,Kern,index,+35.6520044,-119.4471445
+93283,93283,,,Kern,index,+35.5846198,-118.2885265
+93285,93285,,,Kern,index,+35.7223908,-118.5086547
+93286,93286,,,Tulare,index,+36.4514692,-119.1078751
+93287,93287,,,Kern,index,+35.7238933,-118.9195623
+93291,Visalia,Visalia,visalia,Tulare,index,+36.3893109,-119.3683839
+93292,Visalia,Visalia,visalia,Tulare,index,+36.3762295,-119.2218412
+93301,Bakersfield,Bakersfield,bakersfield,Kern,index,+35.3842793,-119.0206198
+93304,Bakersfield,Bakersfield,bakersfield,Kern,index,+35.3394391,-119.0236548
+93305,La Cresta - Altavista,La Cresta - Altavista,la-cresta-altavista,Kern,index,+35.3898752,-118.9851805
+93306,Bakersfield,Bakersfield,bakersfield,Kern,index,+35.4659486,-118.7846216
+93307,Bakersfield,Bakersfield,bakersfield,Kern,index,+35.2486300,-118.9325507
+93308,Bakersfield,Bakersfield,bakersfield,Kern,index,+35.5498341,-118.9340242
+93309,Bakersfield,Bakersfield,bakersfield,Kern,index,+35.3426627,-119.0646020
+93311,Bakersfield,Bakersfield,bakersfield,Kern,index,+35.1536563,-119.1656470
+93312,Bakersfield,Bakersfield,bakersfield,Kern,index,+35.3918445,-119.1195484
+93313,Bakersfield,Bakersfield,bakersfield,Kern,index,+35.1635581,-119.0471252
+93314,Bakersfield,Bakersfield,bakersfield,Kern,index,+35.3849840,-119.2374217
+93401,San Luis Obispo,San Luis Obispo,san-luis-obispo,San Luis Obispo,index,+35.2353561,-120.6183478
+93402,Los Osos,Los Osos,los-osos,San Luis Obispo,index,+35.2910361,-120.8395366
+93405,San Luis Obispo,San Luis Obispo,san-luis-obispo,San Luis Obispo,index,+35.2966896,-120.7261933
+93407,93407,,,San Luis Obispo,index,+35.3074846,-120.6700464
+93408,93408,,,San Luis Obispo,index,+35.3211074,-120.7188970
+93409,93409,,,San Luis Obispo,index,+35.3235663,-120.6973747
+93410,93410,,,San Luis Obispo,index,+35.3044560,-120.6569384
+93420,Arroyo Grande,Arroyo Grande,arroyo-grande,San Luis Obispo,index,+35.1668108,-120.4661829
+93422,Atascadero,Atascadero,atascadero,San Luis Obispo,index,+35.4637977,-120.6900631
+93424,93424,,,San Luis Obispo,index,+35.1989137,-120.7808618
+93426,93426,,,Monterey,index,+35.8468291,-120.9723117
+93427,93427,,,Santa Barbara,index,+34.6272073,-120.2246558
+93428,93428,,,San Luis Obispo,index,+35.5886993,-121.0311525
+93429,93429,,,Santa Barbara,index,+34.8667699,-120.5358207
+93430,93430,,,San Luis Obispo,index,+35.4906412,-120.9264756
+93432,93432,,,San Luis Obispo,index,+35.4768187,-120.4723029
+93433,Grover Beach,Grover Beach,grover-beach,San Luis Obispo,index,+35.1206278,-120.6194970
+93434,93434,,,Santa Barbara,index,+34.9409523,-120.6114591
+93436,Lompoc,Lompoc,lompoc,Santa Barbara,index,+34.6084903,-120.4003613
+93437,93437,,,Santa Barbara,index,+34.7604696,-120.5110545
+93440,93440,,,Santa Barbara,index,+34.7460976,-120.2528490
+93441,93441,,,Santa Barbara,index,+34.7329339,-120.0971788
+93442,93442,,,San Luis Obispo,index,+35.3998172,-120.8058776
+93444,Nipomo,Nipomo,nipomo,San Luis Obispo,index,+35.0355460,-120.5029493
+93445,93445,,,San Luis Obispo,index,+35.0341623,-120.6209785
+93446,Paso Robles,Paso Robles,paso-robles,San Luis Obispo,index,+35.6587228,-120.7187318
+93449,Pismo Beach,Pismo Beach,pismo-beach,San Luis Obispo,index,+35.1576985,-120.6519085
+93450,93450,,,Monterey,index,+36.0579067,-120.8289743
+93451,93451,,,Monterey,index,+35.8939209,-120.5672933
+93452,93452,,,San Luis Obispo,index,+35.7096181,-121.2076014
+93453,93453,,,San Luis Obispo,index,+35.3134618,-120.1649888
+93454,Santa Maria,Santa Maria,santa-maria,Santa Barbara,index,+34.9482593,-120.2342471
+93455,Santa Maria,Santa Maria,santa-maria,Santa Barbara,index,+34.8419044,-120.4551366
+93458,Santa Maria,Santa Maria,santa-maria,Santa Barbara,index,+34.9547842,-120.4904492
+93460,93460,,,Santa Barbara,index,+34.6621741,-119.9009905
+93461,93461,,,San Luis Obispo,index,+35.6351650,-120.2694576
+93463,93463,,,Santa Barbara,index,+34.6068334,-120.1349351
+93465,93465,,,San Luis Obispo,index,+35.5426980,-120.7341619
+93501,93501,,,Kern,index,+35.0411084,-118.2292827
+93505,California City,California City,california-city,Kern,index,+35.1570939,-117.9093764
+93510,93510,,,Los Angeles,index,+34.4562491,-118.2108905
+93512,93512,,,Mono,index,+37.8737209,-118.5345551
+93513,93513,,,Inyo,index,+37.1839068,-118.1720302
+93514,93514,,,Mono,index,+37.4942970,-118.3852323
+93516,93516,,,Kern,index,+35.0081317,-117.6425627
+93517,93517,,,Mono,index,+38.2707168,-119.2736364
+93518,93518,,,Kern,index,+35.3767727,-118.4730916
+93519,93519,,,Kern,index,+35.3170545,-117.9558864
+93522,93522,,,Inyo,index,+36.2983464,-117.5967919
+93523,93523,,,Kern,index,+34.9978543,-117.8831353
+93524,93524,,,Kern,index,+34.9099236,-117.8500790
+93526,93526,,,Inyo,index,+36.8593928,-118.2537437
+93527,93527,,,Tulare,index,+35.8025919,-117.9845883
+93528,93528,,,Kern,index,+35.3718756,-117.6418025
+93529,93529,,,Mono,index,+37.7831929,-119.1375134
+93530,93530,,,Inyo,index,+36.4845808,-117.8720190
+93531,93531,,,Kern,index,+35.2294076,-118.6078603
+93532,93532,,,Los Angeles,index,+34.6857219,-118.5591130
+93534,Lancaster,Lancaster,lancaster,Los Angeles,index,+34.7175933,-118.1508067
+93535,Lancaster,Lancaster,lancaster,Los Angeles,index,+34.6991335,-117.8960743
+93536,Lancaster,Lancaster,lancaster,Los Angeles,index,+34.7526601,-118.3887506
+93541,93541,,,Mono,index,+37.9968410,-119.0185077
+93543,93543,,,Los Angeles,index,+34.4791106,-117.9736025
+93544,93544,,,Los Angeles,index,+34.4905953,-117.7550274
+93545,93545,,,Inyo,index,+36.6045727,-118.0274145
+93546,Mammoth Lakes,Mammoth Lakes,mammoth-lakes,Mono,index,+37.6056918,-118.8520312
+93549,93549,,,Inyo,index,+36.2770531,-117.9601647
+93550,Palmdale,Palmdale,palmdale,Los Angeles,index,+34.3829540,-118.0491641
+93551,Palmdale,Palmdale,palmdale,Los Angeles,index,+34.5940322,-118.2262972
+93552,Palmdale,Palmdale,palmdale,Los Angeles,index,+34.5841014,-118.0238465
+93553,93553,,,Los Angeles,index,+34.4451291,-117.8961175
+93554,93554,,,Kern,index,+35.3691336,-117.7587029
+93555,Ridgecrest,Ridgecrest,ridgecrest,Kern,index,+35.5859425,-117.6844140
+93558,93558,,,San Bernardino,index,+35.3394535,-117.5851329
+93560,Rosamond,Rosamond,rosamond,Kern,index,+34.8711167,-118.3260845
+93561,Tehachapi,Tehachapi,tehachapi,Kern,index,+35.1090562,-118.5201825
+93562,93562,,,San Bernardino,index,+35.7065876,-117.3426434
+93563,93563,,,Los Angeles,index,+34.3866158,-117.8365135
+93581,93581,,,Kern,index,+35.1128855,-118.5703332
+93591,93591,,,Los Angeles,index,+34.5965930,-117.8095488
+93601,93601,,,Madera,index,+37.3939484,-119.7369963
+93602,93602,,,Fresno,index,+37.0643909,-119.3746608
+93603,93603,,,Tulare,index,+36.5511159,-118.9961057
+93604,93604,,,Madera,index,+37.3717118,-119.5221606
+93605,93605,,,Fresno,index,+37.1762192,-119.2495234
+93606,93606,,,Fresno,index,+36.7987146,-120.0162735
+93608,93608,,,Fresno,index,+36.5054880,-120.3418050
+93609,93609,,,Fresno,index,+36.5261658,-119.8638914
+93610,Chowchilla,Chowchilla,chowchilla,Madera,index,+37.0904945,-120.2904716
+93611,Clovis,Clovis,clovis,Fresno,index,+36.8255287,-119.6811053
+93612,Clovis,Clovis,clovis,Fresno,index,+36.8155130,-119.7107899
+93614,93614,,,Madera,index,+37.2127597,-119.7266370
+93615,93615,,,Tulare,index,+36.5037388,-119.2838461
+93616,93616,,,Fresno,index,+36.6546796,-119.5943326
+93618,93618,,,Tulare,index,+36.5221175,-119.3866282
+93619,Clovis,Clovis,clovis,Fresno,index,+36.9165724,-119.5737363
+93620,93620,,,Merced,index,+37.0447543,-120.6222245
+93621,93621,,,Fresno,index,+36.8066834,-119.1359802
+93622,93622,,,Fresno,index,+36.7928119,-120.6243763
+93623,93623,,,Mariposa,index,+37.4747688,-119.6607094
+93624,93624,,,Fresno,index,+36.3726160,-120.1212824
+93625,93625,,,Fresno,index,+36.6242284,-119.6717509
+93626,93626,,,Madera,index,+37.0327534,-119.6860688
+93627,93627,,,Fresno,index,+36.5156483,-120.1063223
+93628,93628,,,Fresno,index,+36.7815011,-118.8383941
+93630,93630,,,Fresno,index,+36.7182694,-120.1291049
+93631,93631,,,Tulare,index,+36.4765074,-119.5213095
+93633,93633,,,Tulare,index,+36.7291216,-118.9562350
+93634,93634,,,Fresno,index,+37.2055586,-118.9363000
+93635,Los Banos,Los Banos,los-banos,Merced,index,+37.0158553,-120.8830662
+93636,Madera,Madera,madera,Madera,index,+36.9816590,-119.8770139
+93637,Madera,Madera,madera,Madera,index,+36.9109858,-120.1921433
+93638,Madera,Madera,madera,Madera,index,+37.0422571,-120.0381176
+93640,93640,,,Fresno,index,+36.6720970,-120.4378231
+93641,93641,,,Fresno,index,+36.7048243,-119.0216959
+93643,93643,,,Madera,index,+37.2714741,-119.4500299
+93644,93644,,,Madera,index,+37.4124020,-119.5943777
+93645,93645,,,Madera,index,+37.1640721,-119.6182055
+93646,93646,,,Tulare,index,+36.6322736,-119.2893527
+93647,93647,,,Tulare,index,+36.5844962,-119.1777753
+93648,93648,,,Fresno,index,+36.6206224,-119.5205831
+93650,93650,,,Fresno,index,+36.8401974,-119.8001206
+93651,93651,,,Fresno,index,+37.0029526,-119.5209877
+93652,93652,,,Fresno,index,+36.5950119,-119.9045766
+93653,93653,,,Madera,index,+37.2476544,-119.9188334
+93654,93654,,,Fresno,index,+36.6574815,-119.4020077
+93656,93656,,,Fresno,index,+36.4517036,-119.9361084
+93657,Sanger,Sanger,sanger,Fresno,index,+36.7885414,-119.4379340
+93660,93660,,,Fresno,index,+36.6093391,-120.1651676
+93662,Selma,Selma,selma,Fresno,index,+36.5396310,-119.6428801
+93664,93664,,,Fresno,index,+37.0566896,-119.1796711
+93665,93665,,,Merced,index,+36.9633136,-120.6503151
+93666,93666,,,Tulare,index,+36.5462083,-119.3361766
+93667,93667,,,Fresno,index,+36.9658453,-119.3150430
+93668,93668,,,Fresno,index,+36.6566408,-120.2899664
+93669,93669,,,Madera,index,+37.2832749,-119.5429373
+93670,93670,,,Tulare,index,+36.4855574,-119.2541526
+93673,93673,,,Tulare,index,+36.4523533,-119.4823811
+93675,93675,,,Fresno,index,+36.7325657,-119.1927944
+93701,Fresno,Fresno,fresno,Fresno,index,+36.7496010,-119.7878098
+93702,Fresno,Fresno,fresno,Fresno,index,+36.7394434,-119.7542091
+93703,Fresno,Fresno,fresno,Fresno,index,+36.7688556,-119.7624110
+93704,Fresno,Fresno,fresno,Fresno,index,+36.8001013,-119.8020109
+93705,Fresno,Fresno,fresno,Fresno,index,+36.7866587,-119.8284789
+93706,Fresno,Fresno,fresno,Fresno,index,+36.6534177,-119.9021943
+93710,Fresno,Fresno,fresno,Fresno,index,+36.8233461,-119.7625171
+93711,Fresno,Fresno,fresno,Fresno,index,+36.8350926,-119.8330332
+93720,Fresno,Fresno,fresno,Fresno,index,+36.8606382,-119.7622690
+93721,93721,,,Fresno,index,+36.7328084,-119.7838293
+93722,Fresno,Fresno,fresno,Fresno,index,+36.8000354,-119.8779044
+93723,Fresno,Fresno,fresno,Fresno,index,+36.7869317,-119.9527121
+93725,Fresno,Fresno,fresno,Fresno,index,+36.6266474,-119.7350274
+93726,Fresno,Fresno,fresno,Fresno,index,+36.7937292,-119.7615554
+93727,Fresno,Fresno,fresno,Fresno,index,+36.7511744,-119.6973312
+93728,Fresno,Fresno,fresno,Fresno,index,+36.7573019,-119.8182824
+93730,Fresno,Fresno,fresno,Fresno,index,+36.9035119,-119.7551439
+93737,Fresno,Fresno,fresno,Fresno,index,+36.7536135,-119.6455810
+93740,93740,,,Fresno,index,+36.8163814,-119.7461153
+93741,93741,,,Fresno,index,+36.7674305,-119.7960355
+93901,Salinas,Salinas,salinas,Monterey,index,+36.6478557,-121.6303055
+93905,93905,,,Monterey,index,+36.6849473,-121.6056166
+93906,Salinas,Salinas,salinas,Monterey,index,+36.7225774,-121.6321769
+93907,Salinas,Salinas,salinas,Monterey,index,+36.7664244,-121.6681677
+93908,93908,,,Monterey,index,+36.6215221,-121.6005883
+93920,93920,,,Monterey,index,+36.0290557,-121.5240884
+93921,93921,,,Monterey,index,+36.5536409,-121.9222713
+93923,Carmel-by-the-Sea,Carmel-by-the-Sea,carmel-by-the-sea,Monterey,index,+36.4040262,-121.7987296
+93924,93924,,,Monterey,index,+36.3947850,-121.6339959
+93925,93925,,,Monterey,index,+36.6020665,-121.4252807
+93926,93926,,,Monterey,index,+36.5256788,-121.3990967
+93927,93927,,,Monterey,index,+36.2697874,-121.3801365
+93928,93928,,,Monterey,index,+36.0648774,-121.3809390
+93930,93930,,,Monterey,index,+36.1991513,-121.0729102
+93932,93932,,,Monterey,index,+36.0014031,-121.0575848
+93933,Marina,Marina,marina,Monterey,index,+36.6758568,-121.7827810
+93940,Monterey,Monterey,monterey,Monterey,index,+36.4257752,-121.8426510
+93943,93943,,,Monterey,index,+36.5973427,-121.8733682
+93944,93944,,,Monterey,index,+36.6006521,-121.9185346
+93950,Pacific Grove,Pacific Grove,pacific-grove,Monterey,index,+36.6191836,-121.9256609
+93953,93953,,,Monterey,index,+36.5856098,-121.9437178
+93954,93954,,,Monterey,index,+36.1642941,-120.9244445
+93955,Seaside,Seaside,seaside,Monterey,index,+36.6224278,-121.7968563
+93960,93960,,,Monterey,index,+36.4049123,-121.3211914
+93962,93962,,,Monterey,index,+36.6247156,-121.6464870
+94002,Belmont,Belmont,belmont,San Mateo,index,+37.5136491,-122.2985968
+94005,94005,,,San Mateo,index,+37.6882166,-122.4087399
+94010,Hillsborough,Hillsborough,hillsborough,San Mateo,index,+37.5731109,-122.3782194
+94014,Daly City,Daly City,daly-city,San Mateo,index,+37.6906888,-122.4477212
+94015,Daly City,Daly City,daly-city,San Mateo,index,+37.6813157,-122.4808547
+94018,94018,,,San Mateo,index,+37.5059971,-122.4733175
+94019,94019,,,San Mateo,index,+37.4481446,-122.4021319
+94020,94020,,,San Mateo,index,+37.2847105,-122.2196434
+94021,94021,,,San Mateo,index,+37.2503449,-122.2496358
+94022,Los Altos,Los Altos,los-altos,Santa Clara,index,+37.3553597,-122.1449354
+94024,Los Altos,Los Altos,los-altos,Santa Clara,index,+37.3503883,-122.0986856
+94025,Menlo Park,Menlo Park,menlo-park,San Mateo,index,+37.4508524,-122.1829186
+94027,94027,,,San Mateo,index,+37.4539965,-122.2031492
+94028,94028,,,San Mateo,index,+37.3749060,-122.2113639
+94030,Millbrae,Millbrae,millbrae,San Mateo,index,+37.5997105,-122.4033001
+94037,94037,,,San Mateo,index,+37.5533007,-122.4958343
+94038,94038,,,San Mateo,index,+37.5295715,-122.4847433
+94040,Mountain View,Mountain View,mountain-view,Santa Clara,index,+37.3802721,-122.0852214
+94041,Mountain View,Mountain View,mountain-view,Santa Clara,index,+37.3882390,-122.0753507
+94043,Mountain View,Mountain View,mountain-view,Santa Clara,index,+37.4119135,-122.0689193
+94044,Pacifica,Pacifica,pacifica,San Mateo,index,+37.6053510,-122.4798427
+94060,94060,,,San Mateo,index,+37.2229641,-122.3355505
+94061,Redwood City,Redwood City,redwood-city,San Mateo,index,+37.4613679,-122.2372325
+94062,Woodside,Woodside,woodside,San Mateo,index,+37.4256083,-122.2965110
+94063,Redwood City,Redwood City,redwood-city,San Mateo,index,+37.4939526,-122.2081567
+94065,Redwood City,Redwood City,redwood-city,San Mateo,index,+37.5350748,-122.2467722
+94066,San Bruno,San Bruno,san-bruno,San Mateo,index,+37.6253890,-122.4323558
+94070,San Carlos,San Carlos,san-carlos,San Mateo,index,+37.4974027,-122.2701506
+94074,94074,,,San Mateo,index,+37.3282093,-122.3414959
+94080,South San Francisco,South San Francisco,south-san-francisco,San Mateo,index,+37.6550404,-122.4176539
+94085,Sunnyvale,Sunnyvale,sunnyvale,Santa Clara,index,+37.3886171,-122.0179326
+94086,Sunnyvale,Sunnyvale,sunnyvale,Santa Clara,index,+37.3716335,-122.0232017
+94087,Sunnyvale,Sunnyvale,sunnyvale,Santa Clara,index,+37.3516149,-122.0366796
+94089,Sunnyvale,Sunnyvale,sunnyvale,Santa Clara,index,+37.4119156,-122.0144226
+94102,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7795621,-122.4192928
+94103,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7729833,-122.4113430
+94104,94104,,,San Francisco,index,+37.7914115,-122.4021291
+94105,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7983835,-122.3990079
+94107,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7651429,-122.3930182
+94108,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7918858,-122.4085167
+94109,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7945193,-122.4215246
+94110,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7497231,-122.4153140
+94111,94111,,,San Francisco,index,+37.7984434,-122.3997375
+94112,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7205395,-122.4431699
+94114,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7582080,-122.4355562
+94115,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7860292,-122.4373655
+94116,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7445890,-122.4860733
+94117,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7700509,-122.4442803
+94118,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7801410,-122.4617617
+94121,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7785245,-122.4954991
+94122,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7611551,-122.4843076
+94123,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.8026764,-122.4365080
+94124,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7294237,-122.3818021
+94127,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7363484,-122.4596853
+94128,94128,,,San Mateo,index,+37.6219551,-122.3837971
+94129,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7974293,-122.4663911
+94130,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.8199017,-122.3686887
+94131,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7457076,-122.4424441
+94132,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7221438,-122.4846774
+94133,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.8019620,-122.4109996
+94134,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7189072,-122.4112805
+94158,San Francisco,San Francisco,san-francisco,San Francisco,index,+37.7729090,-122.3883974
+94188,94188,,,San Francisco,index,+37.7407097,-122.3809213
+94301,Palo Alto,Palo Alto,palo-alto,Santa Clara,index,+37.4442178,-122.1498549
+94303,East Palo Alto,East Palo Alto,east-palo-alto,Santa Clara,index,+37.4505358,-122.1193603
+94304,94304,,,Santa Clara,index,+37.3972529,-122.1669792
+94305,94305,,,Santa Clara,index,+37.4162485,-122.1707257
+94306,Palo Alto,Palo Alto,palo-alto,Santa Clara,index,+37.4162001,-122.1308577
+94401,San Mateo,San Mateo,san-mateo,San Mateo,index,+37.5744634,-122.3193319
+94402,San Mateo,San Mateo,san-mateo,San Mateo,index,+37.5402851,-122.3338884
+94403,San Mateo,San Mateo,san-mateo,San Mateo,index,+37.5384312,-122.3045589
+94404,Foster City,Foster City,foster-city,San Mateo,index,+37.5561364,-122.2691571
+94501,Alameda,Alameda,alameda,Alameda,index,+37.7750671,-122.2788678
+94502,Alameda,Alameda,alameda,Alameda,index,+37.7369106,-122.2409780
+94503,American Canyon,American Canyon,american-canyon,Napa,index,+38.1945546,-122.2304863
+94505,Discovery Bay,Discovery Bay,discovery-bay,Contra Costa,index,+37.8663522,-121.5867912
+94506,Danville,Danville,danville,Contra Costa,index,+37.8085976,-121.9049094
+94507,94507,,,Contra Costa,index,+37.8542897,-122.0065987
+94508,Angwin,Angwin,angwin,Napa,index,+38.5790996,-122.4444856
+94509,Antioch,Antioch,antioch,Contra Costa,index,+37.9921233,-121.8142459
+94510,Benicia,Benicia,benicia,Solano,index,+38.0975400,-122.1318842
+94511,94511,,,Contra Costa,index,+38.0288470,-121.6403960
+94512,94512,,,Solano,index,+38.1262898,-121.8379347
+94513,Brentwood,Brentwood,brentwood,Contra Costa,index,+37.9253963,-121.6845689
+94514,94514,,,Contra Costa,index,+37.8307077,-121.6339015
+94515,Calistoga,Calistoga,calistoga,Sonoma,index,+38.6248673,-122.6245993
+94516,94516,,,Contra Costa,index,+37.8274954,-122.1663001
+94517,Clayton,Clayton,clayton,Contra Costa,index,+37.8926001,-121.8824868
+94518,Concord,Concord,concord,Contra Costa,index,+37.9505211,-122.0220781
+94519,Concord,Concord,concord,Contra Costa,index,+37.9888044,-122.0127643
+94520,Concord,Concord,concord,Contra Costa,index,+37.9934888,-122.0352456
+94521,Concord,Concord,concord,Contra Costa,index,+37.9529096,-121.9696955
+94523,Pleasant Hill,Pleasant Hill,pleasant-hill,Contra Costa,index,+37.9540859,-122.0760953
+94525,94525,,,Contra Costa,index,+38.0480726,-122.2292077
+94526,Danville,Danville,danville,Contra Costa,index,+37.8147341,-121.9845253
+94528,94528,,,Contra Costa,index,+37.8414766,-121.9581536
+94530,El Cerrito,El Cerrito,el-cerrito,Contra Costa,index,+37.9207416,-122.3006348
+94531,Antioch,Antioch,antioch,Contra Costa,index,+37.9566481,-121.7777900
+94533,Fairfield,Fairfield,fairfield,Solano,index,+38.2813168,-122.0069498
+94534,Fairfield,Fairfield,fairfield,Solano,index,+38.2410608,-122.1213529
+94535,94535,,,Solano,index,+38.2705146,-121.9385174
+94536,Fremont,Fremont,fremont,Alameda,index,+37.5707050,-121.9855605
+94538,Fremont,Fremont,fremont,Alameda,index,+37.5065604,-121.9636489
+94539,Fremont,Fremont,fremont,Alameda,index,+37.5162924,-121.9118907
+94541,Hayward,Hayward,hayward,Alameda,index,+37.6737551,-122.0871272
+94542,Hayward,Hayward,hayward,Alameda,index,+37.6553201,-122.0258263
+94544,Hayward,Hayward,hayward,Alameda,index,+37.6335074,-122.0567724
+94545,Hayward,Hayward,hayward,Alameda,index,+37.6297787,-122.1243930
+94546,Castro Valley,Castro Valley,castro-valley,Alameda,index,+37.7343778,-122.0905142
+94547,Hercules,Hercules,hercules,Contra Costa,index,+38.0061553,-122.2609511
+94548,94548,,,Contra Costa,index,+37.9748054,-121.6526573
+94549,Lafayette,Lafayette,lafayette,Contra Costa,index,+37.9012964,-122.1192923
+94550,Livermore,Livermore,livermore,Alameda,index,+37.5172377,-121.5938116
+94551,Livermore,Livermore,livermore,Alameda,index,+37.7590018,-121.7602409
+94552,Castro Valley,Castro Valley,castro-valley,Alameda,index,+37.7045735,-122.0135657
+94553,Martinez,Martinez,martinez,Contra Costa,index,+37.9799534,-122.1537044
+94555,Fremont,Fremont,fremont,Alameda,index,+37.5510539,-122.0802649
+94556,Moraga,Moraga,moraga,Contra Costa,index,+37.8310753,-122.1042909
+94558,Napa,Napa,napa,Napa,index,+38.5088316,-122.2647622
+94559,Napa,Napa,napa,Napa,index,+38.2522451,-122.2940104
+94560,Newark,Newark,newark,Alameda,index,+37.5076987,-122.0252150
+94561,Oakley,Oakley,oakley,Contra Costa,index,+37.9931185,-121.6917017
+94562,94562,,,Napa,index,+38.4306507,-122.4088532
+94563,Orinda,Orinda,orinda,Contra Costa,index,+37.8819486,-122.1941525
+94564,Pinole,Pinole,pinole,Contra Costa,index,+37.9889896,-122.2701796
+94565,Pittsburg,Pittsburg,pittsburg,Contra Costa,index,+38.0092441,-121.9288372
+94566,Pleasanton,Pleasanton,pleasanton,Alameda,index,+37.6502864,-121.8588279
+94567,94567,,,Napa,index,+38.6636623,-122.4351685
+94568,Dublin,Dublin,dublin,Alameda,index,+37.7159807,-121.9011254
+94569,94569,,,Contra Costa,index,+38.0440915,-122.1919429
+94571,94571,,,Solano,index,+38.1565598,-121.7482055
+94572,94572,,,Contra Costa,index,+38.0238582,-122.2327881
+94573,94573,,,Napa,index,+38.4572656,-122.4235081
+94574,Saint Helena,Saint Helena,saint-helena,Napa,index,+38.5273983,-122.3926086
+94575,94575,,,Contra Costa,index,+37.8423066,-122.1101978
+94576,94576,,,Napa,index,+38.5492560,-122.4757997
+94577,San Leandro,San Leandro,san-leandro,Alameda,index,+37.7152469,-122.1679062
+94578,San Leandro,San Leandro,san-leandro,Alameda,index,+37.7067648,-122.1255650
+94579,San Leandro,San Leandro,san-leandro,Alameda,index,+37.6865005,-122.1572145
+94580,San Lorenzo,San Lorenzo,san-lorenzo,Alameda,index,+37.6780011,-122.1333673
+94582,San Ramon,San Ramon,san-ramon,Contra Costa,index,+37.7636105,-121.9147255
+94583,San Ramon,San Ramon,san-ramon,Contra Costa,index,+37.7723977,-121.9915148
+94585,Suisun City,Suisun City,suisun-city,Solano,index,+38.1906311,-121.9422083
+94586,94586,,,Alameda,index,+37.5732601,-121.8546881
+94587,Union City,Union City,union-city,Alameda,index,+37.5907337,-122.0744006
+94588,Pleasanton,Pleasanton,pleasanton,Alameda,index,+37.7379318,-121.8818333
+94589,Vallejo,Vallejo,vallejo,Solano,index,+38.1416326,-122.2459706
+94590,Vallejo,Vallejo,vallejo,Solano,index,+38.0955792,-122.2498588
+94591,Vallejo,Vallejo,vallejo,Solano,index,+38.1270180,-122.1963753
+94592,94592,,,Solano,index,+38.1199789,-122.3115590
+94595,Walnut Creek,Walnut Creek,walnut-creek,Contra Costa,index,+37.8720866,-122.0689697
+94596,Walnut Creek,Walnut Creek,walnut-creek,Contra Costa,index,+37.8890094,-122.0367782
+94597,Walnut Creek,Walnut Creek,walnut-creek,Contra Costa,index,+37.9176973,-122.0718180
+94598,Walnut Creek,Walnut Creek,walnut-creek,Contra Costa,index,+37.8923856,-121.9827999
+94599,94599,,,Napa,index,+38.4101175,-122.3736507
+94601,Oakland,Oakland,oakland,Alameda,index,+37.7767996,-122.2182142
+94602,Oakland,Oakland,oakland,Alameda,index,+37.8052351,-122.2042292
+94603,Oakland,Oakland,oakland,Alameda,index,+37.7392664,-122.1755480
+94605,Oakland,Oakland,oakland,Alameda,index,+37.7606108,-122.1490244
+94606,Oakland,Oakland,oakland,Alameda,index,+37.7918227,-122.2444508
+94607,Oakland,Oakland,oakland,Alameda,index,+37.8081681,-122.3047201
+94608,Emeryville,Emeryville,emeryville,Alameda,index,+37.8367063,-122.2898743
+94609,Oakland,Oakland,oakland,Alameda,index,+37.8348158,-122.2641948
+94610,Oakland,Oakland,oakland,Alameda,index,+37.8123293,-122.2403771
+94611,Piedmont,Piedmont,piedmont,Alameda,index,+37.8318855,-122.2159336
+94612,Oakland,Oakland,oakland,Alameda,index,+37.8078973,-122.2661960
+94613,94613,,,Alameda,index,+37.7807203,-122.1830290
+94618,Oakland,Oakland,oakland,Alameda,index,+37.8441337,-122.2386691
+94619,Oakland,Oakland,oakland,Alameda,index,+37.7926122,-122.1600844
+94621,Oakland,Oakland,oakland,Alameda,index,+37.7347682,-122.2101737
+94702,Berkeley,Berkeley,berkeley,Alameda,index,+37.8663209,-122.2863481
+94703,Berkeley,Berkeley,berkeley,Alameda,index,+37.8637146,-122.2756841
+94704,Berkeley,Berkeley,berkeley,Alameda,index,+37.8664155,-122.2609308
+94705,Oakland,Oakland,oakland,Alameda,index,+37.8652053,-122.2383843
+94706,Albany,Albany,albany,Alameda,index,+37.8896978,-122.2958583
+94707,94707,,,Alameda,index,+37.8983602,-122.2790897
+94708,Berkeley,Berkeley,berkeley,Contra Costa,index,+37.9027221,-122.2619321
+94709,Berkeley,Berkeley,berkeley,Alameda,index,+37.8782901,-122.2662496
+94710,Berkeley,Berkeley,berkeley,Alameda,index,+37.8651984,-122.3092022
+94720,94720,,,Alameda,index,+37.8719567,-122.2521968
+94801,Richmond,Richmond,richmond,Contra Costa,index,+37.9413556,-122.3872960
+94803,Richmond,Richmond,richmond,Contra Costa,index,+37.9568383,-122.2823563
+94804,Richmond,Richmond,richmond,Contra Costa,index,+37.9149489,-122.3425990
+94805,Richmond,Richmond,richmond,Contra Costa,index,+37.9422094,-122.3235455
+94806,San Pablo,San Pablo,san-pablo,Contra Costa,index,+37.9781155,-122.3361909
+94901,San Rafael,San Rafael,san-rafael,Marin,index,+37.9800096,-122.4967907
+94903,San Rafael,San Rafael,san-rafael,Marin,index,+38.0250536,-122.5504307
+94904,Kentfield,Kentfield,kentfield,Marin,index,+37.9484349,-122.5526952
+94920,Tiburon,Tiburon,tiburon,Marin,index,+37.8835960,-122.4639638
+94922,94922,,,Sonoma,index,+38.3568061,-122.9509450
+94923,94923,,,Sonoma,index,+38.3381645,-123.0311703
+94924,94924,,,Marin,index,+37.9540795,-122.7316244
+94925,Corte Madera,Corte Madera,corte-madera,Marin,index,+37.9253526,-122.5092800
+94928,Rohnert Park,Rohnert Park,rohnert-park,Sonoma,index,+38.3459304,-122.6935071
+94929,94929,,,Marin,index,+38.2545284,-122.9623709
+94930,94930,,,Marin,index,+37.9704747,-122.6110538
+94931,Cotati,Cotati,cotati,Sonoma,index,+38.3223136,-122.7149720
+94933,94933,,,Marin,index,+38.0175021,-122.6881480
+94937,94937,,,Marin,index,+38.0953806,-122.9272521
+94938,94938,,,Marin,index,+38.0302365,-122.7295132
+94939,Larkspur,Larkspur,larkspur,Marin,index,+37.9372161,-122.5350870
+94940,94940,,,Marin,index,+38.1575344,-122.8637599
+94941,Mill Valley,Mill Valley,mill-valley,Marin,index,+37.9254259,-122.6003603
+94945,Novato,Novato,novato,Marin,index,+38.1256103,-122.5537989
+94946,94946,,,Marin,index,+38.0717663,-122.6878344
+94947,Novato,Novato,novato,Marin,index,+38.1070160,-122.6280473
+94949,Novato,Novato,novato,Marin,index,+38.0660460,-122.5285412
+94950,94950,,,Marin,index,+38.0211609,-122.7617342
+94951,94951,,,Sonoma,index,+38.3225483,-122.6448942
+94952,Petaluma,Petaluma,petaluma,Marin,index,+38.2302681,-122.7644424
+94954,Petaluma,Petaluma,petaluma,Sonoma,index,+38.2462201,-122.5662464
+94956,94956,,,Marin,index,+38.0475396,-122.8104490
+94957,94957,,,Marin,index,+37.9634213,-122.5618079
+94960,San Anselmo,San Anselmo,san-anselmo,Marin,index,+37.9970232,-122.5783384
+94963,94963,,,Marin,index,+38.0076100,-122.6647483
+94964,94964,,,Marin,index,+37.9408723,-122.4890137
+94965,Sausalito,Sausalito,sausalito,Marin,index,+37.8528123,-122.5244103
+94970,94970,,,Marin,index,+37.9168884,-122.6554800
+94971,94971,,,Marin,index,+38.2372254,-122.8902458
+94972,94972,,,Sonoma,index,+38.3366418,-122.9393071
+94973,94973,,,Marin,index,+38.0125906,-122.6394000
+95002,95002,,,Santa Clara,index,+37.4407305,-122.0004652
+95003,Aptos,Aptos,aptos,Santa Cruz,index,+37.0089212,-121.8777863
+95004,95004,,,Monterey,index,+36.8681860,-121.6323619
+95005,95005,,,Santa Cruz,index,+37.0983626,-122.0892953
+95006,Boulder Creek,Boulder Creek,boulder-creek,Santa Cruz,index,+37.1712684,-122.1509879
+95007,95007,,,Santa Cruz,index,+37.1101249,-122.1143447
+95008,Campbell,Campbell,campbell,Santa Clara,index,+37.2797770,-121.9548216
+95010,Capitola,Capitola,capitola,Santa Cruz,index,+36.9768245,-121.9544835
+95012,95012,,,Monterey,index,+36.7836962,-121.7416989
+95013,95013,,,Santa Clara,index,+37.2153151,-121.7396138
+95014,Cupertino,Cupertino,cupertino,Santa Clara,index,+37.3082712,-122.0798211
+95017,95017,,,Santa Cruz,index,+37.1053486,-122.2291145
+95018,95018,,,Santa Cruz,index,+37.0802151,-122.0582015
+95019,95019,,,Santa Cruz,index,+36.9358526,-121.7844761
+95020,Gilroy,Gilroy,gilroy,Santa Clara,index,+37.0146264,-121.5571979
+95023,Hollister,Hollister,hollister,San Benito,index,+36.9208970,-121.3612338
+95030,Los Gatos,Los Gatos,los-gatos,Santa Clara,index,+37.2216463,-121.9832420
+95032,Los Gatos,Los Gatos,los-gatos,Santa Clara,index,+37.2085527,-121.9235789
+95033,95033,,,Santa Cruz,index,+37.1570719,-121.9776969
+95035,Milpitas,Milpitas,milpitas,Santa Clara,index,+37.4431960,-121.8763334
+95037,Morgan Hill,Morgan Hill,morgan-hill,Santa Clara,index,+37.1321514,-121.6788790
+95039,95039,,,Monterey,index,+36.8151858,-121.7778139
+95041,95041,,,Santa Cruz,index,+37.0505337,-122.0582794
+95043,95043,,,San Benito,index,+36.5164810,-120.9763980
+95045,95045,,,San Benito,index,+36.8327805,-121.5257293
+95046,95046,,,Santa Clara,index,+37.0957505,-121.5964781
+95050,Santa Clara,Santa Clara,santa-clara,Santa Clara,index,+37.3504312,-121.9524053
+95051,Santa Clara,Santa Clara,santa-clara,Santa Clara,index,+37.3483113,-121.9844349
+95053,95053,,,Santa Clara,index,+37.3484622,-121.9372707
+95054,Santa Clara,Santa Clara,santa-clara,Santa Clara,index,+37.3930994,-121.9647964
+95060,Santa Cruz,Santa Cruz,santa-cruz,Santa Cruz,index,+37.0135728,-122.1016246
+95062,Santa Cruz,Santa Cruz,santa-cruz,Santa Cruz,index,+36.9728886,-121.9900725
+95064,95064,,,Santa Cruz,index,+36.9915959,-122.0588685
+95065,Santa Cruz,Santa Cruz,santa-cruz,Santa Cruz,index,+37.0322419,-121.9844016
+95066,Scotts Valley,Scotts Valley,scotts-valley,Santa Cruz,index,+37.0671978,-122.0145209
+95070,Saratoga,Saratoga,saratoga,Santa Clara,index,+37.2562551,-122.0514986
+95073,Soquel,Soquel,soquel,Santa Cruz,index,+37.0406799,-121.9317399
+95075,95075,,,San Benito,index,+36.8011106,-121.1925761
+95076,Watsonville,Watsonville,watsonville,Santa Cruz,index,+36.9402445,-121.7508554
+95110,San Jose,San Jose,san-jose,Santa Clara,index,+37.3465721,-121.9097466
+95111,San Jose,San Jose,san-jose,Santa Clara,index,+37.2840181,-121.8272878
+95112,San Jose,San Jose,san-jose,Santa Clara,index,+37.3445994,-121.8834403
+95113,San Jose,San Jose,san-jose,Santa Clara,index,+37.3340134,-121.8904427
+95116,San Jose,San Jose,san-jose,Santa Clara,index,+37.3504713,-121.8525538
+95117,San Jose,San Jose,san-jose,Santa Clara,index,+37.3100724,-121.9621838
+95118,San Jose,San Jose,san-jose,Santa Clara,index,+37.2558888,-121.8899295
+95119,95119,,,Santa Clara,index,+37.2275881,-121.7908435
+95120,San Jose,San Jose,san-jose,Santa Clara,index,+37.1842872,-121.8366167
+95121,San Jose,San Jose,san-jose,Santa Clara,index,+37.3046105,-121.8097734
+95122,San Jose,San Jose,san-jose,Santa Clara,index,+37.3292242,-121.8348212
+95123,San Jose,San Jose,san-jose,Santa Clara,index,+37.2448109,-121.8331054
+95124,San Jose,San Jose,san-jose,Santa Clara,index,+37.2568308,-121.9228146
+95125,San Jose,San Jose,san-jose,Santa Clara,index,+37.2955986,-121.8940712
+95126,San Jose,San Jose,san-jose,Santa Clara,index,+37.3269219,-121.9167787
+95127,San Jose,San Jose,san-jose,Santa Clara,index,+37.3745486,-121.7873476
+95128,San Jose,San Jose,san-jose,Santa Clara,index,+37.3158842,-121.9364309
+95129,San Jose,San Jose,san-jose,Santa Clara,index,+37.3059580,-122.0007203
+95130,San Jose,San Jose,san-jose,Santa Clara,index,+37.2880560,-121.9814461
+95131,San Jose,San Jose,san-jose,Santa Clara,index,+37.3872675,-121.8979476
+95132,San Jose,San Jose,san-jose,Santa Clara,index,+37.4199525,-121.7906445
+95133,San Jose,San Jose,san-jose,Santa Clara,index,+37.3717229,-121.8605558
+95134,San Jose,San Jose,san-jose,Santa Clara,index,+37.4300210,-121.9452626
+95135,San Jose,San Jose,san-jose,Santa Clara,index,+37.2228416,-121.5590084
+95136,San Jose,San Jose,san-jose,Santa Clara,index,+37.2718842,-121.8523678
+95138,95138,,,Santa Clara,index,+37.2461979,-121.7328410
+95139,95139,,,Santa Clara,index,+37.2248768,-121.7638563
+95140,95140,,,Santa Clara,index,+37.3482965,-121.6408009
+95148,San Jose,San Jose,san-jose,Santa Clara,index,+37.3325470,-121.7814035
+95202,95202,,,San Joaquin,index,+37.9596959,-121.2877087
+95203,Stockton,Stockton,stockton,San Joaquin,index,+37.9523709,-121.3309763
+95204,Stockton,Stockton,stockton,San Joaquin,index,+37.9740064,-121.3191325
+95205,95205,,,San Joaquin,index,+37.9642158,-121.2595590
+95206,Stockton,Stockton,stockton,San Joaquin,index,+37.8960658,-121.4104806
+95207,Stockton,Stockton,stockton,San Joaquin,index,+38.0023828,-121.3249546
+95209,Stockton,Stockton,stockton,San Joaquin,index,+38.0471283,-121.3512206
+95210,Stockton,Stockton,stockton,San Joaquin,index,+38.0321421,-121.2978124
+95211,95211,,,San Joaquin,index,+37.9806997,-121.3117947
+95212,Stockton,Stockton,stockton,San Joaquin,index,+38.0489790,-121.2268389
+95215,95215,,,San Joaquin,index,+37.9443849,-121.1527279
+95219,Brentwood,Brentwood,brentwood,San Joaquin,index,+38.0206442,-121.5158057
+95220,95220,,,San Joaquin,index,+38.1977969,-121.2359885
+95221,95221,,,Calaveras,index,+38.0722862,-120.5484656
+95222,95222,,,Calaveras,index,+38.0612612,-120.6178627
+95223,95223,,,Alpine,index,+38.4644804,-119.8596749
+95224,95224,,,Calaveras,index,+38.2270064,-120.3256826
+95225,95225,,,Calaveras,index,+38.2039846,-120.8648342
+95226,95226,,,Calaveras,index,+38.2337793,-120.8622935
+95227,95227,,,San Joaquin,index,+38.2067746,-121.0461251
+95228,95228,,,Calaveras,index,+37.9466951,-120.6806462
+95230,95230,,,Stanislaus,index,+37.9735844,-120.8649531
+95231,95231,,,San Joaquin,index,+37.8733201,-121.2926939
+95232,95232,,,Calaveras,index,+38.3605261,-120.5772427
+95233,95233,,,Calaveras,index,+38.1861875,-120.3685566
+95236,95236,,,San Joaquin,index,+38.0421649,-121.0317673
+95237,95237,,,San Joaquin,index,+38.1595513,-121.1484587
+95240,Lodi,Lodi,lodi,San Joaquin,index,+38.1177202,-121.1627166
+95242,Lodi,Lodi,lodi,San Joaquin,index,+38.1320132,-121.3887290
+95245,95245,,,Calaveras,index,+38.3019156,-120.6197575
+95246,95246,,,Calaveras,index,+38.2366347,-120.4959378
+95247,95247,,,Calaveras,index,+38.1426183,-120.4436729
+95248,95248,,,Calaveras,index,+38.3243071,-120.4604464
+95249,95249,,,Calaveras,index,+38.1898527,-120.6178192
+95251,95251,,,Calaveras,index,+38.0802051,-120.4577092
+95252,95252,,,Calaveras,index,+38.1586675,-120.8421810
+95253,95253,,,San Joaquin,index,+38.1471686,-121.1952844
+95254,95254,,,Calaveras,index,+38.2032054,-120.9585241
+95255,95255,,,Calaveras,index,+38.4205648,-120.4751366
+95257,95257,,,Calaveras,index,+38.3806697,-120.4525430
+95258,95258,,,San Joaquin,index,+38.1681308,-121.3101193
+95301,Atwater,Atwater,atwater,Merced,index,+37.3063190,-120.6512518
+95303,95303,,,Merced,index,+37.4713778,-120.6774190
+95304,Tracy,Tracy,tracy,San Joaquin,index,+37.6772468,-121.3948168
+95305,95305,,,Tuolumne,index,+37.8306044,-120.3481782
+95306,95306,,,Mariposa,index,+37.3600889,-120.1158202
+95307,95307,,,Stanislaus,index,+37.5558092,-120.9538524
+95309,95309,,,Tuolumne,index,+37.8714200,-120.4323870
+95310,95310,,,Tuolumne,index,+38.0994848,-120.3617142
+95311,95311,,,Mariposa,index,+37.7044617,-120.0834312
+95312,95312,,,Merced,index,+37.4210709,-120.6529833
+95313,95313,,,Stanislaus,index,+37.4351254,-121.0376414
+95315,95315,,,Merced,index,+37.4224290,-120.7733102
+95316,95316,,,Stanislaus,index,+37.5461578,-120.6921117
+95317,95317,,,Merced,index,+37.1294830,-120.5073993
+95318,95318,,,Mariposa,index,+37.6661753,-119.8063639
+95319,95319,,,Stanislaus,index,+37.6308520,-120.8772283
+95320,95320,,,San Joaquin,index,+37.8245159,-121.0154458
+95321,95321,,,Tuolumne,index,+37.9773218,-119.7507126
+95322,95322,,,Merced,index,+37.1762008,-121.0186025
+95323,95323,,,Stanislaus,index,+37.6088221,-120.6846436
+95324,95324,,,Merced,index,+37.3945243,-120.8960320
+95325,95325,,,Mariposa,index,+37.4805889,-120.2420663
+95326,95326,,,Stanislaus,index,+37.5899796,-120.8531193
+95327,95327,,,Tuolumne,index,+37.8490516,-120.4857970
+95328,95328,,,Stanislaus,index,+37.5580365,-120.9094153
+95329,95329,,,Tuolumne,index,+37.6772457,-120.4137211
+95330,Lathrop,Lathrop,lathrop,San Joaquin,index,+37.8117032,-121.3132956
+95333,95333,,,Merced,index,+37.2446736,-120.2427411
+95334,95334,,,Merced,index,+37.3475464,-120.7462539
+95335,95335,,,Tuolumne,index,+38.1189690,-120.0923645
+95336,Manteca,Manteca,manteca,San Joaquin,index,+37.8334853,-121.1987664
+95337,Manteca,Manteca,manteca,San Joaquin,index,+37.7416847,-121.2383272
+95338,95338,,,Mariposa,index,+37.5091381,-119.9864482
+95340,Merced,Merced,merced,Merced,index,+37.3412743,-120.4065284
+95341,Merced,Merced,merced,Merced,index,+37.2303761,-120.5071494
+95345,95345,,,Mariposa,index,+37.5878208,-119.9640769
+95346,95346,,,Tuolumne,index,+38.0704299,-120.1729531
+95348,Merced,Merced,merced,Merced,index,+37.4152408,-120.4978959
+95350,Modesto,Modesto,modesto,Stanislaus,index,+37.6717296,-121.0072847
+95351,Modesto,Modesto,modesto,Stanislaus,index,+37.6236127,-120.9982660
+95354,Modesto,Modesto,modesto,Stanislaus,index,+37.6384671,-120.9642444
+95355,Modesto,Modesto,modesto,Stanislaus,index,+37.6727071,-120.9471626
+95356,Modesto,Modesto,modesto,Stanislaus,index,+37.7194473,-121.0278511
+95357,95357,,,Stanislaus,index,+37.6698482,-120.8791934
+95358,95358,,,Stanislaus,index,+37.6157751,-121.1005503
+95360,95360,,,Stanislaus,index,+37.3291763,-121.0382435
+95361,Oakdale,Oakdale,oakdale,Stanislaus,index,+37.7934043,-120.7764943
+95363,Patterson,Patterson,patterson,Stanislaus,index,+37.3725032,-121.2719210
+95364,95364,,,Tuolumne,index,+38.2293396,-119.7916014
+95365,95365,,,Merced,index,+37.3011826,-120.3314818
+95366,Ripon,Ripon,ripon,San Joaquin,index,+37.7622171,-121.1257562
+95367,95367,,,Stanislaus,index,+37.7308667,-120.9467023
+95368,95368,,,Stanislaus,index,+37.7154752,-121.0904818
+95369,95369,,,Merced,index,+37.5243669,-120.4130131
+95370,Sonora,Sonora,sonora,Tuolumne,index,+37.9848269,-120.3451948
+95372,95372,,,Tuolumne,index,+37.9892353,-120.2627540
+95374,95374,,,Merced,index,+37.3163389,-120.8567776
+95375,95375,,,Tuolumne,index,+38.2149332,-119.9702823
+95376,Tracy,Tracy,tracy,San Joaquin,index,+37.7368187,-121.4339976
+95377,Tracy,Tracy,tracy,San Joaquin,index,+37.6528939,-121.4960209
+95379,95379,,,Tuolumne,index,+37.9618362,-120.2163389
+95380,Turlock,Turlock,turlock,Stanislaus,index,+37.4722814,-120.8697799
+95382,Turlock,Turlock,turlock,Stanislaus,index,+37.5283128,-120.8521275
+95383,95383,,,Tuolumne,index,+38.0953656,-120.2260091
+95385,95385,,,Stanislaus,index,+37.6120468,-121.2477231
+95386,95386,,,Stanislaus,index,+37.6739098,-120.6304219
+95387,95387,,,Stanislaus,index,+37.5543749,-121.2446513
+95388,95388,,,Merced,index,+37.4217064,-120.5971254
+95389,95389,,,Mariposa,index,+37.7378569,-119.5257903
+95391,Mountain House,Mountain House,mountain-house,Alameda,index,+37.7695286,-121.5912456
+95401,Santa Rosa,Santa Rosa,santa-rosa,Sonoma,index,+38.4492191,-122.7930786
+95403,Santa Rosa,Santa Rosa,santa-rosa,Sonoma,index,+38.5032715,-122.7535755
+95404,Santa Rosa,Santa Rosa,santa-rosa,Sonoma,index,+38.4648695,-122.6570810
+95405,Santa Rosa,Santa Rosa,santa-rosa,Sonoma,index,+38.4392795,-122.6691023
+95407,Santa Rosa,Santa Rosa,santa-rosa,Sonoma,index,+38.3946561,-122.7459317
+95409,Santa Rosa,Santa Rosa,santa-rosa,Sonoma,index,+38.4611531,-122.6041676
+95410,95410,,,Mendocino,index,+39.2161785,-123.7003963
+95412,95412,,,Sonoma,index,+38.7115118,-123.3193086
+95415,95415,,,Mendocino,index,+39.0205089,-123.3675486
+95417,95417,,,Mendocino,index,+39.6879081,-123.6506987
+95419,95419,,,Sonoma,index,+38.4234685,-122.9581808
+95420,95420,,,Mendocino,index,+39.3565296,-123.7690873
+95421,95421,,,Sonoma,index,+38.5827547,-123.1803216
+95422,Clearlake,Clearlake,clearlake,Lake,index,+38.9782779,-122.6423040
+95423,95423,,,Lake,index,+39.0674878,-122.6274982
+95425,95425,,,Sonoma,index,+38.8179222,-123.0255813
+95426,95426,,,Lake,index,+38.8344759,-122.7360799
+95427,95427,,,Mendocino,index,+39.2532387,-123.5692471
+95428,95428,,,Mendocino,index,+39.8248633,-123.1811894
+95429,95429,,,Mendocino,index,+39.7328961,-123.3484075
+95430,95430,,,Sonoma,index,+38.4627288,-123.0450067
+95431,95431,,,Sonoma,index,+38.3490690,-122.5161756
+95432,95432,,,Mendocino,index,+39.1083804,-123.6383132
+95435,95435,,,Lake,index,+39.0031495,-122.8747978
+95436,95436,,,Sonoma,index,+38.4910839,-122.9142182
+95437,95437,,,Mendocino,index,+39.4452309,-123.6940735
+95439,95439,,,Sonoma,index,+38.4905556,-122.7759064
+95441,95441,,,Sonoma,index,+38.7378696,-123.0353289
+95442,95442,,,Sonoma,index,+38.3784364,-122.5154968
+95443,95443,,,Lake,index,+39.0501313,-122.7396314
+95444,95444,,,Sonoma,index,+38.4326243,-122.8692411
+95445,95445,,,Mendocino,index,+38.8374364,-123.4940718
+95446,95446,,,Sonoma,index,+38.5252316,-123.0042145
+95448,Healdsburg,Healdsburg,healdsburg,Sonoma,index,+38.6231253,-122.8908807
+95449,95449,,,Mendocino,index,+38.9433284,-123.0965423
+95450,95450,,,Sonoma,index,+38.5232851,-123.2154584
+95451,95451,,,Lake,index,+38.9387915,-122.8048187
+95452,95452,,,Sonoma,index,+38.4295980,-122.5367444
+95453,Lakeport,Lakeport,lakeport,Lake,index,+39.0434218,-122.9391516
+95454,95454,,,Mendocino,index,+39.7804870,-123.5162184
+95456,95456,,,Mendocino,index,+39.2586567,-123.7466038
+95457,95457,,,Lake,index,+38.8796650,-122.5275045
+95458,95458,,,Lake,index,+39.1165996,-122.7821050
+95459,95459,,,Mendocino,index,+38.9906674,-123.6262339
+95460,95460,,,Mendocino,index,+39.3039876,-123.7387539
+95461,95461,,,Lake,index,+38.7627240,-122.5935786
+95462,95462,,,Sonoma,index,+38.4726509,-123.0206497
+95463,95463,,,Mendocino,index,+39.1895599,-123.5805909
+95464,95464,,,Lake,index,+39.1273818,-122.8473992
+95465,95465,,,Sonoma,index,+38.4055579,-123.0196365
+95466,95466,,,Mendocino,index,+39.0886434,-123.5105497
+95467,95467,,,Lake,index,+38.8045200,-122.5494931
+95468,95468,,,Mendocino,index,+38.9091068,-123.6079369
+95469,95469,,,Mendocino,index,+39.3884863,-123.0597455
+95470,95470,,,Mendocino,index,+39.3001439,-123.2298960
+95471,95471,,,Sonoma,index,+38.5322243,-122.9735896
+95472,Sebastopol,Sebastopol,sebastopol,Sonoma,index,+38.3973604,-122.8666726
+95476,Sonoma,Sonoma,sonoma,Sonoma,index,+38.2526413,-122.4608161
+95480,95480,,,Sonoma,index,+38.6846846,-123.3680508
+95482,Ukiah,Ukiah,ukiah,Mendocino,index,+39.1617779,-123.2391372
+95485,95485,,,Lake,index,+39.2082559,-122.9258366
+95486,95486,,,Sonoma,index,+38.4741368,-123.0242032
+95488,95488,,,Mendocino,index,+39.7366771,-123.7720602
+95490,95490,,,Mendocino,index,+39.4882480,-123.3473248
+95492,Windsor,Windsor,windsor,Sonoma,index,+38.5304899,-122.8125698
+95493,95493,,,Lake,index,+39.2024334,-122.9794694
+95494,95494,,,Mendocino,index,+38.8964475,-123.3431830
+95497,95497,,,Sonoma,index,+38.7198687,-123.4559382
+95501,Eureka,Eureka,eureka,Humboldt,index,+40.8043064,-124.1404506
+95503,Eureka,Eureka,eureka,Humboldt,index,+40.7240224,-124.0917146
+95511,95511,,,Humboldt,index,+40.1697277,-123.5954027
+95514,95514,,,Humboldt,index,+40.2914906,-123.6711837
+95519,McKinleyville,McKinleyville,mckinleyville,Humboldt,index,+40.9582762,-124.0497777
+95521,Arcata,Arcata,arcata,Humboldt,index,+40.8458633,-124.0474144
+95524,95524,,,Humboldt,index,+40.8234556,-124.0528233
+95525,95525,,,Humboldt,index,+40.9483651,-123.8262415
+95526,95526,,,Humboldt,index,+40.4470611,-123.6627302
+95527,95527,,,Trinity,index,+40.9357001,-123.4196875
+95528,95528,,,Humboldt,index,+40.4935880,-123.9238747
+95531,Crescent City,Crescent City,crescent-city,Del Norte,index,+41.7929021,-124.0045261
+95536,95536,,,Humboldt,index,+40.5107110,-124.2654795
+95537,95537,,,Humboldt,index,+40.7450233,-124.2147241
+95538,95538,,,Del Norte,index,+41.8683355,-124.1542574
+95540,Fortuna,Fortuna,fortuna,Humboldt,index,+40.5667881,-124.1264709
+95542,95542,,,Humboldt,index,+40.0807866,-123.7736645
+95543,95543,,,Del Norte,index,+41.8885000,-123.8025947
+95545,95545,,,Humboldt,index,+40.2615508,-124.0861340
+95546,95546,,,Humboldt,index,+41.1876903,-123.7452646
+95547,95547,,,Humboldt,index,+40.5694635,-124.0775035
+95548,95548,,,Del Norte,index,+41.5861367,-124.0584766
+95549,95549,,,Humboldt,index,+40.6583546,-123.8947454
+95550,95550,,,Humboldt,index,+40.7769007,-123.8294083
+95551,95551,,,Humboldt,index,+40.6697571,-124.2196479
+95552,95552,,,Trinity,index,+40.3489034,-123.4223145
+95553,95553,,,Humboldt,index,+40.2298037,-123.8713425
+95554,95554,,,Humboldt,index,+40.2757176,-123.7841198
+95555,95555,,,Humboldt,index,+41.2952029,-123.9777722
+95556,95556,,,Humboldt,index,+41.3144077,-123.5904535
+95558,95558,,,Humboldt,index,+40.3267312,-124.2401196
+95559,95559,,,Humboldt,index,+40.1898008,-123.7512025
+95560,95560,,,Humboldt,index,+40.1460522,-123.8381762
+95562,95562,,,Humboldt,index,+40.4580863,-124.1072042
+95563,95563,,,Trinity,index,+40.8424658,-123.5122195
+95564,95564,,,Humboldt,index,+40.7897951,-124.2036978
+95565,95565,,,Humboldt,index,+40.4572425,-124.0109895
+95567,95567,,,Del Norte,index,+41.9497392,-124.1117700
+95568,95568,,,Siskiyou,index,+41.4844474,-123.4853195
+95569,95569,,,Humboldt,index,+40.3607681,-123.8581719
+95570,95570,,,Humboldt,index,+41.1095824,-124.0852870
+95571,95571,,,Humboldt,index,+40.3648949,-123.9415287
+95573,95573,,,Humboldt,index,+40.8955953,-123.6586932
+95585,95585,,,Mendocino,index,+39.8587165,-123.6661661
+95587,95587,,,Mendocino,index,+39.9696842,-123.7553699
+95589,95589,,,Humboldt,index,+40.0791659,-123.9858996
+95595,95595,,,Trinity,index,+40.1107850,-123.2663620
+95601,95601,,,Amador,index,+38.4270615,-120.8299439
+95602,95602,,,Placer,index,+38.9903553,-121.1099459
+95603,Auburn,Auburn,auburn,Placer,index,+38.9116549,-121.0855816
+95604,95604,,,Placer,index,+39.2385257,-120.0714311
+95605,West Sacramento,West Sacramento,west-sacramento,Yolo,index,+38.5928814,-121.5392911
+95606,95606,,,Yolo,index,+38.7564122,-122.1932706
+95607,95607,,,Yolo,index,+38.7902005,-122.1257315
+95608,Carmichael,Carmichael,carmichael,Sacramento,index,+38.6260753,-121.3289022
+95610,Citrus Heights,Citrus Heights,citrus-heights,Sacramento,index,+38.6949226,-121.2722073
+95612,95612,,,Yolo,index,+38.3864265,-121.5811548
+95613,95613,,,El Dorado,index,+38.8126298,-120.8917116
+95614,95614,,,El Dorado,index,+38.8864682,-120.9889776
+95615,95615,,,Sacramento,index,+38.3111012,-121.5459904
+95616,Davis,Davis,davis,Yolo,index,+38.5582003,-121.8004974
+95618,Davis,Davis,davis,Yolo,index,+38.5434414,-121.6917087
+95619,95619,,,El Dorado,index,+38.6821946,-120.8140502
+95620,Dixon,Dixon,dixon,Solano,index,+38.4059534,-121.7568475
+95621,Citrus Heights,Citrus Heights,citrus-heights,Sacramento,index,+38.6954940,-121.3086239
+95623,95623,,,El Dorado,index,+38.6074318,-120.8487383
+95624,Elk Grove,Elk Grove,elk-grove,Sacramento,index,+38.4320217,-121.3050800
+95625,95625,,,Solano,index,+38.3573109,-121.9086393
+95626,95626,,,Sacramento,index,+38.7337942,-121.4890065
+95627,95627,,,Yolo,index,+38.7292826,-122.0096097
+95628,Fair Oaks,Fair Oaks,fair-oaks,Sacramento,index,+38.6520935,-121.2543694
+95629,95629,,,Amador,index,+38.5127884,-120.6875231
+95630,Folsom,Folsom,folsom,Sacramento,index,+38.6655727,-121.1409652
+95631,95631,,,Placer,index,+39.0545563,-120.7537276
+95632,95632,,,Sacramento,index,+38.2770740,-121.2612778
+95633,95633,,,El Dorado,index,+38.8491986,-120.8233180
+95634,95634,,,El Dorado,index,+38.9123277,-120.6943280
+95635,95635,,,El Dorado,index,+38.9110949,-120.9004485
+95636,95636,,,El Dorado,index,+38.6273939,-120.5185388
+95637,95637,,,Yolo,index,+38.8530151,-122.2728699
+95638,95638,,,Sacramento,index,+38.3396882,-121.1148196
+95639,95639,,,Sacramento,index,+38.3920325,-121.4959938
+95640,95640,,,Amador,index,+38.3391876,-120.9402475
+95641,95641,,,Sacramento,index,+38.1504432,-121.6027526
+95642,95642,,,Amador,index,+38.3434166,-120.7640461
+95645,95645,,,Yolo,index,+38.8902785,-121.7999061
+95646,95646,,,Alpine,index,+38.6382735,-120.0181528
+95648,Lincoln,Lincoln,lincoln,Placer,index,+38.9264164,-121.3110528
+95650,95650,,,Placer,index,+38.8133650,-121.1682595
+95651,95651,,,El Dorado,index,+38.8208844,-120.9351895
+95652,95652,,,Sacramento,index,+38.6626381,-121.4008280
+95653,95653,,,Yolo,index,+38.6914842,-121.9771903
+95655,95655,,,Sacramento,index,+38.5497173,-121.2790008
+95658,95658,,,Placer,index,+38.8793536,-121.1516850
+95659,95659,,,Sutter,index,+38.8459402,-121.5768034
+95660,Sacramento,Sacramento,sacramento,Sacramento,index,+38.6788666,-121.3804999
+95661,Roseville,Roseville,roseville,Placer,index,+38.7412742,-121.2492663
+95662,Orangevale,Orangevale,orangevale,Sacramento,index,+38.6891638,-121.2198620
+95663,95663,,,Placer,index,+38.8573725,-121.1825262
+95664,95664,,,El Dorado,index,+38.7975329,-121.0513847
+95665,95665,,,Amador,index,+38.3958521,-120.6524382
+95666,95666,,,Amador,index,+38.5412189,-120.3310359
+95667,Placerville,Placerville,placerville,El Dorado,index,+38.7340468,-120.7921359
+95668,95668,,,Sutter,index,+38.8270387,-121.4937654
+95669,95669,,,Amador,index,+38.4952480,-120.8915975
+95670,Rancho Cordova,Rancho Cordova,rancho-cordova,Sacramento,index,+38.6045689,-121.2796294
+95671,95671,,,Sacramento,index,+38.6953055,-121.1566833
+95672,95672,,,El Dorado,index,+38.7266521,-120.9963680
+95673,95673,,,Sacramento,index,+38.6903092,-121.4660965
+95674,95674,,,Sutter,index,+38.9539486,-121.4818964
+95675,95675,,,Amador,index,+38.5454580,-120.7429092
+95676,95676,,,Sutter,index,+38.8722415,-121.7166896
+95677,Rocklin,Rocklin,rocklin,Placer,index,+38.7929694,-121.2313035
+95678,Roseville,Roseville,roseville,Placer,index,+38.7653527,-121.2884731
+95679,95679,,,Yolo,index,+38.9053649,-122.2674325
+95680,95680,,,Sacramento,index,+38.2414116,-121.5783198
+95681,95681,,,Placer,index,+38.9980915,-121.3541980
+95682,Shingle Springs,Shingle Springs,shingle-springs,El Dorado,index,+38.6053367,-120.9617847
+95683,95683,,,Sacramento,index,+38.5101670,-121.0988999
+95684,95684,,,El Dorado,index,+38.5910341,-120.5506576
+95685,95685,,,Amador,index,+38.4271877,-120.7670003
+95686,95686,,,San Joaquin,index,+38.1903729,-121.4854546
+95687,Vacaville,Vacaville,vacaville,Solano,index,+38.3344251,-121.9176045
+95688,Vacaville,Vacaville,vacaville,Solano,index,+38.4189680,-122.0257171
+95689,95689,,,Amador,index,+38.4708890,-120.6156786
+95690,95690,,,Sacramento,index,+38.2342665,-121.5867465
+95691,West Sacramento,West Sacramento,west-sacramento,Yolo,index,+38.6238014,-121.5826305
+95692,95692,,,Yuba,index,+39.0469930,-121.4047757
+95693,95693,,,Sacramento,index,+38.3985313,-121.2195101
+95694,Winters,Winters,winters,Yolo,index,+38.5614384,-122.0054493
+95695,Woodland,Woodland,woodland,Yolo,index,+38.6884310,-121.8566988
+95697,95697,,,Yolo,index,+38.7328813,-121.8071949
+95698,95698,,,Yolo,index,+38.8187244,-121.9101475
+95699,95699,,,Amador,index,+38.4407571,-120.8570081
+95701,95701,,,Placer,index,+39.2263174,-120.7674538
+95703,95703,,,Placer,index,+38.9915739,-120.9863809
+95709,95709,,,El Dorado,index,+38.7488828,-120.6813366
+95713,95713,,,Placer,index,+39.0847340,-120.9279095
+95714,95714,,,Placer,index,+39.2013335,-120.8366643
+95715,95715,,,Placer,index,+39.2749701,-120.6439066
+95717,95717,,,Placer,index,+39.1425937,-120.8426891
+95720,95720,,,El Dorado,index,+38.8452464,-120.2601380
+95721,95721,,,El Dorado,index,+38.8234269,-120.0938454
+95722,95722,,,Placer,index,+39.0046642,-121.0288889
+95726,Pollock Pines,Pollock Pines,pollock-pines,El Dorado,index,+38.7541818,-120.4197721
+95728,95728,,,Placer,index,+39.2967406,-120.4036174
+95735,95735,,,El Dorado,index,+38.8298383,-120.1793661
+95736,95736,,,Placer,index,+39.0391217,-120.9774935
+95742,Rancho Cordova,Rancho Cordova,rancho-cordova,Sacramento,index,+38.5734635,-121.1984822
+95746,Granite Bay,Granite Bay,granite-bay,Placer,index,+38.7500807,-121.1671191
+95747,Roseville,Roseville,roseville,Placer,index,+38.7796070,-121.3679660
+95757,Elk Grove,Elk Grove,elk-grove,Sacramento,index,+38.3388356,-121.4364564
+95758,Elk Grove,Elk Grove,elk-grove,Sacramento,index,+38.4293298,-121.4460368
+95762,El Dorado Hills,El Dorado Hills,el-dorado-hills,El Dorado,index,+38.6769298,-121.0575099
+95765,Rocklin,Rocklin,rocklin,Placer,index,+38.8198270,-121.2777024
+95776,Woodland,Woodland,woodland,Yolo,index,+38.6888436,-121.7077874
+95811,Sacramento,Sacramento,sacramento,Sacramento,index,+38.5876015,-121.4907097
+95814,Sacramento,Sacramento,sacramento,Sacramento,index,+38.5805954,-121.4948846
+95815,Sacramento,Sacramento,sacramento,Sacramento,index,+38.6054096,-121.4449983
+95816,Sacramento,Sacramento,sacramento,Sacramento,index,+38.5755419,-121.4653906
+95817,Sacramento,Sacramento,sacramento,Sacramento,index,+38.5506045,-121.4570265
+95818,Sacramento,Sacramento,sacramento,Sacramento,index,+38.5557552,-121.4966779
+95819,Sacramento,Sacramento,sacramento,Sacramento,index,+38.5681799,-121.4376940
+95820,Sacramento,Sacramento,sacramento,Sacramento,index,+38.5349099,-121.4442024
+95821,Sacramento,Sacramento,sacramento,Sacramento,index,+38.6253908,-121.3848038
+95822,Sacramento,Sacramento,sacramento,Sacramento,index,+38.5127202,-121.4955394
+95823,Sacramento,Sacramento,sacramento,Sacramento,index,+38.4747263,-121.4426355
+95824,Sacramento,Sacramento,sacramento,Sacramento,index,+38.5174351,-121.4414397
+95825,Sacramento,Sacramento,sacramento,Sacramento,index,+38.5900654,-121.4064493
+95826,Sacramento,Sacramento,sacramento,Sacramento,index,+38.5455283,-121.3788283
+95827,Rancho Cordova,Rancho Cordova,rancho-cordova,Sacramento,index,+38.5515266,-121.3253223
+95828,Florin,Florin,florin,Sacramento,index,+38.4894260,-121.3959687
+95829,Sacramento,Sacramento,sacramento,Sacramento,index,+38.4875913,-121.3332469
+95830,95830,,,Sacramento,index,+38.4941747,-121.2722901
+95831,Sacramento,Sacramento,sacramento,Sacramento,index,+38.4959921,-121.5295019
+95832,Sacramento,Sacramento,sacramento,Sacramento,index,+38.4398565,-121.4988698
+95833,Sacramento,Sacramento,sacramento,Sacramento,index,+38.6152925,-121.5155867
+95834,Sacramento,Sacramento,sacramento,Sacramento,index,+38.6420811,-121.5196805
+95835,Sacramento,Sacramento,sacramento,Sacramento,index,+38.6708895,-121.5246260
+95837,95837,,,Sacramento,index,+38.6893037,-121.5953821
+95838,Sacramento,Sacramento,sacramento,Sacramento,index,+38.6470507,-121.4430937
+95841,Sacramento,Sacramento,sacramento,Sacramento,index,+38.6602725,-121.3481643
+95842,Sacramento,Sacramento,sacramento,Sacramento,index,+38.6870376,-121.3488651
+95843,Antelope,Antelope,antelope,Sacramento,index,+38.7153295,-121.3636749
+95864,Sacramento,Sacramento,sacramento,Sacramento,index,+38.5850763,-121.3765689
+95901,Marysville,Marysville,marysville,Yuba,index,+39.2224715,-121.4885680
+95903,95903,,,Yuba,index,+39.1133853,-121.3719242
+95910,95910,,,Sierra,index,+39.4674190,-120.8315907
+95912,95912,,,Colusa,index,+39.0016611,-122.0745342
+95913,95913,,,Glenn,index,+39.6290041,-122.1921512
+95914,95914,,,Butte,index,+39.4075858,-121.3787717
+95915,95915,,,Plumas,index,+39.9792901,-121.2148886
+95916,95916,,,Butte,index,+39.6594050,-121.3738592
+95917,95917,,,Butte,index,+39.4239322,-121.7718087
+95918,95918,,,Yuba,index,+39.3009357,-121.3455239
+95919,95919,,,Yuba,index,+39.4344381,-121.2655554
+95920,95920,,,Glenn,index,+39.4607619,-121.9369747
+95922,95922,,,Yuba,index,+39.4703237,-121.0773679
+95923,95923,,,Plumas,index,+40.1838040,-121.1366893
+95925,95925,,,Yuba,index,+39.4680049,-121.1800764
+95926,Chico,Chico,chico,Butte,index,+39.7457704,-121.8439384
+95928,Chico,Chico,chico,Butte,index,+39.6831229,-121.8355183
+95929,95929,,,Butte,index,+39.7257874,-121.8502129
+95930,95930,,,Butte,index,+39.5467952,-121.1605510
+95932,95932,,,Colusa,index,+39.2683217,-122.0042848
+95934,95934,,,Plumas,index,+40.0746210,-120.9310495
+95935,95935,,,Yuba,index,+39.3736867,-121.1961369
+95936,95936,,,Sierra,index,+39.5633416,-120.7928167
+95937,95937,,,Yolo,index,+38.8840641,-121.9984833
+95938,95938,,,Butte,index,+39.6050390,-121.7971147
+95939,95939,,,Glenn,index,+39.5675491,-122.6022040
+95941,95941,,,Butte,index,+39.5588455,-121.2415915
+95942,95942,,,Butte,index,+39.9894832,-121.5888478
+95943,95943,,,Glenn,index,+39.5768484,-122.0367080
+95944,95944,,,Sierra,index,+39.5348447,-120.8615128
+95945,Grass Valley,Grass Valley,grass-valley,Nevada,index,+39.1942604,-120.9820039
+95946,95946,,,Nevada,index,+39.2104742,-121.2046549
+95947,95947,,,Plumas,index,+40.1593989,-120.8440765
+95948,95948,,,Butte,index,+39.3428995,-121.7581788
+95949,Grass Valley,Grass Valley,grass-valley,Nevada,index,+39.1019829,-121.1334464
+95950,95950,,,Colusa,index,+39.0515154,-121.9219318
+95951,95951,,,Glenn,index,+39.7147609,-122.0019608
+95953,95953,,,Sutter,index,+39.2501893,-121.7731317
+95954,95954,,,Butte,index,+39.9490983,-121.5409869
+95955,95955,,,Colusa,index,+39.2965445,-122.2046144
+95956,95956,,,Plumas,index,+39.8750340,-121.1221266
+95957,95957,,,Sutter,index,+39.0535197,-121.8236629
+95958,95958,,,Butte,index,+39.5642039,-121.7979375
+95959,Nevada City,Nevada City,nevada-city,Nevada,index,+39.3451575,-120.8681263
+95960,95960,,,Sierra,index,+39.3912163,-121.0583862
+95961,Olivehurst,Olivehurst,olivehurst,Yuba,index,+39.0334080,-121.5575376
+95962,95962,,,Yuba,index,+39.3266524,-121.2687710
+95963,95963,,,Glenn,index,+39.7368913,-122.3032245
+95965,Oroville,Oroville,oroville,Butte,index,+39.5915399,-121.5905486
+95966,Oroville,Oroville,oroville,Butte,index,+39.4732680,-121.4329471
+95968,95968,,,Butte,index,+39.4351775,-121.5517794
+95969,Paradise,Paradise,paradise,Butte,index,+39.7217487,-121.6339667
+95970,95970,,,Colusa,index,+39.4115516,-122.0517152
+95971,95971,,,Plumas,index,+39.9289368,-120.9160999
+95972,95972,,,Yuba,index,+39.4296195,-121.3361883
+95973,Chico,Chico,chico,Butte,index,+39.8809497,-121.8516777
+95974,95974,,,Butte,index,+39.4972966,-121.7556978
+95975,95975,,,Nevada,index,+39.2243254,-121.1536959
+95977,95977,,,Yuba,index,+39.1796422,-121.2900285
+95978,95978,,,Butte,index,+39.9084390,-121.5296158
+95979,95979,,,Colusa,index,+39.2977774,-122.4791472
+95981,95981,,,Plumas,index,+39.6523676,-121.0345262
+95982,95982,,,Sutter,index,+39.1804505,-121.8074630
+95983,95983,,,Plumas,index,+40.0582609,-120.7389324
+95984,95984,,,Plumas,index,+39.9964764,-121.1195119
+95986,95986,,,Nevada,index,+39.3615157,-120.7651924
+95987,95987,,,Colusa,index,+39.1029804,-122.2726117
+95988,95988,,,Glenn,index,+39.4982854,-122.2870235
+95991,Yuba City,Yuba City,yuba-city,Sutter,index,+39.0219831,-121.6131630
+95993,Yuba City,Yuba City,yuba-city,Sutter,index,+39.0816511,-121.6879689
+96001,Redding,Redding,redding,Shasta,index,+40.5772430,-122.4543934
+96002,Redding,Redding,redding,Shasta,index,+40.5299009,-122.3168218
+96003,Redding,Redding,redding,Shasta,index,+40.6666092,-122.3157023
+96006,96006,,,Lassen,index,+41.1557350,-120.8393616
+96007,Anderson,Anderson,anderson,Shasta,index,+40.4551125,-122.3046718
+96008,96008,,,Shasta,index,+40.7355732,-122.1110240
+96009,96009,,,Lassen,index,+41.0618005,-121.0443275
+96010,96010,,,Trinity,index,+40.8971364,-123.2436889
+96011,96011,,,Shasta,index,+41.0575490,-121.8915622
+96013,96013,,,Shasta,index,+40.9749259,-121.6832019
+96014,96014,,,Siskiyou,index,+41.3578311,-122.7731545
+96015,96015,,,Modoc,index,+41.4966786,-120.8717592
+96016,96016,,,Shasta,index,+40.9067201,-121.5202723
+96017,96017,,,Shasta,index,+41.1077786,-122.3075114
+96019,96019,,,Shasta,index,+40.6872691,-122.3992408
+96020,96020,,,Plumas,index,+40.3009464,-121.2628268
+96021,96021,,,Tehama,index,+39.9187126,-122.2680802
+96022,96022,,,Tehama,index,+40.3423723,-122.4481780
+96023,96023,,,Siskiyou,index,+41.9211059,-121.9759164
+96024,96024,,,Trinity,index,+40.5875887,-122.9013609
+96025,96025,,,Siskiyou,index,+41.2041248,-122.3252330
+96027,96027,,,Siskiyou,index,+41.3655725,-123.0780970
+96028,96028,,,Shasta,index,+41.0076297,-121.4572393
+96029,96029,,,Tehama,index,+39.9400410,-122.4874753
+96031,96031,,,Siskiyou,index,+41.1726184,-123.1800468
+96032,96032,,,Siskiyou,index,+41.5850465,-122.9827558
+96033,96033,,,Shasta,index,+40.7507045,-122.6000879
+96034,96034,,,Siskiyou,index,+41.4416349,-122.6078620
+96035,96035,,,Tehama,index,+40.0416740,-122.1825866
+96037,96037,,,Siskiyou,index,+41.5437140,-122.9317135
+96038,96038,,,Siskiyou,index,+41.6082491,-122.5457395
+96039,96039,,,Siskiyou,index,+41.6633392,-123.3769071
+96040,96040,,,Shasta,index,+40.7938788,-121.4739229
+96041,96041,,,Trinity,index,+40.5203955,-123.1999073
+96044,96044,,,Siskiyou,index,+41.9539607,-122.6484646
+96046,96046,,,Trinity,index,+40.6111340,-123.4314308
+96047,96047,,,Shasta,index,+40.4769643,-122.6989571
+96048,96048,,,Trinity,index,+40.8260470,-123.0559644
+96050,96050,,,Siskiyou,index,+41.8538699,-122.9568603
+96051,96051,,,Shasta,index,+40.9010154,-122.3565153
+96052,96052,,,Trinity,index,+40.6851050,-122.8033946
+96054,96054,,,Modoc,index,+41.2666349,-121.1063364
+96055,96055,,,Tehama,index,+40.1024414,-122.0321727
+96056,96056,,,Lassen,index,+41.0716394,-121.3258307
+96057,96057,,,Siskiyou,index,+41.2615173,-122.0117763
+96058,96058,,,Siskiyou,index,+41.7452407,-121.9337488
+96059,96059,,,Tehama,index,+40.4294769,-121.8346313
+96061,96061,,,Tehama,index,+40.3440410,-121.4876222
+96062,96062,,,Shasta,index,+40.5637419,-122.0665287
+96063,96063,,,Tehama,index,+40.3570741,-121.6023556
+96064,96064,,,Siskiyou,index,+41.7635588,-122.3644260
+96065,96065,,,Shasta,index,+40.8805995,-121.9542435
+96067,96067,,,Siskiyou,index,+41.3166466,-122.3173708
+96068,96068,,,Lassen,index,+41.1052359,-121.2045274
+96069,96069,,,Shasta,index,+40.6822865,-122.0234818
+96071,96071,,,Shasta,index,+40.6813383,-121.4527342
+96073,96073,,,Shasta,index,+40.5904430,-122.2054459
+96074,96074,,,Tehama,index,+39.8718998,-122.5860127
+96075,96075,,,Tehama,index,+40.3558386,-121.8719226
+96076,96076,,,Trinity,index,+40.3754297,-122.9298311
+96078,96078,,,Tehama,index,+40.0823738,-122.1760711
+96080,Red Bluff,Red Bluff,red-bluff,Tehama,index,+40.1639089,-122.3920403
+96084,96084,,,Shasta,index,+40.7939667,-121.9152586
+96085,96085,,,Siskiyou,index,+41.7324631,-123.0514862
+96086,96086,,,Siskiyou,index,+41.8740030,-123.2301104
+96087,96087,,,Shasta,index,+40.6329917,-122.5805848
+96088,96088,,,Shasta,index,+40.5099096,-121.8885754
+96090,96090,,,Tehama,index,+40.0069120,-122.1215216
+96091,96091,,,Trinity,index,+41.0455577,-122.7805799
+96092,96092,,,Tehama,index,+39.9734356,-121.9734262
+96093,96093,,,Trinity,index,+40.7722500,-122.9433321
+96094,96094,,,Siskiyou,index,+41.5119936,-122.3629847
+96096,96096,,,Shasta,index,+40.6373809,-121.8755425
+96097,96097,,,Siskiyou,index,+41.7621910,-122.6591337
+96101,96101,,,Modoc,index,+41.4579532,-120.5043989
+96103,96103,,,Plumas,index,+39.7844488,-120.6697148
+96104,96104,,,Modoc,index,+41.4824996,-120.1271956
+96105,96105,,,Plumas,index,+39.8244250,-120.1815411
+96106,96106,,,Plumas,index,+39.7354827,-120.5438678
+96107,96107,,,Mono,index,+38.4520891,-119.5142518
+96108,96108,,,Modoc,index,+41.7767453,-120.4232730
+96109,96109,,,Lassen,index,+39.9973853,-120.0952382
+96110,96110,,,Modoc,index,+41.2663304,-120.1076580
+96111,96111,,,Nevada,index,+39.4158246,-120.0165694
+96112,96112,,,Modoc,index,+41.8371503,-120.0939511
+96113,96113,,,Lassen,index,+40.1857622,-120.1461004
+96114,96114,,,Lassen,index,+40.2945288,-120.4936334
+96115,96115,,,Modoc,index,+41.7075162,-120.1404729
+96116,96116,,,Modoc,index,+41.2603074,-120.4484503
+96117,96117,,,Lassen,index,+40.5455131,-120.2399681
+96118,96118,,,Sierra,index,+39.6481654,-120.2538494
+96119,96119,,,Lassen,index,+41.0334780,-120.5526290
+96120,96120,,,Alpine,index,+38.7450437,-119.8247452
+96121,96121,,,Lassen,index,+40.1693806,-120.3765728
+96122,96122,,,Plumas,index,+39.8207835,-120.4765746
+96123,96123,,,Lassen,index,+40.8039611,-120.3080453
+96124,96124,,,Sierra,index,+39.6391577,-120.4619589
+96125,96125,,,Sierra,index,+39.6152462,-120.6050069
+96126,96126,,,Sierra,index,+39.5476389,-120.3899749
+96128,96128,,,Lassen,index,+40.3494991,-120.4019541
+96129,96129,,,Plumas,index,+39.8184356,-120.3534758
+96130,Susanville,Susanville,susanville,Lassen,index,+40.5497776,-120.6306447
+96132,96132,,,Lassen,index,+40.8937430,-120.5389116
+96133,96133,,,Mono,index,+38.6318472,-119.5042254
+96134,96134,,,Modoc,index,+41.8441992,-121.4120773
+96135,96135,,,Plumas,index,+39.8129845,-120.2092797
+96136,96136,,,Lassen,index,+40.3126818,-120.1242234
+96137,96137,,,Lassen,index,+40.3854031,-121.1246156
+96140,Truckee,Truckee,truckee,Placer,index,+39.2324419,-120.1036255
+96141,96141,,,Placer,index,+39.1029095,-120.1987166
+96142,96142,,,El Dorado,index,+39.0137993,-120.0960520
+96143,Kings Beach,Kings Beach,kings-beach,Placer,index,+39.2616815,-120.0281233
+96145,96145,,,Placer,index,+39.1819769,-120.1514854
+96146,Olympic Valley,Olympic Valley,olympic-valley,Placer,index,+39.2255267,-120.2368232
+96148,96148,,,Placer,index,+39.2497770,-120.0575895
+96150,South Lake Tahoe,South Lake Tahoe,south-lake-tahoe,El Dorado,index,+38.8896637,-120.0439675
+96155,96155,,,El Dorado,index,+38.7529411,-120.0922096
+96161,Truckee,Truckee,truckee,Nevada,index,+39.3485644,-120.2261306
