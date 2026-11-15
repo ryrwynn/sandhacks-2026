@@ -21,10 +21,10 @@ from api.ml.forecast import _ets_forecast
 H = mc.H
 MIN_ORIGIN = 60          # first backtest origin index (needs a few years of training)
 STEP = 3                 # backtest every third month
-ALPHA = 3.0
+ALPHA = 30.0
 DATA_DIR = Path(__file__).resolve().parents[2] / "data"
 CSV = {"zori": DATA_DIR / "zillow_zori_sd.csv", "zhvi": DATA_DIR / "zillow_zhvi_sd.csv"}
-K_GRID = np.round(np.arange(0.5, 3.01, 0.05), 2)
+WINDOW = 32              # complete origins used to rescale the cone
 
 
 # ---------- data ----------
@@ -135,34 +135,52 @@ def backtest(panel: pd.DataFrame, macro_frame: pd.DataFrame, fed: dict | None = 
     return out
 
 
-def split(origins_: np.ndarray, warm: int = 6, cal_frac: float = 0.55) -> tuple[np.ndarray, np.ndarray]:
-    """Index sets: calibration and held-out test origins (after a warm-up so residual pools are non-empty)."""
-    idx = np.arange(warm, len(origins_))
-    cut = warm + int(len(idx) * cal_frac)
-    return np.arange(warm, cut), np.arange(cut, len(origins_))
+def split(origins_: np.ndarray, warm: int = 5, cal_frac: float = 0.0) -> tuple[np.ndarray, np.ndarray]:
+    """Warm-up origins (their errors only seed the cone) and the held-out test origins that are scored."""
+    return np.arange(0, warm), np.arange(warm, len(origins_))
 
 
-def online_quantiles(err: np.ndarray, origins_: np.ndarray, i: int, h: int):
-    """10th/90th percentile of pooled errors for horizon h from origins whose outcome was known at origin i."""
+def _q(err, origins_, i, h):
+    """10th/90th percentile of pooled errors at horizon h from origins whose outcome was known at origin i."""
     known = np.where(origins_ + (h + 1) <= origins_[i])[0]
     if len(known) < 2:
         return None
     e = err[known, h, :].ravel()
-    return np.quantile(e, 0.1), np.quantile(e, 0.9)
+    return min(np.quantile(e, 0.1), -1e-4), max(np.quantile(e, 0.9), 1e-4)
 
 
-def cone(pred: np.ndarray, err: np.ndarray, origins_: np.ndarray, idx: np.ndarray, k: float):
-    """Online empirical cone (log scale) for origins idx. pred, err are (O, H, Z). Returns lo, hi (len(idx), H, Z)."""
-    lo = np.full((len(idx), H, pred.shape[2]), np.nan)
-    hi = lo.copy()
-    for j, i in enumerate(idx):
+def _scale(err, origins_, i, window=WINDOW) -> float | None:
+    """Rolling conformal multiplier at origin i: the 0.8 quantile of the multipliers that would just have covered
+    each recent fully-observed (origin, horizon, zip) outcome, given that origin's own quantile band."""
+    done = [j for j in range(len(origins_)) if origins_[j] + H <= origins_[i]][-window:]
+    need = []
+    for j in done:
         for h in range(H):
-            q = online_quantiles(err, origins_, i, h)
+            q = _q(err, origins_, j, h)
             if q is None:
                 continue
-            lo[j, h] = pred[i, h] + k * q[0]
-            hi[j, h] = pred[i, h] + k * q[1]
-    return lo, hi
+            e = err[j, h]
+            need.append(np.where(e >= 0, e / q[1], e / q[0]))
+    if len(need) < 4:
+        return None
+    return float(np.quantile(np.concatenate(need), 0.8))
+
+
+def cone(pred: np.ndarray, err: np.ndarray, origins_: np.ndarray, idx: np.ndarray):
+    """Rolling-conformal 80% cone (log scale) at origins idx. pred, err (O, H, Z). Returns lo, hi, k per origin."""
+    lo = np.full((len(idx), H, pred.shape[2]), np.nan)
+    hi, ks = lo.copy(), np.full(len(idx), np.nan)
+    for n, i in enumerate(idx):
+        k = _scale(err, origins_, i)
+        if k is None:
+            continue
+        ks[n] = k
+        for h in range(H):
+            q = _q(err, origins_, i, h)
+            if q is not None:
+                lo[n, h] = pred[i, h] + k * q[0]
+                hi[n, h] = pred[i, h] + k * q[1]
+    return lo, hi, ks
 
 
 def coverage(actual, lo, hi) -> float:
@@ -175,69 +193,63 @@ def mape(pred, actual) -> np.ndarray:
     return (np.abs(np.exp(pred) - np.exp(actual)) / np.exp(actual)).mean(axis=(0, 1)) * 100
 
 
-def choose_k(pred, actual, origins_, cal_idx) -> float:
-    """Smallest multiplier whose calibration-window coverage reaches 0.80 (closest to 0.80 if none exact)."""
-    err = actual - pred
-    best, gap = 1.0, 9.0
-    for k in K_GRID:
-        lo, hi = cone(pred, err, origins_, cal_idx, k)
-        g = abs(coverage(actual[cal_idx], lo, hi) - 0.8)
-        if g < gap - 1e-9:
-            best, gap = float(k), g
-    return best
+def _cov_by_zip(actual, lo, hi):
+    return np.array([coverage(actual[:, :, z], lo[:, :, z], hi[:, :, z]) for z in range(actual.shape[2])])
 
 
 def evaluate(bt: dict) -> dict:
-    """Per-zip results on the held-out test origins (cone multipliers fixed on the calibration origins)."""
+    """Per-zip results on the held-out test origins (after a warm-up). The cone at each origin uses only errors
+    already observed at that origin, so coverage on the test origins is out-of-sample."""
     O = bt["origins"]
     cal, test = split(O)
     actual = bt["actual"]
-    out = {"origins": O, "cal": cal, "test": test, "zips": bt["zips"]}
     methods = {"naive": bt["naive"], "own": bt["own"], "baseline": bt["x_flat"],
                "recession": bt["x_recession"], "growth": bt["x_growth"], "oracle": bt["x_oracle"]}
     if "ets" in bt:
         methods["ets"] = bt["ets"]
+    base_err = actual - bt["x_flat"]
     res = {}
     for name, pred in methods.items():
         r = {"mape": mape(pred[test], actual[test])}
-        if name in ("baseline", "own", "oracle", "recession", "growth"):
-            k = choose_k(bt["x_flat"], actual, O, cal) if name in ("recession", "growth") else choose_k(pred, actual, O, cal)
-            err_src = bt["x_flat"] if name in ("recession", "growth") else pred
-            # scenario cones reuse the baseline's calibrated residuals around the scenario's own mean
-            e = actual - err_src
-            lo, hi = cone(err_src, e, O, test, k)
-            lo, hi = lo - err_src[test] + pred[test], hi - err_src[test] + pred[test]
-            r["k"] = k
-            r["coverage"] = np.array([coverage(actual[test][:, :, z], lo[:, :, z], hi[:, :, z]) for z in range(actual.shape[2])])
-            r["coverage_all"] = coverage(actual[test], lo, hi)
         if name == "ets":
             lo, hi = bt["ets_lo"][test], bt["ets_hi"][test]
-            r["coverage"] = np.array([coverage(actual[test][:, :, z], lo[:, :, z], hi[:, :, z]) for z in range(actual.shape[2])])
-            r["coverage_all"] = coverage(actual[test], lo, hi)
+        elif name != "naive":
+            # baseline and the scenarios share the baseline's calibrated residual band, re-centred on their own mean;
+            # own and oracle use their own residuals
+            src_err = base_err if name in ("recession", "growth") else actual - pred
+            src_pred = bt["x_flat"] if name in ("recession", "growth") else pred
+            lo, hi, ks = cone(src_pred, src_err, O, test)
+            lo, hi = lo - src_pred[test] + pred[test], hi - src_pred[test] + pred[test]
+            r["k_last"] = float(ks[~np.isnan(ks)][-1]) if (~np.isnan(ks)).any() else None
+        else:
+            res[name] = r
+            continue
+        r["coverage"] = _cov_by_zip(actual[test], lo, hi)
+        r["coverage_all"] = coverage(actual[test], lo, hi)
         res[name] = r
-    out["methods"] = res
-    out["cal_mape"] = {n: mape(m[cal], actual[cal]) for n, m in methods.items()}
-    return out
+    return {"origins": O, "test": test, "cal": cal, "zips": bt["zips"], "methods": res,
+            }
 
 
 # ---------- production forecast ----------
-def forecast_all(panel: pd.DataFrame, macro_frame: pd.DataFrame, bt: dict, k: float, fed: dict | None = None,
-                 model_for_baseline: str = "pooled_x") -> dict:
+def forecast_all(panel: pd.DataFrame, macro_frame: pd.DataFrame, bt: dict, fed: dict | None = None) -> dict:
     """Forecast every scenario for every ZIP from the last month. Returns {scenario: {"model", "months", "mean",
-    "lo", "hi"}} with arrays (H, Z) in dollars. Cone: all past baseline errors, per horizon, scaled by k."""
+    "lo", "hi"}} with arrays (H, Z) in dollars. The cone is the baseline backtest's per-horizon error quantiles
+    (all origins), scaled by the rolling conformal multiplier at the final origin."""
     Y = np.log(panel.to_numpy())
     M = align_macro(panel, macro_frame)
     t = len(Y) - 1
     deltas = mc.scenario_deltas(macro_frame, fed or mc.load_fed())
     models = fit(Y, M, t, True)
     err = bt["actual"] - bt["x_flat"]
-    O = bt["origins"]
+    O = np.append(bt["origins"], bt["origins"][-1] + STEP * 5)   # a virtual final origin: all backtest origins are observed
+    k = _scale(np.concatenate([err, err[-1:]]), O, len(O) - 1) or 1.0
     q = [(np.quantile(err[:, h].ravel(), 0.1), np.quantile(err[:, h].ravel(), 0.9)) for h in range(H)]
+    qlo, qhi = np.array([a for a, _ in q])[:, None], np.array([b for _, b in q])[:, None]
     months = pd.date_range(panel.index[-1] + pd.offsets.MonthBegin(1), periods=H, freq="MS")
     out = {}
     for s in mc.SCENARIOS:
         mean = Y[t] + predict(models, Y, t, deltas[s])
-        lo = mean + k * np.array([a for a, _ in q])[:, None]
-        hi = mean + k * np.array([b for _, b in q])[:, None]
-        out[s] = {"model": "pooled_x", "months": months, "mean": np.exp(mean), "lo": np.exp(lo), "hi": np.exp(hi)}
+        out[s] = {"model": "pooled_x", "months": months, "mean": np.exp(mean),
+                  "lo": np.exp(mean + k * qlo), "hi": np.exp(mean + k * qhi), "k": k}
     return out
