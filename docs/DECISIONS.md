@@ -151,3 +151,24 @@ Dataset `gd_lfqkr8wm13ixtbd8f5` (Zillow properties listing information), the one
 - **Forecasts.** After retraining, 7 of 24 series beat the naive baseline (4 of 12 rent, 3 of 12 value). The API already
   returns `backtest_mape`, `naive_mape` and `beats_naive`; the web lane was told no page may claim accuracy or
   superiority and that every chart shows its 80% band and backtest error.
+
+### Steps 4 and 5: merge, deploy and click-through (2026-11-14)
+
+- Merged lane/api-tracker and lane/web-tracker into Setup, regenerated `frontend/src/lib/api.generated.ts`
+  (`tracker.ts` now re-exports the generated types), `uv run pytest api/tests -q` 141 passed, `tsc` and `npm run build`
+  clean, deploy and smoke test (now including /listings, /listings/{id}, /listings?ids= and /market) pass on
+  https://rentorknot.us.
+- **Price history is thin on purpose.** Only 8 of 919 rentals have 3 or more observations. Zillow gives identical history to
+  every unit in a building, so the loader drops it unless a unit is alone at its address; the rest start tracking at the first
+  scrape (Nov 15) and grow with each worker run (rentals every 3 hours). The first-visit "Example: remove anytime" seeds
+  therefore come from `GET /listings?min_observations=3` (a query parameter added after the click-through found the first
+  50 recent listings contained none).
+- **Market chart with a bedroom filter** is mostly ZORI today: listing medians need 5 or more priced listings in a month and
+  only the current month qualifies. The API labels each point's basis, lists the fallback months in `notes`, and omits the
+  percentage change for a series that mixes ZORI and listing medians (it had shown +16% from a source change).
+- Checked live with curl: every page serves 200 with RentOrKnot titles and no "RentWatch" or "SandHacks" text; Maria's rent
+  check (over_cap, $2,272.20, $77.80 a month over), the Spanish letter, Starter and Wealth rankings, owner price position and
+  listing analysis all answer. The owner listing-analysis explanation came back empty again (Gemini returned nothing; the
+  numbers show alone). Starter at the plan's $1,900 still ranks 0 (see Step 3); at $2,500 and 1 bedroom it ranks 5 ZIPs.
+- Phone and desktop rendering was checked by hand by the user (home page chart and Mapbox map at 375px); headless
+  screenshots from this session are unreliable for the chart and the map and were not used as evidence.
