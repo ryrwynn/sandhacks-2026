@@ -54,7 +54,7 @@ export default function LetterView({ id, initialLang }: { id: string; initialLan
         <div role="tablist" aria-label="Language" className="grid grid-cols-4 gap-1 rounded-xl bg-slate-200 p-1">
           {LANGS.map((l) => (
             <button key={l.id} role="tab" aria-selected={lang === l.id} onClick={() => setLang(l.id)}
-              className={`min-h-11 rounded-lg px-1 text-sm font-medium ${lang === l.id ? "bg-white text-indigo-900 shadow" : "text-slate-700"}`}>
+              className={`min-h-11 rounded-lg px-1 text-sm font-medium ${lang === l.id ? "bg-surface text-indigo-900 shadow" : "text-slate-700"}`}>
               {l.label}
             </button>
           ))}
@@ -77,7 +77,7 @@ export default function LetterView({ id, initialLang }: { id: string; initialLan
       {res && (
         <>
           {letter ? (
-            <article aria-label="Letter to your landlord (English)" className="whitespace-pre-wrap rounded-xl border border-slate-300 bg-white p-5 font-serif text-[15px] leading-relaxed print:border-0 print:p-0">
+            <article aria-label="Letter to your landlord (English)" className="whitespace-pre-wrap rounded-xl border border-slate-300 bg-surface p-5 font-serif text-[15px] leading-relaxed print:border-0 print:p-0">
               {letter}
             </article>
           ) : (

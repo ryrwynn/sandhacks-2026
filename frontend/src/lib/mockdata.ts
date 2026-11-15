@@ -14,6 +14,11 @@ import rankWealth from "@/mocks/neighborhoods_rank_wealth.json";
 import pricePos from "@/mocks/owner_price_position.json";
 import analysis from "@/mocks/owner_listing_analysis.json";
 
+import listings from "@/mocks/listings.json";
+import listingDetail from "@/mocks/listing_detail.json";
+import market from "@/mocks/market.json";
+import type { ListingDetail, ListingsResponse, MarketResponse } from "./tracker";
+
 const as = <T,>(x: unknown) => x as T;
 
 export const MOCK = {
@@ -24,6 +29,9 @@ export const MOCK = {
   seriesZhvi: as<C.SeriesResponse>(seriesZhvi),
   check: as<C.CheckResponse>(check),
   letter: as<C.LetterResponse>(letter),
+  listings: as<ListingsResponse>(listings),
+  listingDetail: as<ListingDetail>(listingDetail),
+  market: as<MarketResponse>(market),
   units: as<C.UnitSearchResponse>(units),
   evaluate: as<C.ListingEvalResponse>(evaluate),
   rankStarter: as<C.RankResponse>(rankStarter),

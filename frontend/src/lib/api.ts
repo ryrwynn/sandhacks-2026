@@ -1,40 +1,8 @@
-import type { Filters, Listing, Market } from "./types";
-import { AREAS, MOCK_LISTINGS, mockMarket } from "./mock";
 import type * as C from "./api.generated";
 import type { Lang, Metric } from "./contract";
+import type { ListingDetail, ListingsResponse, ListingSummary, MarketResponse, ListingSort, MarketRange } from "./tracker";
 import { MOCK } from "./mockdata";
 import { markMock } from "./mockflag";
-
-const USE_API = process.env.NEXT_PUBLIC_USE_API === "true";
-
-function qs(f: Filters) {
-  const p = new URLSearchParams({ area: f.area, beds: f.beds, type: f.type, max_price: String(f.maxPrice) });
-  return p.toString();
-}
-
-// GET /api/market?area=&beds=&type=  -> Market  (medians computed in SQL)
-export async function getMarket(f: Filters): Promise<Market> {
-  if (USE_API) return (await fetch(`/api/market?${qs(f)}`)).json();
-  return mockMarket(Math.max(0, AREAS.indexOf(f.area)), f.beds);
-}
-
-// GET /api/listings?area=&beds=&type=&max_price= -> Listing[]  (with price_history)
-export async function getListings(f: Filters): Promise<Listing[]> {
-  if (USE_API) return (await fetch(`/api/listings?${qs(f)}`)).json();
-  return MOCK_LISTINGS.filter(
-    (l) =>
-      l.area === f.area &&
-      (f.beds === "any" || l.beds === Number(f.beds)) &&
-      (f.type === "any" || l.type === f.type) &&
-      (f.maxPrice === 0 || l.rent <= f.maxPrice)
-  );
-}
-
-// GET /api/listings?ids=1,2,3
-export async function getListingsByIds(ids: string[]): Promise<Listing[]> {
-  if (USE_API) return (await fetch(`/api/listings?ids=${ids.join(",")}`)).json();
-  return MOCK_LISTINGS.filter((l) => ids.includes(l.id));
-}
 
 // ---------------------------------------------------------------------------
 // RentOrKnot contract endpoints (docs/PLAN.md "API contract and pages").
@@ -131,3 +99,64 @@ export const getPricePosition = (req: C.PricePositionRequest) =>
   call<C.PricePositionResponse>("/owner/price-position", MOCK.pricePos, post(req));
 export const getListingAnalysis = (req: C.ListingAnalysisRequest) =>
   call<C.ListingAnalysisResponse>("/owner/listing-analysis", MOCK.analysis, post(req));
+
+// ---------------------------------------------------------------------------
+// Tracker endpoints (docs/DESIGN.md). Same fallback rule as above: sample data only when the API is
+// unreachable or errors on a GET, and it is labeled. Nothing is invented in the real path.
+// ---------------------------------------------------------------------------
+export type ListingQuery = {
+  zip?: string; beds?: string; type?: string; maxPrice?: number; sort?: ListingSort; limit?: number; offset?: number;
+};
+
+function query(params: Record<string, string | number | undefined | null>) {
+  const p = new URLSearchParams();
+  for (const [k, v] of Object.entries(params)) if (v !== undefined && v !== null && v !== "" && v !== "any") p.set(k, String(v));
+  const s = p.toString();
+  return s ? `?${s}` : "";
+}
+
+// Property-type filter values in the UI map onto the API's property_type strings.
+const API_TYPE: Record<string, string> = { apartment: "apartment", condo: "condo", house: "single_family" };
+
+export const getListings = (q: ListingQuery = {}) => {
+  const fx = MOCK.listings;
+  const items = fx.items.filter(
+    (l) =>
+      (!q.zip || l.zip === q.zip) &&
+      (q.beds === undefined || q.beds === "any" || l.beds === Number(q.beds)) &&
+      (!q.maxPrice || l.current_price_usd <= q.maxPrice),
+  );
+  return call<ListingsResponse>(
+    `/listings${query({ zip: q.zip, beds: q.beds, type: q.type ? API_TYPE[q.type] : undefined, max_price: q.maxPrice, sort: q.sort, limit: q.limit, offset: q.offset })}`,
+    { ...fx, items, total: items.length },
+  );
+};
+
+export const getListingsByIds = (ids: number[]) =>
+  ids.length === 0
+    ? Promise.resolve<ListingsResponse>({ items: [], total: 0, limit: 0, offset: 0 })
+    : call<ListingsResponse>(`/listings${query({ ids: ids.slice(0, 50).join(",") })}`, {
+        ...MOCK.listings,
+        items: MOCK.listings.items.filter((l) => ids.includes(l.id)),
+      });
+
+/** Sample mode only: the detail fixture is one apartment; other ids get their own summary, with observations taken from its sparkline. */
+function mockDetail(id: number): ListingDetail {
+  const base = MOCK.listingDetail;
+  if (base.id === id) return base;
+  const s: ListingSummary | undefined = MOCK.listings.items.find((l) => l.id === id);
+  if (!s) return { ...base, id };
+  return {
+    ...base, ...s,
+    observations: s.sparkline.map((p) => ({ date: p.month, event: "history" as const, price_usd: p.price_usd })),
+    estimate: null, percentile: null, n_comparables: 0, forecast: null,
+  };
+}
+export const getListing = (id: number) => call<ListingDetail>(`/listings/${id}`, mockDetail(id));
+
+export type MarketQuery = { zip?: string; beds?: string; type?: string; range?: MarketRange };
+export const getMarket = (q: MarketQuery = {}) =>
+  call<MarketResponse>(
+    `/market${query({ zip: q.zip, beds: q.beds, type: q.type ? API_TYPE[q.type] : undefined, range: q.range })}`,
+    { ...MOCK.market, zip: q.zip || null, beds: q.beds && q.beds !== "any" ? Number(q.beds) : null, range: q.range ?? "1y" },
+  );

@@ -7,7 +7,7 @@ import { ZIP_OPTIONS } from "@/lib/format";
 import { inputCls } from "./styles";
 
 export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
-  return <section className={`rounded-xl border border-slate-200 bg-white p-4 shadow-sm ${className}`}>{children}</section>;
+  return <section className={`rounded-xl bg-surface p-4 shadow-[0_1px_3px_rgba(46,49,39,0.12)] ${className}`}>{children}</section>;
 }
 
 export function Field({ label, hint, children }: { label: string; hint?: string; children: ReactNode }) {

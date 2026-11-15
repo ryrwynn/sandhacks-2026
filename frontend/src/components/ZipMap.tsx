@@ -17,7 +17,7 @@ type Props = {
   heightClass?: string;
 };
 
-const SCALE = ["#e0e7ff", "#a5b4fc", "#6366f1", "#4338ca", "#312e81"];
+const SCALE = ["#ffe8d6", "#ddbea9", "#cb997e", "#8f5a3f"];
 
 export const validToken = (t: string | null | undefined): t is string => !!t && t.startsWith("pk.");
 
@@ -31,7 +31,7 @@ export default function ZipMap(props: Props) {
 
 function Legend({ min, max }: { min: number; max: number }) {
   return (
-    <div className="rounded-lg bg-white/95 p-2 text-xs shadow" aria-label="Legend: typical monthly rent">
+    <div className="rounded-lg bg-surface/95 p-2 text-xs shadow" aria-label="Legend: typical monthly rent">
       <div className="mb-1 font-medium text-slate-700">Typical monthly rent</div>
       <div className="flex h-2.5 w-36 overflow-hidden rounded">
         {SCALE.map((c) => (
@@ -48,7 +48,7 @@ function Legend({ min, max }: { min: number; max: number }) {
 
 function Detail({ z }: { z: ZipSummary }) {
   return (
-    <div className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm">
+    <div className="flex items-center justify-between gap-3 rounded-xl bg-surface px-3 py-2 text-base shadow-[0_1px_3px_rgba(46,49,39,0.12)]">
       <div>
         <div className="font-semibold">
           {z.zip} {z.name}
@@ -57,7 +57,7 @@ function Detail({ z }: { z: ZipSummary }) {
           {usd(rentOf(z))} typical rent, {forecastText(z)}
         </div>
       </div>
-      <Link href={`/zip/${z.zip}`} className="shrink-0 font-medium text-indigo-700 underline">
+      <Link href={`/zip/${z.zip}`} className="shrink-0 font-medium text-accent-strong underline">
         Profile
       </Link>
     </div>
@@ -116,7 +116,7 @@ function MapView({ token, zips, highlight = [], focus, heightClass = "h-72 sm:h-
 
   return (
     <div className="space-y-2">
-      <div className={`relative w-full overflow-hidden rounded-xl border border-slate-200 ${heightClass}`}>
+      <div className={`relative w-full overflow-hidden rounded-xl shadow-[0_1px_3px_rgba(46,49,39,0.2)] ${heightClass}`}>
         <Map
           ref={ref}
           mapboxAccessToken={token}
@@ -136,23 +136,23 @@ function MapView({ token, zips, highlight = [], focus, heightClass = "h-72 sm:h-
                 id="zip-fill"
                 type="fill"
                 paint={{
-                  "fill-color": ["case", ["<", ["get", "rent"], 0], "#e2e8f0", ["interpolate", ["linear"], ["get", "rent"], ...stops]],
-                  "fill-opacity": 0.75,
+                  "fill-color": ["case", ["<", ["get", "rent"], 0], "#e9ddd2", ["interpolate", ["linear"], ["get", "rent"], ...stops]],
+                  "fill-opacity": 0.85,
                 }}
               />
               <Layer
                 id="zip-line"
                 type="line"
                 paint={{
-                  "line-color": ["case", ["get", "hl"], "#f59e0b", "#1e1b4b"],
-                  "line-width": ["case", ["get", "hl"], 3.5, 1],
+                  "line-color": ["case", ["get", "hl"], "#2e3127", "#8f5a3f"],
+                  "line-width": ["case", ["get", "hl"], 3.5, 0.8],
                 }}
               />
               <Layer
                 id="zip-label"
                 type="symbol"
                 layout={{ "text-field": ["get", "zip"], "text-size": 11 }}
-                paint={{ "text-color": "#0f172a", "text-halo-color": "#ffffff", "text-halo-width": 1.2 }}
+                paint={{ "text-color": "#2e3127", "text-halo-color": "#fffaf5", "text-halo-width": 1.2 }}
               />
             </Source>
           )}
@@ -174,10 +174,10 @@ function MapView({ token, zips, highlight = [], focus, heightClass = "h-72 sm:h-
 export function ZipList({ zips, highlight = [] }: { zips: ZipSummary[]; highlight?: string[] }) {
   const sorted = [...zips].sort((a, b) => (rentOf(b) ?? 0) - (rentOf(a) ?? 0));
   return (
-    <ol className="divide-y divide-slate-200 rounded-xl border border-slate-200 bg-white" aria-label="ZIP codes ranked by typical rent">
+    <ol className="divide-y divide-line rounded-xl bg-surface shadow-[0_1px_3px_rgba(46,49,39,0.12)]" aria-label="ZIP codes ranked by typical rent">
       {sorted.map((z, i) => (
         <li key={z.zip}>
-          <Link href={`/zip/${z.zip}`} className={`flex items-center justify-between gap-3 px-3 py-3 ${highlight.includes(z.zip) ? "bg-amber-50" : ""}`}>
+          <Link href={`/zip/${z.zip}`} className={`flex items-center justify-between gap-3 px-3 py-3 min-h-11 ${highlight.includes(z.zip) ? "bg-amber-50" : ""}`}>
             <span className="flex items-center gap-3">
               <span className="w-5 text-right text-xs tabular-nums text-slate-500">{i + 1}</span>
               <span>

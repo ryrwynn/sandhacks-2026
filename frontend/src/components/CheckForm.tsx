@@ -6,13 +6,13 @@ import { btnCls, btnGhostCls, inputCls } from "./styles";
 import { ErrorNote, Field, TriState, triToBool } from "./ui";
 import { VerdictCard } from "./cards";
 
-export default function CheckForm() {
-  const [address, setAddress] = useState("");
-  const [zip, setZip] = useState("");
+export default function CheckForm({ prefill }: { prefill?: { address: string; zip: string; year: string } }) {
+  const [address, setAddress] = useState(prefill?.address ?? "");
+  const [zip, setZip] = useState(prefill?.zip ?? "");
   const [lowest, setLowest] = useState("");
   const [next, setNext] = useState("");
   const [date, setDate] = useState("");
-  const [year, setYear] = useState("");
+  const [year, setYear] = useState(prefill?.year ?? "");
   const [ptype, setPtype] = useState<PropertyType>("unknown");
   const [notice, setNotice] = useState("");
   const [corp, setCorp] = useState("");
@@ -63,7 +63,7 @@ export default function CheckForm() {
           </div>
         </Field>
         {matches && (
-          <ul className="space-y-1 rounded-lg border border-slate-200 bg-white p-2 text-sm">
+          <ul className="space-y-1 rounded-lg border border-slate-200 bg-surface p-2 text-sm">
             {matches.length === 0 && <li className="px-2 py-1 text-slate-600">No match. Fill in the building details below.</li>}
             {matches.map((m) => (
               <li key={m.property_id}>

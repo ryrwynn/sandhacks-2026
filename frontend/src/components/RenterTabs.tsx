@@ -10,7 +10,9 @@ const TABS = [
   { id: "find", label: "Find a place" },
 ] as const;
 
-export default function RenterTabs() {
+export type Prefill = { address: string; zip: string; year: string };
+
+export default function RenterTabs({ prefill }: { prefill?: Prefill }) {
   const [tab, setTab] = useState<(typeof TABS)[number]["id"]>("check");
   return (
     <div className="space-y-4">
@@ -23,14 +25,14 @@ export default function RenterTabs() {
             aria-selected={tab === t.id}
             aria-controls={`panel-${t.id}`}
             onClick={() => setTab(t.id)}
-            className={`min-h-11 rounded-lg px-1 text-sm font-medium leading-tight ${tab === t.id ? "bg-white text-indigo-900 shadow" : "text-slate-700"}`}
+            className={`min-h-11 rounded-lg px-1 text-sm font-medium leading-tight ${tab === t.id ? "bg-surface text-indigo-900 shadow" : "text-slate-700"}`}
           >
             {t.label}
           </button>
         ))}
       </div>
       <div role="tabpanel" id={`panel-${tab}`} aria-labelledby={`tab-${tab}`}>
-        {tab === "check" && <CheckForm />}
+        {tab === "check" && <CheckForm prefill={prefill} />}
         {tab === "listing" && <ListingForm />}
         {tab === "find" && <Finder persona="starter" />}
       </div>
