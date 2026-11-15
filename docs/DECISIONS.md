@@ -48,4 +48,15 @@ Dataset `gd_lfqkr8wm13ixtbd8f5` (Zillow properties listing information), the one
   HTTP 400 "Customer is not active". Collect-by-URL works, and so does `discover_by=url` with a Zillow
   search URL (e.g. `https://www.zillow.com/san-diego-ca-92104/rentals/`), so the worker uses search URLs.
 - A collect-by-URL test (an off-market condo in 92122): **yearBuilt came back (1993); priceHistory was null.**
-- Active rental and for-sale results: pending (snapshot sd_mwh78b0y24gbxr2vwq still running at commit time).
+- `discover_by=url` snapshot sd_mwh78b0y24gbxr2vwq (92104, limit 2 per input) returned 13 records in about
+  4 minutes: 11 rentals and 2 for sale.
+  - **For sale: priceHistory came back (1 to 12 events, including past sales) and yearBuilt came back (1911, 2012).**
+  - **Rentals: priceHistory came back (10 or 11 events, with "Listed for rent", "Price change", "Listing removed")
+    but yearBuilt was missing on every rental**, and nowhere else in the record. Ten units at one address shared
+    the identical history, so for multi-unit buildings it describes the building's listing, not each unit.
+  - Consequences: (1) the loader keeps a rental's history only when no other unit at the same address in the
+    snapshot carries the same history; otherwise it's dropped, never attributed to a unit. (2) Year built for
+    AB 1482 comes from a for-sale or off-market record at the same address (collect-by-URL returns yearBuilt)
+    or from the tenant on the check form; when unknown, the verdict is `unclear` and the form asks for it.
+    (3) Days on market in Owner mode can use the "Listed for rent" / "Listing removed" events where they exist.
+  - `limit_per_input` is not a hard per-input cap: 2 requested, 11 rentals returned. Budget runs accordingly.
