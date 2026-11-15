@@ -1,6 +1,6 @@
 # Overnight run status
 
-Heartbeat: 2026-11-15 10:55 PST — steps 1,2,4 done; step 3 re-extract running; starting step 5
+Heartbeat: 2026-11-15 11:40 PST — steps 1–6 done; starting step 7 (docs)
 
 ## Phase 0, setup
 - [x] preflight: all clear; WARN no DEV_DATABASE_URL (stage in shared DB), WARN no Google keys (sign-in off), WARN no local Docker
@@ -38,7 +38,7 @@ Heartbeat: 2026-11-15 10:55 PST — steps 1,2,4 done; step 3 re-extract running;
 
 # Morning run (2026-11-15)
 
-Heartbeat: 2026-11-15 10:55 PST — steps 1,2,4 done; step 3 re-extract running; starting step 5
+Heartbeat: 2026-11-15 11:40 PST — steps 1–6 done; starting step 7 (docs)
 
 ## 1. Data
 - [x] Load the data 1: index tier staged (160,122 and 3,056 rows) — ran by owner this morning, not rerun
@@ -83,14 +83,14 @@ Heartbeat: 2026-11-15 10:55 PST — steps 1,2,4 done; step 3 re-extract running;
 
 # Final run (2026-11-15)
 
-Heartbeat: 2026-11-15 10:55 PST — steps 1,2,4 done; step 3 re-extract running; starting step 5
+Heartbeat: 2026-11-15 11:40 PST — steps 1–6 done; starting step 7 (docs)
 
 - [x] 1. Connectivity: database ok (8 s timeout)
 - [x] 2. Schedules and rules: weekly zillow_rent Thu 12:00 UTC; FMR_RULE_VERIFIED=True; HUD SAFMR refused (202 empty), fmr.yaml stays unverified; BD estimate ≈ $17–26/month in WAKEUP.md
-- [ ] 3. Facebook roommate offers + full-run re-extract (staging only)
+- [x] 3. Facebook roommate offers: prompt + roommate_wanted flag + 3 tests. Full run re-extracted (no scrape, ~30 Flash Lite calls): 290 posts, 133 usable (45.9%), 18 whole, 94 rooms (94 roommate-wanted), 21 sublets, 0 unusual; not_offer 70, no_zip 47, no_price_or_beds 40. Staging: 107 listings after dedupe (52 in the 12 ZIPs). Sample not re-extracted: all 40 of its posts are in the full run. Not replayed to shared.
 - [x] 4. Live-query ZIP filter in api/db.py (CORE_ZIPS) + api/tests/test_zip_filter.py (24 tests)
-- [ ] 5. Partner fixes a–g
-- [ ] 6. /privacy and /terms
+- [x] 5. Partner fixes a–g (a buyer values, b Starter in Find, c Save at bottom, d favicon, e tags API+UI, f /saved multi-select [lane], g Roommate wanted/Sublet)
+- [x] 6. /privacy and /terms [lane] + footer, /about, sign-in links; added rent-check storage to privacy
 - [ ] 7. Docs (PLAN, DESIGN, ACCOUNTS)
 - [ ] 8. Checks (preflight, pytest, build/tsc, ui-check, capacity SQL, sign-in)
 - [ ] 9. Stop servers, commit, push night, PR #2 ready, WAKEUP.md
