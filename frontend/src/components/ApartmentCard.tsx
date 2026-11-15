@@ -64,10 +64,13 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
   const facts = fb
     ? [l.unit_type ? UNIT_TYPE_TEXT[l.unit_type] : null, l.zip, l.posted_at ? `Posted ${fmtDate(l.posted_at, { month: "short", day: "numeric" })}` : null].filter(Boolean).join(" · ")
     : [l.neighborhood, bedsText(l.beds), l.sqft ? `${l.sqft.toLocaleString()} sq ft` : null].filter(Boolean).join(" · ");
+  // Facebook rooms are offered by someone looking for a roommate; sublets are temporary.
+  const kindTag = fb && l.unit_type === "room" ? "Roommate wanted" : fb && l.unit_type === "sublet" ? "Sublet" : null;
+  const tags = (l.tags ?? []).slice(0, 4);
   const many = l.sparkline.length > 1 && l.n_observations > 1;
   const first = l.sparkline[0], last = l.sparkline[l.sparkline.length - 1];
   return (
-    <article className={`${cardCls} relative flex flex-col p-4 transition-shadow focus-within:outline focus-within:outline-2 focus-within:outline-primary hover:shadow-[0_2px_6px_rgba(46,49,39,0.18),0_8px_22px_rgba(46,49,39,0.08)]`}>
+    <article className={`${cardCls} relative flex h-full flex-col p-4 transition-shadow focus-within:outline focus-within:outline-2 focus-within:outline-primary hover:shadow-[0_2px_6px_rgba(46,49,39,0.18),0_8px_22px_rgba(46,49,39,0.08)]`}>
       {note && <p className="mb-2 w-fit rounded-full bg-line px-2.5 py-0.5 text-xs font-medium text-ink">{note}</p>}
       {fb && (
         <p className="mb-2 text-xs text-muted">
@@ -117,11 +120,18 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
         </div>
       </div>
 
-      {(isRent && l.fair_rent_label) || l.unusual_price ? (
-        <p className="mt-3 flex flex-wrap gap-1.5">
-          {isRent && l.fair_rent_label && <span className="rounded-full bg-bg px-2.5 py-1 text-xs font-medium text-ink">{FAIR_LABEL[l.fair_rent_label]}</span>}
-          {l.unusual_price && <span className="rounded-full bg-bg px-2.5 py-1 text-xs font-medium text-warn">Unusual price</span>}
-        </p>
+      {(isRent && l.fair_rent_label) || l.unusual_price || kindTag || tags.length > 0 ? (
+        <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Tags">
+          {isRent && l.fair_rent_label && <li className="rounded-full bg-bg px-2.5 py-1 text-xs font-medium text-ink">{FAIR_LABEL[l.fair_rent_label]}</li>}
+          {kindTag && <li className="rounded-full bg-line px-2.5 py-1 text-xs font-medium text-ink">{kindTag}</li>}
+          {l.unusual_price && <li className="rounded-full bg-bg px-2.5 py-1 text-xs font-medium text-warn">Unusual price</li>}
+          {tags.map((t) => (
+            <li key={t.label} title={t.kind === "area" ? "About the ZIP code, not this listing" : undefined}
+              className={`rounded-full px-2.5 py-1 text-xs font-medium ${t.kind === "area" ? "border border-line text-muted" : "bg-bg text-ink"}`}>
+              {t.label}
+            </li>
+          ))}
+        </ul>
       ) : null}
 
       {fb && l.post_url && (
@@ -132,10 +142,12 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
       )}
 
       {showSave && onToggle && (
-        <button type="button" onClick={onToggle} aria-pressed={!!saved}
-          className={`relative z-10 mt-4 min-h-11 w-full rounded-lg px-4 text-base font-semibold ${saved ? "bg-line text-ink" : "bg-primary text-on-primary hover:bg-primary-hover"}`}>
-          {saved ? "Saved ✓" : "+ Save apartment"}
-        </button>
+        <div className="mt-auto pt-4">
+          <button type="button" onClick={onToggle} aria-pressed={!!saved} data-testid="save-toggle"
+            className={`relative z-10 min-h-11 w-full rounded-lg px-4 text-base font-semibold ${saved ? "bg-line text-ink" : "bg-primary text-on-primary hover:bg-primary-hover"}`}>
+            {saved ? "Saved ✓" : "+ Save apartment"}
+          </button>
+        </div>
       )}
     </article>
   );

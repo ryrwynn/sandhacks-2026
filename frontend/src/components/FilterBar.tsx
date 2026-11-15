@@ -39,7 +39,7 @@ export default function FilterBar({ value, onChange, showPrice, showSource }: {
             <select aria-label="Whole unit or room" className={selectCls} value={value.unitType ?? "any"} onChange={(e) => set({ unitType: e.target.value as Filters["unitType"] })}>
               <option value="any">Whole units and rooms</option>
               <option value="entire_unit">Whole units only</option>
-              <option value="room">Rooms only</option>
+              <option value="room">Roommate wanted (rooms)</option>
               <option value="sublet">Sublets only</option>
             </select>
           </>

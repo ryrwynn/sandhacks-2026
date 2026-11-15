@@ -4,6 +4,7 @@ import ApartmentCard, { CardSkeletons } from "@/components/ApartmentCard";
 import FilterBar from "@/components/FilterBar";
 import AddArea from "@/components/AddArea";
 import AreaSearch from "@/components/AreaSearch";
+import Finder from "@/components/Finder";
 import { ErrorNote } from "@/components/ui";
 import { selectCls, cardCls } from "@/components/styles";
 import { errorMessage, getListings } from "@/lib/api";
@@ -23,6 +24,14 @@ export default function Find() {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
   const { has, toggle } = useSaved();
+  const [starterOpen, setStarterOpen] = useState(false);   // the Starter finder only loads once opened
+  const results = useRef<HTMLDivElement>(null);
+  const pickZip = (zip: string) => {
+    setFilters((f) => ({ ...f, zip }));
+    setStarterOpen(false);
+    results.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    results.current?.focus({ preventScroll: true });
+  };
 
   // Deep links such as /find?source=facebook&unit=room preset the source filters.
   useEffect(() => {
@@ -74,13 +83,24 @@ export default function Find() {
         <p className="text-sm text-muted">Listings from Facebook groups are marked &ldquo;lower confidence&rdquo;: they come from public posts, have no street address, and count at half weight in our medians.</p>
       )}
 
+      <details data-testid="starter-panel" open={starterOpen} onToggle={(e) => setStarterOpen((e.currentTarget as HTMLDetailsElement).open)}
+        className="rounded-xl bg-surface p-3 shadow-[0_1px_3px_rgba(46,49,39,0.12)]">
+        <summary className="min-h-11 cursor-pointer py-2.5 text-sm font-semibold">Not sure where to look? Rank the 12 areas for your budget</summary>
+        {starterOpen && (
+          <div className="pt-2">
+            <p className="mb-3 text-sm text-muted">Ranked for low rent and short trips to groceries and transit. Pick an area to see its listings below.</p>
+            <Finder persona="starter" onPickZip={pickZip} />
+          </div>
+        )}
+      </details>
+
       <details className="rounded-xl bg-surface p-3 shadow-[0_1px_3px_rgba(46,49,39,0.12)]">
         <summary className="min-h-11 cursor-pointer py-2.5 text-sm font-semibold">Looking somewhere else? Search another area</summary>
         <div className="pt-2"><AreaSearch /></div>
       </details>
 
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-lg font-semibold" aria-live="polite">{loading && items.length === 0 ? "Searching..." : `${count.toLocaleString()} ${filters.unitType === "room" ? "rooms" : filters.unitType === "sublet" ? "sublets" : "places"} in ${area}`}</h2>
+      <div ref={results} tabIndex={-1} className="flex scroll-mt-20 flex-wrap items-center justify-between gap-2 outline-none">
+        <h2 className="text-lg font-semibold" aria-live="polite">{loading && items.length === 0 ? "Searching..." : `${count.toLocaleString()} ${filters.unitType === "room" ? "rooms (roommate wanted)" : filters.unitType === "sublet" ? "sublets" : "places"} in ${area}`}</h2>
         <select aria-label="Sort" className={selectCls} value={sort} onChange={(e) => setSort(e.target.value as ListingSort)}>
           <option value="recent">Sort: Recommended</option>
           <option value="price_asc">Price: low to high</option>

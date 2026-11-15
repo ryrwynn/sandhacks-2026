@@ -1,3 +1,4 @@
+import type React from "react";
 import Link from "next/link";
 import type { CheckResponse, Contribution, ListingAnalysisResponse, ListingEvalResponse, RankedZip, Verdict } from "@/lib/contract";
 import { pct, usd } from "@/lib/format";
@@ -23,10 +24,10 @@ export function contributionValue(c: Contribution): string | null {
 
 /** Score 0 to 100 with the points each factor added. Used for ranked ZIPs and persona scores. */
 export function ScoreCard({
-  title, score, subtitle, contributions, summary, href, stretch,
+  title, score, subtitle, contributions, summary, href, stretch, action,
 }: {
   title: string; score: number | null | undefined; subtitle?: string; contributions?: Contribution[];
-  summary?: string | null; href?: string; stretch?: boolean;
+  summary?: string | null; href?: string; stretch?: boolean; action?: React.ReactNode;
 }) {
   return (
     <Card className={stretch ? "border-dashed" : ""}>
@@ -54,11 +55,14 @@ export function ScoreCard({
           ))}
         </ul>
       )}
+      {action && <div className="mt-3">{action}</div>}
     </Card>
   );
 }
 
-export function RankedZipCard({ z, stretch, priceLabel }: { z: RankedZip; stretch?: boolean; priceLabel: string }) {
+export function RankedZipCard({ z, stretch, priceLabel, onPick }: {
+  z: RankedZip; stretch?: boolean; priceLabel: string; onPick?: (zip: string) => void;
+}) {
   return (
     <ScoreCard
       title={`${z.rank}. ${z.zip} ${z.name}`}
@@ -68,6 +72,12 @@ export function RankedZipCard({ z, stretch, priceLabel }: { z: RankedZip; stretc
       summary={z.summary}
       href={`/zip/${z.zip}`}
       stretch={stretch}
+      action={onPick && (
+        <button type="button" onClick={() => onPick(z.zip)}
+          className="min-h-11 w-full rounded-lg bg-primary px-4 font-semibold text-on-primary hover:bg-primary-hover">
+          Show listings in {z.name}
+        </button>
+      )}
     />
   );
 }
