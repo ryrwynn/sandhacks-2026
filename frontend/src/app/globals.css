@@ -1,26 +1,72 @@
-@import "tailwindcss";
-
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #f4f4f4; --surface: #fff; --ink: #1a1a1a; --muted: #6b6b6b; --line: #e3e3e3;
+  --focus: #2f6fed; --r: 6px;
 }
+* { box-sizing: border-box; }
+html { color-scheme: light; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font), system-ui, sans-serif; font-size: 14px; line-height: 1.45; }
+h1 { font-size: 24px; margin: 0 0 4px; letter-spacing: -0.01em; }
+h2 { font-size: 16px; margin: 0 0 2px; } .small-h { font-size: 14px; }
+h3 { font-size: 13px; margin: 0; font-weight: 600; }
+a { color: inherit; }
+main { max-width: 1180px; margin: 0 auto; padding: 28px 24px 64px; }
+.muted { color: var(--muted); } .small { font-size: 12px; } .right { text-align: right; }
+:focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+.nav { display: flex; align-items: center; gap: 32px; background: var(--surface); border-bottom: 1px solid var(--line); padding: 0 24px; height: 52px; position: sticky; top: 0; z-index: 5; }
+.brand { font-weight: 700; font-size: 16px; text-decoration: none; }
+.nav nav { display: flex; gap: 28px; flex: 1; height: 100%; }
+.nav nav a { display: flex; align-items: center; color: var(--muted); text-decoration: none; font-size: 12px; border-bottom: 2px solid transparent; }
+.nav nav a:hover { color: var(--ink); }
+.nav nav a.active { color: var(--ink); font-weight: 600; border-bottom-color: var(--ink); }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+button, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+.ghost, select { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 8px 12px; }
+.ghost { border-color: transparent; background: none; font-size: 12px; }
+.filters .ghost { border-color: var(--line); background: var(--surface); }
+.primary { background: var(--ink); color: #fff; border-radius: var(--r); padding: 8px 14px; font-size: 12px; font-weight: 500; text-decoration: none; border: 0; white-space: nowrap; }
+.primary:hover { background: #000; }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.page-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 18px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+.filters select { min-width: 150px; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; }
+.panel { padding: 20px; margin-bottom: 28px; }
+.panel.flat { background: var(--surface); border-radius: 8px; padding: 20px; }
+.label { margin: 0 0 4px; font-size: 12px; }
+.stat strong { font-size: 32px; letter-spacing: -0.02em; }
+.row-between { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 14px; }
+.results-bar { margin-top: 8px; }
+
+.seg { display: inline-flex; float: right; border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; background: #f7f7f7; }
+.seg button { border: 0; background: none; padding: 5px 12px; font-size: 11px; color: var(--muted); }
+.seg button.on { background: var(--surface); color: var(--ink); font-weight: 600; box-shadow: 0 0 0 1px var(--line) inset; }
+.chart { width: 100%; height: auto; display: block; margin-top: 8px; cursor: crosshair; }
+.tick { font-size: 11px; fill: var(--muted); }
+.chart-foot { text-align: right; margin: 0; font-size: 11px; }
+.skeleton { height: 300px; background: #f0f0f0; border-radius: var(--r); }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px; }
+.apt { padding: 14px; }
+.apt-head { display: flex; justify-content: space-between; gap: 8px; }
+.apt-head p { margin: 2px 0 0; font-size: 11px; }
+.icon { width: 24px; height: 24px; border-radius: 50%; border: 0; background: #ececec; font-size: 11px; flex: none; }
+.apt-price { margin: 14px 0 6px; display: flex; align-items: baseline; gap: 2px; }
+.apt-price strong { font-size: 22px; letter-spacing: -0.01em; }
+.delta { margin-left: auto; font-size: 11px; color: var(--muted); }
+.spark { width: 100%; height: 44px; display: block; }
+.apt-axis { display: flex; justify-content: space-between; font-size: 10px; margin-top: 2px; }
+.save-btn { width: 100%; margin-top: 14px; padding: 7px; border: 0; border-radius: var(--r); background: #e8e8e8; font-size: 12px; }
+.save-btn:hover { background: #dcdcdc; }
+.save-btn.on { background: var(--ink); color: #fff; }
+.empty { color: var(--muted); padding: 32px 0; }
+
+@media (max-width: 720px) {
+  .nav { gap: 12px; overflow-x: auto; }
+  .nav nav { gap: 16px; white-space: nowrap; }
+  .page-head, .row-between { flex-direction: column; }
+  .seg { float: none; margin-bottom: 8px; }
 }
+@media (prefers-reduced-motion: no-preference) { button { transition: background .12s; } }

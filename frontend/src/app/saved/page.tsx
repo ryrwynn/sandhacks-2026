@@ -1,10 +1,10 @@
 "use client";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import ApartmentCard from "@/components/ApartmentCard";
-import { getListingsByIds } from "@/lib/api";
-import { useSaved } from "@/lib/saved";
-import type { Listing } from "@/lib/types";
+import ApartmentCard from "@/src/components/ApartmentCard";
+import { getListingsByIds } from "@/src/lib/api";
+import { useSaved } from "@/src/lib/saved";
+import type { Listing } from "@/src/lib/types";
 
 export default function Saved() {
   const { ids, has, toggle } = useSaved();

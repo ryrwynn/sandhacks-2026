@@ -1,10 +1,10 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
-import FilterBar from "@/components/FilterBar";
-import ApartmentCard from "@/components/ApartmentCard";
-import { getListings } from "@/lib/api";
-import { useSaved } from "@/lib/saved";
-import { DEFAULT_FILTERS, type Filters, type Listing } from "@/lib/types";
+import FilterBar from "@/src/components/FilterBar";
+import ApartmentCard from "@/src/components/ApartmentCard";
+import { getListings } from "@/src/lib/api";
+import { useSaved } from "@/src/lib/saved";
+import { DEFAULT_FILTERS, type Filters, type Listing } from "@/src/lib/types";
 
 export default function Find() {
   const [filters, setFilters] = useState<Filters>({ ...DEFAULT_FILTERS, maxPrice: 3500 });

@@ -1,4 +1,4 @@
-import type { Listing } from "@/lib/types";
+import type { Listing } from "@/src/lib/types";
 import Sparkline from "./Sparkline";
 
 const usd = (n: number) => "$" + n.toLocaleString();

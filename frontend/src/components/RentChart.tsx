@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import type { MarketPoint } from "@/lib/types";
+import type { MarketPoint } from "@/src/lib/types";
 
 const RANGES = [["1M", 1], ["3M", 3], ["6M", 6], ["1Y", 12], ["All", 99]] as const;
 const usd = (n: number) => "$" + n.toLocaleString();

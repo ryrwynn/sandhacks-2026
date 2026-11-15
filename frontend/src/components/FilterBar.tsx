@@ -1,6 +1,6 @@
 "use client";
-import type { Filters } from "@/lib/types";
-import { AREAS } from "@/lib/mock";
+import type { Filters } from "@/src/lib/types";
+import { AREAS } from "@/src/lib/mock";
 
 export default function FilterBar({ value, onChange, showPrice }: {
   value: Filters; onChange: (f: Filters) => void; showPrice?: boolean;
