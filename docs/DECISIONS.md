@@ -129,3 +129,25 @@ Dataset `gd_lfqkr8wm13ixtbd8f5` (Zillow properties listing information), the one
   it posts to a Django prices endpoint we don't run. Idea worth borrowing later: the price-only refresh by zpid for
   saved apartments, which is a cheaper way to extend price history than rerunning whole ZIP searches.
 - Lane A's work (`lane/data`: worker pipeline, source templates, fixtures, data caches) is also merged into Setup.
+
+### Step 3: engine fixes while the lanes build the tracker
+
+- **Starter ranking at $1,900 is correct, not a bug.** The filter is a hard budget cut on the ZIP's typical rent for the
+  chosen bedroom count (median of our listing prices, ZORI when a ZIP has no listings of that size). Real 1-bedroom
+  medians in the 12 ZIPs run from $2,247 (92105, ZORI fallback) to $3,266 (92103), so nothing is within $1,900 and all 12
+  land in "stretch". Studios: only 92105 qualifies, from a single listing. Proposed demo budget: **1 bedroom at $2,500**,
+  which ranks 5 ZIPs (92126, 92107, 92105, 91910, 92117; 92126 rests on only 2 listings); $2,700 ranks 6. The plan's
+  Maria rent check is a different flow and is unaffected. Smoke test only needs ranked + stretch > 0, so it is unchanged.
+- **Fair-rent 80% range.** The median method's p10 to p90 of pooled comparables covered only 47% of held-out rents
+  because units in one building share a rent: 864 rentals come from just 58 buildings, so the pooled spread is far
+  narrower than the spread between buildings. `api/ml/fair_rent.py` now calibrates the range from the empirical
+  spread of log(rent / median of the other buildings in the same ZIP and bedroom group). The tail mass is chosen on
+  the training folds (building-grouped inner folds) as the narrowest one that reaches 80% held-out coverage, then
+  fitted on all rows; the multipliers are stored in the fair_rent run's metrics (`spread`) and the API applies them.
+  Result after retraining on 919 rentals (a last Bright Data run for 92101, 92105, 92126, 92107 and 92117 added only 56
+  rentals, so the 1,000-row model threshold was not reached and I stopped scraping): held-out 80% coverage 0.845,
+  median absolute error $278, range about 0.83x to 1.24x of the median. Estimates for groups with fewer than 5
+  comparables are still refused.
+- **Forecasts.** After retraining, 7 of 24 series beat the naive baseline (4 of 12 rent, 3 of 12 value). The API already
+  returns `backtest_mape`, `naive_mape` and `beats_naive`; the web lane was told no page may claim accuracy or
+  superiority and that every chart shows its 80% band and backtest error.
