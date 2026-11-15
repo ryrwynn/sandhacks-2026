@@ -3,7 +3,8 @@ from fastapi import APIRouter, HTTPException
 from api import db
 from api.ml import scoring
 from api.routers._common import safe, zip_data, score_rows
-from contracts.api_models import (AmenityCounts, Metric, SeriesPoint, SeriesResponse, ZipProfile, ZipsResponse,
+from api.routers import forecasts
+from contracts.api_models import (AmenityCounts, Metric, Scenario, SeriesPoint, SeriesResponse, ZipProfile, ZipsResponse,
                                   ZipSummary)
 
 router = APIRouter(prefix="/zips", tags=["zips"])
@@ -56,9 +57,11 @@ def zip_profile(zip: str) -> ZipProfile:
 
 
 @router.get("/{zip}/series", response_model=SeriesResponse)
-def zip_series(zip: str, metric: Metric = "zori") -> SeriesResponse:
+def zip_series(zip: str, metric: Metric = "zori", scenario: Scenario | None = None) -> SeriesResponse:
     if zip not in db.ZIP_NAMES:
         raise HTTPException(404, f"{zip} is not one of the ZIPs RentOrKnot covers")
+    if scenario is not None:   # overnight: scenario forecasts (night-forecast); default response unchanged
+        return forecasts.scenario_series(zip, metric, scenario)
     rows = safe(db.series, zip, metric, default=[])
     points = [SeriesPoint(month=r["month"], value=float(r["value"]),
                           lo80=db.num(r["lo80"]), hi80=db.num(r["hi80"]), kind=r["kind"]) for r in rows]

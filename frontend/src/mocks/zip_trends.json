@@ -1,0 +1,32 @@
+{
+  "zip": "92104",
+  "name": "North Park",
+  "rent": {
+    "metric": "zori",
+    "as_of": "2026-10-01",
+    "latest_usd": 2650.0,
+    "yoy_pct": 3.2,
+    "momentum_3m_pct": 4.1,
+    "acceleration_pp": 0.6,
+    "volatility_pct": 0.8,
+    "county_percentile": 72.0
+  },
+  "value": {
+    "metric": "zhvi",
+    "as_of": "2026-10-01",
+    "latest_usd": 850000.0,
+    "yoy_pct": 3.2,
+    "momentum_3m_pct": 4.1,
+    "acceleration_pp": 0.6,
+    "volatility_pct": 0.8,
+    "county_percentile": 72.0
+  },
+  "signals": [
+    {
+      "kind": "accelerating",
+      "label": "Rent growth is speeding up",
+      "detail": "YoY rose 0.6 points in 3 months"
+    }
+  ],
+  "disclaimer": "Market signals from public data, not legal findings or financial advice."
+}

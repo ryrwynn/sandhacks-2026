@@ -3,6 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   cacheComponents: true,
+  // Mastra (the /advisor/chat agent) runs on the Node server, unbundled (docs/reference/mastra.md).
+  serverExternalPackages: ["@mastra/*"],
   partialPrefetching: true,
   turbopack: {
     rules: {

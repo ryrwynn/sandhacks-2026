@@ -1,0 +1,35 @@
+{
+  "verdict": "likely_violation",
+  "county": "Los Angeles",
+  "limit_usd": 2970.0,
+  "increase_pct": 14.81,
+  "basis": "pre_emergency_plus_10",
+  "fmr_usd": null,
+  "fmr_source": null,
+  "emergency": {
+    "title": "Los Angeles County fires (sample)",
+    "counties": [
+      "Los Angeles"
+    ],
+    "declared_on": "2026-01-07",
+    "protections_until": "2026-03-01",
+    "extensions": [
+      "2026-02-01"
+    ],
+    "source_url": "https://www.gov.ca.gov/"
+  },
+  "reasons": [
+    "Sample fixture: the new rent is 14.8% above the pre-emergency rent; the limit is 10% ($2,970)."
+  ],
+  "links": [
+    {
+      "label": "Legal Aid Society of San Diego",
+      "url": "https://www.lassd.org/"
+    },
+    {
+      "label": "California Attorney General: price gouging",
+      "url": "https://oag.ca.gov/consumers/pricegougingduringdisasters"
+    }
+  ],
+  "disclaimer": "This is not legal advice. Penal Code 396 applies only during a declared emergency; for help, contact the Legal Aid Society of San Diego or the California Attorney General."
+}

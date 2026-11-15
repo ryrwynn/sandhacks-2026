@@ -172,3 +172,22 @@ Dataset `gd_lfqkr8wm13ixtbd8f5` (Zillow properties listing information), the one
   numbers show alone). Starter at the plan's $1,900 still ranks 0 (see Step 3); at $2,500 and 1 bedroom it ranks 5 ZIPs.
 - Phone and desktop rendering was checked by hand by the user (home page chart and Mapbox map at 375px); headless
   screenshots from this session are unreliable for the chart and the map and were not used as evidence.
+
+### Overnight run, Phase 1: contracts (2026-11-15)
+
+- **Migration 002 applied to the shared Tiger database** with `scripts/migrate.sh` (all objects IF NOT EXISTS, additive only;
+  seeds are ON CONFLICT DO NOTHING, so no `enabled` flag changed). Lanes need the new tables tonight and there is no
+  DEV_DATABASE_URL. `CREATE EXTENSION vector` only; PostGIS isn't needed (map geometry is static GeoJSON).
+- `staging_listings` is `LIKE listings INCLUDING DEFAULTS`, so it shares the listings ID sequence: staged IDs never collide
+  and `worker.replay --target shared` can keep them.
+- **`?scenario=`** stays on `GET /zips/{zip}/series` in zips.py, which delegates to `api/routers/forecasts.scenario_series`
+  only when the parameter is given. Without it, the response is byte-for-byte as before (new fields null or empty).
+- **Accounts API**: only the Next.js server calls `/account/saves`, with `X-Account-Token` (env `ACCOUNT_API_TOKEN`) and
+  `X-Subject-Hash` = sha256(AUTH_SECRET + Google sub). Unset token = 404 (off). No email or name reaches the API.
+- Unbuilt engines answer **501** (`api/routers/_stub.py`) rather than 500, so the web lane can tell "not built" from "broken".
+- **Frontend dependencies** (versions from docs/reference/mastra.md and auth.md): lucide-react, @mastra/core 1.83, @mastra/ai-sdk
+  1.12, ai 7, zod 4, next-auth 5.0.0-beta.32. Frontend image only; the API image and its 1 GB server budget are unchanged.
+  `serverExternalPackages: ["@mastra/*"]` added to next.config.ts. @mastra/memory and @mastra/pg not installed: the advisor
+  is stateless (NIGHT.md allows that), which avoids a Postgres schema and bundle weight.
+- Reading `.env` with grep to run psql was blocked by the permission classifier; all DB work goes through scripts/ or code
+  that reads `DATABASE_URL` from the environment.

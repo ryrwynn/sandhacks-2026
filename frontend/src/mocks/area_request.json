@@ -1,0 +1,16 @@
+{
+  "request_id": "00000000-0000-4000-8000-0000000000a1",
+  "geo_type": "zip",
+  "geo_id": "95814",
+  "name": "Sacramento (Downtown)",
+  "query": "95814",
+  "status": "queued",
+  "est_records": 300,
+  "est_cost_usd": 0.45,
+  "queue_position": 2,
+  "budget_remaining_usd": 6.2,
+  "requested_at": "2026-11-15T07:00:00Z",
+  "finished_at": null,
+  "message": "Queued: 2nd in line, about $0.45 of today's budget.",
+  "already_covered": false
+}

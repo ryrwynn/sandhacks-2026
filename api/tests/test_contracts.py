@@ -15,11 +15,19 @@ RESPONSES = {
     "neighborhoods_rank_wealth.json": m.RankResponse, "owner_price_position.json": m.PricePositionResponse,
     "owner_listing_analysis.json": m.ListingAnalysisResponse,
     "listings.json": m.ListingsResponse, "listing_detail.json": m.ListingDetail, "market.json": m.MarketResponse,
+    # overnight additions
+    "zip_series_scenarios.json": m.SeriesResponse, "areas.json": m.AreasResponse,
+    "area_request.json": m.AreaRequestStatus, "geo_zips.json": m.GeoZipsResponse,
+    "zip_trends.json": m.ZipTrendsResponse, "listing_trends.json": m.ListingTrendsResponse,
+    "gouging.json": m.GougingResponse, "match.json": m.MatchResponse, "owner_reach.json": m.OwnerReachResponse,
+    "account_saves.json": m.AccountSavesResponse,
 }
 REQUESTS = {
     "checks.json": m.CheckRequest, "listings_evaluate.json": m.ListingEvalRequest,
     "neighborhoods_rank_starter.json": m.RankRequest, "neighborhoods_rank_wealth.json": m.RankRequest,
     "owner_price_position.json": m.PricePositionRequest, "owner_listing_analysis.json": m.ListingAnalysisRequest,
+    "area_request.json": m.AreaRequestCreate, "gouging.json": m.GougingRequest, "match.json": m.MatchRequest,
+    "owner_reach.json": m.OwnerReachRequest, "account_saves.json": m.PutSavesRequest,
 }
 
 

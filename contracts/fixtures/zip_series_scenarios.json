@@ -1,0 +1,806 @@
+{
+  "zip": "92105",
+  "metric": "zori",
+  "points": [
+    {
+      "month": "2021-11-01",
+      "value": 1700.0,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2021-12-01",
+      "value": 1711.31,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-01-01",
+      "value": 1717.37,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-02-01",
+      "value": 1717.72,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-03-01",
+      "value": 1717.16,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-04-01",
+      "value": 1721.38,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-05-01",
+      "value": 1731.73,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-06-01",
+      "value": 1743.91,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-07-01",
+      "value": 1751.94,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-08-01",
+      "value": 1753.64,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-09-01",
+      "value": 1752.66,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-10-01",
+      "value": 1755.18,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-11-01",
+      "value": 1764.21,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-12-01",
+      "value": 1776.77,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-01-01",
+      "value": 1786.65,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-02-01",
+      "value": 1790.06,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-03-01",
+      "value": 1789.2,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-04-01",
+      "value": 1790.22,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-05-01",
+      "value": 1797.6,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-06-01",
+      "value": 1810.0,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-07-01",
+      "value": 1821.47,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-08-01",
+      "value": 1826.87,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-09-01",
+      "value": 1826.68,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-10-01",
+      "value": 1826.52,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-11-01",
+      "value": 1832.06,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-12-01",
+      "value": 1843.76,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-01-01",
+      "value": 1856.42,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-02-01",
+      "value": 1863.94,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-03-01",
+      "value": 1864.94,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-04-01",
+      "value": 1864.05,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-05-01",
+      "value": 1867.72,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-06-01",
+      "value": 1878.23,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-07-01",
+      "value": 1891.59,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-08-01",
+      "value": 1901.18,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-09-01",
+      "value": 1903.83,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-10-01",
+      "value": 1902.76,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-11-01",
+      "value": 1904.68,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-12-01",
+      "value": 1913.59,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-01-01",
+      "value": 1927.09,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-02-01",
+      "value": 1938.56,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-03-01",
+      "value": 1943.21,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-04-01",
+      "value": 1942.54,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-05-01",
+      "value": 1942.99,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-06-01",
+      "value": 1950.01,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-07-01",
+      "value": 1963.07,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-08-01",
+      "value": 1976.06,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-09-01",
+      "value": 1982.93,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-10-01",
+      "value": 1983.25,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-11-01",
+      "value": 1982.65,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-12-01",
+      "value": 1987.66,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-01-01",
+      "value": 1999.7,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-02-01",
+      "value": 2013.74,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-03-01",
+      "value": 2022.88,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-04-01",
+      "value": 2024.73,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-05-01",
+      "value": 2023.61,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-06-01",
+      "value": 2026.65,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-07-01",
+      "value": 2037.19,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-08-01",
+      "value": 2051.7,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-09-01",
+      "value": 2062.99,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-10-01",
+      "value": 2066.81,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-11-01",
+      "value": 2008.77,
+      "lo80": 1984.67,
+      "hi80": 2032.88,
+      "kind": "forecast"
+    },
+    {
+      "month": "2026-12-01",
+      "value": 2012.75,
+      "lo80": 1978.59,
+      "hi80": 2046.9,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-01-01",
+      "value": 2016.73,
+      "lo80": 1974.81,
+      "hi80": 2058.64,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-02-01",
+      "value": 2020.71,
+      "lo80": 1972.22,
+      "hi80": 2069.21,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-03-01",
+      "value": 2024.72,
+      "lo80": 1970.39,
+      "hi80": 2079.04,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-04-01",
+      "value": 2028.72,
+      "lo80": 1969.09,
+      "hi80": 2088.35,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-05-01",
+      "value": 2032.73,
+      "lo80": 1968.2,
+      "hi80": 2097.28,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-06-01",
+      "value": 2036.76,
+      "lo80": 1967.63,
+      "hi80": 2105.89,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-07-01",
+      "value": 2040.78,
+      "lo80": 1967.32,
+      "hi80": 2114.25,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-08-01",
+      "value": 2044.82,
+      "lo80": 1967.23,
+      "hi80": 2122.42,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-09-01",
+      "value": 2048.86,
+      "lo80": 1967.32,
+      "hi80": 2130.41,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-10-01",
+      "value": 2052.92,
+      "lo80": 1967.59,
+      "hi80": 2138.26,
+      "kind": "forecast"
+    }
+  ],
+  "run_id": "6f1f8a52-3c3e-4d4c-9a51-0b9a4b6f2a10",
+  "backtest_mape": 2.1,
+  "naive_mape": 3.0,
+  "beats_naive": true,
+  "scenario": "recession",
+  "scenarios": [
+    {
+      "scenario": "baseline",
+      "model": "sarimax_x",
+      "points": [
+        {
+          "month": "2026-11-01",
+          "value": 2070.9,
+          "lo80": 2046.05,
+          "hi80": 2095.75,
+          "kind": "forecast"
+        },
+        {
+          "month": "2026-12-01",
+          "value": 2075.0,
+          "lo80": 2039.78,
+          "hi80": 2110.21,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-01-01",
+          "value": 2079.1,
+          "lo80": 2035.89,
+          "hi80": 2122.31,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-02-01",
+          "value": 2083.21,
+          "lo80": 2033.22,
+          "hi80": 2133.21,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-03-01",
+          "value": 2087.34,
+          "lo80": 2031.33,
+          "hi80": 2143.34,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-04-01",
+          "value": 2091.46,
+          "lo80": 2029.99,
+          "hi80": 2152.94,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-05-01",
+          "value": 2095.6,
+          "lo80": 2029.07,
+          "hi80": 2162.14,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-06-01",
+          "value": 2099.75,
+          "lo80": 2028.48,
+          "hi80": 2171.02,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-07-01",
+          "value": 2103.9,
+          "lo80": 2028.16,
+          "hi80": 2179.64,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-08-01",
+          "value": 2108.06,
+          "lo80": 2028.07,
+          "hi80": 2188.06,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-09-01",
+          "value": 2112.23,
+          "lo80": 2028.17,
+          "hi80": 2196.3,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-10-01",
+          "value": 2116.41,
+          "lo80": 2028.44,
+          "hi80": 2204.39,
+          "kind": "forecast"
+        }
+      ],
+      "change_12m_pct": 2.1,
+      "backtest_mape": 2.4,
+      "coverage_80": 0.81,
+      "assumptions": [
+        "Fed baseline: unemployment near 4.3%"
+      ]
+    },
+    {
+      "scenario": "recession",
+      "model": "sarimax_x",
+      "points": [
+        {
+          "month": "2026-11-01",
+          "value": 2008.77,
+          "lo80": 1984.67,
+          "hi80": 2032.88,
+          "kind": "forecast"
+        },
+        {
+          "month": "2026-12-01",
+          "value": 2012.75,
+          "lo80": 1978.59,
+          "hi80": 2046.9,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-01-01",
+          "value": 2016.73,
+          "lo80": 1974.81,
+          "hi80": 2058.64,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-02-01",
+          "value": 2020.71,
+          "lo80": 1972.22,
+          "hi80": 2069.21,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-03-01",
+          "value": 2024.72,
+          "lo80": 1970.39,
+          "hi80": 2079.04,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-04-01",
+          "value": 2028.72,
+          "lo80": 1969.09,
+          "hi80": 2088.35,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-05-01",
+          "value": 2032.73,
+          "lo80": 1968.2,
+          "hi80": 2097.28,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-06-01",
+          "value": 2036.76,
+          "lo80": 1967.63,
+          "hi80": 2105.89,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-07-01",
+          "value": 2040.78,
+          "lo80": 1967.32,
+          "hi80": 2114.25,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-08-01",
+          "value": 2044.82,
+          "lo80": 1967.23,
+          "hi80": 2122.42,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-09-01",
+          "value": 2048.86,
+          "lo80": 1967.32,
+          "hi80": 2130.41,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-10-01",
+          "value": 2052.92,
+          "lo80": 1967.59,
+          "hi80": 2138.26,
+          "kind": "forecast"
+        }
+      ],
+      "change_12m_pct": -1.2,
+      "backtest_mape": 2.4,
+      "coverage_80": 0.81,
+      "assumptions": [
+        "Fed severely adverse: unemployment peaks near 10%"
+      ]
+    },
+    {
+      "scenario": "growth",
+      "model": "sarimax_x",
+      "points": [
+        {
+          "month": "2026-11-01",
+          "value": 2112.32,
+          "lo80": 2086.97,
+          "hi80": 2137.66,
+          "kind": "forecast"
+        },
+        {
+          "month": "2026-12-01",
+          "value": 2116.5,
+          "lo80": 2080.58,
+          "hi80": 2152.41,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-01-01",
+          "value": 2120.68,
+          "lo80": 2076.61,
+          "hi80": 2164.76,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-02-01",
+          "value": 2124.87,
+          "lo80": 2073.88,
+          "hi80": 2175.87,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-03-01",
+          "value": 2129.09,
+          "lo80": 2071.96,
+          "hi80": 2186.21,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-04-01",
+          "value": 2133.29,
+          "lo80": 2070.59,
+          "hi80": 2196.0,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-05-01",
+          "value": 2137.51,
+          "lo80": 2069.65,
+          "hi80": 2205.38,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-06-01",
+          "value": 2141.74,
+          "lo80": 2069.05,
+          "hi80": 2214.44,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-07-01",
+          "value": 2145.98,
+          "lo80": 2068.72,
+          "hi80": 2223.23,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-08-01",
+          "value": 2150.22,
+          "lo80": 2068.63,
+          "hi80": 2231.82,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-09-01",
+          "value": 2154.47,
+          "lo80": 2068.73,
+          "hi80": 2240.23,
+          "kind": "forecast"
+        },
+        {
+          "month": "2027-10-01",
+          "value": 2158.74,
+          "lo80": 2069.01,
+          "hi80": 2248.48,
+          "kind": "forecast"
+        }
+      ],
+      "change_12m_pct": 4.0,
+      "backtest_mape": 2.4,
+      "coverage_80": 0.81,
+      "assumptions": [
+        "80th percentile of historical 12-month changes"
+      ]
+    }
+  ],
+  "coverage_80": 0.81
+}

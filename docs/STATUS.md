@@ -1,17 +1,17 @@
 # Overnight run status
 
-Heartbeat: 2026-11-15 00:53 PST — Phase 0
+Heartbeat: 2026-11-15 00:58 PST — Phase 2 starting
 
 ## Phase 0, setup
 - [x] preflight: all clear; WARN no DEV_DATABASE_URL (stage in shared DB), WARN no Google keys (sign-in off), WARN no local Docker
-- [ ] night-scout started (runs in background)
+- [x] night-scout started (runs in background)
 
 ## Phase 1, contracts
-- [ ] db/migrations/002_night.sql
-- [ ] contracts/api_models.py + fixtures
-- [ ] stubs + routers registered in api/main.py
-- [ ] frontend deps (lucide-react, Mastra, Auth.js)
-- [ ] contracts commit on night
+- [x] db/migrations/002_night.sql (applied to shared DB)
+- [x] contracts/api_models.py + fixtures
+- [x] stubs + routers registered in api/main.py
+- [x] frontend deps (lucide-react, Mastra, Auth.js)
+- [x] contracts commit on night
 
 ## Phase 2, features
 - [ ] night-data

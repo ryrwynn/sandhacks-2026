@@ -1,0 +1,56 @@
+{
+  "current_reach_pct": 34.0,
+  "curve": [
+    {
+      "rent_usd": 2300.0,
+      "reach_pct": 52.0
+    },
+    {
+      "rent_usd": 2400.0,
+      "reach_pct": 44.0
+    },
+    {
+      "rent_usd": 2500.0,
+      "reach_pct": 34.0
+    },
+    {
+      "rent_usd": 2600.0,
+      "reach_pct": 25.0
+    }
+  ],
+  "best_changes": [
+    {
+      "kind": "fact",
+      "label": "State whether pets are allowed",
+      "new_rent_usd": null,
+      "fact": "pets",
+      "reach_before_pct": 34.0,
+      "reach_after_pct": 45.0,
+      "gain_pts": 11.0
+    },
+    {
+      "kind": "price",
+      "label": "Lower the rent to $2,400",
+      "new_rent_usd": 2400.0,
+      "fact": null,
+      "reach_before_pct": 34.0,
+      "reach_after_pct": 44.0,
+      "gain_pts": 10.0
+    }
+  ],
+  "profiles": [
+    {
+      "id": "p_1br_2400_pets",
+      "label": "1 bedroom, up to $2,400, needs pets allowed",
+      "beds": 1,
+      "max_rent_usd": 2400.0,
+      "must_haves": [
+        "pets"
+      ],
+      "weight": 0.12
+    }
+  ],
+  "n_comparables": 86,
+  "method_note": "12 renter profiles from comparable listings' price bands, bed counts and stated must-haves.",
+  "disclaimer": "An estimate from comparable listings and fixed renter profiles, not measured demand."
+}

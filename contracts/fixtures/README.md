@@ -21,6 +21,16 @@ show their numbers as real data. `sources/<key>/` holds raw source samples for t
 | GET /listings?zip=&beds=&type=&max_price=&sort=&limit=&offset= and ?ids= (up to 50) | listings.json | |
 | GET /listings/{id} | listing_detail.json | |
 | GET /market?zip=&beds=&type=&range= | market.json | |
+| GET /zips/{zip}/series?scenario=baseline\|recession\|growth | zip_series_scenarios.json | |
+| GET /areas?tier=&county=&q=&limit= | areas.json | |
+| POST /areas/requests, GET /areas/requests/{id} | area_request.json | requests/area_request.json |
+| GET /geo/zips?bbox=minLng,minLat,maxLng,maxLat | geo_zips.json | |
+| GET /zips/{zip}/trends | zip_trends.json | |
+| GET /listings/{id}/trends | listing_trends.json | |
+| POST /checks/gouging | gouging.json | requests/gouging.json |
+| POST /match | match.json | requests/match.json |
+| POST /owner/reach | owner_reach.json | requests/owner_reach.json |
+| GET /account/saves, PUT /account/saves | account_saves.json | requests/account_saves.json |
 
 The tracker fixtures are sample shapes: their numbers are illustrative, never real data. Price history in the real
 endpoints comes only from stored price_observations (the source's own history events plus each scrape's sightings);

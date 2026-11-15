@@ -1,0 +1,28 @@
+{
+  "listing_id": 101,
+  "zip": "92104",
+  "first_price_usd": 2500.0,
+  "current_price_usd": 2395.0,
+  "total_change_pct": -4.2,
+  "zip_change_pct": 0.5,
+  "vs_zip_pp": -4.7,
+  "changes": [
+    {
+      "date": "2026-10-20",
+      "from_usd": 2500.0,
+      "to_usd": 2395.0,
+      "change_pct": -4.2,
+      "kind": "cut",
+      "days_since_previous": 21
+    }
+  ],
+  "signals": [
+    {
+      "kind": "below_zip_trend",
+      "label": "Price fell while the ZIP's typical rent rose",
+      "detail": null
+    }
+  ],
+  "n_observations": 4,
+  "disclaimer": "Market signals from public data, not legal findings or financial advice."
+}
