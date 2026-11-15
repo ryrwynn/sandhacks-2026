@@ -153,14 +153,18 @@ def test_market_zori_only(monkeypatch):
     assert j["forecast"][0]["lo80"] == 2500.0 and j["beats_naive"] is False and j["active_listings"] == 136
 
 
-def test_market_beds_fallback(monkeypatch):
+def test_market_beds_two_series_never_spliced(monkeypatch):
     patch_market(monkeypatch)
     j = client.get("/market?zip=92104&beds=1&range=all").json()
-    by = {p["month"]: p for p in j["points"]}
-    assert by["2026-08-01"]["basis"] == "listings" and by["2026-08-01"]["n_listings"] == 12
-    assert by["2026-09-01"]["basis"] == "zori" and by["2026-09-01"]["value"] == 2590.0
-    assert by["2026-11-01"]["basis"] == "listings"          # newer than ZORI's last month
-    assert "2026-12-01" not in by and j["notes"] and "ZORI" in j["notes"][0]
+    MarketResponse.model_validate(j)
+    zori = [p for p in j["points"] if p["basis"] == "zori"]
+    lst = [p for p in j["points"] if p["basis"] == "listings"]
+    assert [p["month"] for p in zori] == [f"2026-{m:02d}-01" for m in range(1, 11)]      # ZORI every month
+    assert [(p["month"], p["n_listings"]) for p in lst] == [("2026-08-01", 12), ("2026-11-01", 9)]  # n >= 5 only
+    months = [p["month"] for p in j["points"]]
+    assert months == sorted(months)                                                    # ordered by month
+    assert j["current_value"] == 2650.0 and j["change_since"] == "2026-08-01"          # headline: the bed median
+    assert any("dotted line" in n for n in j["notes"])
 
 
 def test_market_validation_and_db_down():
