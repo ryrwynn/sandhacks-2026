@@ -163,7 +163,8 @@ def test_market_beds_two_series_never_spliced(monkeypatch):
     assert [(p["month"], p["n_listings"]) for p in lst] == [("2026-08-01", 12), ("2026-11-01", 9)]  # n >= 5 only
     months = [p["month"] for p in j["points"]]
     assert months == sorted(months)                                                    # ordered by month
-    assert j["current_value"] == 2650.0 and j["change_since"] == "2026-08-01"          # headline: the bed median
+    assert j["current_value"] == 2650.0                                                 # headline: the bed median
+    assert j["change_pct"] is None and any("too few" in n for n in j["notes"])          # 12 and 9 listings < 30
     assert any("dotted line" in n for n in j["notes"])
 
 
