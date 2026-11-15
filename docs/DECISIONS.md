@@ -191,3 +191,9 @@ Dataset `gd_lfqkr8wm13ixtbd8f5` (Zillow properties listing information), the one
   is stateless (NIGHT.md allows that), which avoids a Postgres schema and bundle weight.
 - Reading `.env` with grep to run psql was blocked by the permission classifier; all DB work goes through scripts/ or code
   that reads `DATABASE_URL` from the environment.
+- **Disk full at 01:00.** The laptop's data volume had 126 MB free (418 GB used outside the repo); the first night-data and
+  night-web attempts died with ENOSPC before writing anything. I removed six clean worktrees (four from earlier sessions,
+  two stale-locked by a dead pid) whose commits were all already in origin/Setup or night (`git worktree remove`; branches
+  kept) and deleted frontend/.next. That freed about 1.5 GB. Nothing outside the repo was touched. Lanes now clone
+  node_modules copy-on-write (`cp -c`) instead of `npm ci`, delete `.next` after builds, and stream big downloads.
+  Both lanes were relaunched. **Morning: free disk space on the laptop.**

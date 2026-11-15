@@ -1,6 +1,6 @@
 # Overnight run status
 
-Heartbeat: 2026-11-15 00:59 PST — Phase 2: data, forecast, match, web running; rules and accounts queued
+Heartbeat: 2026-11-15 01:02 PST — Phase 2: data and web relaunched after a full disk; forecast, match running
 
 ## Phase 0, setup
 - [x] preflight: all clear; WARN no DEV_DATABASE_URL (stage in shared DB), WARN no Google keys (sign-in off), WARN no local Docker
