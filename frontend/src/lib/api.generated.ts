@@ -110,6 +110,35 @@ export interface ListingAnalysisResponse {
   disclaimer: string;
 }
 
+export interface ListingDetail {
+  id: number;
+  address: string | null;
+  unit_label: string | null;
+  neighborhood: string | null;
+  zip: string | null;
+  beds: number | null;
+  baths: number | null;
+  sqft: number | null;
+  property_type: string | null;
+  listing_type: "rent" | "sale";
+  current_price_usd: number;
+  first_price_usd: number;
+  first_observed: string;
+  n_observations: number;
+  sparkline: SparkPoint[];
+  fair_rent_label: "above_typical_range" | "in_range" | "below_typical_range" | null;
+  last_seen: string;
+  active: boolean;
+  source_url: string | null;
+  observations: Observation[];
+  year_built: number | null;
+  estimate: FairRentEstimate | null;
+  percentile: number | null;
+  n_comparables: number;
+  forecast: ZipForecastSummary | null;
+  disclaimer: string;
+}
+
 export interface ListingEvalRequest {
   zip: string;
   beds: number;
@@ -133,12 +162,80 @@ export interface ListingEvalResponse {
   disclaimer: string;
 }
 
+export interface ListingSummary {
+  id: number;
+  address: string | null;
+  unit_label: string | null;
+  neighborhood: string | null;
+  zip: string | null;
+  beds: number | null;
+  baths: number | null;
+  sqft: number | null;
+  property_type: string | null;
+  listing_type: "rent" | "sale";
+  current_price_usd: number;
+  first_price_usd: number;
+  first_observed: string;
+  n_observations: number;
+  sparkline: SparkPoint[];
+  fair_rent_label: "above_typical_range" | "in_range" | "below_typical_range" | null;
+  last_seen: string;
+  active: boolean;
+  source_url: string | null;
+}
+
+export interface ListingsResponse {
+  items: ListingSummary[];
+  total: number;
+  limit: number;
+  offset: number;
+}
+
+export interface MarketForecastPoint {
+  month: string;
+  value: number;
+  lo80: number;
+  hi80: number;
+}
+
+export interface MarketPoint {
+  month: string;
+  value: number;
+  basis: "zori" | "listings";
+  n_listings: number | null;
+}
+
+export interface MarketResponse {
+  zip: string | null;
+  beds: number | null;
+  property_type: string | null;
+  range: "1m" | "3m" | "6m" | "1y" | "all";
+  points: MarketPoint[];
+  forecast: MarketForecastPoint[];
+  current_value: number | null;
+  change_pct: number | null;
+  change_since: string | null;
+  active_listings: number;
+  updated_at: string | null;
+  backtest_mape: number | null;
+  naive_mape: number | null;
+  beats_naive: boolean | null;
+  notes: string[];
+  disclaimer: string;
+}
+
 export interface ModelRunSummary {
   run_id: string;
   kind: "fair_rent" | "forecast";
   trained_at: string;
   n_rows: number | null;
   metrics: Record<string, any>;
+}
+
+export interface Observation {
+  date: string;
+  event: "history" | "seen" | "price_change" | "removed" | "posted";
+  price_usd: number;
 }
 
 export interface PricePoint {
@@ -217,6 +314,11 @@ export interface SeriesResponse {
   beats_naive: boolean | null;
 }
 
+export interface SparkPoint {
+  month: string;
+  price_usd: number;
+}
+
 export interface UnitMatch {
   property_id: number;
   address_norm: string;
@@ -230,6 +332,20 @@ export interface UnitMatch {
 export interface UnitSearchResponse {
   query: string;
   results: UnitMatch[];
+}
+
+export interface ZipForecastSummary {
+  zip: string;
+  name: string;
+  metric: "zori" | "zhvi";
+  latest_usd: number | null;
+  forecast_12m_usd: number | null;
+  change_pct: number | null;
+  lo80_usd: number | null;
+  hi80_usd: number | null;
+  backtest_mape: number | null;
+  naive_mape: number | null;
+  beats_naive: boolean | null;
 }
 
 export interface ZipProfile {
@@ -275,4 +391,7 @@ export type ApiOperation =
   | "POST /listings/evaluate"
   | "POST /neighborhoods/rank"
   | "POST /owner/price-position"
-  | "POST /owner/listing-analysis";
+  | "POST /owner/listing-analysis"
+  | "GET /listings"
+  | "GET /listings/{listing_id}"
+  | "GET /market";

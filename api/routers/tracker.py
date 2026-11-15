@@ -211,8 +211,12 @@ def market(zip: str | None = Query(None, pattern=r"^\d{5}$"), beds: int | None =
                          "different things, so a step where the source changes is not a market move.")
     cur = points[-1].value if points else None
     change = since = None
-    if len(points) > 1 and points[0].value:
+    if len(points) > 1 and points[0].value and len({p.basis for p in points}) == 1:
         change, since = round((cur / points[0].value - 1) * 100, 2), points[0].month
+    elif len({p.basis for p in points}) > 1:
+        # ZORI (an index of typical rent) and listing medians (asking rents) are different measures: a step
+        # between them is not a market move, so no percentage change is reported for a mixed series.
+        notes.append("No percentage change is shown because this range mixes ZORI and listing medians.")
 
     fc_rows = safe(db.forecast_latest, zip, default=[])
     forecast = [MarketForecastPoint(month=r["month"], value=round(float(r["value"]), 2),
