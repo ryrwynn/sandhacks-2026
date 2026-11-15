@@ -44,7 +44,10 @@ pyproject.toml for uv, db/migrations/001_init.sql, db/seed_caps.sql (San Diego C
 2025-08-01 to 2026-07-31, 8.2% for 2026-08-01 to 2027-07-31), db/seed_sources.sql,
 contracts/canonical.py, contracts/api_models.py, one fixture per endpoint, and stub modules with the
 function signatures each lane will fill (check_increase, fair_rent.predict, forecast_12, score_zips,
-analyze_listing, the adapter base class). Run the migrations against DATABASE_URL. Scrape one rental
+analyze_listing, the adapter base class, and api/llm/gemini.py's parse_listing and text functions,
+which every Gemini caller must use). Add an llm_cache table to 001_init.sql (key TEXT PRIMARY KEY,
+job, model, response JSONB, created_at) and note in DECISIONS.md that it caches Gemini answers to
+save free-tier quota. Run the migrations against DATABASE_URL. Scrape one rental
 and one for-sale listing and record in docs/DECISIONS.md whether priceHistory and yearBuilt came
 back. Commit and push Setup. Start no lane before the contracts are pushed.
 
@@ -66,6 +69,12 @@ keeping its existing functions. Run `uv run pytest api/tests -q` and
 `cd frontend && npx tsc --noEmit && npm run build`, push Setup, and run ./scripts/watch-deploy.sh.
 On failure read ./scripts/server-logs.sh api 200, fix, and repeat until the smoke test passes on
 PUBLIC_URL. Then follow the plan's mode order: Renter (gate 2), Buyer, Owner.
+
+Gemini is on the free tier: about 500 requests a day for the Flash Lite models and 20 for the Flash
+models. Follow the quota rules in .claude/agents/lane-rules.md, lane-data.md and lane-api.md, keep
+smoke.sh off the letter endpoint, and never loop over real Gemini calls while debugging. If
+generated text comes back empty because the quota is used up, that's expected: the numbers still
+show, so note it and carry on.
 
 If a lane fails twice on the same error, stop it, write the problem to docs/DECISIONS.md and carry
 on with the others. Report at each gate: what's merged, test output and live URL status. Finish with

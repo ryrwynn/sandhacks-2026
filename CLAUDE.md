@@ -22,6 +22,7 @@ Plan: docs/PLAN.md is the source of truth. Read only the section you need.
 ## Rules
 - IMPORTANT: never read, print or commit .env. Code reads settings from environment variables.
 - Verdicts come from api/rules/ab1482.py; forecasts and scores from api/ml/. Gemini only parses and writes words, and its text must pass figures_ok.
+- Gemini is on the free tier (about 500 requests a day for Flash Lite, 20 for Flash). Call it only through api/llm/gemini.py, which caches answers; tests mock it; never loop over real Gemini calls.
 - Scores use prices, forecasts, listings and amenities only, never who lives in a ZIP.
 - Label demo rows is_demo = true. Never invent price history.
 - Every source goes through its sources/<key>.yaml template; drop personal fields before storing anything.
