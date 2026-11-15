@@ -2,6 +2,12 @@
 
 ## Part 1: what you do before pasting the prompt (about 30 minutes)
 
+**Done 2026-11-15:** OAuth client created; both redirect URIs confirmed registered with Google (a control URI is
+rejected). GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, AUTH_SECRET, ACCOUNT_API_TOKEN in the local .env and, with
+BRIGHTDATA_BUDGET_USD=10, ONDEMAND_DAILY_USD=1 and LLM_EXTRACT_MAX_PER_RUN=40, in the server's .env (via
+`scripts/server-env.sh`; backup kept on the server; no restart). Still yours: confirm the consent screen is
+*published* (not Testing), C, D and E below.
+
 ### A. Google sign-in (optional; skip it and sign-in simply stays off)
 
 1. https://console.cloud.google.com → create or pick a project.
