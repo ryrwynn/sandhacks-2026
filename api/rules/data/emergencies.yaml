@@ -1,0 +1,57 @@
+# Declared states of emergency that trigger California Penal Code 396 price protections.
+# Maintained by hand from official pages; every entry carries its source URL and the date it was read.
+# protections_until = last day of the rental protections (396(e)/(f)), after any extensions.
+# rental_covered = false when the official list shows only 396(c) (repair/cleanup services), not rent.
+statute:
+  citation: California Penal Code 396
+  url: https://leginfo.legislature.ca.gov/faces/codes_displaySection.xhtml?lawCode=PEN&sectionNum=396
+  verified: false
+  note: >-
+    leginfo returned HTTP 403 to automated fetches on 2026-11-15 (so did Justia), so the statute text was not read
+    directly. The 10% rule and the 30-day period are confirmed from the Cal OES and Attorney General pages below.
+    The 160% of HUD Fair Market Rent rule for units not rented or offered before comes from docs/NIGHT.md and
+    could not be confirmed from an official page; check it on leginfo before relying on it.
+  summaries:
+    - url: https://www.caloes.ca.gov/cal-oes-divisions/legal-affairs/price-gouging
+      accessed: 2026-11-15
+    - url: https://oag.ca.gov/consumers/pricegougingduringdisasters
+      accessed: 2026-11-15
+declarations:
+  - id: tropical-storm-rachel-2026
+    title: Tropical Storm Rachel
+    counties: [Imperial, Los Angeles, Orange, San Diego]
+    declared_on: 2026-10-15
+    protections_until: 2026-11-14   # 30 days; Cal OES lists 11/14/2026 for 396(b),(d),(e),(f)
+    extensions: []                  # none listed by Cal OES as of the access date
+    rental_covered: true
+    source_url: https://www.caloes.ca.gov/cal-oes-divisions/legal-affairs/price-gouging
+    declaration_url: https://www.gov.ca.gov/2026/10/15/governor-newsom-activates-statewide-response-amid-dangerous-fire-weather-signs-actions-to-speed-tropical-storm-rachel-recovery-and-wildfire-cleanup/
+    proclamation_pdf: https://www.gov.ca.gov/wp-content/uploads/2026/10/ATTESTED_Tropical-Storm-Rachel-10-15-26.pdf
+    accessed: 2026-11-15
+    verified: true
+    note: Date and counties agree across the Cal OES page and the gov.ca.gov release; the PDF could not be text-extracted.
+  - id: gann-fire-2026
+    title: Gann Fire
+    counties: [Calaveras]
+    declared_on: 2026-08-06          # from the gov.ca.gov article URL date; approximate
+    protections_until: 2027-02-02    # Cal OES lists 396(c) only
+    extensions: []
+    rental_covered: false
+    source_url: https://www.caloes.ca.gov/cal-oes-divisions/legal-affairs/price-gouging
+    accessed: 2026-11-15
+    verified: false
+    note: Cal OES lists this as "Calavera"; read as Calaveras County. Only section 396(c) is listed, so rent is not covered.
+  - id: orange-county-chemical-incident-2026
+    title: Orange County Chemical Incident
+    counties: [Orange]
+    declared_on: null                # not published on the Cal OES page
+    protections_until: 2026-11-19    # 396(c) only
+    extensions: []
+    rental_covered: false
+    source_url: https://www.caloes.ca.gov/cal-oes-divisions/legal-affairs/price-gouging
+    accessed: 2026-11-15
+    verified: false
+    note: Declaration date not found. Only section 396(c) is listed, so rent is not covered.
+not_searched:
+  - Local (city/county) emergencies, which also trigger 396 and are not on the Cal OES list.
+  - A Sept 2026 "Super El Nino" state of emergency (gov.ca.gov PDF dated 2026-09-21); the PDF text could not be read, so its counties and any price-gouging order are unknown.

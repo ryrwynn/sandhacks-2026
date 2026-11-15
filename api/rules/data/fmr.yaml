@@ -1,0 +1,16 @@
+# HUD Fair Market Rents. rents are keyed by bedroom count (0 = studio).
+# HUD's site (huduser.gov) returned empty responses to automated downloads on 2026-11-15, so nothing here is read
+# from a HUD file. Entries with verified: false use the third-party figures noted in docs/reference/public-sources.md
+# and make the 160% check return 'unclear'. Replace them from
+# https://www.huduser.gov/portal/datasets/fmr/smallarea/index.html (SAFMR) and
+# https://www.huduser.gov/portal/datasets/fmr/fmrs/index.html (county FMR) when the files can be downloaded.
+county_fmr:
+  San Diego:
+    fy: 2026
+    source: HUD FMR FY2026, San Diego-Chula Vista-Carlsbad metro (third-party mirror, not checked against HUD)
+    source_url: https://www.huduser.gov/portal/datasets/fmr/fmrs/index.html
+    accessed: 2026-11-15
+    verified: false
+    rents: {0: "2288", 1: "2459", 2: "3001", 3: "3998", 4: "4845"}
+safmr: {}   # ZIP-level SAFMR for San Diego County: not obtained (HUD file unreachable); do not invent.
+safmr_source_url: https://www.huduser.gov/portal/datasets/fmr/smallarea/index.html
