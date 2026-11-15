@@ -8,6 +8,46 @@
    "gyms": 8,
    "parks": 30,
    "transit_stops": 97
+  },
+  "92101": {
+   "area_km2": 28.537,
+   "food_drink": 320,
+   "groceries": 11,
+   "gyms": 13,
+   "parks": 36,
+   "transit_stops": 192
+  },
+  "92103": {
+   "area_km2": 9.507,
+   "food_drink": 85,
+   "groceries": 6,
+   "gyms": 3,
+   "parks": 9,
+   "transit_stops": 107
+  },
+  "92104": {
+   "area_km2": 9.532,
+   "food_drink": 83,
+   "groceries": 8,
+   "gyms": 5,
+   "parks": 7,
+   "transit_stops": 82
+  },
+  "92105": {
+   "area_km2": 14.901,
+   "food_drink": 26,
+   "groceries": 7,
+   "gyms": 0,
+   "parks": 14,
+   "transit_stops": 137
+  },
+  "92107": {
+   "area_km2": 8.99,
+   "food_drink": 61,
+   "groceries": 4,
+   "gyms": 7,
+   "parks": 14,
+   "transit_stops": 41
   }
  }
 }

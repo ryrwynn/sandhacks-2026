@@ -81,10 +81,18 @@ class BrightDataDatasetAdapter(SourceAdapter):
         cache = CACHE / f"{snapshot_id}.json"
         if cache.exists():
             return json.loads(cache.read_text())
-        r = self._call("GET", f"{API}/snapshot/{snapshot_id}", params={"format": "json"})
-        if r.status_code >= 400:
-            raise BrightDataError(f"download failed: HTTP {r.status_code} {r.text[:200]}")
+        for _ in range(60):                 # 202 means "still building": wait, never cache it
+            r = self._call("GET", f"{API}/snapshot/{snapshot_id}", params={"format": "json"})
+            if r.status_code == 200:
+                break
+            if r.status_code != 202:
+                raise BrightDataError(f"download failed: HTTP {r.status_code} {r.text[:200]}")
+            time.sleep(self.poll_seconds)
+        else:
+            raise BrightDataError(f"snapshot {snapshot_id} still building")
         rows = r.json()
+        if not isinstance(rows, list):
+            raise BrightDataError(f"unexpected snapshot body: {str(rows)[:100]}")
         CACHE.mkdir(parents=True, exist_ok=True)
         cache.write_text(json.dumps(rows))
         return rows
