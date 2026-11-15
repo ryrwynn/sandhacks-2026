@@ -872,4 +872,4 @@ What is true now, where it differs from the plan above:
 - **Accounts.** Saving is local (localStorage) by default; optional Google sign-in syncs saves keyed by a salted hash of
   the Google subject (docs/ACCOUNTS.md). With sign-in off, `/auth/session` answers `{"enabled": false}`.
 - **Pages added since the plan:** `/find`, `/saved`, `/alerts`, `/apartments/[id]`, `/gouging`, `/areas`,
-  `/scenarios`, `/advisor`, `/privacy`, `/terms` (linked from the footer, `/about` and the sign-in button).
+  `/scenarios`, `/advisor`, `/privacy`, `/terms` (linked from the footer and `/about`).

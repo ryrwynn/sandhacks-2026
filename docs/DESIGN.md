@@ -11,7 +11,7 @@ One top bar for the whole site (merge `NavBar` and `ModeNav`):
 - Brand at left: **RentOrKnot**, matching the domain rentorknot.us (the Figma's "SandHacks" is a placeholder).
 - Market overview (`/`) · Saved apartments (`/saved`) · Price alerts (`/alerts`) · Find apartments (`/find`) · Tools ▾ (Rent increase check, Buy, Own, About, and the newer tools).
 - Saved apartments shows a count badge; Price alerts shows a badge when a saved apartment hit its target.
-- An optional "Sign in" (Google) button appears only when sign-in is configured; it links to `/privacy`. Without it the site works fully with local saves.
+- An optional "Sign in" (Google) button appears only when sign-in is configured. Without it the site works fully with local saves.
 - A small footer on every page: Privacy · Terms · About.
 - Under 768px wide: the four main destinations move to a bottom tab bar with icons and labels; Tools stays in the top bar.
 
