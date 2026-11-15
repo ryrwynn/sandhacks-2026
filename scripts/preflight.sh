@@ -92,6 +92,19 @@ if [ -n "$CENSUS_API_KEY" ]; then
   esac
 fi
 
+echo "5b. Mapbox"
+if [ -z "${MAP_BOX_API_KEY:-}" ]; then
+  fail "MAP_BOX_API_KEY is empty (the map falls back to a plain list)"
+elif [[ $MAP_BOX_API_KEY != pk.* ]]; then
+  fail "MAP_BOX_API_KEY isn't a public token (should start with pk.; never put an sk. token in the browser)"
+else
+  body=$(curl -s --max-time 20 "https://api.mapbox.com/tokens/v2?access_token=${MAP_BOX_API_KEY}")
+  case $body in
+    *'"code":"TokenValid"'*) ok "public token is valid" ;;
+    *) fail "Mapbox rejected the token ($(grep -o '"code":"[A-Za-z]*"' <<<"$body" | head -1))" ;;
+  esac
+fi
+
 echo "6. Vultr server"
 KEY=~/.ssh/rentwatch_deploy
 SSHOPT=(-o BatchMode=yes -o ConnectTimeout=8 -o StrictHostKeyChecking=accept-new)

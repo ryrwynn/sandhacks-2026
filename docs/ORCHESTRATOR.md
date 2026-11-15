@@ -53,7 +53,8 @@ back. Commit and push Setup. Start no lane before the contracts are pushed.
 
 Phase 2, in parallel. Start lane-data, lane-rules, lane-models, lane-api and lane-web as background
 subagents at the same time, telling each its done-when check. While they run, write
-docker-compose.yml (api, worker with cron, web, caddy), a Caddyfile for PUBLIC_HOST (/api/* to api
+docker-compose.yml (api, worker with cron, web, caddy; every service reads .env at runtime, and web
+needs MAP_BOX_API_KEY there for Mapbox), a Caddyfile for PUBLIC_HOST (/api/* to api
 with the prefix stripped, everything else to web), scripts/deploy.sh and scripts/smoke.sh.
 smoke.sh [URL]: the URL defaults to PUBLIC_URL read from .env without printing it; retry for up to
 5 minutes; check /api/health; POST the plan's demo rent check expecting verdict over_cap and
