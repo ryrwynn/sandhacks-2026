@@ -1,5 +1,7 @@
-.venv
-.idea
 .env
-test.py
-.claude
+node_modules/
+.venv/
+__pycache__/
+.next/
+models/*.joblib
+.claude/worktrees/
