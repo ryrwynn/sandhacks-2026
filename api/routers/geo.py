@@ -1,6 +1,6 @@
 """GET /geo/zips?bbox= (night-data): which county GeoJSON files and ZCTAs a map viewport needs.
 
-Reads frontend/public/geo/index.json (built by worker.ca_geo): per-county bounding boxes and a bbox per ZCTA.
+Reads data/geo_index.json (built by worker.ca_geo): per-county bounding boxes and a bbox per ZCTA.
 """
 import json
 from functools import lru_cache
@@ -11,7 +11,7 @@ from fastapi import APIRouter, HTTPException
 from contracts.api_models import GeoFile, GeoZipsResponse
 
 router = APIRouter(prefix="/geo", tags=["geo"])
-INDEX = Path(__file__).resolve().parents[2] / "frontend" / "public" / "geo" / "index.json"
+INDEX = Path(__file__).resolve().parents[2] / "data" / "geo_index.json"   # copy of frontend/public/geo/index.json (the API image has no frontend/)
 
 
 @lru_cache(maxsize=1)

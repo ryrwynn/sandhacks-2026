@@ -124,6 +124,7 @@ def build(tmp: Path) -> dict:
         for f, b in zip(feats, bbs):
             index["zips"][f["properties"]["zip"]] = b + [slug(county)]
     (GEO_DIR / "index.json").write_text(json.dumps(index, separators=(",", ":")))
+    (ROOT / "data" / "geo_index.json").write_text(json.dumps(index, separators=(",", ":")))   # the API image excludes frontend/
     with AREAS_CSV.open("w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=["zip", "name", "city", "city_slug", "county", "tier", "lat", "lng"])
         w.writeheader()
