@@ -56,6 +56,7 @@ type Ctx = {
   has: (id: number) => boolean;
   toggle: (l: ListingSummary) => void;
   remove: (id: number) => void;
+  restore: (items: SavedItem[], order?: SavedItem[]) => void;      // put removed items back with their original fields and order
   setTarget: (id: number, target: number | null) => void;
   markSeen: (id: number) => void;
   alertCount: number;
@@ -63,7 +64,7 @@ type Ctx = {
 
 const SavedCtx = createContext<Ctx>({
   ready: false, items: [], listings: {}, loading: false, sample: false,
-  has: () => false, toggle: () => {}, remove: () => {}, setTarget: () => {}, markSeen: () => {}, alertCount: 0,
+  has: () => false, toggle: () => {}, remove: () => {}, restore: () => {}, setTarget: () => {}, markSeen: () => {}, alertCount: 0,
 });
 
 export function SavedProvider({ children }: { children: ReactNode }) {
@@ -136,6 +137,17 @@ export function SavedProvider({ children }: { children: ReactNode }) {
         has(l.id)
           ? remove(l.id)
           : commit([{ id: l.id, savedAt: new Date().toISOString(), priceAtSave: l.current_price_usd }, ...items]),
+      restore: (back, order) => {
+        const have = new Set(items.map((i) => i.id));
+        const add = back.filter((b) => !have.has(b.id));
+        if (!add.length) return;
+        const byId = new Map([...items, ...add].map((i) => [i.id, i]));
+        // With the list as it was before removal, put every item back in its old slot; anything saved since goes first.
+        const old = (order ?? []).filter((i) => byId.has(i.id));
+        const inOld = new Set(old.map((i) => i.id));
+        const fresh = items.filter((i) => !inOld.has(i.id));
+        commit(order ? [...fresh, ...old.map((i) => byId.get(i.id)!)] : [...add, ...items]);
+      },
       setTarget: (id, target) => commit(items.map((i) => (i.id === id ? { ...i, target } : i))),
       markSeen: (id) => {
         const l = listings[id];
