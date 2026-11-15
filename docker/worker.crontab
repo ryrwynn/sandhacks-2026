@@ -2,3 +2,7 @@
 0 */3 * * *  /app/docker/worker-job.sh python -m worker.run --source zillow_rent
 30 4 * * *   /app/docker/worker-job.sh python -m worker.run --source zillow_sale
 0 6 * * *    /app/docker/worker-job.sh python -m worker.train
+# Facebook rental groups, Mondays and Thursdays 15:00 UTC (7-8am Pacific), up to 50 posts per group.
+# --cron refuses unless sources.terms_checked_on is set for facebook_groups_sd (the owner sets it).
+# Shared target loads data/zips.txt ZIPs only; other ZIPs stay in staging.
+0 15 * * 1,4 /app/docker/worker-job.sh python -m worker.facebook collect --limit 50 --target shared --confirm-shared --cron
