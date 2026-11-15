@@ -29,26 +29,47 @@ if [ -n "$DATABASE_URL" ]; then
     fail "connects, but the timescaledb_toolkit extension isn't available"
   else
     ok "connects; timescaledb_toolkit $out available"
-    n=$(psql "$DATABASE_URL" -tAc "select count(*) from information_schema.tables where table_schema='public'" 2>/dev/null)
-    [ "${n:-0}" -gt 0 ] && warn "$n tables already exist in public; 001_init.sql has no IF NOT EXISTS, so drop them or expect M1 to trip" || ok "public schema is empty"
+    plan="'sources','raw_records','properties','listings','price_observations','area_metrics','zip_features','forecasts','listing_weekly_zip','model_runs','rent_caps','rent_checks','listing_analyses'"
+    clash=$(psql "$DATABASE_URL" -tAc "select string_agg(table_name, ', ' order by table_name) from information_schema.tables where table_schema='public' and table_name in ($plan)" 2>/dev/null)
+    other=$(psql "$DATABASE_URL" -tAc "select string_agg(table_name, ', ' order by table_name) from information_schema.tables where table_schema='public' and table_name not in ($plan)" 2>/dev/null)
+    if [ -n "$clash" ]; then
+      fail "plan tables already exist: $clash. 001_init.sql will fail on them; drop them (if they're test data) or ask whoever made them"
+    else
+      ok "no plan table names taken yet"
+    fi
+    [ -n "$other" ] && warn "other tables in public (left alone by the plan): $other"
   fi
 fi
 
 echo "3. Gemini models"
 if [ -n "$GEMINI_API_KEY" ]; then
-  for m in "$PARSE_MODEL" "$LETTER_MODEL" "$GEMINI_FALLBACK_MODEL"; do
+  errf=$(mktemp)
+  tested=" "
+  for var in PARSE_MODEL LETTER_MODEL GEMINI_FALLBACK_MODEL; do
+    m="${!var}"
     [ -z "$m" ] && continue
-    code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 30 \
+    if [[ ! $m =~ ^[A-Za-z0-9._-]+$ ]]; then
+      fail "$var has stray characters: $(printf '%q' "$m") (quotes, spaces or a Windows line ending in .env?)"
+      continue
+    fi
+    if [[ $tested == *" $m "* ]]; then printf "  -     %s\n" "$var = $m (same model; result above)"; continue; fi
+    tested="$tested$m "
+    start=$SECONDS
+    code=$(curl -sS -o /dev/null -w "%{http_code}" --connect-timeout 10 --max-time 90 \
       "https://generativelanguage.googleapis.com/v1beta/models/${m}:generateContent" \
       -H "Content-Type: application/json" -H "x-goog-api-key: ${GEMINI_API_KEY}" \
-      -d '{"contents":[{"parts":[{"text":"Say OK"}]}]}')
+      -d '{"contents":[{"parts":[{"text":"Say OK"}]}]}' 2>"$errf")
+    took=$((SECONDS - start))
     case $code in
-      200) ok "$m returned 200" ;;
-      503) warn "$m returned 503 (busy right now; fine as the fallback)" ;;
-      429) fail "$m returned 429 (no quota on this key)" ;;
-      *)   fail "$m returned $code" ;;
+      200) ok "$var = $m returned 200 in ${took}s" ;;
+      503) warn "$var = $m returned 503 (busy right now; fine as the fallback, risky as PARSE_MODEL)" ;;
+      429) fail "$var = $m returned 429 (no quota on this key)" ;;
+      404) fail "$var = $m returned 404 (no such model for this key; pick one from AI Studio)" ;;
+      000) fail "$var = $m got no response after ${took}s: $(sed 's/^curl: //' "$errf" | head -1)" ;;
+      *)   fail "$var = $m returned $code" ;;
     esac
   done
+  rm -f "$errf"
 fi
 
 echo "4. Bright Data"
