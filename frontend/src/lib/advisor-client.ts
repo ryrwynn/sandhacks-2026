@@ -1,5 +1,6 @@
 // The only file that talks to the advisor. The /advisor page calls askAdvisor(messages) and renders streamed
 // text. night-match's client replaces the body of askAdvisor at merge; keep the signature.
+import { askAdvisor as askMatchAdvisor } from "@/advisor/client";
 import { markMock } from "./mockflag";
 
 export type AdvisorMessage = { role: "user" | "assistant"; content: string };
@@ -15,28 +16,19 @@ async function* sample(): AsyncGenerator<string> {
   }
 }
 
-/** POST /advisor/chat with the conversation; yields text chunks as they stream in. Falls back to a labeled sample. */
+/** Asks the advisor (night-match's JSON client: POST /advisor/chat {text}) and yields the answer. The advisor is
+ * stateless, so the latest user message is sent, with the previous turn as context. Falls back to a labeled sample. */
 export async function* askAdvisor(messages: AdvisorMessage[], signal?: AbortSignal): AsyncGenerator<string> {
   if (process.env.NEXT_PUBLIC_USE_MOCKS === "true") return yield* sample();
-  let res: Response;
+  const users = messages.filter((m) => m.role === "user");
+  const last = users[users.length - 1]?.content ?? "";
+  const prev = users.length > 1 ? users[users.length - 2].content : "";
+  const text = (prev ? `Earlier I asked: ${prev}\nNow: ${last}` : last).slice(0, 1900);
   try {
-    res = await fetch("/advisor/chat", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ messages }),
-      signal,
-    });
+    const res = await askMatchAdvisor(text, signal);
+    yield res.answer;
   } catch {
     if (signal?.aborted) return;
-    return yield* sample();
-  }
-  if (!res.ok || !res.body) return yield* sample();   // 404/501: not built yet
-  const reader = res.body.getReader();
-  const dec = new TextDecoder();
-  for (;;) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    const t = dec.decode(value, { stream: true });
-    if (t) yield t;
+    return yield* sample();   // 404/501 or network error: not connected
   }
 }

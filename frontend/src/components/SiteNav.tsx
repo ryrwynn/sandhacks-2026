@@ -3,6 +3,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSaved } from "@/lib/saved";
 import { DrawerButton } from "./ToolsSidebar";
+import { AccountButton } from "./account/AccountButton";
 
 const MAIN = [
   { href: "/", label: "Market overview", short: "Market", icon: "M4 19V9m6 10V5m6 14v-7m4 7H2" },
@@ -62,8 +63,9 @@ export default function SiteNav() {
           </nav>
           <div className="ml-auto flex items-center gap-1 md:ml-0">
             <DrawerButton />
-            {/* ACCOUNT BUTTON SLOT (night-accounts): render <AccountButton/> from "@/components/account/AccountButton" here, replacing this empty container. */}
-            <div id="account-button-slot" data-slot="account-button" />
+            <div id="account-button-slot" data-slot="account-button">
+              <AccountButton />
+            </div>
           </div>
         </div>
       </header>
