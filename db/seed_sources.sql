@@ -8,3 +8,13 @@ INSERT INTO sources (source_key, kind, fetch_method, template_path, trust_weight
   ('census_acs',      'area_stats',   'api',                  'sources/census_acs.yaml',      1.0, true),
   ('osm_amenities',   'area_stats',   'api',                  'sources/osm_amenities.yaml',   1.0, true)
 ON CONFLICT (source_key) DO NOTHING;
+
+-- night-data: new areas and sources. All disabled: they run only when named explicitly (worker.coverage,
+-- worker.ondemand, worker.run --source <key>); the live cron runs enabled sources only.
+INSERT INTO sources (source_key, kind, fetch_method, template_path, trust_weight, enabled) VALUES
+  ('zillow_research_ca',   'area_index',   'csv',                'sources/zillow_research_ca.yaml',   1.0, false),
+  ('census_acs_ca',        'area_stats',   'api',                'sources/census_acs_ca.yaml',        1.0, false),
+  ('zillow_rent_county',   'listing_site', 'brightdata_dataset', 'sources/zillow_rent_county.yaml',   1.0, false),
+  ('zillow_rent_ondemand', 'listing_site', 'brightdata_dataset', 'sources/zillow_rent_ondemand.yaml', 1.0, false),
+  ('facebook_groups_sd',   'social',       'brightdata_dataset', 'sources/facebook_groups_sd.yaml',   0.5, false)
+ON CONFLICT (source_key) DO NOTHING;
