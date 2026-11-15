@@ -38,9 +38,9 @@ Branch `night`, draft PR to `Setup`: see the end of this file. Nothing was deplo
 | Advisor | Mastra agent at `/advisor/chat` (6 tools over our API, parse→search→rank→explain workflow, figures-grounded scorer, max 4 steps), tested with Gemini mocked |
 | Accounts | `docs/ACCOUNTS.md` recommends local-first + optional Google sign-in. Auth.js at `/auth`, JWT, saves keyed by sha256(AUTH_SECRET + sub) only; off unless keys are set |
 | Web | Tools sidebar (desktop rail, phone drawer), pages /gouging /scenarios /advisor /areas /owner/reach, scenario toggle, trends, "Add this area", map that loads county geometry as you pan |
-| Interface | night-theme: see "Themes" below |
+| Interface | Four themes (contrast script passes all), switcher in the sidebar, placeholder logo, lucide nav icons, property pictograms, control size scale, trimmed fonts |
 
-Checks on `night`: `uv run pytest api/tests -q` 247 passed; `tsc` clean; `npm run build` passes (20 routes). Local smoke
+Checks on `night` after the last merge: `uv run pytest api/tests -q` 247 passed; `node scripts/check-contrast.mjs` passes all four themes; `tsc` clean; `npm run build` passes. Local smoke
 (no database here): every new endpoint and page passes; listings, market, trends and scenario series need the database.
 
 ### Forecast results (mean across 12 ZIPs; per-ZIP in MODEL_CARD.md)
@@ -52,6 +52,20 @@ Checks on `night`: `uv run pytest api/tests -q` 247 passed; `tsc` clean; `npm ru
 
 Rents: beats ETS, not naive (no claim over naive). Values: beats naive, not ETS, so ETS stays the served ZHVI baseline.
 Fed scenarios are hand-transcribed (no CSV exists). Not compared with Zillow's own forecasts.
+
+### Themes
+
+| Theme | Mode | Key colors | Font |
+| --- | --- | --- | --- |
+| Desert Clay (default) | light | bg #ffe8d6, accent #cb997e, primary #646953 (was #6b705c; darkened to reach 4.5:1) | Geist |
+| Sage Linen | light | bg #eceee0, primary #46633f, accent #b88a5c | Nunito |
+| Cocoa Night | dark | bg #1f1a17, primary #b2b998, accent #e8b48f | DM Sans |
+| Harbor Dusk | dark | bg #131b25, primary #8fb6dc, accent #efc08c | Atkinson Hyperlegible |
+
+Saved in localStorage (`rok.theme`); an inline head script applies it before paint; a first visit follows
+`prefers-color-scheme` (dark gives Cocoa Night). **Real logo:** replace `frontend/public/brand/logo.svg`;
+`frontend/src/components/brand/Logo.tsx` adds the wordmark. Left as is: the map overlay colors (fixed light basemap)
+and card shadows, which are faint on the dark themes.
 
 ## Load the data (needs your env; run from the repo root)
 
@@ -93,7 +107,7 @@ today), and the live API doesn't filter by data/zips.txt.
   docs/ACCOUNTS.md (session shows no email; `user_saves` rows have only a 64-hex hash).
 - **Live map at phone width (375px)**: pan from San Diego toward Orange County; county shapes should load. No page was
   checked in a browser tonight; every 375px layout rests on responsive classes only.
-- **Theme switcher**: each theme, a reload (no flash), and a first visit with dark mode on.
+- **Theme switcher**: each theme, a reload (no flash), and a first visit with dark mode on. Check that the map and card shadows look acceptable on the dark themes.
 - **Client-side views**: scenario charts, trends, area requests, match results, owner reach and the advisor chat were
   checked only by tsc and the build. `/apartments/{id}` has no `<h1>` in its server HTML.
 - **Facebook groups**: `sources/facebook_groups/groups.yaml` lists 10 localities with `url: null`. Web search found only
@@ -104,6 +118,7 @@ today), and the live API doesn't filter by data/zips.txt.
 
 ## Open decisions
 
+- Smoke after deploy: `POST /owner/reach` needs 5+ comparables for the fixture's 92104 1-bedroom (true on the live data); `?scenario=` accepts 404 until `worker.train scenarios` runs.
 - Merge PR #1 first, or stack the night PR on it. The night PR targets Setup, so it lands in PR #1's diff once merged.
 - Whether to move the index tier into the shared tables (needs the ZIP filter above) or keep it in staging.
 - ZHVI cone coverage is 0.75 (target 0.80); widen it, or accept and say so on the chart.
