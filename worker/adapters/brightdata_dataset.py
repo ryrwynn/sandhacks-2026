@@ -50,7 +50,12 @@ class BrightDataDatasetAdapter(SourceAdapter):
         f = self.template["fetch"]
         if f.get("inputs"):
             return f["inputs"]
-        return [{"url": f["input_url"].format(zip=z)} for z in load_zips(f["zip_file"])]
+        return self.inputs_for(load_zips(f["zip_file"]))
+
+    def inputs_for(self, zips: list[str]) -> list[dict]:
+        f = self.template["fetch"]
+        city = f.get("city_by_zip") or {}
+        return [{"url": f["input_url"].format(zip=z, city=city.get(z, "san-diego"))} for z in zips]
 
     def trigger(self, inputs: list[dict]) -> str:
         f = self.template["fetch"]

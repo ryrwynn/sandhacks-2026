@@ -53,7 +53,7 @@ def run_listing_source(conn, key, template, trust, args) -> dict:
     adapter = get_adapter(template)
     f = template["fetch"]
     if args.zips and f.get("input_url"):
-        inputs = [{"url": f["input_url"].format(zip=z)} for z in args.zips.split(",")]
+        inputs = adapter.inputs_for(args.zips.split(","))
     else:
         inputs = None
     kw = {"snapshot_id": args.snapshot} if args.snapshot else {}

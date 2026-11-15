@@ -8,7 +8,8 @@ fetch:
   dataset_id: gd_lfqkr8wm13ixtbd8f5
   discover_by: url
   zip_file: data/zips.txt
-  input_url: "https://www.zillow.com/san-diego-ca-{zip}/"
+  input_url: "https://www.zillow.com/{city}-ca-{zip}/"
+  city_by_zip: {"91910": chula-vista}   # every other ZIP uses san-diego
   limit_per_input: 20
 drop_fields:
   - listing_provided_by
