@@ -296,3 +296,109 @@ class ListingAnalysisResponse(BaseModel):
     n_comparables: int
     explanation: str | None = None              # Gemini, 2 to 4 sentences; never a rewritten listing
     disclaimer: str = "A prediction from comparable listings, not measured clicks."
+
+
+# ---------- Tracker endpoints (docs/DESIGN.md) ----------
+# Price history comes only from stored price_observations: the source's own history events plus each
+# scrape's sightings. Nothing is interpolated or invented; a month with no observation has no point.
+ObservationEvent = Literal["history", "seen", "price_change", "removed", "posted"]
+MarketRange = Literal["1m", "3m", "6m", "1y", "all"]
+ListingSort = Literal["recent", "price_asc", "price_desc", "biggest_drop"]
+
+
+class SparkPoint(BaseModel):
+    month: date                                 # first of the month
+    price_usd: float                            # the last observed asking rent in that month
+
+
+class ListingSummary(BaseModel):                # GET /listings items; also the head of GET /listings/{id}
+    id: int                                     # listings.listing_id
+    address: str | None = None                  # display address, e.g. '2519 El Cajon Blvd'
+    unit_label: str | None = None
+    neighborhood: str | None = None             # ZIP's neighborhood name, e.g. 'North Park'
+    zip: str | None = None
+    beds: int | None = None                     # 0 = studio
+    baths: float | None = None
+    sqft: int | None = None
+    property_type: str | None = None
+    listing_type: Literal["rent", "sale"] = "rent"
+    current_price_usd: float                    # the latest observed price
+    first_price_usd: float                      # the first observed price
+    first_observed: date
+    n_observations: int                         # real observations behind the sparkline
+    sparkline: list[SparkPoint]                 # monthly, from real observations only; may be a single point
+    fair_rent_label: FairRentLabel | None = None   # null when there aren't enough comparables
+    last_seen: datetime
+    active: bool                                # seen in the latest scrape
+    source_url: str | None = None               # public listing-site page; null for social posts and unknown
+
+
+class ListingsResponse(BaseModel):
+    items: list[ListingSummary]
+    total: int                                  # matches before limit/offset
+    limit: int
+    offset: int
+
+
+class Observation(BaseModel):
+    date: date
+    event: ObservationEvent
+    price_usd: float
+
+
+class ZipForecastSummary(BaseModel):
+    zip: str
+    name: str
+    metric: Metric = "zori"
+    latest_usd: float | None = None
+    forecast_12m_usd: float | None = None
+    change_pct: float | None = None             # 12-month forecast change
+    lo80_usd: float | None = None
+    hi80_usd: float | None = None
+    backtest_mape: float | None = None
+    naive_mape: float | None = None
+    beats_naive: bool | None = None             # shown as-is: most series do not beat naive
+
+
+class ListingDetail(ListingSummary):            # GET /listings/{id}
+    observations: list[Observation]             # every stored price observation, oldest first
+    year_built: int | None = None
+    estimate: FairRentEstimate | None = None    # "what it should rent for"; null when not enough comparables
+    percentile: float | None = None             # current price's percentile among same-ZIP, same-bedroom listings
+    n_comparables: int = 0
+    forecast: ZipForecastSummary | None = None
+    disclaimer: str = DISCLAIMER_ESTIMATE
+
+
+class MarketPoint(BaseModel):
+    month: date
+    value: float
+    basis: Literal["zori", "listings"]          # where this month's number came from
+    n_listings: int | None = None               # listings behind a 'listings' month
+
+
+class MarketForecastPoint(BaseModel):
+    month: date
+    value: float
+    lo80: float
+    hi80: float
+
+
+class MarketResponse(BaseModel):                # GET /market?zip=&beds=&type=&range=
+    zip: str | None = None                      # null = all 12 ZIPs
+    beds: int | None = None
+    property_type: str | None = None
+    range: MarketRange = "1y"
+    points: list[MarketPoint]                   # monthly; ZORI for any bedrooms, listing medians by bedroom
+                                                # count with a ZORI fallback under 5 listings in a month
+    forecast: list[MarketForecastPoint] = Field(default_factory=list)   # next 12 months with the 80% band
+    current_value: float | None = None
+    change_pct: float | None = None             # current vs the first point in `range`
+    change_since: date | None = None
+    active_listings: int = 0
+    updated_at: datetime | None = None          # last scrape
+    backtest_mape: float | None = None
+    naive_mape: float | None = None
+    beats_naive: bool | None = None
+    notes: list[str] = Field(default_factory=list)   # e.g. which months fell back to ZORI and why
+    disclaimer: str = DISCLAIMER_ESTIMATE

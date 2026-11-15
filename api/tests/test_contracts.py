@@ -14,6 +14,7 @@ RESPONSES = {
     "listings_evaluate.json": m.ListingEvalResponse, "neighborhoods_rank_starter.json": m.RankResponse,
     "neighborhoods_rank_wealth.json": m.RankResponse, "owner_price_position.json": m.PricePositionResponse,
     "owner_listing_analysis.json": m.ListingAnalysisResponse,
+    "listings.json": m.ListingsResponse, "listing_detail.json": m.ListingDetail, "market.json": m.MarketResponse,
 }
 REQUESTS = {
     "checks.json": m.CheckRequest, "listings_evaluate.json": m.ListingEvalRequest,

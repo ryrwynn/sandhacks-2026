@@ -77,6 +77,32 @@ for p in starter wealth; do
   fi
 done
 
+# 5. Tracker endpoints: listings, one listing's detail, and the market series
+code=$(curl -sS -o "$TMP/listings" -w '%{http_code}' --max-time 30 "$API/listings?limit=3" 2>/dev/null)
+n=$(json "$TMP/listings" 'len(d["items"])'); total=$(json "$TMP/listings" 'd["total"]')
+if [ "$code" = 200 ] && [ "${n:-0}" -gt 0 ]; then
+  ok "GET /listings: $n of $total"
+  lid=$(json "$TMP/listings" 'd["items"][0]["id"]')
+  code=$(curl -sS -o "$TMP/detail" -w '%{http_code}' --max-time 30 "$API/listings/$lid" 2>/dev/null)
+  nobs=$(json "$TMP/detail" 'len(d["observations"])')
+  if [ "$code" = 200 ] && [ "${nobs:-0}" -gt 0 ]; then
+    ok "GET /listings/$lid: $nobs price observations"
+  else
+    fail "GET /listings/$lid: HTTP $code, $nobs observations"; head -c 300 "$TMP/detail" 2>/dev/null; echo
+  fi
+  code=$(curl -sS -o "$TMP/byids" -w '%{http_code}' --max-time 30 "$API/listings?ids=$lid" 2>/dev/null)
+  [ "$code" = 200 ] && [ "$(json "$TMP/byids" 'len(d["items"])')" = 1 ] && ok "GET /listings?ids=$lid" || fail "GET /listings?ids=$lid: HTTP $code"
+else
+  fail "GET /listings: HTTP $code, ${n:-0} items"; head -c 300 "$TMP/listings" 2>/dev/null; echo
+fi
+code=$(curl -sS -o "$TMP/market" -w '%{http_code}' --max-time 30 "$API/market?zip=92104&range=1y" 2>/dev/null)
+np=$(json "$TMP/market" 'len(d["points"])')
+if [ "$code" = 200 ] && [ "${np:-0}" -gt 0 ]; then
+  ok "GET /market 92104: $np monthly points, $(json "$TMP/market" 'd["active_listings"]') active listings"
+else
+  fail "GET /market 92104: HTTP $code, ${np:-0} points"; head -c 300 "$TMP/market" 2>/dev/null; echo
+fi
+
 echo
 [ $FAILS -eq 0 ] && { echo "Smoke test passed."; exit 0; }
 echo "$FAILS check(s) failed."; exit 1

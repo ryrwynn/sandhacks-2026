@@ -11,6 +11,7 @@
    "last_sold_price": 1850000,
    "lot_sqft": 5227,
    "property_tax_rate": 1.17,
+   "source_url": "https://www.zillow.com/homedetails/3445-29th-St-San-Diego-CA-92104/111435073_zpid/",
    "tags": [
     "For sale"
    ],
@@ -89,6 +90,7 @@
    "home_status": "FOR_SALE",
    "lot_sqft": 5504,
    "property_tax_rate": 1.17,
+   "source_url": "https://www.zillow.com/homedetails/3788-Arizona-St-San-Diego-CA-92104/16973067_zpid/",
    "tags": [
     "For sale"
    ],
@@ -142,6 +144,7 @@
    "home_status": "FOR_SALE",
    "lot_sqft": 5504,
    "property_tax_rate": 1.17,
+   "source_url": "https://www.zillow.com/homedetails/3788-Arizona-St-San-Diego-CA-92104/16973067_zpid/",
    "tags": [
     "For sale"
    ],

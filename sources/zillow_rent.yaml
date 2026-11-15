@@ -61,6 +61,7 @@ property_types:
   MULTI_FAMILY: multi_family
   MANUFACTURED: manufactured
 extras_map:
+  source_url: url              # public listing page; shown as a link, never for social posts
   amenities: unit_amenities
   special_offer: special_offer
   availability_date: availability_date

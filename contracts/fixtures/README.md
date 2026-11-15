@@ -18,3 +18,10 @@ show their numbers as real data. `sources/<key>/` holds raw source samples for t
 | POST /neighborhoods/rank | neighborhoods_rank_starter.json, neighborhoods_rank_wealth.json | requests/neighborhoods_rank_*.json |
 | POST /owner/price-position | owner_price_position.json | requests/owner_price_position.json |
 | POST /owner/listing-analysis | owner_listing_analysis.json | requests/owner_listing_analysis.json |
+| GET /listings?zip=&beds=&type=&max_price=&sort=&limit=&offset= and ?ids= (up to 50) | listings.json | |
+| GET /listings/{id} | listing_detail.json | |
+| GET /market?zip=&beds=&type=&range= | market.json | |
+
+The tracker fixtures are sample shapes: their numbers are illustrative, never real data. Price history in the real
+endpoints comes only from stored price_observations (the source's own history events plus each scrape's sightings);
+a month with no observation has no point.
