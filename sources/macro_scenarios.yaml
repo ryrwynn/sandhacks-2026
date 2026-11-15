@@ -1,0 +1,29 @@
+# Scenario paths for the forecast model. Entered BY HAND from the Federal Reserve PDF; no CSV was published.
+# Source: Board of Governors of the Federal Reserve System, "2026 Stress Test Scenarios", final, Feb 4 2026
+#   https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf
+#   Table 3.A (supervisory baseline, PDF page 35) and Table 4.A (supervisory severely adverse, PDF page 36).
+# Quarterly, Q1 2026 to Q1 2029 (13 values each). Columns kept: unemployment rate (percent), mortgage rate
+# (percent), house price index (level; Fed national HPI, not San Diego).
+# These are national stress-test paths, not forecasts. The forecast code uses them as shapes (changes and deviations from
+# baseline) applied to the latest actual San Diego values, starting at the forecast origin. See docs/MODEL_CARD.md.
+source_url: https://www.federalreserve.gov/publications/files/2026-final-supervisory-stress-test-scenarios-20260204.pdf
+first_quarter: 2026Q1
+baseline:
+  source: fed_2026_baseline
+  table: "Table 3.A, PDF page 35"
+  unemployment: [4.6, 4.6, 4.6, 4.5, 4.5, 4.4, 4.3, 4.3, 4.3, 4.3, 4.3, 4.3, 4.2]
+  mortgage_rate: [6.1, 6.0, 6.0, 6.0, 5.9, 5.9, 5.8, 5.8, 5.8, 5.8, 5.7, 5.7, 5.7]
+  house_price_index: [325, 326, 326, 327, 327, 327, 327, 328, 328, 328, 329, 329, 330]
+recession:
+  source: fed_2026_severely_adverse
+  table: "Table 4.A, PDF page 36"
+  unemployment: [5.9, 7.2, 8.2, 9.0, 9.5, 9.9, 10.0, 9.8, 9.4, 9.1, 8.7, 8.4, 8.0]
+  mortgage_rate: [6.0, 5.9, 5.8, 5.7, 5.6, 5.5, 5.4, 5.3, 5.3, 5.2, 5.2, 5.1, 5.1]
+  house_price_index: [303, 283, 273, 263, 254, 244, 236, 227, 231, 235, 238, 242, 246]
+growth:
+  source: p80_12m_change
+  note: >
+    Not from the Fed. A documented upside derived from San Diego history in macro_series: the 20th percentile
+    (unemployment, mortgage rate: lower is better) and 80th percentile (house price index) of historical
+    12-month changes, reached linearly over 12 months. See api/ml/macro.py.
+  favorable_quantile: 0.8

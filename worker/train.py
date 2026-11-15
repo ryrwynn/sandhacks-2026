@@ -13,6 +13,8 @@ import numpy as np
 import pandas as pd
 
 from api.ml import fair_rent
+from api.ml import macro as mc
+from api.ml import scenario_model, scenario_run
 from api.ml.forecast import MIN_MONTHS, backtest, forecast_12
 
 MODEL_PATH = os.environ.get("FAIR_RENT_MODEL_PATH", "models/fair_rent.joblib")
@@ -117,6 +119,50 @@ def record_run(conn, run_id, kind, n_rows, sources, metrics, artifact_path) -> N
             (str(run_id), kind, n_rows, sources, json.dumps(metrics), artifact_path))
 
 
+MACRO_SQL = "SELECT series_id, period, value::float8 AS value FROM macro_series WHERE series_id = ANY(%s) ORDER BY period"
+
+
+def load_macro(conn) -> pd.DataFrame:
+    """Monthly ur, lhpi, mort from macro_series; falls back to the committed snapshot when the table is empty."""
+    ids = mc.SERIES_IDS
+    with conn.cursor() as cur:
+        cur.execute(MACRO_SQL, (list(ids.values()),))
+        rows = cur.fetchall()
+    if not rows:
+        return mc.to_model_frame(mc.load_snapshot())
+    inv = {v: k for k, v in ids.items()}
+    df = pd.DataFrame(rows, columns=["sid", "period", "value"])
+    df["period"] = pd.to_datetime(df["period"])
+    wide = df.pivot_table(index="period", columns=df["sid"].map(inv), values="value")
+    return mc.to_model_frame(wide[["ur", "hpi", "mort"]])
+
+
+def train_scenarios(conn, run_id: uuid.UUID, made_at: datetime, zips: set[str] | None = None) -> dict | None:
+    """Scenario backtest and forecasts for the core ZIPs only; writes scenario_forecasts and a model_runs row."""
+    from api.db import ZIP_NAMES
+    core = zips if zips is not None else set(ZIP_NAMES)
+    macro_frame = load_macro(conn)
+    rows, by_series, summary = [], {}, {}
+    for metric in ("zori", "zhvi"):
+        series = {z: s for z, s in load_series(conn, metric).items() if z in core and len(s.dropna()) >= MIN_MONTHS}
+        if len(series) < 2:
+            continue
+        res = scenario_run.run_metric(scenario_model.panel_from_series(series), macro_frame)
+        rows += scenario_run.forecast_rows(metric, res, str(run_id), made_at, core)
+        summary[metric] = res["summary"]
+        for z, r in res["by_series"].items():
+            by_series[f"{z}:{metric}"] = r
+    if not rows:
+        return None
+    with conn.cursor() as cur:
+        cur.executemany(
+            "INSERT INTO scenario_forecasts (run_id, made_at, scenario, model, month, zip, metric, mean_usd, "
+            "lo80_usd, hi80_usd, backtest_mape, coverage_80) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", rows)
+    metrics = {"by_series": by_series, "summary": summary}
+    record_run(conn, run_id, "scenario_forecast", len(rows), ["zillow_research", "fred", "fed_scenarios"], metrics, None)
+    return metrics
+
+
 def main() -> int:
     url = os.environ.get("DATABASE_URL")
     if not url:
@@ -126,6 +172,11 @@ def main() -> int:
 
     made_at = datetime.now(timezone.utc)
     with psycopg.connect(url) as conn:
+        if "scenarios" in sys.argv[1:]:   # python -m worker.train scenarios: scenario forecasts only
+            sm = train_scenarios(conn, uuid.uuid4(), made_at)
+            print("scenarios:", sm["summary"] if sm else "no series; skipped")
+            conn.commit()
+            return 0
         fm = train_forecasts(conn, uuid.uuid4(), made_at)
         print("forecast:", fm if fm else f"no zori/zhvi series with {MIN_MONTHS}+ months yet; skipped")
         rm = train_fair_rent(conn)
