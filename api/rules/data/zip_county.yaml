@@ -1,0 +1,18 @@
+# ZIP -> county for the gouging check. Compact form: ranges are inclusive [low, high].
+# Source: USPS ZIP assignments as commonly published for San Diego County; NOT an official county file
+# (verified: false). ZIPs can straddle county lines; unlisted ZIPs return 'unclear'.
+# Replace from the Census ZCTA-to-county relationship file when it can be reached.
+verified: false
+accessed: 2026-11-15
+counties:
+  San Diego:
+    ranges: [[91901, 91902], [91905, 91906], [91910, 91911], [91913, 91917], [91931, 91932], [91934, 91935],
+             [91941, 91942], [91945, 91945], [91948, 91948], [91950, 91950], [91962, 91963], [91977, 91978],
+             [91980, 91980], [91987, 91987], [92003, 92004], [92007, 92011], [92013, 92014], [92018, 92021],
+             [92023, 92030], [92033, 92033], [92036, 92040], [92046, 92046], [92049, 92049], [92051, 92052],
+             [92054, 92061], [92064, 92072], [92074, 92075], [92078, 92079], [92081, 92086], [92088, 92088],
+             [92091, 92093], [92096, 92096], [92101, 92124], [92126, 92132], [92134, 92142], [92145, 92145],
+             [92147, 92147], [92149, 92150], [92154, 92155], [92158, 92179], [92182, 92182], [92184, 92187],
+             [92190, 92199]]
+  Los Angeles:
+    ranges: [[90026, 90026]]   # fixture ZIP only (Echo Park); the rest of LA County is not mapped yet
