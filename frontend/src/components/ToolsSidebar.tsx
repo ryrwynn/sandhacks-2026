@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import ThemeSwitcher from "./ThemeSwitcher";
 import { usePathname } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import {
@@ -121,6 +122,7 @@ export function ToolsSidebar() {
           </button>
         </div>
         <nav aria-label="Tools"><ToolLinks path={path} collapsed={collapsed} /></nav>
+        <div className="mt-4 border-t border-line pt-3"><ThemeSwitcher compact={collapsed} /></div>
       </aside>
 
       {drawer && (
@@ -134,6 +136,7 @@ export function ToolsSidebar() {
               </button>
             </div>
             <nav aria-label="Tools" className="flex-1 overflow-y-auto"><ToolLinks path={path} collapsed={false} onNavigate={() => setDrawer(false)} /></nav>
+            <div className="mt-2 border-t border-line pt-3"><ThemeSwitcher /></div>
           </div>
         </div>
       )}

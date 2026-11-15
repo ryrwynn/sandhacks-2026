@@ -22,7 +22,7 @@ export default function Saved() {
     <main className="space-y-5">
       <section className="flex flex-wrap items-end justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Saved apartments</h1>
+          <h1 className="text-xl font-bold tracking-tight sm:text-2xl">Saved apartments</h1>
           <p className="text-muted">Apartments you are tracking. They are saved in this browser only.</p>
         </div>
         <div className="flex items-center gap-2">
@@ -33,7 +33,7 @@ export default function Saved() {
               <option value="drop">Biggest drop since saved</option>
             </select>
           )}
-          <Link href="/find" className="inline-flex min-h-11 items-center rounded-lg bg-primary px-4 font-semibold text-white hover:bg-primary-hover">+ Save apartment</Link>
+          <Link href="/find" className="inline-flex min-h-11 items-center rounded-lg bg-primary px-4 font-semibold text-on-primary hover:bg-primary-hover">+ Save apartment</Link>
         </div>
       </section>
 
@@ -43,7 +43,7 @@ export default function Saved() {
         <div className={`${cardCls} p-8 text-center`}>
           <p className="text-lg font-semibold">Nothing saved yet.</p>
           <p className="mb-4 text-muted">Find apartments to start a watchlist.</p>
-          <Link href="/find" className="inline-flex min-h-11 items-center rounded-lg bg-primary px-5 font-semibold text-white hover:bg-primary-hover">Find apartments</Link>
+          <Link href="/find" className="inline-flex min-h-11 items-center rounded-lg bg-primary px-5 font-semibold text-on-primary hover:bg-primary-hover">Find apartments</Link>
         </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

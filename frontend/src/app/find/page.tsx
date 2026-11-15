@@ -48,7 +48,7 @@ export default function Find() {
   return (
     <main className="space-y-5">
       <section>
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Find apartments</h1>
+        <h1 className="text-xl font-bold tracking-tight sm:text-2xl">Find apartments</h1>
         <p className="text-muted">Compare asking rents and save the ones you like to watch how their price changes.</p>
       </section>
 
