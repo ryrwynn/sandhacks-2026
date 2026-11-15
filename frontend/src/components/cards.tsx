@@ -3,6 +3,24 @@ import type { CheckResponse, Contribution, ListingAnalysisResponse, ListingEvalR
 import { pct, usd } from "@/lib/format";
 import { Bar, Card, Disclaimer } from "./ui";
 
+/** A contribution's raw value in words: at most 2 decimals, ratios as percentages. Unknown features show nothing. */
+export function contributionValue(c: Contribution): string | null {
+  const v = c.value;
+  if (v == null || !Number.isFinite(v)) return null;
+  switch (c.feature) {
+    case "value_forecast": return `${pct(v, 1, true)} in 12 months`;
+    case "rent_forecast": return `${pct(v, 1, true)} in 12 months`;
+    case "gross_yield": return `${pct(v * 100, 2)} gross yield`;
+    case "value_vs_budget": return `${pct(v * 100, 0)} of your budget`;
+    case "volatility": return `prices move about ${pct(v, 2)} a month`;
+    case "rent": return `${usd(v)} / month`;
+    case "basics_density":
+    case "other_amenities_density": return `${v.toFixed(1)} per km²`;
+    case "listings_30d": return `${Math.round(v)} listings`;
+    default: return null;
+  }
+}
+
 /** Score 0 to 100 with the points each factor added. Used for ranked ZIPs and persona scores. */
 export function ScoreCard({
   title, score, subtitle, contributions, summary, href, stretch,
@@ -27,8 +45,11 @@ export function ScoreCard({
         <ul className="mt-3 space-y-1 text-sm text-slate-700">
           {contributions.map((c) => (
             <li key={c.feature} className="flex justify-between gap-2">
-              <span>{c.label}</span>
-              <span className="tabular-nums text-slate-500">+{c.points.toFixed(1)} pts</span>
+              <span>
+                {c.label}
+                {contributionValue(c) && <span className="block text-xs text-slate-500">{contributionValue(c)}</span>}
+              </span>
+              <span className="shrink-0 tabular-nums text-slate-500">+{c.points.toFixed(1)} pts</span>
             </li>
           ))}
         </ul>
