@@ -35,7 +35,7 @@ async function Zip({ params }: { params: Promise<{ zip: string }> }) {
   return (
     <>
       <MockFlag on={mock} />
-      <h1 className="text-2xl font-bold">{p.zip} {p.name}</h1>
+      <h1 className="text-xl font-bold sm:text-2xl">{p.zip} {p.name}</h1>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
         <Stat label="Typical rent" value={usd(p.typical_rent_usd)} note={`${pct(p.rent_forecast_change_pct, 1, true)} in 12 months`} />
         <Stat label="Typical home value" value={usd(p.typical_home_value_usd)} note={`${pct(p.value_forecast_change_pct, 1, true)} in 12 months`} />

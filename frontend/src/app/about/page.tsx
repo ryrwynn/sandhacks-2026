@@ -46,7 +46,7 @@ async function Models() {
 export default function AboutPage() {
   return (
     <main className="space-y-4">
-      <h1 className="text-2xl font-bold">About RentOrKnot</h1>
+      <h1 className="text-xl font-bold sm:text-2xl">About RentOrKnot</h1>
       <p className="text-slate-700">RentOrKnot reads public rental and home-price data and explains it. It never contacts landlords or posts anything anywhere.</p>
       <Card>
         <h2 className="mb-2 text-lg font-bold">Data sources</h2>

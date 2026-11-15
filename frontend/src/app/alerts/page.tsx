@@ -20,7 +20,7 @@ function TargetForm({ id, target, price }: { id: number; target?: number | null;
         <span className="mb-1 block text-sm font-medium">Alert me at or below ($ / month)</span>
         <input className={`${inputCls} w-44`} type="number" inputMode="numeric" min="1" step="25" value={v} placeholder={String(Math.round(price * 0.95 / 25) * 25)} onChange={(e) => setV(e.target.value)} />
       </label>
-      <button className="min-h-11 rounded-lg bg-primary px-4 font-semibold text-white hover:bg-primary-hover">Set target</button>
+      <button className="min-h-11 rounded-lg bg-primary px-4 font-semibold text-on-primary hover:bg-primary-hover">Set target</button>
       {target != null && (
         <button type="button" onClick={() => { setV(""); setTarget(id, null); }} className="min-h-11 rounded-lg px-3 font-medium text-accent-strong underline underline-offset-2">Clear</button>
       )}
@@ -39,7 +39,7 @@ export default function Alerts() {
   return (
     <main className="space-y-6">
       <section>
-        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Price alerts</h1>
+        <h1 className="text-xl font-bold tracking-tight sm:text-2xl">Price alerts</h1>
         <p className="text-muted">Set a target rent for any saved apartment. Alerts show here and with a badge in the menu. RentOrKnot never sends email, texts or push notifications, and asks for no contact details.</p>
       </section>
 
@@ -49,7 +49,7 @@ export default function Alerts() {
         <div className={`${cardCls} p-8 text-center`}>
           <p className="text-lg font-semibold">No saved apartments to watch yet.</p>
           <p className="mb-4 text-muted">Save an apartment, then set a target rent here.</p>
-          <Link href="/find" className="inline-flex min-h-11 items-center rounded-lg bg-primary px-5 font-semibold text-white hover:bg-primary-hover">Find apartments</Link>
+          <Link href="/find" className="inline-flex min-h-11 items-center rounded-lg bg-primary px-5 font-semibold text-on-primary hover:bg-primary-hover">Find apartments</Link>
         </div>
       ) : (
         <>

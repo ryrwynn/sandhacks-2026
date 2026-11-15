@@ -5,6 +5,7 @@ import { usd } from "@/lib/format";
 import { bedsText, changeOf, FAIR_LABEL, fmtDate, fmtMonth, type ListingSummary } from "@/lib/tracker";
 import { cardCls } from "./styles";
 import Sparkline from "./Sparkline";
+import PropertyIcon from "./PropertyIcon";
 
 /** "↓ $100 (3.3%)" with words for screen readers, colored good for drops and warn for rises. */
 export function Delta({ now, then, suffix }: { now: number; then: number; suffix?: string }) {
@@ -72,7 +73,7 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
               {title}
             </Link>
           </h3>
-          {facts && <p className="text-sm text-muted">{facts}</p>}
+          {(facts || l.property_type) && <p className="flex items-center gap-1.5 text-sm text-muted">{l.property_type && <PropertyIcon type={l.property_type} />}<span className="min-w-0">{facts}</span></p>}
         </div>
         <div className="relative z-10 -mr-2 -mt-2 flex shrink-0">
           {l.source_url && (
@@ -86,7 +87,7 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
       </div>
 
       <div className="mt-3 flex items-end justify-between gap-3">
-        <p><strong className="text-2xl font-bold tabular-nums tracking-tight">{usd(l.current_price_usd)}</strong><span className="text-sm text-muted">{isRent ? " / mo" : " asking price"}</span></p>
+        <p><strong className="text-xl font-bold tabular-nums tracking-tight">{usd(l.current_price_usd)}</strong><span className="text-sm text-muted">{isRent ? " / mo" : " asking price"}</span></p>
         <div className="text-right">
           {sinceSaved !== undefined ? (
             <Delta now={l.current_price_usd} then={sinceSaved} suffix="since you saved it" />
@@ -113,7 +114,7 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
 
       {showSave && onToggle && (
         <button type="button" onClick={onToggle} aria-pressed={!!saved}
-          className={`relative z-10 mt-4 min-h-11 w-full rounded-lg px-4 text-base font-semibold ${saved ? "bg-line text-ink" : "bg-primary text-white hover:bg-primary-hover"}`}>
+          className={`relative z-10 mt-4 min-h-11 w-full rounded-lg px-4 text-base font-semibold ${saved ? "bg-line text-ink" : "bg-primary text-on-primary hover:bg-primary-hover"}`}>
           {saved ? "Saved ✓" : "+ Save apartment"}
         </button>
       )}

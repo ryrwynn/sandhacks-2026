@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="RentOrKnot logo (placeholder)">
+  <rect width="48" height="48" rx="12" fill="#cb997e"/>
+  <path d="M10 25 24 12l14 13" fill="none" stroke="#fffaf5" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M14 23v13h20V23" fill="none" stroke="#fffaf5" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="24" cy="29" r="3" fill="#6b705c"/>
+  <path d="M24 31v4" stroke="#6b705c" stroke-width="2.6" stroke-linecap="round"/>
+</svg>

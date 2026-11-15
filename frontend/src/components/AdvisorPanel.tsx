@@ -64,7 +64,7 @@ export function AdvisorChat() {
           </div>
         )}
         {msgs.map((m, i) => (
-          <div key={i} className={`max-w-[92%] whitespace-pre-wrap rounded-xl px-3 py-2 text-sm ${m.role === "user" ? "ml-auto bg-primary text-white" : "bg-bg"}`}>
+          <div key={i} className={`max-w-[92%] whitespace-pre-wrap rounded-xl px-3 py-2 text-sm ${m.role === "user" ? "ml-auto bg-primary text-on-primary" : "bg-bg"}`}>
             <span className="sr-only">{m.role === "user" ? "You: " : "Advisor: "}</span>
             {m.content || (busy ? "Thinking..." : "")}
           </div>

@@ -5,6 +5,7 @@ import { CartesianGrid, ComposedChart, Line, ResponsiveContainer, Tooltip, XAxis
 import { Delta } from "./ApartmentCard";
 import { BacktestNote } from "./RentChart";
 import { cardCls } from "./styles";
+import PropertyIcon from "./PropertyIcon";
 import { ErrorNote, MockFlag } from "./ui";
 import { ListingTrends } from "./Trends";
 import { errorMessage, getListing, isMock } from "@/lib/api";
@@ -45,9 +46,9 @@ function Tip({ active, payload }: { active?: boolean; payload?: { payload: Ev }[
   const e = active ? payload?.[0]?.payload : undefined;
   if (!e) return null;
   return (
-    <div className="rounded-lg bg-ink px-3 py-2 text-sm text-white shadow-lg">
+    <div className="rounded-lg bg-ink px-3 py-2 text-sm text-on-ink shadow-lg">
       <div className="font-semibold">{fmtDate(e.date)}</div>
-      <div>{usd(e.price)} <span className="text-white/70">{e.kind}</span></div>
+      <div>{usd(e.price)} <span className="text-on-ink/70">{e.kind}</span></div>
     </div>
   );
 }
@@ -117,10 +118,10 @@ export default function ApartmentView({ id }: { id: string }) {
       <header className={`${cardCls} flex flex-col gap-4 p-4 sm:flex-row sm:items-start sm:justify-between sm:p-6`}>
         <div className="min-w-0">
           <Link href="/find" className="mb-2 inline-flex min-h-11 items-center text-sm font-medium text-accent-strong underline underline-offset-2">← Find apartments</Link>
-          <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">{title}</h1>
-          <p className="text-muted">{facts.join(" · ")}</p>
+          <h1 className="text-xl font-bold tracking-tight sm:text-2xl">{title}</h1>
+          <p className="flex items-center gap-1.5 text-muted">{d.property_type && <PropertyIcon type={d.property_type} size={20} />}<span className="min-w-0">{facts.join(" · ")}</span></p>
           <p className="mt-3">
-            <strong className="text-3xl font-bold tabular-nums">{usd(d.current_price_usd)}</strong>
+            <strong className="text-2xl font-bold tabular-nums">{usd(d.current_price_usd)}</strong>
             <span className="text-muted">{isRent ? " / mo" : " asking price"}</span>
             {d.n_observations > 1 && <span className="ml-3 inline-block align-middle"><Delta now={d.current_price_usd} then={d.first_price_usd} suffix={`since ${fmtDate(d.first_observed)}`} /></span>}
           </p>
@@ -128,7 +129,7 @@ export default function ApartmentView({ id }: { id: string }) {
         </div>
         <div className="flex flex-col gap-2 sm:items-end">
           <button type="button" aria-pressed={has(d.id)} onClick={() => toggle(d)}
-            className={`min-h-11 rounded-lg px-5 font-semibold ${has(d.id) ? "bg-line text-ink" : "bg-primary text-white hover:bg-primary-hover"}`}>
+            className={`min-h-11 rounded-lg px-5 font-semibold ${has(d.id) ? "bg-line text-ink" : "bg-primary text-on-primary hover:bg-primary-hover"}`}>
             {has(d.id) ? "Saved ✓" : "+ Save apartment"}
           </button>
           {d.source_url && (
@@ -227,7 +228,7 @@ export default function ApartmentView({ id }: { id: string }) {
       {isRent && (
         <Section id="own-h" title="Renting here already?">
           <p className="text-muted">If you already live in this building and got a rent increase notice, check it against California&apos;s AB 1482 cap.</p>
-          <Link href={rentCheck} className="inline-flex min-h-11 items-center rounded-lg bg-primary px-5 font-semibold text-white hover:bg-primary-hover">Check a rent increase</Link>
+          <Link href={rentCheck} className="inline-flex min-h-11 items-center rounded-lg bg-primary px-5 font-semibold text-on-primary hover:bg-primary-hover">Check a rent increase</Link>
         </Section>
       )}
     </main>

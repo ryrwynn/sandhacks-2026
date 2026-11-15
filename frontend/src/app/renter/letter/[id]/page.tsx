@@ -17,7 +17,7 @@ async function Letter({ params, searchParams }: { params: Promise<{ id: string }
 export default function LetterPage(props: PageProps<"/renter/letter/[id]">) {
   return (
     <main className="space-y-4">
-      <h1 className="text-2xl font-bold print:hidden">Your reply letter</h1>
+      <h1 className="text-xl font-bold sm:text-2xl print:hidden">Your reply letter</h1>
       <Suspense fallback={<p className="text-sm text-slate-600">Loading...</p>}>
         <Letter params={props.params} searchParams={props.searchParams as Promise<{ lang?: string }>} />
       </Suspense>
