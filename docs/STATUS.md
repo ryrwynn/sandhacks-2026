@@ -38,7 +38,7 @@ Heartbeat: 2026-11-15 04:22 PST — run complete; see docs/MORNING.md
 
 # Morning run (2026-11-15)
 
-Heartbeat: 2026-11-15 07:05 PST — step 4/5; BLOCKED on database reachability from this laptop (see 3a)
+Heartbeat: 2026-11-15 07:40 PST — steps 1–7 done except DB-bound items; waiting for the owner (docs/WAKEUP.md)
 
 ## 1. Data
 - [x] Load the data 1: index tier staged (160,122 and 3,056 rows) — ran by owner this morning, not rerun
@@ -68,14 +68,15 @@ Heartbeat: 2026-11-15 07:05 PST — step 4/5; BLOCKED on database reachability f
 
 ## 4. Browser check
 - [x] Playwright (scripts/package.json) + scripts/ui-check.mjs. Run 2: 133/152; all 19 failures = WebGL contexts exhausted (fixed: browser per theme). Fixed: /auth/session 404 on every page, /listings/{id}/trends 500 for ZIPs without ZORI
-- [ ] screenshots reviewed
+- [x] screenshots reviewed (Desert Clay all pages both widths; home/Find/ZIP other themes). Final rerun blocked: DB unreachable
 
 ## 5. Fixes
-- [ ] renter flow, Find/Saved, map, buyer, owner, advisor, themes
-- [ ] h1 on /apartments/{id}; ZHVI coverage; PC 396 "unverified" note
+- [x] Find source race, House filter 422, auth/session 404, trends 500, buyer raw ratios, legend over logo
+- [x] h1 on /apartments/{id}; ZHVI measured coverage on charts + MODEL_CARD; PC 396 unverified -> unclear + note
 
 ## 6. Deploy readiness
-- [ ] preflight, Bright Data monthly cost estimate
+- [x] preflight (see WAKEUP); zillow_rent ≈1,777 records/run ≈ $640/month; Facebook ≈ $3.90/month
 
 ## 7. Hand-off
-- [ ] stop servers, push night, docs/WAKEUP.md
+- [x] servers stopped (8000 and 3000 free), night pushed, docs/WAKEUP.md written. Waiting for the owner.
+- NOTE: preflight hung on the DB (laptop can't reach it since ~07:00; same error twice, thread stopped)
