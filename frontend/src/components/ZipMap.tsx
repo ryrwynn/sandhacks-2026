@@ -15,8 +15,10 @@ type Props = {
   zips: ZipSummary[];
   /** ZIPs to outline (finder results). */
   highlight?: string[];
-  /** Zoom to this ZIP (profile page). */
+  /** Zoom to this ZIP (profile page). Its county's shapes load too, so a covered ZIP outside the 12 shows. */
   focus?: string;
+  /** Where to start when the focus ZIP isn't in the base shapes yet: [lng, lat]. */
+  focusCenter?: [number, number];
   heightClass?: string;
   /** Home page: area search and "Add this area" under the map, and geometry that loads as the map moves. */
   explore?: boolean;
@@ -78,7 +80,7 @@ function Detail({ z }: { z: ZipSummary }) {
   );
 }
 
-function MapView({ token, zips, highlight = [], focus, heightClass = "h-72 sm:h-96", explore }: Props & { token: string }) {
+function MapView({ token, zips, highlight = [], focus, focusCenter, heightClass = "h-72 sm:h-96", explore }: Props & { token: string }) {
   const ref = useRef<MapRef>(null);
   const [shapes, setShapes] = useState<GeoJSON.FeatureCollection | null>(null);
   const [active, setActive] = useState<string | null>(focus ?? null);
@@ -96,7 +98,7 @@ function MapView({ token, zips, highlight = [], focus, heightClass = "h-72 sm:h-
   // Load county geometry as the viewport moves: ask GET /geo/zips which county files it needs, fetch any not yet loaded, merge by ZIP.
   const loadViewport = () => {
     const b = ref.current?.getBounds();
-    if (!explore || !b) return;
+    if (!(explore || focus) || !b) return;
     if (moveTimer.current) clearTimeout(moveTimer.current);
     moveTimer.current = setTimeout(async () => {
       try {
@@ -161,7 +163,7 @@ function MapView({ token, zips, highlight = [], focus, heightClass = "h-72 sm:h-
         <Map
           ref={ref}
           mapboxAccessToken={token}
-          initialViewState={{ longitude: -117.13, latitude: 32.76, zoom: 9.2 }}
+          initialViewState={focusCenter ? { longitude: focusCenter[0], latitude: focusCenter[1], zoom: 11 } : { longitude: -117.13, latitude: 32.76, zoom: 9.2 }}
           mapStyle="mapbox://styles/mapbox/light-v11"
           interactiveLayerIds={["zip-fill"]}
           onMouseMove={onMove}
