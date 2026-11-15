@@ -2,6 +2,8 @@
 import { useEffect, useState } from "react";
 import ApartmentCard, { CardSkeletons } from "@/components/ApartmentCard";
 import FilterBar from "@/components/FilterBar";
+import AddArea from "@/components/AddArea";
+import AreaSearch from "@/components/AreaSearch";
 import { ErrorNote } from "@/components/ui";
 import { selectCls, cardCls } from "@/components/styles";
 import { errorMessage, getListings } from "@/lib/api";
@@ -52,6 +54,11 @@ export default function Find() {
 
       <FilterBar value={filters} onChange={setFilters} showPrice />
 
+      <details className="rounded-xl bg-surface p-3 shadow-[0_1px_3px_rgba(46,49,39,0.12)]">
+        <summary className="min-h-11 cursor-pointer py-2.5 text-sm font-semibold">Looking somewhere else? Search another area</summary>
+        <div className="pt-2"><AreaSearch /></div>
+      </details>
+
       <div className="flex flex-wrap items-center justify-between gap-2">
         <h2 className="text-lg font-semibold" aria-live="polite">{loading && items.length === 0 ? "Searching..." : `${count.toLocaleString()} apartments in ${area}`}</h2>
         <select aria-label="Sort" className={selectCls} value={sort} onChange={(e) => setSort(e.target.value as ListingSort)}>
@@ -66,7 +73,10 @@ export default function Find() {
       {loading && items.length === 0 ? (
         <CardSkeletons n={6} />
       ) : rentals.length === 0 && !err ? (
-        <p className={`${cardCls} p-8 text-center text-muted`}>No apartments match these filters. Try a higher price limit, any number of bedrooms, or a wider area.</p>
+        <div className="space-y-3">
+          <p className={`${cardCls} p-8 text-center text-muted`}>No apartments match these filters. Try a higher price limit, any number of bedrooms, or a wider area.</p>
+          <AddArea compact />
+        </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {rentals.map((l) => <ApartmentCard key={l.id} listing={l} showSave saved={has(l.id)} onToggle={() => toggle(l)} />)}

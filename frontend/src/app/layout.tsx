@@ -26,7 +26,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Suspense fallback={<div className="h-14 bg-surface" />}><SiteNav /></Suspense>
           <MockBanner />
           <div className="mx-auto flex w-full max-w-7xl flex-1">
-            <ToolsSidebar />
+            <Suspense fallback={<div className="hidden w-60 shrink-0 md:block" />}><ToolsSidebar /></Suspense>
             <div className="min-w-0 flex-1 overflow-x-clip px-4 pb-24 pt-5 md:pb-12">{children}</div>
           </div>
         </SidebarProvider>
