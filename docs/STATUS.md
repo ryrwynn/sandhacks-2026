@@ -94,7 +94,7 @@ Heartbeat: 2026-11-15 12:20 PST — step 8 running (full ui-check)
 - [x] 7. Docs (PLAN current state, DESIGN, ACCOUNTS step 2)
 - [ ] 8. Checks
   - [x] preflight: all OK except FAIL "on battery" (laptop power) and WARNs (no DEV_DATABASE_URL, extra tables, no local Docker)
-  - [x] pytest 301 passed; build + tsc pass
+  - [x] pytest 299 passed; build + tsc pass
   - [x] local servers: API :8000 (RENTORKNOT_READ_STAGING=1) pid 92617; web :3000 pids 93238
   - [x] interaction checks 10/10 (map pan loads Orange County, first paint x4 themes + dark first visit, /saved shift-click, Find Starter)
   - [ ] full ui-check
