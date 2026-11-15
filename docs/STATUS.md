@@ -1,6 +1,6 @@
 # Overnight run status
 
-Heartbeat: 2026-11-15 01:08 PST — Phase 2: data, forecast, rules, accounts running; match and web done
+Heartbeat: 2026-11-15 01:10 PST — Phase 2: data, forecast, accounts running; rules merged (175 tests pass)
 
 ## Phase 0, setup
 - [x] preflight: all clear; WARN no DEV_DATABASE_URL (stage in shared DB), WARN no Google keys (sign-in off), WARN no local Docker
@@ -18,11 +18,11 @@ Heartbeat: 2026-11-15 01:08 PST — Phase 2: data, forecast, rules, accounts run
 - [ ] night-forecast (running)
 - [x] night-match (done, branch worktree-agent-ade3964715f2939f5; merge after rules, forecast, data)
 - [x] night-web (done, branch worktree-agent-a558ba42fb0d711d1)
-- [ ] night-rules (running)
+- [x] night-rules (merged into night)
 - [ ] night-accounts (running)
 
 ## Phase 3, integrate
-- [ ] merge rules, forecast, data, match, accounts, web
+- [ ] merge rules (done), forecast, data, match, accounts, web
 - [ ] regenerate frontend types
 - [ ] pytest + tsc + build
 - [ ] local smoke + smoke.sh endpoints

@@ -207,3 +207,9 @@ Dataset `gd_lfqkr8wm13ixtbd8f5` (Zillow properties listing information), the one
   permission settings.
 - night-match finished first (branch worktree-agent-ade3964715f2939f5): keyword ranking works now; embeddings wait for
   `python -m api.match.embed` with real env (about listings/50 requests, capped at 900).
+- **Gouging (night-rules, merged first).** One rent-covering declaration found from official pages: Tropical Storm Rachel
+  (Imperial, Los Angeles, Orange, San Diego), declared 2026-10-15, rent protections through 2026-11-14, verified against
+  Cal OES and gov.ca.gov. Gann Fire (Calaveras) and the Orange County chemical incident cover only 396(c), not rent.
+  leginfo and HUD refused automated fetches, so the statute text and the 160%-of-FMR rule are `verified: false`, and the
+  San Diego FMRs come from the scout's third-party mirror. The 160% path therefore answers `unclear` with the estimated
+  limit and says the figure is unchecked. ZIP-to-county covers San Diego County only; others are `unclear` without a county.
