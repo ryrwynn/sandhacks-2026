@@ -1,55 +1,85 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
-import FilterBar from "@/src/components/FilterBar";
-import ApartmentCard from "@/src/components/ApartmentCard";
-import { getListings } from "@/src/lib/api";
-import { useSaved } from "@/src/lib/saved";
-import { DEFAULT_FILTERS, type Filters, type Listing } from "@/src/lib/types";
+import { useEffect, useState } from "react";
+import ApartmentCard, { CardSkeletons } from "@/components/ApartmentCard";
+import FilterBar from "@/components/FilterBar";
+import { ErrorNote } from "@/components/ui";
+import { selectCls, cardCls } from "@/components/styles";
+import { errorMessage, getListings } from "@/lib/api";
+import { ZIP_OPTIONS } from "@/lib/format";
+import { useSaved } from "@/lib/saved";
+import { DEFAULT_FILTERS, type Filters } from "@/lib/types";
+import type { ListingSort, ListingSummary } from "@/lib/tracker";
+
+const PAGE = 24;
 
 export default function Find() {
-  const [filters, setFilters] = useState<Filters>({ ...DEFAULT_FILTERS, maxPrice: 3500 });
-  const [sort, setSort] = useState("recommended");
-  const [items, setItems] = useState<Listing[]>([]);
+  const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
+  const [sort, setSort] = useState<ListingSort>("recent");
+  const [items, setItems] = useState<ListingSummary[]>([]);
+  const [total, setTotal] = useState(0);
+  const [offset, setOffset] = useState(0);   // how many the API has returned so far
+  const [loading, setLoading] = useState(true);
+  const [err, setErr] = useState("");
   const { has, toggle } = useSaved();
 
-  useEffect(() => { getListings(filters).then(setItems); }, [filters]);
+  const load = (from: number) => {
+    setLoading(true);
+    getListings({ zip: filters.zip, beds: filters.beds, type: filters.type, maxPrice: filters.maxPrice || undefined, sort, limit: PAGE, offset: from })
+      .then((r) => {
+        setErr("");
+        setTotal(r.total);
+        setOffset(from + r.items.length);
+        setItems((cur) => (from === 0 ? r.items : [...cur, ...r.items]));
+      })
+      .catch((e) => setErr(errorMessage(e)))
+      .finally(() => setLoading(false));
+  };
+  // Reload from the top whenever a filter or the sort changes.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => load(0), [filters, sort]);
 
-  const sorted = useMemo(() => {
-    const c = [...items];
-    if (sort === "low") c.sort((a, b) => a.rent - b.rent);
-    if (sort === "high") c.sort((a, b) => b.rent - a.rent);
-    if (sort === "drop") c.sort((a, b) => (a.rent - a.history[0]) - (b.rent - b.history[0]));
-    return c;
-  }, [items, sort]);
+  // This page is about rentals: for-sale records are left out.
+  const rentals = items.filter((l) => l.listing_type === "rent");
+  const area = ZIP_OPTIONS.find((z) => z.zip === filters.zip)?.name ?? "San Diego";
+  const count = Math.max(0, total - (items.length - rentals.length));
 
   return (
-    <>
-      <section className="page-head">
-        <div>
-          <h1>Find apartments</h1>
-          <p className="muted">Find your next place, compare asking rents, and save the ones you love.</p>
-        </div>
+    <main className="space-y-5">
+      <section>
+        <h1 className="text-2xl font-bold tracking-tight sm:text-3xl">Find apartments</h1>
+        <p className="text-muted">Compare asking rents and save the ones you like to watch how their price changes.</p>
       </section>
+
       <FilterBar value={filters} onChange={setFilters} showPrice />
-      <div className="row-between results-bar">
-        <div>
-          <h2 className="small-h">{sorted.length} apartments in {filters.area.split(",")[0]}</h2>
-          <p className="muted small">Compare six-month rent trends before adding a place to your watchlist.</p>
-        </div>
-        <select aria-label="Sort" value={sort} onChange={(e) => setSort(e.target.value)}>
-          <option value="recommended">Sort: Recommended</option>
-          <option value="low">Price: low to high</option>
-          <option value="high">Price: high to low</option>
-          <option value="drop">Biggest price drop</option>
+
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <h2 className="text-lg font-semibold" aria-live="polite">{loading && items.length === 0 ? "Searching..." : `${count.toLocaleString()} apartments in ${area}`}</h2>
+        <select aria-label="Sort" className={selectCls} value={sort} onChange={(e) => setSort(e.target.value as ListingSort)}>
+          <option value="recent">Sort: Recommended</option>
+          <option value="price_asc">Price: low to high</option>
+          <option value="price_desc">Price: high to low</option>
+          <option value="biggest_drop">Biggest price drop</option>
         </select>
       </div>
-      {sorted.length === 0 ? (
-        <p className="empty">No apartments match these filters. Try a higher price limit or more bedrooms.</p>
+
+      {err && <ErrorNote>{err}</ErrorNote>}
+      {loading && items.length === 0 ? (
+        <CardSkeletons n={6} />
+      ) : rentals.length === 0 && !err ? (
+        <p className={`${cardCls} p-8 text-center text-muted`}>No apartments match these filters. Try a higher price limit, any number of bedrooms, or a wider area.</p>
       ) : (
-        <div className="grid">
-          {sorted.map((l) => <ApartmentCard key={l.id} listing={l} showSave saved={has(l.id)} onToggle={() => toggle(l.id)} />)}
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {rentals.map((l) => <ApartmentCard key={l.id} listing={l} showSave saved={has(l.id)} onToggle={() => toggle(l)} />)}
         </div>
       )}
-    </>
+
+      {offset < total && items.length > 0 && (
+        <div className="text-center">
+          <button type="button" disabled={loading} onClick={() => load(offset)} className="min-h-11 rounded-lg bg-surface px-6 font-semibold shadow-[0_1px_3px_rgba(46,49,39,0.2)] hover:bg-line disabled:opacity-50">
+            {loading ? "Loading..." : "Load more"}
+          </button>
+        </div>
+      )}
+    </main>
   );
 }

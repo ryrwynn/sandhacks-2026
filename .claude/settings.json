@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "worktree": { "baseRef": "head" },
+  "permissions": {
+    "allow": [
+      "Bash(uv run *)", "Bash(uv add *)", "Bash(uv sync *)", "Bash(uv init *)",
+      "Bash(uv lock *)", "Bash(uv python *)", "Bash(uv pip *)",
+      "Bash(npm run *)", "Bash(npm install)", "Bash(npm install *)", "Bash(npm ci *)", "Bash(npx *)",
+      "Bash(docker compose *)", "Bash(psql *)", "Bash(curl *)", "Bash(dig *)",
+      "Bash(git status *)", "Bash(git diff *)", "Bash(git log *)", "Bash(git show *)",
+      "Bash(git branch *)", "Bash(git rev-parse *)", "Bash(git fetch *)", "Bash(git pull *)",
+      "Bash(git add *)", "Bash(git commit *)", "Bash(git push *)", "Bash(git switch *)",
+      "Bash(git checkout *)", "Bash(git merge *)", "Bash(git worktree *)", "Bash(git stash *)",
+      "Bash(gh *)", "Bash(./scripts/*)", "Bash(bash scripts/*)", "Bash(chmod +x scripts/*)"
+    ],
+    "deny": ["Read(./.env)", "Read(**/.env)"]
+  }
+}

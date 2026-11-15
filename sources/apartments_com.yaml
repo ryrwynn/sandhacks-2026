@@ -1,0 +1,37 @@
+# Disabled: needs a custom scraper built in Bright Data's AI Scraper Studio. Field names are placeholders.
+source_key: apartments_com
+kind: listing_site
+listing_type: rent
+trust_weight: 0.9
+fetch:
+  method: brightdata_collector
+  collector_id: ${BRIGHTDATA_APARTMENTS_COLLECTOR}
+  zip_file: data/zips.txt
+  input_url: "https://www.apartments.com/san-diego-ca-{zip}/"
+explode: floor_plans              # one canonical record per floor plan
+drop_fields: [leasing_agent_name, leasing_agent_phone, contact_email, owner_name]
+redact_fields: [description]
+zip_filter: data/zips.txt
+map:
+  external_id: id
+  price_usd: floor_plan.rent_min
+  price_max_usd: floor_plan.rent_max
+  beds: floor_plan.beds
+  baths: floor_plan.baths
+  sqft: floor_plan.sqft_min
+  address_norm: address
+  unit_label: floor_plan.name
+  zip: zip
+  year_built: year_built
+  property_type: property_type
+  text: description
+property_types:
+  apartment: apartment
+  condo: condo
+  house: single_family
+  townhome: townhouse
+extras_map:
+  floor_plan: floor_plan.name
+  pet_policy: pet_policy
+  amenities: amenities
+location_precision: address

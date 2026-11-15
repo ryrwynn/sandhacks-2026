@@ -1,0 +1,14 @@
+{
+  "address": "4200 Fairmount Ave, San Diego, CA 92105",
+  "zip": "92105",
+  "lowest_rent_12mo": 2100.0,
+  "new_rent": 2350.0,
+  "effective_date": "2026-12-01",
+  "year_built": 1978,
+  "property_type": "apartment",
+  "got_exemption_notice": null,
+  "owner_is_corporate": null,
+  "other_exemption": false,
+  "increases_last_12mo": 0,
+  "is_demo": true
+}

@@ -1,0 +1,358 @@
+{
+ "abbreviatedAddress": "2020 El Cajon Blvd APT 535",
+ "address": {
+  "city": "San Diego",
+  "state": "CA",
+  "streetAddress": "2020 El Cajon Blvd",
+  "zipcode": "92104"
+ },
+ "availability_date": "2026-11-15T02:17:29.582Z",
+ "base_rent": 2685,
+ "bathrooms": 1,
+ "bedrooms": 1,
+ "city": "San Diego",
+ "community_details": [
+  {
+   "title": "Features",
+   "values": [
+    "Fitness Center",
+    "Gated"
+   ]
+  },
+  {
+   "title": "Security",
+   "values": [
+    "Gated Community"
+   ]
+  }
+ ],
+ "construction": [
+  {
+   "title": "Type & style",
+   "values": [
+    "Home type: Apartment",
+    "Property subType: Apartment"
+   ]
+  }
+ ],
+ "contingent_listing_type": null,
+ "country": "USA",
+ "county": "San Diego County",
+ "countyFIPS": null,
+ "currency": "USD",
+ "days_on_zillow": null,
+ "financial": null,
+ "financial_listing_details": null,
+ "getting_around": {
+  "bike": {
+   "description": "Bikeable",
+   "score": 68
+  },
+  "transit": {
+   "description": "Good Transit",
+   "score": 54
+  },
+  "walk": {
+   "description": "Walker's Paradise",
+   "score": 94
+  }
+ },
+ "getting_around_scores": {
+  "bike_score": "68/100 | Bikeable",
+  "transit_score": "54/100 | Good Transit",
+  "walk_score": "94/100 | Walker's Paradise"
+ },
+ "hasPublicVideo": false,
+ "has_3d_tour": true,
+ "hoa_details": {
+  "amenities_included": [
+   "Dog Park",
+   "Fitness Center",
+   "Management",
+   "Party Room"
+  ],
+  "has_hoa": null,
+  "hoa_fee_currency": null,
+  "hoa_fee_period": null,
+  "hoa_fee_value": null,
+  "hoa_name": null,
+  "services_included": null
+ },
+ "homeStatus": "FOR_RENT",
+ "homeType": "APARTMENT",
+ "interior": {
+  "bedrooms_and_bathrooms": {
+   "bathrooms": 1,
+   "bedrooms": 1,
+   "full_bathrooms": 1,
+   "half_bathroom": "undefined"
+  },
+  "flooring": "Carpet, Hardwood, Vinyl",
+  "heating": "Central, Electric, Forced Air",
+  "other_interior_features": "Total interior livable area :581 sqft"
+ },
+ "isInstantOfferEnabled": "No",
+ "isOffMarket": false,
+ "isVerifiedClaimedByCurrentSignedInUser": "No",
+ "is_flipped_within_12_months": true,
+ "is_listed_by_management_company": true,
+ "is_showcased": false,
+ "latitude": 32.755671,
+ "listingDataSource": "Phoenix",
+ "listing_provided_by": {
+  "company": "H.G. Fenton Company",
+  "email": null,
+  "name": "BLVD Management Team",
+  "phone_number": "(619) 598-1248"
+ },
+ "longitude": -117.143211,
+ "management_company_phone_number": "(619) 598-1248",
+ "mls_id": null,
+ "num_of_applications": null,
+ "num_of_contacts": null,
+ "open_house_details": null,
+ "originating_mls": null,
+ "other": null,
+ "photoCount": 64,
+ "price": 2685,
+ "priceHistory": [
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2026-11-12",
+   "event": "Price change",
+   "postingIsRental": true,
+   "price": 2685,
+   "priceChangeRate": -0.06932409012131716,
+   "pricePerSquareFoot": 5,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1794441600000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2026-10-28",
+   "event": "Price change",
+   "postingIsRental": true,
+   "price": 2885,
+   "priceChangeRate": 0.03220035778175313,
+   "pricePerSquareFoot": 5,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1793145600000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2026-09-30",
+   "event": "Price change",
+   "postingIsRental": true,
+   "price": 2795,
+   "priceChangeRate": -0.01757469244288225,
+   "pricePerSquareFoot": 5,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1790726400000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2026-09-24",
+   "event": "Price change",
+   "postingIsRental": true,
+   "price": 2845,
+   "priceChangeRate": -0.05008347245409015,
+   "pricePerSquareFoot": 5,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1790208000000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2026-09-18",
+   "event": "Listed for rent",
+   "postingIsRental": true,
+   "price": 2995,
+   "priceChangeRate": 0.07155635062611806,
+   "pricePerSquareFoot": 5,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1789689600000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2025-09-09",
+   "event": "Listing removed",
+   "postingIsRental": true,
+   "price": 2795,
+   "priceChangeRate": 0,
+   "pricePerSquareFoot": 5,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1757376000000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2025-08-14",
+   "event": "Listed for rent",
+   "postingIsRental": true,
+   "price": 2795,
+   "priceChangeRate": -0.03454231433506045,
+   "pricePerSquareFoot": 5,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1755129600000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2024-06-19",
+   "event": "Listing removed",
+   "postingIsRental": true,
+   "priceChangeRate": 0,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1718755200000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2024-06-02",
+   "event": "Price change",
+   "postingIsRental": true,
+   "price": 2895,
+   "priceChangeRate": -0.01864406779661017,
+   "pricePerSquareFoot": 5,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1717286400000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2024-05-27",
+   "event": "Price change",
+   "postingIsRental": true,
+   "price": 2950,
+   "priceChangeRate": -0.02800658978583196,
+   "pricePerSquareFoot": 5,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1716768000000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2024-05-23",
+   "event": "Listed for rent",
+   "postingIsRental": true,
+   "price": 3035,
+   "priceChangeRate": 0,
+   "pricePerSquareFoot": 5,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1716422400000
+  }
+ ],
+ "property": [
+  {
+   "title": "Parking",
+   "values": [
+    "Parking features: Covered,Garage,Off Street,Parking Lot",
+    "Has garage: Yes"
+   ]
+  },
+  {
+   "title": "Features",
+   "values": [
+    "Patio & porch: Covered,Deck,Enclosed,Patio",
+    "Exterior features: 2 Parking Spots,2 Parking Spots Included,2.5 Bathrooms,24- Hour Package Lockers,Abundance Of Natural Light,Balcony,Barbecue,Controlled Access,Corner Unit,Deep Soaking Bath Tub,Dual Master,Evo Grills,Extra Windows,Floor To Ceiling Windows,Free 16 Oz Beer Daily (by Tap Room Beer Co),Free Cold Brew Coffee (by Dropkick Cold Brew),Garden,Gated Community,Great Light,High Speed Internet,Island Kitchen *,L-Shape Kitchen,Large Bedroom,Large Open Layout Living Room,Large Walk-In Closets,Large Windows,Laundry,Live/Work Style Loft,Loft Style,Monthly Social Events,Natural Light,Nest Thermostat,Nest Thermostats,No Breed Or Weight Restrictions For Pets,No Monthly Parking Fee,No Monthly Pet Rent Fee,No Pet Deposit,No Smoking,Onsite Maintenance 7 Days Per Week,Onsite Staff,Open Layout,Parking,Parking Included,Parking Included With Every Home,Pet Friendly,Rentable Outdoor Space For Events,Resident Events,Resident Perks,Stainless Steal Appliances,Stainless Steel Appliances,Standing Shower,Stroage,Top Floor,Two Parking Spaces Included,Two Story Loft Style,Walk In Closets *,Walk-In Closets,Walkable,White Quartz Counter Tops,Woodstyle Flooring Throughout",
+    "Has spa: Yes",
+    "Spa features: Spa",
+    "Has view: Yes",
+    "View description: City,East Facing Views,Medium Enclosed Bay View Patio,Sunset Views,View,Views"
+   ]
+  },
+  {
+   "title": "Lot",
+   "values": [
+    "Features: Garden,Views"
+   ]
+  },
+  {
+   "title": "Accessibility",
+   "values": [
+    "Accessibility features: Disabled Access"
+   ]
+  }
+ ],
+ "publish_url": "https://www.zillow.com/renter-hub/clickRedirect?alias=4jypcf9z5aa6d&r=zillow&mobileFriendly=true",
+ "selfTour": {
+  "hasSelfTour": false
+ },
+ "sold_to_list_ratio": null,
+ "sold_to_zestimate_ratio": null,
+ "special_offer": "Fast Move In Savings: Move in within 7 days of your tour to receive 50% off your security deposit when you move in (based on approval of background/credit check)Make your move sooner and start settling in to your new home.",
+ "sqft": 581,
+ "state": "CA",
+ "streetAddress": "2020 El Cajon Blvd",
+ "tag": null,
+ "tags": [
+  "Special offer"
+ ],
+ "timestamp": "2026-11-15T02:17:30.098Z",
+ "unit_amenities": [
+  "Vinyl",
+  "Garbage Disposal",
+  "Oven",
+  "Dishwasher",
+  "Microwave",
+  "Refrigerator",
+  "Hardwood",
+  "Carpet"
+ ],
+ "unit_number": "Unit 735",
+ "url": "https://www.zillow.com/apartments/san-diego-ca/blvd-north-park/CkBhTF/",
+ "utilities": [
+  "Cable Connected"
+ ],
+ "zipcode": "92104",
+ "zpid": 2057103672
+}

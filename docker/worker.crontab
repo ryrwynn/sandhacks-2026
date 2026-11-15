@@ -1,0 +1,4 @@
+# m h dom mon dow  command   (UTC; logs go to the container's stdout)
+0 */3 * * *  /app/docker/worker-job.sh python -m worker.run --source zillow_rent
+30 4 * * *   /app/docker/worker-job.sh python -m worker.run --source zillow_sale
+0 6 * * *    /app/docker/worker-job.sh python -m worker.train

@@ -1,0 +1,13 @@
+# /api/* goes to FastAPI with the prefix stripped (the app sets root_path="/api");
+# everything else goes to Next.js. HTTPS certificates are automatic for PUBLIC_HOST.
+{$PUBLIC_HOST} {
+	encode zstd gzip
+
+	handle_path /api/* {
+		reverse_proxy api:8000
+	}
+
+	handle {
+		reverse_proxy web:3000
+	}
+}

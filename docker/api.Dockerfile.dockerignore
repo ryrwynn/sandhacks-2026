@@ -1,0 +1,9 @@
+.git
+.env
+.venv
+frontend
+**/node_modules
+**/__pycache__
+.claude
+sandhacks
+django_app

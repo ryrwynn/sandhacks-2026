@@ -1,0 +1,190 @@
+{
+ "abbreviatedAddress": "3788 Arizona St",
+ "address": {
+  "city": "San Diego",
+  "state": "CA",
+  "streetAddress": "3788 Arizona St",
+  "zipcode": "92104"
+ },
+ "availability_date": null,
+ "base_rent": null,
+ "bathrooms": 1,
+ "bedrooms": 2,
+ "city": "San Diego",
+ "community_details": [
+  {
+   "title": "Subdivision",
+   "values": [
+    "North Park"
+   ]
+  }
+ ],
+ "construction": [
+  {
+   "title": "Type & style",
+   "values": [
+    "Home type: SingleFamily",
+    "Property subType: Single Family Residence"
+   ]
+  },
+  {
+   "title": "Condition",
+   "values": [
+    "Year built: 2012"
+   ]
+  }
+ ],
+ "contingent_listing_type": null,
+ "country": "USA",
+ "county": "San Diego County",
+ "countyFIPS": "06073",
+ "countyID": "2841",
+ "currency": "USD",
+ "daysOnZillow": 26,
+ "days_on_zillow": 26,
+ "description": "BUY THIS HOME, I'LL BUY YOURS! Seller will consider paying buyer's agent up to 4% commission AND may assist with special financing options including as little as zero money down and an interest rate as low as 3.99%. NO HOA! An incredible opportunity in the heart of North Park! Located in one of San Diego's most sought-after neighborhoods, this property offers a blank canvas for those looking to bring their vision to life. Whether you're an investor, contractor, or buyer ready to create something truly your own, this is your chance to unlock the potential of a property in a prime location. Just minutes from Balboa Park, popular restaurants, coffee shops, shopping, and the vibrant North Park lifestyle, you'll enjoy everything this desirable community has to offer. With endless possibilities to reimagine the space, this is an opportunity to transform a property into something special. Bring your creativity and make your vision a reality!",
+ "financial": null,
+ "financial_listing_details": null,
+ "getting_around": {
+  "bike": null,
+  "transit": {
+   "description": "Good Transit",
+   "score": 54
+  },
+  "walk": {
+   "description": "Walker's Paradise",
+   "score": 92
+  }
+ },
+ "getting_around_scores": {
+  "bike_score": null,
+  "transit_score": "54/100 | Good Transit",
+  "walk_score": "92/100 | Walker's Paradise"
+ },
+ "hasPublicVideo": false,
+ "has_3d_tour": false,
+ "hdpTypeDimension": "ForSale",
+ "hoa_details": {
+  "amenities_included": null,
+  "has_hoa": false,
+  "hoa_fee_currency": null,
+  "hoa_fee_period": null,
+  "hoa_fee_value": null,
+  "hoa_name": null,
+  "services_included": null
+ },
+ "homeStatus": "FOR_SALE",
+ "homeType": "SINGLE_FAMILY",
+ "interior": {
+  "bedrooms_and_bathrooms": {
+   "bathrooms": 1,
+   "bedrooms": 2,
+   "full_bathrooms": 1,
+   "half_bathroom": "0"
+  },
+  "flooring": "Hardwood, Carpet",
+  "heating": "Has Heating (Unspecified Type)",
+  "other_interior_features": "Total structure area :832, Total interior livable area :832 sqft, Finished area above ground :832"
+ },
+ "isInstantOfferEnabled": "No",
+ "isOffMarket": false,
+ "isPremierBuilder": "false",
+ "isUndisclosedAddress": "false",
+ "isVerifiedClaimedByCurrentSignedInUser": "No",
+ "is_flipped_within_12_months": false,
+ "is_listed_by_management_company": false,
+ "is_showcased": false,
+ "latitude": 32.7472,
+ "listingTypeDimension": "For Sale by Agent",
+ "listing_provided_by": {
+  "company": "eXp of Greater Los Angeles, Inc",
+  "email": null,
+  "name": "Jim Bottrell, eXp of Greater Los Angeles, Inc",
+  "phone_number": "760-576-2335"
+ },
+ "livingArea": 832,
+ "livingAreaUnitsShort": "sqft",
+ "livingAreaValue": 832,
+ "longitude": -117.13815,
+ "lotAreaUnits": "Square Feet",
+ "lotAreaValue": 5504,
+ "lotSize": 5504,
+ "mls_id": "12033778",
+ "mortgageRates": {
+  "thirtyYearFixedRate": 7.38
+ },
+ "num_of_applications": null,
+ "num_of_contacts": null,
+ "open_house_details": null,
+ "originating_mls": null,
+ "other": null,
+ "overview": {
+  "days_on_zillow": 26,
+  "number_of_saves": 551,
+  "number_of_views": 7316
+ },
+ "parcelId": "4530523100",
+ "photoCount": 2,
+ "price": 599999,
+ "priceHistory": null,
+ "property": [
+  {
+   "title": "Features",
+   "values": [
+    "Stories: 1"
+   ]
+  },
+  {
+   "title": "Lot",
+   "values": [
+    "Lot size: 5,504 sqft"
+   ]
+  },
+  {
+   "title": "Details",
+   "values": [
+    "Parcel number: 4530523100",
+    "Lease amount: 0"
+   ]
+  }
+ ],
+ "propertyTaxRate": 1.17,
+ "propertyTypeDimension": "Single Family",
+ "publish_url": null,
+ "rentZestimate": 3374,
+ "resoFacts:sewer": "Municipal",
+ "resoFacts:waterSource": "Municipal",
+ "resofacts_sewer": "Municipal",
+ "resofacts_water_source": "Municipal",
+ "selfTour": {
+  "hasSelfTour": false
+ },
+ "sold_to_list_ratio": null,
+ "sold_to_zestimate_ratio": null,
+ "special_offer": null,
+ "sqft": null,
+ "ssid": 17925,
+ "state": "CA",
+ "streetAddress": "3788 Arizona St",
+ "tag": null,
+ "tags": [
+  "For sale"
+ ],
+ "taxAssessedValue": 41172,
+ "taxAssessedYear": 2026,
+ "timeZone": "America/Los_Angeles",
+ "timestamp": "2026-11-15T02:14:50.038Z",
+ "tourEligibility": {
+  "isPropertyTourEligible": true
+ },
+ "tourViewCount": 0,
+ "unit_amenities": null,
+ "unit_number": "Unit 4",
+ "url": "https://www.zillow.com/homedetails/3788-Arizona-St-San-Diego-CA-92104/16973067_zpid/",
+ "utilities": [
+  "Water: Municipal",
+  "Sewer: Municipal"
+ ],
+ "zipcode": "92104",
+ "zpid": 900000001
+}

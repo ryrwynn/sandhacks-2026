@@ -1,0 +1,44 @@
+# RentOrKnot on one server: Caddy in front, FastAPI engine, cron worker, Next.js.
+# Every service reads .env at runtime (never baked into an image).
+services:
+  api:
+    build: { context: ., dockerfile: docker/api.Dockerfile }
+    env_file: .env
+    restart: unless-stopped
+    volumes: [models:/app/models]
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  worker:
+    build: { context: ., dockerfile: docker/api.Dockerfile }
+    env_file: .env
+    restart: unless-stopped
+    command: ["/app/docker/worker-entrypoint.sh"]
+    volumes: [models:/app/models, ./data:/app/data]
+
+  web:
+    build: { context: ./frontend, dockerfile: ../docker/web.Dockerfile }
+    env_file: .env                      # MAP_BOX_API_KEY for Mapbox, read at request time
+    environment:
+      API_INTERNAL_URL: http://api:8000 # server-side fetches skip Caddy
+    restart: unless-stopped
+    depends_on: [api]
+
+  caddy:
+    image: caddy:2.8
+    env_file: .env                      # PUBLIC_HOST
+    restart: unless-stopped
+    ports: ["80:80", "443:443", "443:443/udp"]
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on: [api, web]
+
+volumes:
+  models:
+  caddy_data:
+  caddy_config:

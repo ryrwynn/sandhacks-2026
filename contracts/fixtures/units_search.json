@@ -1,0 +1,14 @@
+{
+  "query": "4200 Fairmount",
+  "results": [
+    {
+      "property_id": 101,
+      "address_norm": "4200 FAIRMOUNT AVE, SAN DIEGO, CA 92105",
+      "unit_label": "12",
+      "zip": "92105",
+      "beds": 2,
+      "year_built": 1978,
+      "property_type": "apartment"
+    }
+  ]
+}

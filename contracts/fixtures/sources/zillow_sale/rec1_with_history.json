@@ -1,0 +1,411 @@
+{
+ "abbreviatedAddress": "3445 29th St",
+ "address": {
+  "city": "San Diego",
+  "state": "CA",
+  "streetAddress": "3445 29th St",
+  "zipcode": "92104"
+ },
+ "availability_date": null,
+ "base_rent": null,
+ "bathrooms": 4,
+ "bedrooms": 4,
+ "city": "San Diego",
+ "community_details": [
+  {
+   "title": "Features",
+   "values": [
+    "Curbs",
+    "Dog Park",
+    "Golf",
+    "Park",
+    "Storm Drain(s)",
+    "Street Lights",
+    "Sidewalks"
+   ]
+  }
+ ],
+ "construction": [
+  {
+   "title": "Type & style",
+   "values": [
+    "Home type: SingleFamily",
+    "Architectural style: Craftsman",
+    "Property subType: Single Family Residence"
+   ]
+  },
+  {
+   "title": "Condition",
+   "values": [
+    "Year built: 1911"
+   ]
+  }
+ ],
+ "contingent_listing_type": null,
+ "country": "USA",
+ "county": "San Diego County",
+ "countyFIPS": "06073",
+ "countyID": "2841",
+ "currency": "USD",
+ "dateSold": "2022-11-07T00:00:00.000Z",
+ "dateSoldString": "2022-11-07",
+ "daysOnZillow": 3,
+ "days_on_zillow": 3,
+ "description": "ENTERTAINING OFFERS BETWEEN $2,000,000 AND $2,300,000. EXQUISITE NORTH PARK CRAFTSMAN | HISTORIC CHARM MEETS MODERN LUXURY! Originally built in 1911 and masterfully rebuilt down to the studs in 2019, this exceptional 4-bedroom, 3.5-bath, 2,243 sq. ft. residence seamlessly blends timeless architectural character with extraordinary modern upgrades. The original Craftsman porch and front door preserve the home's historic soul, while premium dual-pane windows, upgraded doors, newer foundation, plumbing, electrical, and luxury exterior paint with a transferable lifetime warranty provide lasting value. The stunning designer kitchen features a 48-inch dual-fuel range with six burners and griddle, commercial Caf\u00e9 hood, granite countertops, oversized island, and custom finishes. Engineered hardwood flooring, designer lighting, a temperature-controlled gas fireplace, and beautifully appointed living spaces create understated elegance throughout. Upstairs, the luxurious primary retreat features a private deck, custom Elfa walk-in closet, and spa-inspired bath with soaking tub, dual vanities, and oversized shower. A versatile, enclosed loft provides additional living space, or sellers willing to add a closet to make the 4th bedroom (for the right offer), while the beautifully designed laundry/mudroom and abundant storage elevate everyday convenience. ENERGY INDEPENDENCE & SMART HOME LUXURY: Fully Paid/Owned 6.46 kW solar system with 19 panels, TWO Tesla Powerwall 3 batteries installed in 2026, Tesla Level 2 EV charger, tankless water heater, Ring security system, and gigabit fiber internet. Outside, enjoy professionally landscaped grounds with California native plants, mature fruit trees, low-maintenance turf, automated drip irrigation, landscape lighting, expansive entertaining deck, hard-piped BBQ and fire pit, and Wi-Fi-controlled automatic driveway gate. All within one of San Diego's most desirable and walkable neighborhoods! Enjoy North Park's celebrated restaurants, coffee shops, boutiques, breweries, and vibrant arts scene, with nearby Balboa Park, Morley Field, hiking trails, tennis courts, and cultural attractions. A RARE OPPORTUNITY TO OWN A HISTORIC CRAFTSMAN WITH THE LUXURY, TECHNOLOGY, AND MAJOR SYSTEM UPGRADES OF A MODERN HOME!",
+ "financial": null,
+ "financial_listing_details": null,
+ "getting_around": {
+  "bike": {
+   "description": "Bikeable",
+   "score": 66
+  },
+  "transit": {
+   "description": "Some Transit",
+   "score": 46
+  },
+  "walk": {
+   "description": "Walker's Paradise",
+   "score": 94
+  }
+ },
+ "getting_around_scores": {
+  "bike_score": "66/100 | Bikeable",
+  "transit_score": "46/100 | Some Transit",
+  "walk_score": "94/100 | Walker's Paradise"
+ },
+ "hasApprovedThirdPartyVirtualTourUrl": false,
+ "hasPublicVideo": false,
+ "has_3d_tour": false,
+ "hdpTypeDimension": "ForSale",
+ "hoa_details": {
+  "amenities_included": null,
+  "services_included": null
+ },
+ "homeStatus": "FOR_SALE",
+ "homeType": "SINGLE_FAMILY",
+ "interior": {
+  "bedrooms_and_bathrooms": {
+   "bathrooms": 4,
+   "bedrooms": 4,
+   "full_bathrooms": 3,
+   "half_bathroom": "1"
+  },
+  "other_interior_features": "Total interior livable area :2,243 sqft"
+ },
+ "isInstantOfferEnabled": "No",
+ "isOffMarket": false,
+ "isPremierBuilder": "false",
+ "isUndisclosedAddress": "false",
+ "isVerifiedClaimedByCurrentSignedInUser": "No",
+ "is_flipped_within_12_months": true,
+ "is_listed_by_management_company": false,
+ "is_showcased": false,
+ "lastSoldPrice": 1850000,
+ "latitude": 32.741978,
+ "listingTypeDimension": "For Sale by Agent",
+ "listing_provided_by": {
+  "company": "Century 21 Affiliated",
+  "email": "619-851-0608",
+  "name": "Robert Cromer, Century 21 Affiliated, Yvonne Cromer, Century 21 Affiliated",
+  "phone_number": "619-871-5363"
+ },
+ "livingArea": 2243,
+ "livingAreaUnitsShort": "sqft",
+ "livingAreaValue": 2243,
+ "longitude": -117.13074,
+ "lotAreaUnits": "Square Feet",
+ "lotAreaValue": 5227.2,
+ "lotSize": 5227,
+ "mls_id": "PTP2608341",
+ "mortgageRates": {
+  "thirtyYearFixedRate": 6.63
+ },
+ "num_of_applications": null,
+ "num_of_contacts": null,
+ "open_house_details": null,
+ "originating_mls": "California Regional MLS (North San Diego County & Pacific Southwest AORs)",
+ "other": null,
+ "overview": {
+  "days_on_zillow": 3,
+  "number_of_saves": 98,
+  "number_of_views": 897
+ },
+ "parcelId": "4534150100",
+ "photoCount": 53,
+ "price": 2000000,
+ "priceHistory": [
+  {
+   "attributeSource": {
+    "infoString2": "CRMLS",
+    "infoString3": "https://photos.zillowstatic.com/fp/cb8caaa629c0af2058e60add67b2f2ee-zillow_web_logo_inf_11.jpg"
+   },
+   "date": "2026-11-11",
+   "event": "Listed for sale",
+   "postingIsRental": false,
+   "price": 2000000,
+   "priceChangeRate": 0.08108108108108109,
+   "pricePerSquareFoot": 892,
+   "showCountyLink": false,
+   "source": "CRMLS",
+   "source_listing_id": "PTP2608341",
+   "source_name": "CRMLS",
+   "time": 1794355200000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "SDMLS",
+    "infoString3": "https://photos.zillowstatic.com/fp/32fa7129f16f8438799012a11d1f3534-zillow_web_logo_inf_11.jpg"
+   },
+   "date": "2022-11-07",
+   "event": "Sold",
+   "postingIsRental": false,
+   "price": 1850000,
+   "priceChangeRate": 0,
+   "pricePerSquareFoot": 825,
+   "showCountyLink": false,
+   "source": "SDMLS",
+   "source_listing_id": "220019728",
+   "source_name": "SDMLS",
+   "time": 1667779200000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "SDMLS",
+    "infoString3": "https://photos.zillowstatic.com/fp/32fa7129f16f8438799012a11d1f3534-zillow_web_logo_inf_11.jpg"
+   },
+   "date": "2022-10-17",
+   "event": "Pending sale",
+   "postingIsRental": false,
+   "price": 1850000,
+   "priceChangeRate": 0,
+   "pricePerSquareFoot": 825,
+   "showCountyLink": false,
+   "source": "SDMLS",
+   "source_listing_id": "220019728",
+   "source_name": "SDMLS",
+   "time": 1665964800000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "SDMLS",
+    "infoString3": "https://photos.zillowstatic.com/fp/32fa7129f16f8438799012a11d1f3534-zillow_web_logo_inf_11.jpg"
+   },
+   "date": "2022-10-14",
+   "event": "Listed for sale",
+   "postingIsRental": false,
+   "price": 1850000,
+   "priceChangeRate": 0,
+   "pricePerSquareFoot": 825,
+   "showCountyLink": false,
+   "source": "SDMLS",
+   "source_listing_id": "220019728",
+   "source_name": "SDMLS",
+   "time": 1665705600000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "SDMLS",
+    "infoString3": "https://photos.zillowstatic.com/fp/32fa7129f16f8438799012a11d1f3534-zillow_web_logo_inf_11.jpg"
+   },
+   "date": "2022-10-12",
+   "event": "Pending sale",
+   "postingIsRental": false,
+   "price": 1850000,
+   "priceChangeRate": 0,
+   "pricePerSquareFoot": 825,
+   "showCountyLink": false,
+   "source": "SDMLS",
+   "source_listing_id": "220019728",
+   "source_name": "SDMLS",
+   "time": 1665532800000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "SDMLS",
+    "infoString3": "https://photos.zillowstatic.com/fp/32fa7129f16f8438799012a11d1f3534-zillow_web_logo_inf_11.jpg"
+   },
+   "date": "2022-10-04",
+   "event": "Price change",
+   "postingIsRental": false,
+   "price": 1850000,
+   "priceChangeRate": -0.07268170426065163,
+   "pricePerSquareFoot": 825,
+   "showCountyLink": false,
+   "source": "SDMLS",
+   "source_listing_id": "220019728",
+   "source_name": "SDMLS",
+   "time": 1664841600000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "SDMLS",
+    "infoString3": "https://photos.zillowstatic.com/fp/32fa7129f16f8438799012a11d1f3534-zillow_web_logo_inf_11.jpg"
+   },
+   "date": "2022-09-21",
+   "event": "Listed for sale",
+   "postingIsRental": false,
+   "price": 1995000,
+   "priceChangeRate": 0,
+   "pricePerSquareFoot": 889,
+   "showCountyLink": false,
+   "source": "SDMLS",
+   "source_listing_id": "220019728",
+   "source_name": "SDMLS",
+   "time": 1663718400000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "SDMLS",
+    "infoString3": "https://photos.zillowstatic.com/fp/32fa7129f16f8438799012a11d1f3534-zillow_web_logo_inf_11.jpg"
+   },
+   "date": "2022-08-30",
+   "event": "Pending sale",
+   "postingIsRental": false,
+   "price": 1995000,
+   "priceChangeRate": 0,
+   "pricePerSquareFoot": 889,
+   "showCountyLink": false,
+   "source": "SDMLS",
+   "source_listing_id": "220019728",
+   "source_name": "SDMLS",
+   "time": 1661817600000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "SDMLS",
+    "infoString3": "https://photos.zillowstatic.com/fp/32fa7129f16f8438799012a11d1f3534-zillow_web_logo_inf_11.jpg"
+   },
+   "date": "2022-08-18",
+   "event": "Price change",
+   "postingIsRental": false,
+   "price": 1995000,
+   "priceChangeRate": -0.026829268292682926,
+   "pricePerSquareFoot": 889,
+   "showCountyLink": false,
+   "source": "SDMLS",
+   "source_listing_id": "220019728",
+   "source_name": "SDMLS",
+   "time": 1660780800000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "SDMLS",
+    "infoString3": "https://photos.zillowstatic.com/fp/32fa7129f16f8438799012a11d1f3534-zillow_web_logo_inf_11.jpg"
+   },
+   "date": "2022-07-29",
+   "event": "Listed for sale",
+   "postingIsRental": false,
+   "price": 2050000,
+   "priceChangeRate": 1.3428571428571427,
+   "pricePerSquareFoot": 914,
+   "showCountyLink": false,
+   "source": "SDMLS",
+   "source_listing_id": "220019728",
+   "source_name": "SDMLS",
+   "time": 1659052800000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Public Record"
+   },
+   "date": "2016-12-22",
+   "event": "Sold",
+   "postingIsRental": false,
+   "price": 875000,
+   "priceChangeRate": 0.48936170212765956,
+   "pricePerSquareFoot": 390,
+   "showCountyLink": false,
+   "source": "Public Record",
+   "source_listing_id": null,
+   "source_name": "Public Record",
+   "time": 1482364800000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Public Record"
+   },
+   "date": "2016-07-18",
+   "event": "Sold",
+   "postingIsRental": false,
+   "price": 587500,
+   "priceChangeRate": 0,
+   "pricePerSquareFoot": 262,
+   "showCountyLink": false,
+   "source": "Public Record",
+   "source_listing_id": null,
+   "source_name": "Public Record",
+   "time": 1468800000000
+  }
+ ],
+ "property": [
+  {
+   "title": "Parking",
+   "values": [
+    "Total spaces: 2",
+    "Uncovered spaces: 2"
+   ]
+  },
+  {
+   "title": "Features",
+   "values": [
+    "Levels: Two",
+    "Stories: 2",
+    "Entry location: Street",
+    "Pool features: None",
+    "Has view: Yes",
+    "View description: Neighborhood"
+   ]
+  },
+  {
+   "title": "Lot",
+   "values": [
+    "Lot size: 5,227 sqft",
+    "Features: 0-1 Unit/Acre"
+   ]
+  },
+  {
+   "title": "Details",
+   "values": [
+    "Parcel number: 4534150100",
+    "Zoning: R-3:RESTRICTED MULTIPLE",
+    "Special condition: Standard"
+   ]
+  }
+ ],
+ "propertyTaxRate": 1.17,
+ "propertyTypeDimension": "Single Family",
+ "publish_url": null,
+ "resoFacts:sewer": "Public Sewer",
+ "resofacts_sewer": "Public Sewer",
+ "selfTour": {
+  "hasSelfTour": false
+ },
+ "sold_to_list_ratio": 0.925,
+ "sold_to_zestimate_ratio": null,
+ "special_offer": null,
+ "sqft": null,
+ "ssid": 3,
+ "state": "CA",
+ "streetAddress": "3445 29th St",
+ "tag": null,
+ "tags": [
+  "For sale"
+ ],
+ "taxAssessedValue": 1963234,
+ "taxAssessedYear": 2026,
+ "timeZone": "America/Los_Angeles",
+ "timestamp": "2026-11-15T02:13:51.785Z",
+ "tourEligibility": {
+  "isPropertyTourEligible": true
+ },
+ "tourViewCount": 0,
+ "unit_amenities": null,
+ "unit_number": null,
+ "url": "https://www.zillow.com/homedetails/3445-29th-St-San-Diego-CA-92104/111435073_zpid/",
+ "utilities": [
+  "Sewer: Public Sewer"
+ ],
+ "yearBuilt": 1911,
+ "zipcode": "92104",
+ "zpid": 111435073
+}

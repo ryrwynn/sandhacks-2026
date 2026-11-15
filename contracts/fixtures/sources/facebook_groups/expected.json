@@ -1,0 +1,66 @@
+[
+ {
+  "address_norm": null,
+  "baths": null,
+  "beds": 0,
+  "external_id_hash": "43bb00d0ce7790a53b91256b370c887b24791a5539a6fbfb70c5870e8c91ae5d",
+  "extraction": "llm",
+  "extras": {
+   "llm_parsed": true
+  },
+  "field_confidence": {
+   "beds": 0.6,
+   "neighborhood": 0.6,
+   "price_usd": 0.6,
+   "text_redacted": 1.0
+  },
+  "lat": null,
+  "listing_type": "rent",
+  "lng": null,
+  "location_precision": "zip",
+  "neighborhood": "North Park",
+  "observed_at": "2026-11-12T20:15:40Z",
+  "price_history": [],
+  "price_max_usd": null,
+  "price_usd": 1725,
+  "property_type": null,
+  "source_key": "facebook_groups",
+  "sqft": null,
+  "text_redacted": "Studio for rent in North Park, $1,725. Pets ok. Text [name removed] [phone removed]",
+  "unit_label": null,
+  "year_built": null,
+  "zip": null
+ },
+ {
+  "address_norm": null,
+  "baths": null,
+  "beds": 2,
+  "external_id_hash": "f64551fcd6f07823cb87971cfb91446425da18286b3ab1ef935e0cbd7a69f68a",
+  "extraction": "llm",
+  "extras": {
+   "llm_parsed": true
+  },
+  "field_confidence": {
+   "beds": 0.6,
+   "price_usd": 0.6,
+   "text_redacted": 1.0,
+   "zip": 0.6
+  },
+  "lat": null,
+  "listing_type": "rent",
+  "lng": null,
+  "location_precision": "zip",
+  "neighborhood": null,
+  "observed_at": "2026-11-10T17:02:11Z",
+  "price_history": [],
+  "price_max_usd": null,
+  "price_usd": 1350,
+  "property_type": null,
+  "source_key": "facebook_groups",
+  "sqft": null,
+  "text_redacted": "Room in 2BR Hillcrest 92103, $1,350/mo, utilities included. Message [name removed] at [phone removed] or [email removed]",
+  "unit_label": null,
+  "year_built": null,
+  "zip": "92103"
+ }
+]

@@ -1,0 +1,48 @@
+{
+  "estimate": {
+    "low": 2210.0,
+    "expected": 2460.0,
+    "high": 2790.0,
+    "method": "zip_bed_median",
+    "mae_usd": null,
+    "coverage_80": null
+  },
+  "points": [
+    {
+      "label": "low",
+      "rent_usd": 2210.0,
+      "percentile": 22.0,
+      "reach_score": 88.0
+    },
+    {
+      "label": "expected",
+      "rent_usd": 2460.0,
+      "percentile": 50.0,
+      "reach_score": 70.0
+    },
+    {
+      "label": "high",
+      "rent_usd": 2790.0,
+      "percentile": 84.0,
+      "reach_score": 41.0
+    },
+    {
+      "label": "target",
+      "rent_usd": 2600.0,
+      "percentile": 66.0,
+      "reach_score": 58.0
+    }
+  ],
+  "n_comparables": 52,
+  "days_on_market": null,
+  "legal": {
+    "verdict": "over_cap",
+    "cap_pct": 8.2,
+    "max_legal_rent": 2488.6,
+    "reasons": [
+      "The building was built in 1962, so AB 1482 covers it.",
+      "For the current tenant, the most you can charge from Dec 1, 2026 is $2,488.60 (8.2% over $2,300.00)."
+    ]
+  },
+  "disclaimer": "Estimates with ranges from public data, not financial advice or measured results."
+}

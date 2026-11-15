@@ -1,0 +1,54 @@
+# Every push to Setup (the working branch for now) deploys to the Vultr server and
+# smoke-tests the live site. main doesn't deploy. To switch later, change the branch below.
+name: deploy
+on:
+  push:
+    branches: [Setup]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# One deploy at a time on the single server; a newer push waits for the running one.
+concurrency:
+  group: deploy-vultr
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      BRANCH: ${{ github.ref_name }}
+      VULTR_HOST: ${{ secrets.VULTR_HOST }}
+      PUBLIC_URL: ${{ secrets.PUBLIC_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check secrets
+        env:
+          SSH_KEY: ${{ secrets.VULTR_SSH_KEY }}
+        run: |
+          missing=""
+          [ -n "$VULTR_HOST" ] || missing="$missing VULTR_HOST"
+          [ -n "$SSH_KEY" ] || missing="$missing VULTR_SSH_KEY"
+          [ -n "$PUBLIC_URL" ] || missing="$missing PUBLIC_URL"
+          if [ -n "$missing" ]; then
+            echo "::error::Repository secrets not set:$missing (gh secret set NAME ...)"
+            exit 1
+          fi
+
+      - name: Deploy to Vultr
+        env:
+          SSH_KEY: ${{ secrets.VULTR_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          # Works whether the server was cloned on main or Setup: fetch, switch, fast-forward.
+          ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 root@"$VULTR_HOST" \
+            "set -e; cd /opt/rentwatch && git fetch origin $BRANCH && git checkout $BRANCH && git pull --ff-only origin $BRANCH && if [ -x scripts/deploy.sh ]; then scripts/deploy.sh $BRANCH; else git log -1 --oneline && docker compose up -d --build --remove-orphans; fi"
+
+      - name: Smoke test the live site
+        run: |
+          if [ -f scripts/smoke.sh ]; then bash scripts/smoke.sh "$PUBLIC_URL"; else echo "No smoke test yet"; fi

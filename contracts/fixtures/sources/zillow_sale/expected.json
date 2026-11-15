@@ -1,0 +1,184 @@
+[
+ {
+  "address_norm": "3445 29th st",
+  "baths": 4.0,
+  "beds": 4,
+  "external_id_hash": "fec8dd12b4e52a53d65272d53e49995f55f966c6fed34619797ade0ad58b72b0",
+  "extraction": "mapped",
+  "extras": {
+   "days_on_zillow": 3,
+   "home_status": "FOR_SALE",
+   "last_sold_price": 1850000,
+   "lot_sqft": 5227,
+   "property_tax_rate": 1.17,
+   "source_url": "https://www.zillow.com/homedetails/3445-29th-St-San-Diego-CA-92104/111435073_zpid/",
+   "tags": [
+    "For sale"
+   ],
+   "transit_score": 46,
+   "walk_score": 94
+  },
+  "field_confidence": {
+   "address_norm": 1.0,
+   "baths": 1.0,
+   "beds": 1.0,
+   "lat": 1.0,
+   "lng": 1.0,
+   "price_usd": 1.0,
+   "property_type": 1.0,
+   "sqft": 1.0,
+   "text_redacted": 1.0,
+   "year_built": 1.0,
+   "zip": 1.0
+  },
+  "lat": 32.741978,
+  "listing_type": "sale",
+  "lng": -117.13074,
+  "location_precision": "address",
+  "neighborhood": null,
+  "observed_at": "2026-11-14T12:00:00Z",
+  "price_history": [
+   {
+    "date": "2022-07-29",
+    "event": "listed_for_sale",
+    "price_usd": 2050000
+   },
+   {
+    "date": "2022-08-18",
+    "event": "price_change",
+    "price_usd": 1995000
+   },
+   {
+    "date": "2022-09-21",
+    "event": "listed_for_sale",
+    "price_usd": 1995000
+   },
+   {
+    "date": "2022-10-04",
+    "event": "price_change",
+    "price_usd": 1850000
+   },
+   {
+    "date": "2022-10-14",
+    "event": "listed_for_sale",
+    "price_usd": 1850000
+   },
+   {
+    "date": "2026-11-11",
+    "event": "listed_for_sale",
+    "price_usd": 2000000
+   }
+  ],
+  "price_max_usd": null,
+  "price_usd": 2000000,
+  "property_type": "single_family",
+  "source_key": "zillow_sale",
+  "sqft": 2243,
+  "text_redacted": "ENTERTAINING OFFERS BETWEEN $2,000,000 AND $2,300,000. EXQUISITE NORTH PARK CRAFTSMAN | HISTORIC CHARM MEETS MODERN LUXURY! Originally built in 1911 and masterfully rebuilt down to the studs in 2019, this exceptional 4-bedroom, 3.5-bath, 2,243 sq. ft. residence seamlessly blends timeless architectural character with extraordinary modern upgrades. The original Craftsman porch and front door preserve the home's historic soul, while premium dual-pane windows, upgraded doors, newer foundation, plumbing, electrical, and luxury exterior paint with a transferable lifetime warranty provide lasting value. The stunning designer kitchen features a 48-inch dual-fuel range with six burners and griddle, commercial Caf\u00e9 hood, granite countertops, oversized island, and custom finishes. Engineered hardwood flooring, designer lighting, a temperature-controlled gas fireplace, and beautifully appointed living spaces create understated elegance throughout. Upstairs, the luxurious primary retreat features a private deck, custom Elfa walk-in closet, and spa-inspired bath with soaking tub, dual vanities, and oversized shower. A versatile, enclosed loft provides additional living space, or sellers willing to add a closet to make the 4th bedroom (for the right offer), while the beautifully designed laundry/mudroom and abundant storage elevate everyday convenience. ENERGY INDEPENDENCE & SMART HOME LUXURY: Fully Paid/Owned 6.46 kW solar system with 19 panels, TWO Tesla Powerwall 3 batteries installed in 2026, Tesla Level 2 EV charger, tankless water heater, Ring security system, and gigabit fiber internet. Outside, enjoy professionally landscaped grounds with California native plants, mature fruit trees, low-maintenance turf, automated drip irrigation, landscape lighting, expansive entertaining deck, hard-piped BBQ and fire pit, and Wi-Fi-controlled automatic driveway gate. All within one of San Diego's most desirable and walkable neighborhoods! Enjoy North Park's celebrated restaurants, coffee shops, boutiques, breweries, and vibrant arts scene, with nearby Balboa Park, Morley Field, hiking trails, tennis courts, and cultural attractions. A RARE OPPORTUNITY TO OWN A HISTORIC CRAFTSMAN WITH THE LUXURY, TECHNOLOGY, AND MAJOR SYSTEM UPGRADES OF A MODERN HOME!",
+  "unit_label": null,
+  "year_built": 1911,
+  "zip": "92104"
+ },
+ {
+  "address_norm": "3788 arizona st",
+  "baths": 1.0,
+  "beds": 2,
+  "external_id_hash": "6bedf556d96fa33c006b78c158f0c753a7dad80ff8f517ea0d115542e837e5b1",
+  "extraction": "mapped",
+  "extras": {
+   "days_on_zillow": 26,
+   "home_status": "FOR_SALE",
+   "lot_sqft": 5504,
+   "property_tax_rate": 1.17,
+   "source_url": "https://www.zillow.com/homedetails/3788-Arizona-St-San-Diego-CA-92104/16973067_zpid/",
+   "tags": [
+    "For sale"
+   ],
+   "transit_score": 54,
+   "walk_score": 92
+  },
+  "field_confidence": {
+   "address_norm": 1.0,
+   "baths": 1.0,
+   "beds": 1.0,
+   "lat": 1.0,
+   "lng": 1.0,
+   "price_usd": 1.0,
+   "property_type": 1.0,
+   "sqft": 1.0,
+   "text_redacted": 1.0,
+   "year_built": 1.0,
+   "zip": 1.0
+  },
+  "lat": 32.7472,
+  "listing_type": "sale",
+  "lng": -117.13815,
+  "location_precision": "address",
+  "neighborhood": null,
+  "observed_at": "2026-11-14T12:00:00Z",
+  "price_history": [
+   {
+    "date": "2026-10-27",
+    "event": "listed_for_sale",
+    "price_usd": 599999
+   }
+  ],
+  "price_max_usd": null,
+  "price_usd": 599999,
+  "property_type": "single_family",
+  "source_key": "zillow_sale",
+  "sqft": 832,
+  "text_redacted": "BUY THIS HOME, I'LL BUY YOURS! Seller will consider paying buyer's agent up to 4% commission AND may assist with special financing options including as little as zero money down and an interest rate as low as 3.99%. NO HOA! An incredible opportunity in the heart of North Park! Located in one of San Diego's most sought-after neighborhoods, this property offers a blank canvas for those looking to bring their vision to life. Whether you're an investor, contractor, or buyer ready to create something truly your own, this is your chance to unlock the potential of a property in a prime location. Just minutes from Balboa Park, popular restaurants, coffee shops, shopping, and the vibrant North Park lifestyle, you'll enjoy everything this desirable community has to offer. With endless possibilities to reimagine the space, this is an opportunity to transform a property into something special. Bring your creativity and make your vision a reality!",
+  "unit_label": null,
+  "year_built": 2012,
+  "zip": "92104"
+ },
+ {
+  "address_norm": "3788 arizona st",
+  "baths": 1.0,
+  "beds": 2,
+  "external_id_hash": "b4bfa48b2f729121ec26bf012ff7dae3d9c29c0743d74d1ce80f54621af39934",
+  "extraction": "mapped",
+  "extras": {
+   "days_on_zillow": 26,
+   "home_status": "FOR_SALE",
+   "lot_sqft": 5504,
+   "property_tax_rate": 1.17,
+   "source_url": "https://www.zillow.com/homedetails/3788-Arizona-St-San-Diego-CA-92104/16973067_zpid/",
+   "tags": [
+    "For sale"
+   ],
+   "transit_score": 54,
+   "walk_score": 92
+  },
+  "field_confidence": {
+   "address_norm": 1.0,
+   "baths": 1.0,
+   "beds": 1.0,
+   "lat": 1.0,
+   "lng": 1.0,
+   "price_usd": 1.0,
+   "property_type": 1.0,
+   "sqft": 1.0,
+   "text_redacted": 1.0,
+   "unit_label": 1.0,
+   "zip": 1.0
+  },
+  "lat": 32.7472,
+  "listing_type": "sale",
+  "lng": -117.13815,
+  "location_precision": "address",
+  "neighborhood": null,
+  "observed_at": "2026-11-14T12:00:00Z",
+  "price_history": [],
+  "price_max_usd": null,
+  "price_usd": 599999,
+  "property_type": "single_family",
+  "source_key": "zillow_sale",
+  "sqft": 832,
+  "text_redacted": "BUY THIS HOME, I'LL BUY YOURS! Seller will consider paying buyer's agent up to 4% commission AND may assist with special financing options including as little as zero money down and an interest rate as low as 3.99%. NO HOA! An incredible opportunity in the heart of North Park! Located in one of San Diego's most sought-after neighborhoods, this property offers a blank canvas for those looking to bring their vision to life. Whether you're an investor, contractor, or buyer ready to create something truly your own, this is your chance to unlock the potential of a property in a prime location. Just minutes from Balboa Park, popular restaurants, coffee shops, shopping, and the vibrant North Park lifestyle, you'll enjoy everything this desirable community has to offer. With endless possibilities to reimagine the space, this is an opportunity to transform a property into something special. Bring your creativity and make your vision a reality!",
+  "unit_label": "4",
+  "year_built": null,
+  "zip": "92104"
+ }
+]

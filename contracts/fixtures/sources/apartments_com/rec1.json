@@ -1,0 +1,28 @@
+{
+ "address": "1530 Upas St",
+ "amenities": [
+  "Laundry",
+  "Parking"
+ ],
+ "contact_email": "dana@example-leasing.com",
+ "description": "Bright unit near transit. Call Dana Reyes at (619) 555-0142 or dana@example-leasing.com for a tour.",
+ "floor_plans": [
+  {
+   "baths": 1,
+   "beds": "Studio",
+   "id": "fp1",
+   "name": "Studio A",
+   "rent_max": 1895,
+   "rent_min": 1795,
+   "sqft_min": 410
+  }
+ ],
+ "id": "ac-1",
+ "leasing_agent_name": "Dana Reyes",
+ "leasing_agent_phone": "(619) 555-0142",
+ "owner_name": "Reyes Holdings LLC",
+ "pet_policy": "Cats and small dogs",
+ "property_type": "apartment",
+ "year_built": 1968,
+ "zip": "92103"
+}

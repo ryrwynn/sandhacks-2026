@@ -1,20 +1,29 @@
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import type { Metadata, Viewport } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import NavBar from "@/src/components/NavBar";
-import { SavedProvider } from "@/src/lib/saved";
+import { Suspense } from "react";
+import SiteNav from "@/components/SiteNav";
+import { MockBanner } from "@/components/ui";
+import { SavedProvider } from "@/lib/saved";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font" });
+const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
+const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
-export const metadata: Metadata = { title: "SandHacks · San Diego rent tracker", description: "Track asking rents across San Diego." };
+export const metadata: Metadata = {
+  title: "RentOrKnot",
+  description: "Save apartments you like and watch their asking rent over time in San Diego.",
+};
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export const viewport: Viewport = { width: "device-width", initialScale: 1 };
+
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={inter.variable}>
-      <body>
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <body className="flex min-h-full flex-col bg-bg font-sans text-ink">
         <SavedProvider>
-          <NavBar />
-          <main>{children}</main>
+          <Suspense fallback={<div className="h-14 bg-surface" />}><SiteNav /></Suspense>
+          <MockBanner />
+          <div className="mx-auto w-full max-w-6xl flex-1 overflow-x-clip px-4 pb-24 pt-5 md:pb-12">{children}</div>
         </SavedProvider>
       </body>
     </html>

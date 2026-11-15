@@ -1,0 +1,101 @@
+{
+ "fetched_on": "2026-11-14",
+ "zips": {
+  "91910": {
+   "area_km2": 36.792,
+   "food_drink": 62,
+   "groceries": 11,
+   "gyms": 8,
+   "parks": 30,
+   "transit_stops": 97
+  },
+  "92101": {
+   "area_km2": 28.537,
+   "food_drink": 320,
+   "groceries": 11,
+   "gyms": 13,
+   "parks": 36,
+   "transit_stops": 192
+  },
+  "92103": {
+   "area_km2": 9.507,
+   "food_drink": 85,
+   "groceries": 6,
+   "gyms": 3,
+   "parks": 9,
+   "transit_stops": 107
+  },
+  "92104": {
+   "area_km2": 9.532,
+   "food_drink": 83,
+   "groceries": 8,
+   "gyms": 5,
+   "parks": 7,
+   "transit_stops": 82
+  },
+  "92105": {
+   "area_km2": 14.901,
+   "food_drink": 26,
+   "groceries": 7,
+   "gyms": 0,
+   "parks": 14,
+   "transit_stops": 137
+  },
+  "92107": {
+   "area_km2": 8.99,
+   "food_drink": 61,
+   "groceries": 4,
+   "gyms": 7,
+   "parks": 14,
+   "transit_stops": 41
+  },
+  "92108": {
+   "area_km2": 11.417,
+   "food_drink": 71,
+   "groceries": 5,
+   "gyms": 7,
+   "parks": 9,
+   "transit_stops": 100
+  },
+  "92109": {
+   "area_km2": 30.695,
+   "food_drink": 121,
+   "groceries": 5,
+   "gyms": 14,
+   "parks": 33,
+   "transit_stops": 67
+  },
+  "92111": {
+   "area_km2": 21.872,
+   "food_drink": 175,
+   "groceries": 16,
+   "gyms": 4,
+   "parks": 17,
+   "transit_stops": 94
+  },
+  "92117": {
+   "area_km2": 22.441,
+   "food_drink": 48,
+   "groceries": 7,
+   "gyms": 4,
+   "parks": 17,
+   "transit_stops": 65
+  },
+  "92122": {
+   "area_km2": 13.887,
+   "food_drink": 68,
+   "groceries": 3,
+   "gyms": 7,
+   "parks": 12,
+   "transit_stops": 66
+  },
+  "92126": {
+   "area_km2": 29.892,
+   "food_drink": 94,
+   "groceries": 16,
+   "gyms": 14,
+   "parks": 35,
+   "transit_stops": 104
+  }
+ }
+}

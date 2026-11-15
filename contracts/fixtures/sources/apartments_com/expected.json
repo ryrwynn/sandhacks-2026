@@ -1,0 +1,178 @@
+[
+ {
+  "address_norm": "1530 upas st",
+  "baths": 1.0,
+  "beds": 0,
+  "external_id_hash": "ae4be54f1b0869623725db59ca9832d085b075c479706b656ae034e1711822ed",
+  "extraction": "mapped",
+  "extras": {
+   "amenities": [
+    "Laundry",
+    "Parking"
+   ],
+   "floor_plan": "Studio A",
+   "pet_policy": "Cats and small dogs"
+  },
+  "field_confidence": {
+   "address_norm": 1.0,
+   "baths": 1.0,
+   "beds": 1.0,
+   "price_max_usd": 1.0,
+   "price_usd": 1.0,
+   "property_type": 1.0,
+   "sqft": 1.0,
+   "text_redacted": 1.0,
+   "unit_label": 1.0,
+   "year_built": 1.0,
+   "zip": 1.0
+  },
+  "lat": null,
+  "listing_type": "rent",
+  "lng": null,
+  "location_precision": "address",
+  "neighborhood": null,
+  "observed_at": "2026-11-14T12:00:00Z",
+  "price_history": [],
+  "price_max_usd": 1895,
+  "price_usd": 1795,
+  "property_type": "apartment",
+  "source_key": "apartments_com",
+  "sqft": 410,
+  "text_redacted": "Bright unit near transit. Call [name removed] at [phone removed] or [email removed] for a tour.",
+  "unit_label": "STUDIO A",
+  "year_built": 1968,
+  "zip": "92103"
+ },
+ {
+  "address_norm": "3900 30th st",
+  "baths": 1.0,
+  "beds": 1,
+  "external_id_hash": "e3f7aaf954802ed06442e4f474838d0c5e3782147d1e9b8785071832561b3f67",
+  "extraction": "mapped",
+  "extras": {
+   "amenities": [
+    "Laundry",
+    "Parking"
+   ],
+   "floor_plan": "1BR B",
+   "pet_policy": "Cats and small dogs"
+  },
+  "field_confidence": {
+   "address_norm": 1.0,
+   "baths": 1.0,
+   "beds": 1.0,
+   "price_max_usd": 1.0,
+   "price_usd": 1.0,
+   "property_type": 1.0,
+   "sqft": 1.0,
+   "text_redacted": 1.0,
+   "unit_label": 1.0,
+   "year_built": 1.0,
+   "zip": 1.0
+  },
+  "lat": null,
+  "listing_type": "rent",
+  "lng": null,
+  "location_precision": "address",
+  "neighborhood": null,
+  "observed_at": "2026-11-14T12:00:00Z",
+  "price_history": [],
+  "price_max_usd": 2400,
+  "price_usd": 2250,
+  "property_type": "apartment",
+  "source_key": "apartments_com",
+  "sqft": 640,
+  "text_redacted": "Bright unit near transit. Call [name removed] at [phone removed] or [email removed] for a tour.",
+  "unit_label": "1BR B",
+  "year_built": 2016,
+  "zip": "92104"
+ },
+ {
+  "address_norm": "3900 30th st",
+  "baths": 2.0,
+  "beds": 2,
+  "external_id_hash": "6dc30e8fc477c0c3f94f3c913f45a876275b781f511d02cd99534772671457d0",
+  "extraction": "mapped",
+  "extras": {
+   "amenities": [
+    "Laundry",
+    "Parking"
+   ],
+   "floor_plan": "2BR C",
+   "pet_policy": "Cats and small dogs"
+  },
+  "field_confidence": {
+   "address_norm": 1.0,
+   "baths": 1.0,
+   "beds": 1.0,
+   "price_max_usd": 1.0,
+   "price_usd": 1.0,
+   "property_type": 1.0,
+   "sqft": 1.0,
+   "text_redacted": 1.0,
+   "unit_label": 1.0,
+   "year_built": 1.0,
+   "zip": 1.0
+  },
+  "lat": null,
+  "listing_type": "rent",
+  "lng": null,
+  "location_precision": "address",
+  "neighborhood": null,
+  "observed_at": "2026-11-14T12:00:00Z",
+  "price_history": [],
+  "price_max_usd": 3100,
+  "price_usd": 3100,
+  "property_type": "apartment",
+  "source_key": "apartments_com",
+  "sqft": 910,
+  "text_redacted": "Bright unit near transit. Call [name removed] at [phone removed] or [email removed] for a tour.",
+  "unit_label": "2BR C",
+  "year_built": 2016,
+  "zip": "92104"
+ },
+ {
+  "address_norm": "4545 fairmount ave",
+  "baths": 1.0,
+  "beds": 1,
+  "external_id_hash": "bcc2ea48dfb3d2d30d7af234c73a68099f0606792df2699ff884bb90d3dee4ad",
+  "extraction": "mapped",
+  "extras": {
+   "amenities": [
+    "Laundry",
+    "Parking"
+   ],
+   "floor_plan": "1BR",
+   "pet_policy": "Cats and small dogs"
+  },
+  "field_confidence": {
+   "address_norm": 1.0,
+   "baths": 1.0,
+   "beds": 1.0,
+   "price_max_usd": 1.0,
+   "price_usd": 1.0,
+   "property_type": 1.0,
+   "sqft": 1.0,
+   "text_redacted": 1.0,
+   "unit_label": 1.0,
+   "year_built": 1.0,
+   "zip": 1.0
+  },
+  "lat": null,
+  "listing_type": "rent",
+  "lng": null,
+  "location_precision": "address",
+  "neighborhood": null,
+  "observed_at": "2026-11-14T12:00:00Z",
+  "price_history": [],
+  "price_max_usd": 2100,
+  "price_usd": 2100,
+  "property_type": "apartment",
+  "source_key": "apartments_com",
+  "sqft": 600,
+  "text_redacted": "Bright unit near transit. Call [name removed] at [phone removed] or [email removed] for a tour.",
+  "unit_label": "1BR",
+  "year_built": 1990,
+  "zip": "92105"
+ }
+]

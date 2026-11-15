@@ -1,0 +1,24 @@
+# Disabled: public groups only, after reading the site's terms and each group's rules.
+# Post text is never shown in the app; posts count only toward ZIP-level numbers at a lower weight.
+source_key: facebook_groups
+kind: social
+listing_type: rent
+trust_weight: 0.5
+fetch:
+  method: brightdata_dataset
+  dataset_id: gd_lz11l67o2cb3r0lkj3          # Facebook posts by group URL
+  discover_by: url
+  inputs:
+    - url: "https://www.facebook.com/groups/<public-group-id>"
+# Author fields and post URLs: never stored.
+drop_fields: [user_url, user_username_raw, user_name, profile_id, user_is_verified, user_id, url, post_url, attachments]
+redact_fields: [content]
+map:
+  external_id: post_id
+  observed_at: date_posted
+  text: content
+llm_extract:                                 # Gemini reads `content`
+  from: text
+  fields: [price_usd, beds, baths, neighborhood, zip, is_rental_offer]
+  keep_if: is_rental_offer                   # skip "looking for a room" and unrelated posts
+location_precision: zip

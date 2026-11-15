@@ -1,0 +1,218 @@
+[
+ {
+  "address_norm": "2519 el cajon blvd",
+  "baths": 1.0,
+  "beds": 1,
+  "external_id_hash": "3f17fb1107cefada225b6a0a33217a9429a998931d8218d06ddc011b04b5e03a",
+  "extraction": "mapped",
+  "extras": {
+   "amenities": [
+    "Microwave",
+    "Dryer",
+    "Washer"
+   ],
+   "availability_date": "2026-11-17T08:00:00.000Z",
+   "home_status": "FOR_RENT",
+   "source_url": "https://www.zillow.com/apartments/san-diego-ca/niima/CkBCxR/",
+   "special_offer": "UP TO 1 MONTH FREE! (ask for details)",
+   "tags": [
+    "Special offer",
+    "New construction"
+   ],
+   "transit_score": 55,
+   "walk_score": 94
+  },
+  "field_confidence": {
+   "address_norm": 1.0,
+   "baths": 1.0,
+   "beds": 1.0,
+   "lat": 1.0,
+   "lng": 1.0,
+   "price_usd": 1.0,
+   "property_type": 1.0,
+   "sqft": 1.0,
+   "text_redacted": 1.0,
+   "unit_label": 1.0,
+   "zip": 1.0
+  },
+  "lat": 32.754894,
+  "listing_type": "rent",
+  "lng": -117.137135,
+  "location_precision": "address",
+  "neighborhood": null,
+  "observed_at": "2026-11-14T12:00:00Z",
+  "price_history": [
+   {
+    "date": "2024-09-25",
+    "event": "listed_for_rent",
+    "price_usd": 2670
+   },
+   {
+    "date": "2024-11-23",
+    "event": "price_change",
+    "price_usd": 2195
+   },
+   {
+    "date": "2024-12-01",
+    "event": "listing_removed",
+    "price_usd": 2195
+   },
+   {
+    "date": "2024-12-23",
+    "event": "listed_for_rent",
+    "price_usd": 2195
+   },
+   {
+    "date": "2025-01-23",
+    "event": "listing_removed",
+    "price_usd": 2195
+   },
+   {
+    "date": "2026-02-09",
+    "event": "listed_for_rent",
+    "price_usd": 2675
+   },
+   {
+    "date": "2026-02-13",
+    "event": "price_change",
+    "price_usd": 2570
+   },
+   {
+    "date": "2026-03-04",
+    "event": "listing_removed",
+    "price_usd": 2570
+   },
+   {
+    "date": "2026-10-28",
+    "event": "listed_for_rent",
+    "price_usd": 2570
+   },
+   {
+    "date": "2026-10-30",
+    "event": "price_change",
+    "price_usd": 2395
+   }
+  ],
+  "price_max_usd": null,
+  "price_usd": 2395,
+  "property_type": "apartment",
+  "source_key": "zillow_rent",
+  "sqft": 453,
+  "text_redacted": "Welcome to Niima Outpost, North Park's most architecturally distinctive address and the city's first mass timber residential building. Designed for those who appreciate elevated design, sustainability, and modern comfort, Niima blends natural materials with contemporary luxury in a way you won't find anywhere else in San Diego.\n\nOur brand-new loft residences feature dramatic exposed wood ceilings, stunning spiral staircases (select units), oversized windows, and thoughtfully designed open-concept layouts. Every home is finished with high-end details including luxury vinyl plank flooring, premium cabinetry, designer fixtures, full-sized kitchens, in-unit washer and dryer, air conditioning and heat, walk-in closets, and private balconies.\n\nLease Term: 15-18 Month Lease \n\nBeyond its striking design, Niima Outpost was built with sustainability at its core. Constructed using responsibly sourced mass timber and outfitted with highly efficient fixtures, the building delivers modern luxury while maintaining a lower carbon footprint.\n\nLocated in the heart of North Park, you're just steps from award-winning restaurants, coffee shops, boutique retail, grocery stores, yoga studios, and gyms. An exclusive on-site dining concept is coming soon. With easy freeway access and close proximity to San Diego International Airport, commuting or exploring the city is effortless.\n\nPets are welcome with minimal additional fees and some restrictions. Residents are responsible for utilities.\n\nThis is more than an apartment it's a statement in design, sustainability, and lifestyle.\n\nContact [name removed] Properties today to schedule your private tour:\n\nProfessionally Managed by: Urban Coast Properties\nDRE: 02010392",
+  "unit_label": "210",
+  "year_built": null,
+  "zip": "92104"
+ },
+ {
+  "address_norm": "2020 el cajon blvd",
+  "baths": 1.0,
+  "beds": 1,
+  "external_id_hash": "69662341ecce8b759194ed6c15f5707794763ae82e19046b51339e285ffce6eb",
+  "extraction": "mapped",
+  "extras": {
+   "amenities": [
+    "Vinyl",
+    "Garbage Disposal",
+    "Oven",
+    "Dishwasher",
+    "Microwave",
+    "Refrigerator",
+    "Hardwood",
+    "Carpet"
+   ],
+   "availability_date": "2026-11-15T02:17:29.582Z",
+   "home_status": "FOR_RENT",
+   "source_url": "https://www.zillow.com/apartments/san-diego-ca/blvd-north-park/CkBhTF/",
+   "special_offer": "Fast Move In Savings: Move in within 7 days of your tour to receive 50% off your security deposit when you move in (based on approval of background/credit check)Make your move sooner and start settling in to your new home.",
+   "tags": [
+    "Special offer"
+   ],
+   "transit_score": 54,
+   "walk_score": 94
+  },
+  "field_confidence": {
+   "address_norm": 1.0,
+   "baths": 1.0,
+   "beds": 1.0,
+   "lat": 1.0,
+   "lng": 1.0,
+   "price_usd": 1.0,
+   "property_type": 1.0,
+   "sqft": 1.0,
+   "unit_label": 1.0,
+   "zip": 1.0
+  },
+  "lat": 32.755671,
+  "listing_type": "rent",
+  "lng": -117.143211,
+  "location_precision": "address",
+  "neighborhood": null,
+  "observed_at": "2026-11-14T12:00:00Z",
+  "price_history": [],
+  "price_max_usd": null,
+  "price_usd": 2685,
+  "property_type": "apartment",
+  "source_key": "zillow_rent",
+  "sqft": 581,
+  "text_redacted": null,
+  "unit_label": "735",
+  "year_built": null,
+  "zip": "92104"
+ },
+ {
+  "address_norm": "2020 el cajon blvd",
+  "baths": 1.0,
+  "beds": 1,
+  "external_id_hash": "457525b25f548329b64c7af99846fd58d4660a315b480de0e061947bef149253",
+  "extraction": "mapped",
+  "extras": {
+   "amenities": [
+    "Vinyl",
+    "Garbage Disposal",
+    "Oven",
+    "Dishwasher",
+    "Microwave",
+    "Refrigerator",
+    "Hardwood",
+    "Carpet"
+   ],
+   "availability_date": "2026-11-15T02:17:29.582Z",
+   "home_status": "FOR_RENT",
+   "source_url": "https://www.zillow.com/apartments/san-diego-ca/blvd-north-park/CkBhTF/",
+   "special_offer": "Fast Move In Savings: Move in within 7 days of your tour to receive 50% off your security deposit when you move in (based on approval of background/credit check)Make your move sooner and start settling in to your new home.",
+   "tags": [
+    "Special offer"
+   ],
+   "transit_score": 54,
+   "walk_score": 94
+  },
+  "field_confidence": {
+   "address_norm": 1.0,
+   "baths": 1.0,
+   "beds": 1.0,
+   "lat": 1.0,
+   "lng": 1.0,
+   "price_usd": 1.0,
+   "property_type": 1.0,
+   "sqft": 1.0,
+   "unit_label": 1.0,
+   "zip": 1.0
+  },
+  "lat": 32.755671,
+  "listing_type": "rent",
+  "lng": -117.143211,
+  "location_precision": "address",
+  "neighborhood": null,
+  "observed_at": "2026-11-14T12:00:00Z",
+  "price_history": [],
+  "price_max_usd": null,
+  "price_usd": 2585,
+  "property_type": "apartment",
+  "source_key": "zillow_rent",
+  "sqft": 581,
+  "text_redacted": null,
+  "unit_label": "637",
+  "year_built": null,
+  "zip": "92104"
+ }
+]

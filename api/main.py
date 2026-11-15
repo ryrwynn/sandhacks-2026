@@ -1,0 +1,9 @@
+"""RentOrKnot API (lane D). Caddy strips /api, so routes are served at /health, /zips, ... and docs at /api/docs."""
+from fastapi import FastAPI
+
+from api.routers import checks, health, listings, neighborhoods, owner, tracker, zips
+
+app = FastAPI(title="RentOrKnot API", version="0.1.0", root_path="/api")
+
+for module in (health, zips, checks, listings, neighborhoods, owner, tracker):
+    app.include_router(module.router)
