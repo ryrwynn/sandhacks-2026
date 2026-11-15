@@ -16,7 +16,7 @@ Keep **local-only saving as the default** and ship **optional Google sign-in beh
 
 ## What is built (flag off by default)
 
-- Sign-in turns on only when `AUTH_SECRET` and a Google client ID (`GOOGLE_CLIENT_ID`, or `AUTH_GOOGLE_ID`) are set at runtime. Otherwise `/auth/*` answers 404 and `<AccountButton/>` renders nothing.
+- Sign-in turns on only when `AUTH_SECRET` and a Google client ID (`GOOGLE_CLIENT_ID`, or `AUTH_GOOGLE_ID`) are set at runtime. Otherwise `/auth/session` answers 200 `{"enabled": false}` (other `/auth/*` routes 404) and `<AccountButton/>` renders nothing.
 - Auth.js v5 (`next-auth@5.0.0-beta.32`) with `basePath: "/auth"` (confirmed in the installed `@auth/core` types: the default is `/api/auth` for `next-auth`, so it must be set explicitly), JWT sessions, Google provider. The JWT is reduced to the Google subject ID; email, name and picture are dropped in the profile and jwt callbacks.
 - Saves live in the `user_saves` table keyed by `subject_hash = sha256(AUTH_SECRET + sub)`. Only the Next.js server calls `GET/PUT /account/saves` on FastAPI, sending `X-Account-Token` (`ACCOUNT_API_TOKEN`) and `X-Subject-Hash`. The browser reaches saves through `/auth/saves` (a Next.js route, not `/api`, because Caddy sends `/api/*` to FastAPI). With `ACCOUNT_API_TOKEN` unset the API returns 404.
 - Merge: on sign-in the browser's local saves are unioned with the server's (newest data wins per listing) and written both ways. A listing removed locally after a sync is removed on the server too. Example apartments seeded on a first visit are never uploaded.
@@ -49,7 +49,7 @@ Auth.js trusts the proxy host (`trustHost: true`), so `AUTH_TRUST_HOST` is not n
 ## Manual test (needs a real Google sign-in; not possible unattended)
 
 1. Create the OAuth client with the URIs above; set the env vars on the frontend and API containers; rebuild.
-2. Flag off check: unset `GOOGLE_CLIENT_ID`; `/auth/session` returns 404 and no account button appears.
+2. Flag off check: unset `GOOGLE_CLIENT_ID`; `/auth/session` answers 200 `{"enabled": false}` and no account button appears.
 3. Flag on: the account button shows "Sign in". Click it, pick a Google account, and return to the site; the button shows "Signed in".
 4. In browser dev tools, `/auth/session` must contain no email or name, only an expiry.
 5. Save two apartments while signed out, then sign in: they stay, and the `user_saves` table has two rows whose `subject_hash` is 64 hex characters (no email anywhere).

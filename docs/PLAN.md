@@ -83,7 +83,7 @@ Only the Bright Data scrapes run on a schedule; everything else loads once at th
 
 | Source | What it provides | How it loads | Refresh | Key |
 | --- | --- | --- | --- | --- |
-| Bright Data Zillow scraper, rentals | Rent, beds, baths, sqft, year built, listing price history | `worker/run.py` for the 12 ZIP codes | Every 3 hours | `BRIGHTDATA_API_TOKEN` |
+| Bright Data Zillow scraper, rentals | Rent, beds, baths, sqft, year built, listing price history | `worker/run.py` for the 12 ZIP codes | Weekly, Thursday 12:00 UTC (was every 3 hours; see "Current state") | `BRIGHTDATA_API_TOKEN` |
 | Bright Data Zillow scraper, for sale | List price, beds, sqft, year built, price history | Same worker, separate job | Daily | Same |
 | [Zillow Research](https://www.zillow.com/research/data/) ZORI by ZIP | Monthly typical rent, years of history | CSV download, `db/load_zillow.py` | Once | None |
 | [Zillow Research](https://www.zillow.com/research/data/) ZHVI by ZIP | Monthly typical home value, years of history | Same script | Once | None |
@@ -91,6 +91,7 @@ Only the Bright Data scrapes run on a schedule; everything else loads once at th
 | OpenStreetMap (Overpass API) | Counts of grocery stores, transit stops, parks, cafes and restaurants, gyms per ZIP | One query per ZIP, saved to `data/amenities.json` | Once | None |
 | Census ZIP boundaries | ZIP polygons for the map and amenity counting | GeoJSON saved to `web/public/zips.geojson` | Once | None |
 | AB 1482 cap table | San Diego County caps with sources | `db/seed_caps.sql` | When the cap changes | None |
+| Bright Data Facebook posts by group URL | Rental offers from 6 public San Diego housing groups (whole units, rooms, sublets), via Gemini extraction | `worker/facebook.py` | Mondays and Thursdays 15:00 UTC | Same as Zillow |
 
 What this means for the earlier plan:
 
@@ -649,7 +650,7 @@ FastAPI serves 12 endpoints under `/api`, and Next.js has 7 pages. Caddy sends `
 | Page | What's on it |
 | --- | --- |
 | `/` | Pick a mode; ZIP map shaded by median rent, forecast change on hover |
-| `/renter` | Three tabs: Check my increase, Check a listing, Find a place (Starter persona) |
+| `/renter` | Two tabs: Check my increase, Check a listing (the Starter finder moved into `/find`) |
 | `/renter/letter/[id]` | Printable letter and the explanation in the chosen language |
 | `/buyer` | Wealth builder finder: budget and bedrooms in, ranked ZIPs and map highlights out |
 | `/owner` | Price position table, legal guardrail, listing analysis |
@@ -841,3 +842,34 @@ The pivot's biggest new risk is scope: three modes can turn into three half-buil
 * [Bright Data: Apartments.com scraper (AI Scraper Studio)](https://brightdata.com/products/web-scraper/apartments-com-scraper)
 
 Bright Data, ElevenLabs, Neon and Best Overall track details come from the SanD Hacks track list you shared earlier.
+
+## Current state (final run, 2026-11-15)
+
+What is true now, where it differs from the plan above:
+
+- **Zillow refresh.** `zillow_rent` runs weekly (Thursday 12:00 UTC = 4:00 AM PST, 5:00 AM during daylight time);
+  `zillow_sale` daily. Bright Data's `limit_per_input` isn't a hard cap (a run delivered ~1,777 records), so 3-hourly
+  runs would cost ~$640 a month; weekly is ~$12. A listing is active when seen in its source's latest scrape (latest
+  `last_seen` minus 36 hours), which works for any schedule. The UI says "Updated weekly".
+- **Facebook listings** (`facebook_groups_sd`). Six public San Diego groups. Only post id, URL, text, date and group are
+  read; text is redacted, sent to Gemini (`parse_posts`, 10 posts per Flash Lite request) and never stored. A post becomes
+  a listing when it offers a place with a price, bedrooms and a resolvable San Diego ZIP: whole units, sublets, and rooms
+  in a shared home ("roommate wanted"; `extras.roommate_wanted`). People looking for a place stay out. Listings keep a
+  link to the post (`post_url`), extracted amenities and a price history: reposts within 30 days are `posted` or
+  `price_change` observations on one listing; inactive 21 days after the last post. Location precision is the ZIP.
+- **Source breakdown and weighting.** Medians and counts use listing sites at weight 1 and Facebook whole units at 0.5;
+  rooms, sublets and unusual prices (below 40% or above 250% of the ZIP's listing-site median) never. Market and ZIP
+  responses carry a per-source breakdown and accept `listing_sites_only=true`. Facebook rows never train the fair-rent
+  model, never create building facts, and rooms get no fair-rent label.
+- **12-ZIP guard.** Every live market, listing, median, comparable and `zip_features` query in `api/db.py` filters to
+  `data/zips.txt` (`CORE_ZIPS`); other areas stay in staging tables (`staging_listings`, `staging_area_metrics`).
+- **Card tags.** `ListingSummary.tags` (at most 4): listing amenities first (Zillow unit amenities: washer/dryer,
+  dishwasher, hardwood floors; Facebook: parking, laundry, pets allowed, utilities included), then area tags from
+  `zip_features` when the ZIP is in the top third of the 12 per km² ("Groceries nearby (ZIP)", transit stops, parks).
+  Facebook rooms show "Roommate wanted", sublets "Sublet".
+- **Penal Code 396** (`POST /checks/gouging`): the 160%-of-FMR rule is verified; the HUD FMR figures are still a
+  third-party mirror marked unverified, so that path answers "unclear" until HUD's file is loaded.
+- **Accounts.** Saving is local (localStorage) by default; optional Google sign-in syncs saves keyed by a salted hash of
+  the Google subject (docs/ACCOUNTS.md). With sign-in off, `/auth/session` answers `{"enabled": false}`.
+- **Pages added since the plan:** `/find`, `/saved`, `/alerts`, `/apartments/[id]`, `/gouging`, `/areas`,
+  `/scenarios`, `/advisor`, `/privacy`, `/terms` (linked from the footer, `/about` and the sign-in button).

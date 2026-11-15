@@ -9,16 +9,17 @@ Sources: the Figma prototype (one frame, "Rental market overview", grayscale wir
 One top bar for the whole site (merge `NavBar` and `ModeNav`):
 
 - Brand at left: **RentOrKnot**, matching the domain rentorknot.us (the Figma's "SandHacks" is a placeholder).
-- Market overview (`/`) · Saved apartments (`/saved`) · Price alerts (`/alerts`) · Find apartments (`/find`) · Tools ▾ (Rent increase check, Buy, Own, About).
+- Market overview (`/`) · Saved apartments (`/saved`) · Price alerts (`/alerts`) · Find apartments (`/find`) · Tools ▾ (Rent increase check, Buy, Own, About, and the newer tools).
 - Saved apartments shows a count badge; Price alerts shows a badge when a saved apartment hit its target.
-- No "My account" button: there are no accounts.
+- An optional "Sign in" (Google) button appears only when sign-in is configured; it links to `/privacy`. Without it the site works fully with local saves.
+- A small footer on every page: Privacy · Terms · About.
 - Under 768px wide: the four main destinations move to a bottom tab bar with icons and labels; Tools stays in the top bar.
 
 ## Market overview (`/`), from the Figma frame
 
 Top to bottom:
 
-1. **Heading** "Rental market overview", subline "See how asking rents change over time, then track the places you love." Right side: "Updated {last scrape date}" from `/api/health`.
+1. **Heading** "Rental market overview", subline "See how asking rents change over time, then track the places you love." Right side: "Updated weekly · last {last scrape date}" from `/api/health` (Zillow rentals refresh every Thursday).
 2. **Filter row:** area (the plan's 12 ZIPs, shown by neighborhood name with the ZIP), bedrooms (Any, Studio, 1, 2, 3+), property type (All, Apartment, Condo, House), "More filters" (max price), and at the right a date-range picker.
 3. **Market card:** label "Average asking rent", big number "$2,850 / month", then "+5.6% since {start month}" and "Across {n} active listings". Range toggles at top right: 1M · 3M · 6M · 1Y · All. A line chart with light horizontal gridlines, month ticks, the current value in a dark tag at the right end, and a footnote "USD / month · Monthly averages". Add the 12-month forecast as a dashed line with its 80% band and the backtest error under the chart (the plan's rule), and a hover/tap tooltip with the month and value.
 4. **Saved apartments row:** "Saved apartments · {n} tracked", subline "Your watchlist, with asking-rent history at a glance.", a primary "+ Save apartment" button that goes to `/find`, four apartment cards, and "View all saved apartments →" at the bottom right.
@@ -35,7 +36,9 @@ From the Figma card, top to bottom:
 - Price "$2,950 / mo" (always with a thousands separator), and at right the change since tracking started: "↓ $100 (3.3%)". Drops use the "good" color, rises the "warn" color, and the arrow and words always say which way, so color is never the only signal.
 - A sparkline of real price observations, with the first and last observation months under it. With a single observation, show a dot and "Tracking since {date}".
 - New: a small label from the fair-rent engine: "In typical range", "Above typical range" or "Below typical range" (never "illegal").
-- On `/find`: a full-width "+ Save apartment" / "Saved ✓" toggle. On saved cards: a remove action in a small menu.
+- Tags from real data only, at most 4 after the fair-rent label: the listing's amenities (filled chips), then area tags about the ZIP (outlined, always ending "(ZIP)", e.g. "Groceries nearby (ZIP)"). Facebook rooms carry "Roommate wanted" and sublets "Sublet".
+- Facebook listings: a "Facebook group · lower confidence" badge, the group name, a title built from extracted fields (no street address), and a "View post on Facebook" link.
+- On `/find`: a full-width "+ Save apartment" / "Saved ✓" toggle, always at the bottom of the card (cards in a row are equal height, so the buttons line up). On saved cards: a remove action in a small menu.
 - The whole card links to the apartment page.
 
 ## Apartment page (`/apartments/[id]`, new)
@@ -50,6 +53,8 @@ From the Figma card, top to bottom:
 
 The full watchlist as a card grid, sortable by most recently saved, price, and biggest drop since saved. Each saved item remembers the price when it was saved, so cards can say "↓ $75 since you saved it". Empty state: "Nothing saved yet. Find apartments to start a watchlist." with a button.
 
+Multi-select: shift-click or Ctrl/Cmd-click cards, or turn on "Select" mode (checkboxes, for touch and screen readers). An action bar offers "Open selected in new tabs" (links that the browser blocks are listed to open by hand), "Remove selected" (with an undo toast) and "Clear"; Escape clears the selection.
+
 On the first visit only, seed four real apartments that have at least three price observations, marked "Example: remove anytime", so the demo never opens on an empty page.
 
 ## Price alerts (`/alerts`)
@@ -58,11 +63,11 @@ In-app only. For each saved apartment the user can set a target rent. The page l
 
 ## Find apartments (`/find`)
 
-The filter row (with max price), a results bar "{n} apartments in {area}" with sort (Recommended, Price low to high, Price high to low, Biggest price drop), and the card grid with save toggles. Paginate or load more past 24 results. Empty state suggests widening the filters.
+The filter row (with max price, source: all / listing sites / Facebook groups, and unit: whole units, "Roommate wanted (rooms)", sublets), a collapsible "Not sure where to look?" panel holding the Starter finder (ranked ZIPs for a budget; "Show listings in {area}" sets the area filter), a results bar "{n} apartments in {area}" with sort (Recommended, Price low to high, Price high to low, Biggest price drop), and the card grid with save toggles. Paginate or load more past 24 results. Empty state suggests widening the filters.
 
-## Saving without accounts
+## Saving (local first, optional sign-in)
 
-Saved apartments and alert targets live in the browser's `localStorage` (extend rynn's `SavedProvider`): `{ id, savedAt, priceAtSave, target? }` per listing id. Wrap every read and write in try/catch, and render correctly when storage is empty or blocked. Nothing about the user is sent to or stored on the server.
+Saved apartments and alert targets live in the browser's `localStorage` (extend rynn's `SavedProvider`): `{ id, savedAt, priceAtSave, target? }` per listing id. Wrap every read and write in try/catch, and render correctly when storage is empty or blocked. Without sign-in nothing about the user is sent to or stored on the server. Optional Google sign-in (docs/ACCOUNTS.md) syncs the same items keyed by a salted hash of the Google account ID; no email or name is stored. `/privacy` and `/terms` explain this in plain language.
 
 ## Visual style
 
