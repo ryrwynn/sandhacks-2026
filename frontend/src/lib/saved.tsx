@@ -94,7 +94,7 @@ export function SavedProvider({ children }: { children: ReactNode }) {
     setReady(true);
     (async () => {
       try {
-        const res = await getListings({ limit: 50 });
+        const res = await getListings({ limit: 12, minObservations: 3, sort: "recent" });
         if (cancelled) return;
         const picks = res.items
           .filter((l) => l.listing_type === "rent" && l.active && l.n_observations >= 3)

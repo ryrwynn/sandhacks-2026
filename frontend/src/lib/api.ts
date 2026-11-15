@@ -105,7 +105,7 @@ export const getListingAnalysis = (req: C.ListingAnalysisRequest) =>
 // unreachable or errors on a GET, and it is labeled. Nothing is invented in the real path.
 // ---------------------------------------------------------------------------
 export type ListingQuery = {
-  zip?: string; beds?: string; type?: string; maxPrice?: number; sort?: ListingSort; limit?: number; offset?: number;
+  zip?: string; beds?: string; type?: string; maxPrice?: number; sort?: ListingSort; limit?: number; offset?: number; minObservations?: number;
 };
 
 function query(params: Record<string, string | number | undefined | null>) {
@@ -127,7 +127,7 @@ export const getListings = (q: ListingQuery = {}) => {
       (!q.maxPrice || l.current_price_usd <= q.maxPrice),
   );
   return call<ListingsResponse>(
-    `/listings${query({ zip: q.zip, beds: q.beds, type: q.type ? API_TYPE[q.type] : undefined, max_price: q.maxPrice, sort: q.sort, limit: q.limit, offset: q.offset })}`,
+    `/listings${query({ zip: q.zip, beds: q.beds, type: q.type ? API_TYPE[q.type] : undefined, max_price: q.maxPrice, sort: q.sort, limit: q.limit, offset: q.offset, min_observations: q.minObservations })}`,
     { ...fx, items, total: items.length },
   );
 };

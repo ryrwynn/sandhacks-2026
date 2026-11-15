@@ -98,7 +98,8 @@ def list_listings(zip: str | None = Query(None, pattern=r"^\d{5}$"), beds: int |
                   max_price: float | None = Query(None, gt=0),
                   sort: str = Query("recent", pattern="^(recent|price_asc|price_desc|biggest_drop)$"),
                   limit: int = Query(24, ge=1, le=100), offset: int = Query(0, ge=0),
-                  ids: str | None = None) -> ListingsResponse:
+                  ids: str | None = None,
+                  min_observations: int | None = Query(None, ge=1, le=100)) -> ListingsResponse:
     id_list = None
     if ids is not None:
         try:
@@ -108,7 +109,8 @@ def list_listings(zip: str | None = Query(None, pattern=r"^\d{5}$"), beds: int |
         if not id_list or len(id_list) > MAX_IDS:
             raise HTTPException(422, f"ids takes 1 to {MAX_IDS} listing ids")
         limit = max(limit, len(id_list))
-    rows = safe(db.listing_page, zip, beds, type, max_price, sort, limit, offset, id_list, default=[])
+    rows = safe(db.listing_page, zip, beds, type, max_price, sort, limit, offset, id_list, min_observations,
+                default=[])
     obs = _obs_by_listing([r["listing_id"] for r in rows]) if rows else {}
     items = [summary(r, obs.get(r["listing_id"], [])) for r in rows]
     if id_list is not None:  # keep the order the caller asked for

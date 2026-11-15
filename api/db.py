@@ -297,13 +297,17 @@ def _listing_filters(zip_, beds, type_, ids) -> tuple[str, dict]:
 
 
 def listing_page(zip_=None, beds=None, type_=None, max_price=None, sort="recent", limit=24, offset=0,
-                 ids: list[int] | None = None) -> list[dict]:
+                 ids: list[int] | None = None, min_obs: int | None = None) -> list[dict]:
     """One row per listing with first/current price, observation count and active flag; total in `total`."""
     where, p = _listing_filters(zip_, beds, type_, ids)
-    having = ""
+    conds = []
     if max_price is not None:
-        having = "WHERE t.cur <= %(max_price)s"
+        conds.append("t.cur <= %(max_price)s")
         p["max_price"] = max_price
+    if min_obs is not None:
+        conds.append("t.n >= %(min_obs)s")
+        p["min_obs"] = min_obs
+    having = ("WHERE " + " AND ".join(conds)) if conds else ""
     p.update(limit=limit, offset=offset)
     sql = f"""
     WITH {_WIN}
