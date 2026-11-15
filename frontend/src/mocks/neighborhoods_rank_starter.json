@@ -1,0 +1,101 @@
+{
+  "persona": "starter",
+  "budget_usd": 1900.0,
+  "beds": 1,
+  "weights": {
+    "rent": 0.4,
+    "rent_forecast": 0.2,
+    "basics_density": 0.25,
+    "other_amenities_density": 0.05,
+    "listings_30d": 0.1
+  },
+  "ranked": [
+    {
+      "rank": 1,
+      "zip": "92105",
+      "name": "City Heights",
+      "score": 82.1,
+      "price_usd": 1740.0,
+      "top_contributions": [
+        {
+          "feature": "rent",
+          "label": "Low typical rent",
+          "points": 40.0,
+          "value": 1740.0
+        },
+        {
+          "feature": "basics_density",
+          "label": "Groceries and transit nearby",
+          "points": 22.3,
+          "value": 12.4
+        },
+        {
+          "feature": "listings_30d",
+          "label": "Many recent listings",
+          "points": 8.1,
+          "value": 96.0
+        }
+      ],
+      "summary": "City Heights has some of the lowest one-bedroom rents in the city. Groceries and bus stops are close together, so daily errands are short."
+    },
+    {
+      "rank": 2,
+      "zip": "92111",
+      "name": "Linda Vista",
+      "score": 64.7,
+      "price_usd": 1860.0,
+      "top_contributions": [
+        {
+          "feature": "rent",
+          "label": "Low typical rent",
+          "points": 31.5,
+          "value": 1860.0
+        },
+        {
+          "feature": "rent_forecast",
+          "label": "Slower rent growth forecast",
+          "points": 16.0,
+          "value": 1.8
+        },
+        {
+          "feature": "basics_density",
+          "label": "Groceries and transit nearby",
+          "points": 11.2,
+          "value": 6.1
+        }
+      ],
+      "summary": null
+    }
+  ],
+  "stretch": [
+    {
+      "rank": 3,
+      "zip": "92104",
+      "name": "North Park",
+      "score": 58.0,
+      "price_usd": 2080.0,
+      "top_contributions": [
+        {
+          "feature": "basics_density",
+          "label": "Groceries and transit nearby",
+          "points": 25.0,
+          "value": 15.2
+        },
+        {
+          "feature": "rent",
+          "label": "Low typical rent",
+          "points": 20.4,
+          "value": 2080.0
+        },
+        {
+          "feature": "listings_30d",
+          "label": "Many recent listings",
+          "points": 7.0,
+          "value": 88.0
+        }
+      ],
+      "summary": null
+    }
+  ],
+  "disclaimer": "Estimates with ranges from public data, not financial advice or measured results."
+}

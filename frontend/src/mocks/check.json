@@ -1,0 +1,17 @@
+{
+  "check_id": "3b8e2a4c-1d5f-4e6a-9b7c-8d0e1f2a3b4c",
+  "verdict": "over_cap",
+  "cap_pct": 8.2,
+  "max_legal_rent": 2272.2,
+  "increase_pct": 11.9,
+  "overage_monthly": 77.8,
+  "overage_yearly": 933.6,
+  "third_increase": false,
+  "reasons": [
+    "The building was built in 1978, more than 15 years ago, so AB 1482 covers it.",
+    "The cap for increases effective Dec 1, 2026 in San Diego County is 8.2%.",
+    "Your lowest rent in the past 12 months was $2,100.00, so the most your landlord can charge is $2,272.20.",
+    "The new rent of $2,350.00 is $77.80 a month over the limit ($933.60 a year)."
+  ],
+  "disclaimer": "This is not legal advice. For help with a rent increase, contact the Legal Aid Society of San Diego (lassd.org, 877-534-2524)."
+}

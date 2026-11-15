@@ -1,0 +1,184 @@
+{
+  "zips": [
+    {
+      "zip": "91910",
+      "name": "Chula Vista",
+      "median_rent_by_beds": {
+        "0": 1692,
+        "1": 1998,
+        "2": 2350,
+        "3": 3055
+      },
+      "typical_rent_usd": 2350.0,
+      "typical_home_value_usd": 760000.0,
+      "rent_forecast_change_pct": 1.2,
+      "value_forecast_change_pct": 0.8,
+      "listings_30d": 60
+    },
+    {
+      "zip": "92101",
+      "name": "Downtown",
+      "median_rent_by_beds": {
+        "0": 2124,
+        "1": 2508,
+        "2": 2950,
+        "3": 3835
+      },
+      "typical_rent_usd": 2950.0,
+      "typical_home_value_usd": 690000.0,
+      "rent_forecast_change_pct": 1.8,
+      "value_forecast_change_pct": 1.7,
+      "listings_30d": 69
+    },
+    {
+      "zip": "92103",
+      "name": "Hillcrest",
+      "median_rent_by_beds": {
+        "0": 1944,
+        "1": 2295,
+        "2": 2700,
+        "3": 3510
+      },
+      "typical_rent_usd": 2700.0,
+      "typical_home_value_usd": 870000.0,
+      "rent_forecast_change_pct": 2.4,
+      "value_forecast_change_pct": 2.6,
+      "listings_30d": 78
+    },
+    {
+      "zip": "92104",
+      "name": "North Park",
+      "median_rent_by_beds": {
+        "0": 1764,
+        "1": 2082,
+        "2": 2450,
+        "3": 3185
+      },
+      "typical_rent_usd": 2450.0,
+      "typical_home_value_usd": 820000.0,
+      "rent_forecast_change_pct": 3.0,
+      "value_forecast_change_pct": 3.5,
+      "listings_30d": 87
+    },
+    {
+      "zip": "92105",
+      "name": "City Heights",
+      "median_rent_by_beds": {
+        "0": 1476,
+        "1": 1742,
+        "2": 2050,
+        "3": 2665
+      },
+      "typical_rent_usd": 2050.0,
+      "typical_home_value_usd": 610000.0,
+      "rent_forecast_change_pct": 3.6,
+      "value_forecast_change_pct": 0.8,
+      "listings_30d": 96
+    },
+    {
+      "zip": "92107",
+      "name": "Ocean Beach",
+      "median_rent_by_beds": {
+        "0": 1872,
+        "1": 2210,
+        "2": 2600,
+        "3": 3380
+      },
+      "typical_rent_usd": 2600.0,
+      "typical_home_value_usd": 1150000.0,
+      "rent_forecast_change_pct": 1.2,
+      "value_forecast_change_pct": 1.7,
+      "listings_30d": 105
+    },
+    {
+      "zip": "92108",
+      "name": "Mission Valley",
+      "median_rent_by_beds": {
+        "0": 1980,
+        "1": 2338,
+        "2": 2750,
+        "3": 3575
+      },
+      "typical_rent_usd": 2750.0,
+      "typical_home_value_usd": 640000.0,
+      "rent_forecast_change_pct": 1.8,
+      "value_forecast_change_pct": 2.6,
+      "listings_30d": 114
+    },
+    {
+      "zip": "92109",
+      "name": "Pacific Beach",
+      "median_rent_by_beds": {
+        "0": 2088,
+        "1": 2465,
+        "2": 2900,
+        "3": 3770
+      },
+      "typical_rent_usd": 2900.0,
+      "typical_home_value_usd": 1100000.0,
+      "rent_forecast_change_pct": 2.4,
+      "value_forecast_change_pct": 3.5,
+      "listings_30d": 123
+    },
+    {
+      "zip": "92111",
+      "name": "Linda Vista",
+      "median_rent_by_beds": {
+        "0": 1656,
+        "1": 1955,
+        "2": 2300,
+        "3": 2990
+      },
+      "typical_rent_usd": 2300.0,
+      "typical_home_value_usd": 780000.0,
+      "rent_forecast_change_pct": 3.0,
+      "value_forecast_change_pct": 0.8,
+      "listings_30d": 132
+    },
+    {
+      "zip": "92117",
+      "name": "Clairemont",
+      "median_rent_by_beds": {
+        "0": 1836,
+        "1": 2168,
+        "2": 2550,
+        "3": 3315
+      },
+      "typical_rent_usd": 2550.0,
+      "typical_home_value_usd": 950000.0,
+      "rent_forecast_change_pct": 3.6,
+      "value_forecast_change_pct": 1.7,
+      "listings_30d": 141
+    },
+    {
+      "zip": "92122",
+      "name": "University City",
+      "median_rent_by_beds": {
+        "0": 2052,
+        "1": 2422,
+        "2": 2850,
+        "3": 3705
+      },
+      "typical_rent_usd": 2850.0,
+      "typical_home_value_usd": 880000.0,
+      "rent_forecast_change_pct": 1.2,
+      "value_forecast_change_pct": 2.6,
+      "listings_30d": 150
+    },
+    {
+      "zip": "92126",
+      "name": "Mira Mesa",
+      "median_rent_by_beds": {
+        "0": 1800,
+        "1": 2125,
+        "2": 2500,
+        "3": 3250
+      },
+      "typical_rent_usd": 2500.0,
+      "typical_home_value_usd": 890000.0,
+      "rent_forecast_change_pct": 1.8,
+      "value_forecast_change_pct": 3.5,
+      "listings_30d": 159
+    }
+  ]
+}

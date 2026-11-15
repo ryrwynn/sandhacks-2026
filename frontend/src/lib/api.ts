@@ -1,5 +1,8 @@
 import type { Filters, Listing, Market } from "./types";
 import { AREAS, MOCK_LISTINGS, mockMarket } from "./mock";
+import type * as C from "./contract";
+import { MOCK } from "./mockdata";
+import { markMock } from "./mockflag";
 
 const USE_API = process.env.NEXT_PUBLIC_USE_API === "true";
 
@@ -31,3 +34,79 @@ export async function getListingsByIds(ids: string[]): Promise<Listing[]> {
   if (USE_API) return (await fetch(`/api/listings?ids=${ids.join(",")}`)).json();
   return MOCK_LISTINGS.filter((l) => ids.includes(l.id));
 }
+
+// ---------------------------------------------------------------------------
+// RentWatch contract endpoints (docs/PLAN.md "API contract and pages").
+// Browser: relative /api/... (Caddy strips the prefix in production; next.config rewrites locally).
+// Server: API_INTERNAL_URL read at request time, no /api prefix.
+// If the API is unreachable, or NEXT_PUBLIC_USE_MOCKS=true, the contract fixtures are served and the
+// result is registered with isMock() so pages can label it as sample data.
+// ---------------------------------------------------------------------------
+const FORCE_MOCKS = process.env.NEXT_PUBLIC_USE_MOCKS === "true";
+const mocked = new WeakSet<object>();
+
+export function isMock(x: unknown): boolean {
+  return typeof x === "object" && x !== null && mocked.has(x);
+}
+
+function base(): string {
+  if (typeof window !== "undefined") return "/api";
+  return process.env.API_INTERNAL_URL || "http://localhost:8000";
+}
+
+function serveMock<T extends object>(fixture: T): T {
+  // Fresh copy so each result is its own object (and can be tracked in the WeakSet).
+  const copy = structuredClone(fixture);
+  mocked.add(copy);
+  if (typeof window !== "undefined") markMock();
+  return copy;
+}
+
+async function call<T extends object>(path: string, fixture: T, init?: RequestInit): Promise<T> {
+  const mock = () => serveMock(fixture);
+  if (FORCE_MOCKS) return mock();
+  try {
+    const ctl = new AbortController();
+    const timer = setTimeout(() => ctl.abort(), 8000);
+    const res = await fetch(`${base()}${path}`, {
+      ...init,
+      cache: "no-store",
+      signal: ctl.signal,
+      headers: init?.body ? { "Content-Type": "application/json" } : undefined,
+    });
+    clearTimeout(timer);
+    if (!res.ok) return mock();
+    return (await res.json()) as T;
+  } catch {
+    return mock();
+  }
+}
+
+const post = (body: unknown): RequestInit => ({ method: "POST", body: JSON.stringify(body) });
+
+export const getHealth = () => call<C.HealthResponse>("/health", MOCK.health);
+export const getZips = () => call<C.ZipsResponse>("/zips", MOCK.zips);
+export const getZipProfile = (zip: string) =>
+  call<C.ZipProfile>(`/zips/${encodeURIComponent(zip)}`, {
+    ...MOCK.zipProfile,
+    zip,
+    name: MOCK.zips.zips.find((z) => z.zip === zip)?.name ?? MOCK.zipProfile.name,
+  });
+export const getZipSeries = (zip: string, metric: C.Metric) =>
+  call<C.SeriesResponse>(`/zips/${encodeURIComponent(zip)}/series?metric=${metric}`, {
+    ...(metric === "zori" ? MOCK.seriesZori : MOCK.seriesZhvi),
+    zip,
+  });
+export const postCheck = (req: C.CheckRequest) => call<C.CheckResponse>("/checks", MOCK.check, post(req));
+export const postLetter = (id: string, lang: C.Lang) =>
+  call<C.LetterResponse>(`/checks/${encodeURIComponent(id)}/letter?lang=${lang}`, { ...MOCK.letter, check_id: id, lang }, post({}));
+export const searchUnits = (address: string) =>
+  call<C.UnitSearchResponse>(`/units/search?address=${encodeURIComponent(address)}`, { ...MOCK.units, query: address });
+export const evaluateListing = (req: C.ListingEvalRequest) =>
+  call<C.ListingEvalResponse>("/listings/evaluate", { ...MOCK.evaluate, asking_rent: req.asking_rent }, post(req));
+export const rankNeighborhoods = (req: C.RankRequest) =>
+  call<C.RankResponse>("/neighborhoods/rank", req.persona === "starter" ? MOCK.rankStarter : MOCK.rankWealth, post(req));
+export const getPricePosition = (req: C.PricePositionRequest) =>
+  call<C.PricePositionResponse>("/owner/price-position", MOCK.pricePos, post(req));
+export const getListingAnalysis = (req: C.ListingAnalysisRequest) =>
+  call<C.ListingAnalysisResponse>("/owner/listing-analysis", MOCK.analysis, post(req));
