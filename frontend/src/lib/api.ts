@@ -1,6 +1,7 @@
 import type { Filters, Listing, Market } from "./types";
 import { AREAS, MOCK_LISTINGS, mockMarket } from "./mock";
-import type * as C from "./contract";
+import type * as C from "./api.generated";
+import type { Lang, Metric } from "./contract";
 import { MOCK } from "./mockdata";
 import { markMock } from "./mockflag";
 
@@ -92,13 +93,13 @@ export const getZipProfile = (zip: string) =>
     zip,
     name: MOCK.zips.zips.find((z) => z.zip === zip)?.name ?? MOCK.zipProfile.name,
   });
-export const getZipSeries = (zip: string, metric: C.Metric) =>
+export const getZipSeries = (zip: string, metric: Metric) =>
   call<C.SeriesResponse>(`/zips/${encodeURIComponent(zip)}/series?metric=${metric}`, {
     ...(metric === "zori" ? MOCK.seriesZori : MOCK.seriesZhvi),
     zip,
   });
 export const postCheck = (req: C.CheckRequest) => call<C.CheckResponse>("/checks", MOCK.check, post(req));
-export const postLetter = (id: string, lang: C.Lang) =>
+export const postLetter = (id: string, lang: Lang) =>
   call<C.LetterResponse>(`/checks/${encodeURIComponent(id)}/letter?lang=${lang}`, { ...MOCK.letter, check_id: id, lang }, post({}));
 export const searchUnits = (address: string) =>
   call<C.UnitSearchResponse>(`/units/search?address=${encodeURIComponent(address)}`, { ...MOCK.units, query: address });
