@@ -1,0 +1,14 @@
+{
+  "zip": "92104",
+  "beds": 2,
+  "target_rent": 2600.0,
+  "baths": 1.0,
+  "sqft": 900,
+  "year_built": 1962,
+  "property_type": "apartment",
+  "occupied": true,
+  "lowest_rent_12mo": 2300.0,
+  "effective_date": "2026-12-01",
+  "got_exemption_notice": null,
+  "owner_is_corporate": null
+}

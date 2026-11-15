@@ -1,0 +1,37 @@
+{
+  "completeness": 44.4,
+  "readability": 81.0,
+  "reach_score": 29.0,
+  "stated": {
+    "price": true,
+    "beds": true,
+    "baths": true,
+    "sqft": false,
+    "pets": false,
+    "parking": false,
+    "laundry": false,
+    "utilities": false,
+    "move_in": true
+  },
+  "gaps": [
+    {
+      "fact": "parking",
+      "share_of_comparables": 0.81
+    },
+    {
+      "fact": "laundry",
+      "share_of_comparables": 0.77
+    },
+    {
+      "fact": "pets",
+      "share_of_comparables": 0.69
+    },
+    {
+      "fact": "sqft",
+      "share_of_comparables": 0.66
+    }
+  ],
+  "n_comparables": 52,
+  "explanation": "Most comparable North Park two-bedrooms say whether parking and laundry are included, and this listing doesn't. Renters filter on pets and square footage, so leaving them out can hide the listing from searches.",
+  "disclaimer": "A prediction from comparable listings, not measured clicks."
+}

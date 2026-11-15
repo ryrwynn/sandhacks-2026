@@ -1,0 +1,100 @@
+{
+  "persona": "wealth",
+  "budget_usd": 750000.0,
+  "beds": null,
+  "weights": {
+    "value_forecast": 0.35,
+    "gross_yield": 0.3,
+    "value_vs_budget": 0.2,
+    "volatility": 0.15
+  },
+  "ranked": [
+    {
+      "rank": 1,
+      "zip": "92105",
+      "name": "City Heights",
+      "score": 77.4,
+      "price_usd": 610000.0,
+      "top_contributions": [
+        {
+          "feature": "gross_yield",
+          "label": "High rental yield",
+          "points": 30.0,
+          "value": 4.0
+        },
+        {
+          "feature": "value_forecast",
+          "label": "Home values forecast to rise",
+          "points": 24.5,
+          "value": 3.1
+        },
+        {
+          "feature": "value_vs_budget",
+          "label": "Well under budget",
+          "points": 16.0,
+          "value": 610000.0
+        }
+      ],
+      "summary": "City Heights pairs the highest rental yield of the twelve ZIPs with a rising home-value forecast. Typical homes sit well under the budget."
+    },
+    {
+      "rank": 2,
+      "zip": "92108",
+      "name": "Mission Valley",
+      "score": 61.2,
+      "price_usd": 640000.0,
+      "top_contributions": [
+        {
+          "feature": "gross_yield",
+          "label": "High rental yield",
+          "points": 27.1,
+          "value": 5.2
+        },
+        {
+          "feature": "value_vs_budget",
+          "label": "Well under budget",
+          "points": 14.0,
+          "value": 640000.0
+        },
+        {
+          "feature": "volatility",
+          "label": "Steady prices",
+          "points": 11.0,
+          "value": 0.6
+        }
+      ],
+      "summary": null
+    }
+  ],
+  "stretch": [
+    {
+      "rank": 3,
+      "zip": "91910",
+      "name": "Chula Vista",
+      "score": 55.3,
+      "price_usd": 760000.0,
+      "top_contributions": [
+        {
+          "feature": "value_forecast",
+          "label": "Home values forecast to rise",
+          "points": 29.0,
+          "value": 3.5
+        },
+        {
+          "feature": "gross_yield",
+          "label": "High rental yield",
+          "points": 18.0,
+          "value": 3.7
+        },
+        {
+          "feature": "volatility",
+          "label": "Steady prices",
+          "points": 8.3,
+          "value": 0.7
+        }
+      ],
+      "summary": null
+    }
+  ],
+  "disclaimer": "Estimates with ranges from public data, not financial advice or measured results."
+}

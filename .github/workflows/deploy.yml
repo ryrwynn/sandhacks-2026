@@ -47,7 +47,7 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           # Works whether the server was cloned on main or Setup: fetch, switch, fast-forward.
           ssh -o StrictHostKeyChecking=accept-new -o ConnectTimeout=15 root@"$VULTR_HOST" \
-            "set -e; cd /opt/rentwatch && git fetch origin $BRANCH && git checkout $BRANCH && git pull --ff-only origin $BRANCH && git log -1 --oneline && if [ -f docker-compose.yml ]; then docker compose up -d --build --remove-orphans; else echo 'No docker-compose.yml yet'; fi"
+            "set -e; cd /opt/rentwatch && git fetch origin $BRANCH && git checkout $BRANCH && git pull --ff-only origin $BRANCH && if [ -x scripts/deploy.sh ]; then scripts/deploy.sh $BRANCH; else git log -1 --oneline && docker compose up -d --build --remove-orphans; fi"
 
       - name: Smoke test the live site
         run: |

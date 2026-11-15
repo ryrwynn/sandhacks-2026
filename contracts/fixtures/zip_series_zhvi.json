@@ -1,0 +1,514 @@
+{
+  "zip": "92105",
+  "metric": "zhvi",
+  "points": [
+    {
+      "month": "2021-11-01",
+      "value": 480000.0,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2021-12-01",
+      "value": 483577.79,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-01-01",
+      "value": 485679.23,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-02-01",
+      "value": 486164.95,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-03-01",
+      "value": 486393.37,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-04-01",
+      "value": 487978.95,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-05-01",
+      "value": 491303.91,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-06-01",
+      "value": 495155.34,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-07-01",
+      "value": 497831.92,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-08-01",
+      "value": 498710.54,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-09-01",
+      "value": 498830.38,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-10-01",
+      "value": 499947.17,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-11-01",
+      "value": 502918.27,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2022-12-01",
+      "value": 506903.87,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-01-01",
+      "value": 510128.45,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-02-01",
+      "value": 511512.28,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-03-01",
+      "value": 511673.83,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-04-01",
+      "value": 512372.81,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-05-01",
+      "value": 514894.94,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-06-01",
+      "value": 518861.26,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-07-01",
+      "value": 522564.37,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-08-01",
+      "value": 524533.83,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-09-01",
+      "value": 524895.57,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-10-01",
+      "value": 525268.71,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-11-01",
+      "value": 527283.07,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2023-12-01",
+      "value": 531074.72,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-01-01",
+      "value": 535148.2,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-02-01",
+      "value": 537743.77,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-03-01",
+      "value": 538459.81,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-04-01",
+      "value": 538634.7,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-05-01",
+      "value": 540125.52,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-06-01",
+      "value": 543597.95,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-07-01",
+      "value": 547902.03,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-08-01",
+      "value": 551118.98,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-09-01",
+      "value": 552326.3,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-10-01",
+      "value": 552457.52,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-11-01",
+      "value": 553455.63,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2024-12-01",
+      "value": 556487.65,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-01-01",
+      "value": 560860.98,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-02-01",
+      "value": 564647.65,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-03-01",
+      "value": 566454.07,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-04-01",
+      "value": 566711.94,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-05-01",
+      "value": 567294.66,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-06-01",
+      "value": 569799.69,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-07-01",
+      "value": 574071.63,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-08-01",
+      "value": 578331.4,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-09-01",
+      "value": 580805.38,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-10-01",
+      "value": 581362.85,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-11-01",
+      "value": 581650.07,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2025-12-01",
+      "value": 583585.11,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-01-01",
+      "value": 587589.4,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-02-01",
+      "value": 592186.51,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-03-01",
+      "value": 595349.66,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-04-01",
+      "value": 596368.31,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-05-01",
+      "value": 596514.88,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-06-01",
+      "value": 597886.33,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-07-01",
+      "value": 601475.11,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-08-01",
+      "value": 606243.99,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-09-01",
+      "value": 610067.04,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-10-01",
+      "value": 611683.38,
+      "lo80": null,
+      "hi80": null,
+      "kind": "actual"
+    },
+    {
+      "month": "2026-11-01",
+      "value": 613191.96,
+      "lo80": 605833.65,
+      "hi80": 620550.26,
+      "kind": "forecast"
+    },
+    {
+      "month": "2026-12-01",
+      "value": 614704.25,
+      "lo80": 604272.38,
+      "hi80": 625136.13,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-01-01",
+      "value": 616220.28,
+      "lo80": 603412.38,
+      "hi80": 629028.18,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-02-01",
+      "value": 617740.04,
+      "lo80": 602914.28,
+      "hi80": 632565.81,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-03-01",
+      "value": 619263.56,
+      "lo80": 602646.97,
+      "hi80": 635880.14,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-04-01",
+      "value": 620790.83,
+      "lo80": 602543.38,
+      "hi80": 639038.28,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-05-01",
+      "value": 622321.87,
+      "lo80": 602563.76,
+      "hi80": 642079.97,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-06-01",
+      "value": 623856.68,
+      "lo80": 602682.28,
+      "hi80": 645031.08,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-07-01",
+      "value": 625395.28,
+      "lo80": 602881.05,
+      "hi80": 647909.51,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-08-01",
+      "value": 626937.67,
+      "lo80": 603147.06,
+      "hi80": 650728.29,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-09-01",
+      "value": 628483.87,
+      "lo80": 603470.53,
+      "hi80": 653497.21,
+      "kind": "forecast"
+    },
+    {
+      "month": "2027-10-01",
+      "value": 630033.88,
+      "lo80": 603843.86,
+      "hi80": 656223.9,
+      "kind": "forecast"
+    }
+  ],
+  "run_id": "6f1f8a52-3c3e-4d4c-9a51-0b9a4b6f2a10",
+  "backtest_mape": 3.4,
+  "naive_mape": 4.1,
+  "beats_naive": true
+}

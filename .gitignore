@@ -5,3 +5,7 @@ __pycache__/
 .next/
 models/*.joblib
 .claude/worktrees/
+.cronenv
+models/*
+!models/.gitkeep
+*.log

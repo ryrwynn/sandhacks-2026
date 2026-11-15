@@ -1,0 +1,13 @@
+zip,name
+91910,Chula Vista
+92101,Downtown
+92103,Hillcrest
+92104,North Park
+92105,City Heights
+92107,Ocean Beach
+92108,Mission Valley
+92109,Pacific Beach
+92111,Linda Vista
+92117,Clairemont
+92122,University City
+92126,Mira Mesa
