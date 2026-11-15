@@ -13,7 +13,7 @@ export const metadata: Metadata = { title: "ZIP profile | RentOrKnot" };
 
 function Stat({ label, value, note }: { label: string; value: string; note?: string }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-3">
+    <div className="rounded-xl border border-slate-200 bg-surface p-3">
       <div className="text-xs text-slate-600">{label}</div>
       <div className="text-xl font-bold tabular-nums">{value}</div>
       {note && <div className="text-xs text-slate-500">{note}</div>}

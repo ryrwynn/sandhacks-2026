@@ -1,36 +1,46 @@
 "use client";
+import { useState } from "react";
 import type { Filters } from "@/lib/types";
-import { AREAS } from "@/lib/mock";
+import { ZIP_OPTIONS } from "@/lib/format";
+import { selectCls } from "./styles";
 
 export default function FilterBar({ value, onChange, showPrice }: {
   value: Filters; onChange: (f: Filters) => void; showPrice?: boolean;
 }) {
+  const [more, setMore] = useState(value.maxPrice > 0);
   const set = (patch: Partial<Filters>) => onChange({ ...value, ...patch });
   return (
-    <div className="filters" role="group" aria-label="Filters">
-      <select aria-label="Area" value={value.area} onChange={(e) => set({ area: e.target.value })}>
-        {AREAS.map((a) => <option key={a}>{a}</option>)}
-      </select>
-      <select aria-label="Bedrooms" value={value.beds} onChange={(e) => set({ beds: e.target.value })}>
-        <option value="any">Any bedrooms</option>
-        <option value="0">Studio</option>
-        <option value="1">1 bedroom</option>
-        <option value="2">2 bedrooms</option>
-        <option value="3">3 bedrooms</option>
-      </select>
-      {showPrice && (
-        <select aria-label="Max price" value={value.maxPrice} onChange={(e) => set({ maxPrice: Number(e.target.value) })}>
+    <div role="group" aria-label="Filters" className="space-y-2">
+      <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
+        <select aria-label="Area" className={`${selectCls} col-span-2 sm:col-span-1 sm:min-w-52`} value={value.zip} onChange={(e) => set({ zip: e.target.value })}>
+          <option value="">All San Diego areas</option>
+          {ZIP_OPTIONS.map((z) => <option key={z.zip} value={z.zip}>{z.name} ({z.zip})</option>)}
+        </select>
+        <select aria-label="Bedrooms" className={selectCls} value={value.beds} onChange={(e) => set({ beds: e.target.value })}>
+          <option value="any">Any bedrooms</option>
+          <option value="0">Studio</option>
+          <option value="1">1 bedroom</option>
+          <option value="2">2 bedrooms</option>
+          <option value="3">3 bedrooms</option>
+        </select>
+        <select aria-label="Property type" className={selectCls} value={value.type} onChange={(e) => set({ type: e.target.value })}>
+          <option value="any">All property types</option>
+          <option value="apartment">Apartment</option>
+          <option value="condo">Condo</option>
+          <option value="house">House</option>
+        </select>
+        {showPrice && (
+          <button type="button" aria-expanded={more} onClick={() => setMore((m) => !m)} className="min-h-11 rounded-lg px-3 text-base font-medium text-accent-strong underline underline-offset-2">
+            {more ? "Fewer filters" : "More filters"}
+          </button>
+        )}
+      </div>
+      {showPrice && more && (
+        <select aria-label="Max price" className={selectCls} value={value.maxPrice} onChange={(e) => set({ maxPrice: Number(e.target.value) })}>
           <option value={0}>Any price</option>
-          {[2500, 3000, 3500, 4000].map((p) => <option key={p} value={p}>Up to ${p.toLocaleString()}</option>)}
+          {[2000, 2500, 3000, 3500, 4000, 5000].map((p) => <option key={p} value={p}>Up to ${p.toLocaleString()} a month</option>)}
         </select>
       )}
-      <select aria-label="Property type" value={value.type} onChange={(e) => set({ type: e.target.value })}>
-        <option value="any">All property types</option>
-        <option value="apartment">Apartment</option>
-        <option value="condo">Condo</option>
-        <option value="house">House</option>
-      </select>
-      <button className="ghost">More filters</button>
     </div>
   );
 }

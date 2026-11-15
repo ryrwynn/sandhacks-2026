@@ -18,16 +18,16 @@ export default function ForecastChart({ series, title }: { series: SeriesRespons
       <div className="h-60 w-full" role="img" aria-label={`${title}: monthly history and 12-month forecast with an 80% range`}>
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={rows} margin={{ top: 8, right: 8, bottom: 0, left: 0 }}>
-            <CartesianGrid stroke="#e2e8f0" vertical={false} />
+            <CartesianGrid stroke="var(--grid)" strokeOpacity={0.45} vertical={false} />
             <XAxis dataKey="month" tickFormatter={monthLabel} minTickGap={40} fontSize={11} />
             <YAxis width={52} domain={["auto", "auto"]} tickFormatter={(v: number) => (v >= 100000 ? `$${Math.round(v / 1000)}k` : `$${v}`)} fontSize={11} />
             <Tooltip
               formatter={(v: unknown, name: unknown) => [Array.isArray(v) ? `${usd(v[0] as number)} to ${usd(v[1] as number)}` : usd(v as number), name === "band" ? "80% range" : String(name)]}
               labelFormatter={(l) => monthLabel(String(l))}
             />
-            <Area dataKey="band" name="band" stroke="none" fill="#6366f1" fillOpacity={0.18} isAnimationActive={false} connectNulls />
-            <Line dataKey="actual" name="History" stroke="#0f172a" strokeWidth={2} dot={false} isAnimationActive={false} />
-            <Line dataKey="forecast" name="Forecast" stroke="#4338ca" strokeWidth={2} strokeDasharray="5 4" dot={false} isAnimationActive={false} />
+            <Area dataKey="band" name="band" stroke="none" fill="var(--line)" fillOpacity={0.6} isAnimationActive={false} connectNulls />
+            <Line dataKey="actual" name="History" stroke="var(--primary)" strokeWidth={2} dot={false} isAnimationActive={false} />
+            <Line dataKey="forecast" name="Forecast" stroke="var(--accent-strong)" strokeWidth={2} strokeDasharray="5 4" dot={false} isAnimationActive={false} />
           </ComposedChart>
         </ResponsiveContainer>
       </div>

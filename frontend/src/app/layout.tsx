@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Suspense } from "react";
-import ModeNav from "@/components/ModeNav";
+import SiteNav from "@/components/SiteNav";
 import { MockBanner } from "@/components/ui";
 import { SavedProvider } from "@/lib/saved";
 
@@ -18,15 +18,12 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html
-      lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <body className="flex min-h-full flex-col bg-bg font-sans text-ink">
         <SavedProvider>
-          <Suspense fallback={<div className="h-14 border-b border-slate-200 bg-white" />}><ModeNav /></Suspense>
+          <Suspense fallback={<div className="h-14 bg-surface" />}><SiteNav /></Suspense>
           <MockBanner />
-          <div className="mx-auto w-full max-w-5xl flex-1 px-4 py-4">{children}</div>
+          <div className="mx-auto w-full max-w-6xl flex-1 overflow-x-clip px-4 pb-24 pt-5 md:pb-12">{children}</div>
         </SavedProvider>
       </body>
     </html>
