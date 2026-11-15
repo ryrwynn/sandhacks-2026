@@ -10,7 +10,7 @@ fetch:
   zip_file: data/zips.txt
   input_url: "https://www.zillow.com/san-diego-ca-{zip}/rentals/"
   # Not a hard cap: buildings expand into one record per unit. The credit is shared; keep it low.
-  limit_per_input: 30
+  limit_per_input: 10
 # Never stored: contact people, phones, brokerages; bulk fields we don't use.
 drop_fields:
   - listing_provided_by
