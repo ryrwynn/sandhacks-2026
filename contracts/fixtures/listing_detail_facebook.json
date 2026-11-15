@@ -77,5 +77,20 @@
     "naive_mape": 2.4,
     "beats_naive": false
   },
-  "disclaimer": "Estimates with ranges from public data, not financial advice or measured results."
+  "disclaimer": "Estimates with ranges from public data, not financial advice or measured results.",
+  "roommate_wanted": false,
+  "tags": [
+    {
+      "label": "Parking",
+      "kind": "listing"
+    },
+    {
+      "label": "Laundry",
+      "kind": "listing"
+    },
+    {
+      "label": "Transit stops nearby (ZIP)",
+      "kind": "area"
+    }
+  ]
 }

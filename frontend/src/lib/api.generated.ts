@@ -239,6 +239,8 @@ export interface ListingDetail {
   amenities: string[];
   unusual_price: boolean;
   trust_weight: number;
+  roommate_wanted: boolean;
+  tags: ListingTag[];
   observations: Observation[];
   year_built: number | null;
   estimate: FairRentEstimate | null;
@@ -302,6 +304,13 @@ export interface ListingSummary {
   amenities: string[];
   unusual_price: boolean;
   trust_weight: number;
+  roommate_wanted: boolean;
+  tags: ListingTag[];
+}
+
+export interface ListingTag {
+  label: string;
+  kind: "listing" | "area";
 }
 
 export interface ListingTrendsResponse {

@@ -51,7 +51,18 @@
       "available_date": null,
       "amenities": [],
       "unusual_price": false,
-      "trust_weight": 1.0
+      "trust_weight": 1.0,
+      "roommate_wanted": false,
+      "tags": [
+        {
+          "label": "Washer & dryer",
+          "kind": "listing"
+        },
+        {
+          "label": "Groceries nearby (ZIP)",
+          "kind": "area"
+        }
+      ]
     },
     {
       "id": 102,
@@ -92,7 +103,18 @@
       "available_date": null,
       "amenities": [],
       "unusual_price": false,
-      "trust_weight": 1.0
+      "trust_weight": 1.0,
+      "roommate_wanted": false,
+      "tags": [
+        {
+          "label": "Washer & dryer",
+          "kind": "listing"
+        },
+        {
+          "label": "Groceries nearby (ZIP)",
+          "kind": "area"
+        }
+      ]
     },
     {
       "id": 103,
@@ -129,7 +151,18 @@
       "available_date": null,
       "amenities": [],
       "unusual_price": false,
-      "trust_weight": 1.0
+      "trust_weight": 1.0,
+      "roommate_wanted": false,
+      "tags": [
+        {
+          "label": "Washer & dryer",
+          "kind": "listing"
+        },
+        {
+          "label": "Groceries nearby (ZIP)",
+          "kind": "area"
+        }
+      ]
     },
     {
       "id": 9001,
@@ -173,7 +206,22 @@
         "laundry"
       ],
       "unusual_price": false,
-      "trust_weight": 0.5
+      "trust_weight": 0.5,
+      "roommate_wanted": false,
+      "tags": [
+        {
+          "label": "Parking",
+          "kind": "listing"
+        },
+        {
+          "label": "Laundry",
+          "kind": "listing"
+        },
+        {
+          "label": "Transit stops nearby (ZIP)",
+          "kind": "area"
+        }
+      ]
     }
   ],
   "total": 4,

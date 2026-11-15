@@ -400,6 +400,7 @@ def listing_page(zip_=None, beds=None, type_=None, max_price=None, sort="recent"
              l.extras->>'group_name' AS group_name, l.extras->>'posted_at' AS posted_at,
              l.extras->>'available_date' AS available_date, l.extras->'amenities' AS amenities,
              COALESCE(l.extras->>'unusual_price', 'false') = 'true' AS unusual_price,
+             COALESCE(l.extras->>'roommate_wanted', 'false') = 'true' AS roommate_wanted,
              o.n, o.cur, o.first_price, o.first_observed
       FROM {L()} l
       JOIN sources s ON s.source_key = l.source_key

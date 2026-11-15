@@ -346,6 +346,13 @@ LocationPrecision = Literal["address", "street", "zip", "neighborhood", "city"]
 ListingSource = Literal["all", "listing_sites", "facebook"]
 
 
+class ListingTag(BaseModel):
+    """A short card tag from real data only. 'listing': the listing's own amenities (Zillow unit amenities,
+    Facebook extracted ones). 'area': a ZIP-level feature from OpenStreetMap counts, labelled '(ZIP)'."""
+    label: str                                  # 'Parking', 'Washer & dryer', 'Groceries nearby (ZIP)'
+    kind: Literal["listing", "area"]
+
+
 class ListingSummary(BaseModel):                # GET /listings items; also the head of GET /listings/{id}
     id: int                                     # listings.listing_id
     address: str | None = None                  # display address, e.g. '2519 El Cajon Blvd'
@@ -378,6 +385,9 @@ class ListingSummary(BaseModel):                # GET /listings items; also the 
     amenities: list[str] = Field(default_factory=list)   # Facebook: pets_allowed, parking, laundry, utilities_included
     unusual_price: bool = False                 # below 40% or above 250% of the ZIP's listing-site median
     trust_weight: float = 1.0                   # Facebook 0.5
+    # Final run: card tags (at most 4, listing amenities first, then area tags) and the roommate flag.
+    roommate_wanted: bool = False               # Facebook room offered in a shared home ("roommate wanted")
+    tags: list[ListingTag] = Field(default_factory=list)
 
 
 class ListingsResponse(BaseModel):

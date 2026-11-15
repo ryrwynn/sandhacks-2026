@@ -10,7 +10,7 @@ from fastapi import APIRouter, HTTPException, Query
 from api import db
 from api.routers._common import estimate, label_for, percentile_of, safe
 from api.routers.listings import make_estimate
-from contracts.api_models import (ListingDetail, ListingsResponse, ListingSource, ListingSummary,
+from contracts.api_models import (ListingDetail, ListingsResponse, ListingSource, ListingSummary, ListingTag,
                                   MarketForecastPoint, MarketPoint, MarketRange, MarketResponse, Observation,
                                   SourceBreakdown, SourceStat, SparkPoint, UnitType, ZipForecastSummary)
 
@@ -88,6 +88,57 @@ def _dt(v):
         return None
 
 
+# ---------- card tags (real data only) ----------
+MAX_TAGS = 4
+FB_AMENITY_TAGS = {"parking": "Parking", "laundry": "Laundry", "pets_allowed": "Pets allowed",
+                   "utilities_included": "Utilities included"}
+# Zillow unit_amenities values -> tag; values not listed here (oven, flooring types, ...) make no tag.
+ZILLOW_AMENITY_TAGS = {"washer": "Washer & dryer", "dryer": "Washer & dryer", "dishwasher": "Dishwasher",
+                       "hardwood": "Hardwood floors"}
+AREA_FEATURES = {"groceries": "Groceries nearby (ZIP)", "transit_stops": "Transit stops nearby (ZIP)",
+                 "parks": "Parks nearby (ZIP)"}
+_AREA_TTL = 600
+_area_cache: dict = {"at": 0.0, "tags": {}}
+
+
+def area_tags_by_zip(feats: dict[str, dict]) -> dict[str, list[str]]:
+    """ZIP -> area tags: a feature tags a ZIP when its count per km² is in the top third of the 12 ZIPs."""
+    out: dict[str, list[str]] = {}
+    for key, label in AREA_FEATURES.items():
+        dens = {z: float(f[key]) / float(f["area_km2"]) for z, f in feats.items()
+                if f.get(key) is not None and f.get("area_km2")}
+        if len(dens) < 3:
+            continue
+        ranked = sorted(dens.values(), reverse=True)
+        cutoff = ranked[len(dens) // 3 - 1]
+        if cutoff <= ranked[-1]:            # all (or the top third) tied with the lowest: nothing stands out
+            continue
+        for z in (z for z in dens if dens[z] >= cutoff):
+            out.setdefault(z, []).append(label)
+    return out
+
+
+def _area_tags(zip_: str | None) -> list[str]:
+    if not zip_:
+        return []
+    if time.monotonic() - _area_cache["at"] > _AREA_TTL or not _area_cache["tags"]:
+        feats = safe(db.zip_features, default={}) or {}
+        _area_cache.update(at=time.monotonic(), tags=area_tags_by_zip(feats))
+    return list(_area_cache["tags"].get(zip_, []))
+
+
+def listing_tags(amenities, fb: bool, zip_: str | None) -> list[ListingTag]:
+    labels: list[str] = []
+    for a in amenities or []:
+        name = str(a).strip()
+        label = FB_AMENITY_TAGS.get(name) if fb else ZILLOW_AMENITY_TAGS.get(name.lower())
+        if label and label not in labels:
+            labels.append(label)
+    tags = [ListingTag(label=x, kind="listing") for x in labels]
+    tags += [ListingTag(label=x, kind="area") for x in _area_tags(zip_)]
+    return tags[:MAX_TAGS]
+
+
 def summary(r: dict, obs: list[dict]) -> ListingSummary:
     """Facebook rows: only extracted fields; address, unit, text, names and profile links are never returned."""
     zip_ = r["zip"].strip() if r["zip"] else None
@@ -112,7 +163,9 @@ def summary(r: dict, obs: list[dict]) -> ListingSummary:
         post_url=r.get("post_url") if fb else None, group_name=r.get("group_name") if fb else None,
         posted_at=_dt(r.get("posted_at")) if fb else None, available_date=_date(r.get("available_date")),
         amenities=list(r.get("amenities") or []) if fb else [], unusual_price=bool(r.get("unusual_price")),
-        trust_weight=0.5 if fb else 1.0)
+        trust_weight=0.5 if fb else 1.0,
+        roommate_wanted=bool(r.get("roommate_wanted")) and fb and unit == "room",
+        tags=listing_tags(r.get("amenities"), fb, zip_))
 
 
 def _obs_by_listing(ids: list[int]) -> dict[int, list[dict]]:

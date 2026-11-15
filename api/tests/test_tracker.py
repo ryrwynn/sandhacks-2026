@@ -173,3 +173,41 @@ def test_market_validation_and_db_down():
 def test_pretty_address():
     assert tracker.pretty_address("1234 W 5TH ST") == "1234 W 5th St"
     assert tracker.pretty_address(None) is None
+
+
+# ---------------------------------------------------------------- card tags (final run)
+def _feats():
+    # 12 ZIPs, 1 km² each, with groceries 1..12, transit 12..1, parks all equal except one
+    from api import db as _db
+    zs = sorted(_db.ZIP_NAMES)
+    return {z: {"groceries": i + 1, "transit_stops": 12 - i, "parks": 5, "area_km2": 1.0} for i, z in enumerate(zs)}
+
+
+def test_area_tags_are_top_third_per_km2():
+    from api.routers import tracker as t
+    from api import db as _db
+    zs = sorted(_db.ZIP_NAMES)
+    tags = t.area_tags_by_zip(_feats())
+    groc = {z for z, ls in tags.items() if "Groceries nearby (ZIP)" in ls}
+    trans = {z for z, ls in tags.items() if "Transit stops nearby (ZIP)" in ls}
+    assert groc == set(zs[-4:]) and trans == set(zs[:4])       # top third of 12 = 4 ZIPs
+    assert all("(ZIP)" in l for ls in tags.values() for l in ls)
+    assert not any("Parks nearby (ZIP)" in ls for ls in tags.values())      # all tied: no ZIP stands out
+    small = {z: {**f, "area_km2": 0.05 if z == zs[0] else 1.0} for z, f in _feats().items()}  # 1 / 0.05 = 20
+    assert "Groceries nearby (ZIP)" in t.area_tags_by_zip(small).get(zs[0], [])   # density, not raw count
+
+
+def test_listing_tags_real_data_only_and_capped(monkeypatch):
+    from api.routers import tracker as t
+    from api import db as _db
+    zs = sorted(_db.ZIP_NAMES)
+    monkeypatch.setattr(_db, "zip_features", lambda: _feats())
+    t._area_cache.update(at=0.0, tags={})
+    z = zs[0]                                       # transit top third only
+    tags = t.listing_tags(["Washer", "Dryer", "Oven", "Tile", "Dishwasher"], False, z)
+    assert [(x.label, x.kind) for x in tags] == [("Washer & dryer", "listing"), ("Dishwasher", "listing"),
+                                                  ("Transit stops nearby (ZIP)", "area")]
+    fb = t.listing_tags(["parking", "laundry", "pets_allowed", "utilities_included"], True, z)
+    assert len(fb) == 4 and [x.kind for x in fb] == ["listing"] * 4          # at most 4, listing first
+    assert t.listing_tags([], False, None) == []
+    assert t.listing_tags(["parking"], False, "99999") == []                  # FB names don't tag Zillow rows
