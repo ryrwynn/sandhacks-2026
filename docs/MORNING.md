@@ -1,6 +1,6 @@
 # Morning report: overnight run, 2026-11-15
 
-Branch `night`, draft PR to `Setup`: see the end of this file. Nothing was deployed and nothing was pushed to Setup or main.
+Branch `night`, **draft PR #2 to `Setup`: https://github.com/ryrwynn/sandhacks-2026/pull/2**. Nothing was deployed and nothing was pushed to Setup or main.
 
 ## Read first
 
@@ -125,3 +125,7 @@ today), and the live API doesn't filter by data/zips.txt.
 - `api/routers/coverage.py` imports `worker.bd`, coupling the API to the worker package (works because the API image
   copies the whole repo).
 - To let a future unattended run load data, allow a key-loading wrapper in Claude Code's permission settings.
+
+## Draft PR
+
+https://github.com/ryrwynn/sandhacks-2026/pull/2 (night → Setup, draft). Merging it deploys, so do the "Verify by hand" items and PR #1 first.

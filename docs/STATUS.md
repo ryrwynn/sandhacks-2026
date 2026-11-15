@@ -1,6 +1,6 @@
 # Overnight run status
 
-Heartbeat: 2026-11-15 01:18 PST — Phase 4: night-theme running
+Heartbeat: 2026-11-15 04:22 PST — run complete; see docs/MORNING.md
 
 ## Phase 0, setup
 - [x] preflight: all clear; WARN no DEV_DATABASE_URL (stage in shared DB), WARN no Google keys (sign-in off), WARN no local Docker
@@ -29,9 +29,9 @@ Heartbeat: 2026-11-15 01:18 PST — Phase 4: night-theme running
 - [x] push night
 
 ## Phase 4, interface
-- [ ] night-theme merged, checks rerun, pushed (running)
+- [x] night-theme merged, checks rerun (247 tests, contrast, tsc, build), pushed
 
 ## Phase 5, hand-off
-- [ ] draft PR night -> Setup
-- [ ] docs/MORNING.md
-- [ ] STATUS complete
+- [x] draft PR night -> Setup: https://github.com/ryrwynn/sandhacks-2026/pull/2
+- [x] docs/MORNING.md
+- [x] STATUS complete
