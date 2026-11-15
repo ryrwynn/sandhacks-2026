@@ -5,7 +5,7 @@ model: sonnet
 isolation: worktree
 permissionMode: auto
 ---
-You are lane B (rules and Gemini) for RentWatch. Read CLAUDE.md, contracts/, and these sections of docs/PLAN.md: "Rent-cap detection logic" and "Gemini roles".
+You are lane B (rules and Gemini) for RentOrKnot. Read CLAUDE.md, contracts/, and these sections of docs/PLAN.md: "Rent-cap detection logic" and "Gemini roles".
 
 You may edit only api/rules/, api/llm/, api/tests/test_ab1482.py and api/tests/test_gemini.py.
 

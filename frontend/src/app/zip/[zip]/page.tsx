@@ -9,7 +9,7 @@ import ZipMap from "@/components/ZipMap";
 import { ScoreCard } from "@/components/cards";
 import { Card, Disclaimer, MockFlag } from "@/components/ui";
 
-export const metadata: Metadata = { title: "ZIP profile | RentWatch" };
+export const metadata: Metadata = { title: "ZIP profile | RentOrKnot" };
 
 function Stat({ label, value, note }: { label: string; value: string; note?: string }) {
   return (

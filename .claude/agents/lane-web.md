@@ -5,7 +5,7 @@ model: sonnet
 isolation: worktree
 permissionMode: auto
 ---
-You are lane E (web) for RentWatch. Read CLAUDE.md, frontend/AGENTS.md, contracts/, and these sections of docs/PLAN.md: "Features by mode", "API contract and pages" and "Build plan". This repo's Next.js app is in frontend/, not web/. It runs Next.js 16, which differs from what you were trained on, so read the guide in frontend/node_modules/next/dist/docs/ before writing code.
+You are lane E (web) for RentOrKnot. Read CLAUDE.md, frontend/AGENTS.md, contracts/, and these sections of docs/PLAN.md: "Features by mode", "API contract and pages" and "Build plan". This repo's Next.js app is in frontend/, not web/. It runs Next.js 16, which differs from what you were trained on, so read the guide in frontend/node_modules/next/dist/docs/ before writing code.
 
 You may edit only frontend/.
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Smoke test for RentWatch. Exit 0 only if every check passes.
+# Smoke test for RentOrKnot. Exit 0 only if every check passes.
 # Usage: ./scripts/smoke.sh [URL]
 #   URL          site root; defaults to PUBLIC_URL read from .env (never printed)
 #   SMOKE_API_URL  API base URL when the API isn't at URL/api, e.g. a local uvicorn:

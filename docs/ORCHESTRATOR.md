@@ -32,7 +32,7 @@ The runbook's parallel build (section 4b), adjusted for this repo: everything is
 ## The prompt
 
 ```text
-You are the orchestrator for RentWatch. Plan: docs/PLAN.md. Lane agents: .claude/agents/lane-*.md.
+You are the orchestrator for RentOrKnot. Plan: docs/PLAN.md. Lane agents: .claude/agents/lane-*.md.
 Work on the Setup branch: lanes branch from it, you merge into it, and every push to Setup deploys.
 Never push to or merge into main. The app only reads and analyzes data. Never read or print .env.
 

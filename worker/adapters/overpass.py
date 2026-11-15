@@ -70,7 +70,7 @@ class OverpassAdapter(SourceAdapter):
             last = None
             for attempt in range(2):        # one retry on a busy server, then stop and report
                 r = httpx.post(f["url"], data={"data": q}, timeout=180,
-                               headers={"User-Agent": "rentwatch-data-worker/0.1", "Accept": "application/json"})
+                               headers={"User-Agent": "rentorknot-data-worker/0.1", "Accept": "application/json"})
                 log.info("overpass %s -> %s in %.1fs", z, r.status_code, time.time() - t0)
                 if r.status_code == 200:
                     break

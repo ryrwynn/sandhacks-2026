@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import RenterTabs from "@/components/RenterTabs";
 
-export const metadata: Metadata = { title: "Renter | RentWatch" };
+export const metadata: Metadata = { title: "Renter | RentOrKnot" };
 
 export default function RenterPage() {
   return (

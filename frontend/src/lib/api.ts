@@ -37,7 +37,7 @@ export async function getListingsByIds(ids: string[]): Promise<Listing[]> {
 }
 
 // ---------------------------------------------------------------------------
-// RentWatch contract endpoints (docs/PLAN.md "API contract and pages").
+// RentOrKnot contract endpoints (docs/PLAN.md "API contract and pages").
 // Browser: relative /api/... (Caddy strips the prefix in production; next.config rewrites locally).
 // Server: API_INTERNAL_URL read at request time, no /api prefix.
 // If the API is unreachable, or NEXT_PUBLIC_USE_MOCKS=true, the contract fixtures are served and the

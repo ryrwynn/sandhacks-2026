@@ -1,7 +1,7 @@
 [project]
 name = "rentwatch"
 version = "0.1.0"
-description = "RentWatch: San Diego rent and home-value analysis (FastAPI engine + worker)"
+description = "RentOrKnot: San Diego rent and home-value analysis (FastAPI engine + worker)"
 requires-python = ">=3.12"
 dependencies = [
   "fastapi>=0.115",

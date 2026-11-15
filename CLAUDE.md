@@ -1,5 +1,9 @@
-# RentWatch
-Plan: docs/PLAN.md is the source of truth. Read only the section you need.
+# RentOrKnot
+Plan: docs/PLAN.md is the source of truth for the engine, data and API. docs/DESIGN.md is the source of truth for the product and UI: an apartment tracker first, with the renter, buyer and owner tools under "Tools". Read only the section you need.
+
+## Name
+- The product is **RentOrKnot**, live at https://rentorknot.us. It was called RentWatch earlier; use RentOrKnot in all new text, titles and code.
+- Keep these old names on purpose, because renaming them breaks the deploy: the server path `/opt/rentwatch`, the deploy key `~/.ssh/rentwatch_deploy`, the Python project name `rentwatch` in pyproject.toml and uv.lock (the Docker build runs `uv sync --frozen`), and the comment in db/migrations/001_init.sql.
 
 ## This repo
 - The plan says `web/`; here the Next.js app is `frontend/` (Next.js 16: read frontend/AGENTS.md before changing it). Build on the existing pages and components; don't delete teammates' work.

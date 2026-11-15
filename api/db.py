@@ -10,7 +10,7 @@ from datetime import date
 from decimal import Decimal
 from pathlib import Path
 
-log = logging.getLogger("rentwatch.db")
+log = logging.getLogger("rentorknot.db")
 
 ZIPS_FILE = Path(__file__).resolve().parents[1] / "data" / "zips.txt"
 LISTING_SITE_FILTER = "s.kind = 'listing_site'"

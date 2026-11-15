@@ -12,7 +12,7 @@ from api.rules import ab1482
 from api.routers._common import safe
 from contracts.api_models import CheckRequest, CheckResponse, Lang, LetterResponse
 
-log = logging.getLogger("rentwatch.api")
+log = logging.getLogger("rentorknot.api")
 router = APIRouter(prefix="/checks", tags=["checks"])
 
 # Recent checks kept in memory so a letter works even when the database write failed.

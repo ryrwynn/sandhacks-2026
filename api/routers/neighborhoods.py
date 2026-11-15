@@ -8,7 +8,7 @@ from api.ml import scoring
 from api.routers._common import score_rows, zip_data
 from contracts.api_models import RankedZip, RankRequest, RankResponse
 
-log = logging.getLogger("rentwatch.api")
+log = logging.getLogger("rentorknot.api")
 router = APIRouter(prefix="/neighborhoods", tags=["neighborhoods"])
 SUMMARY_TOP_N = 3   # Gemini quota: "why this ZIP" for the top 3 only
 

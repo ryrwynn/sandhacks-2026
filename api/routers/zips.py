@@ -29,7 +29,7 @@ def _int(v):
 def zip_profile(zip: str) -> ZipProfile:
     data = zip_data()
     if zip not in data:
-        raise HTTPException(404, f"{zip} is not one of the {len(data)} ZIPs RentWatch covers")
+        raise HTTPException(404, f"{zip} is not one of the {len(data)} ZIPs RentOrKnot covers")
     d = data[zip]
     f = d["features"]
     income = f.get("median_income_usd")
@@ -58,7 +58,7 @@ def zip_profile(zip: str) -> ZipProfile:
 @router.get("/{zip}/series", response_model=SeriesResponse)
 def zip_series(zip: str, metric: Metric = "zori") -> SeriesResponse:
     if zip not in db.ZIP_NAMES:
-        raise HTTPException(404, f"{zip} is not one of the ZIPs RentWatch covers")
+        raise HTTPException(404, f"{zip} is not one of the ZIPs RentOrKnot covers")
     rows = safe(db.series, zip, metric, default=[])
     points = [SeriesPoint(month=r["month"], value=float(r["value"]),
                           lo80=db.num(r["lo80"]), hi80=db.num(r["hi80"]), kind=r["kind"]) for r in rows]

@@ -5,7 +5,7 @@ import { mapboxToken } from "@/lib/server";
 import Finder from "@/components/Finder";
 import { MockFlag } from "@/components/ui";
 
-export const metadata: Metadata = { title: "Buyer | RentWatch" };
+export const metadata: Metadata = { title: "Buyer | RentOrKnot" };
 
 async function BuyerFinder() {
   const token = await mapboxToken();

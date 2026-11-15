@@ -5,7 +5,7 @@ model: sonnet
 isolation: worktree
 permissionMode: auto
 ---
-You are lane C (models) for RentWatch. Read CLAUDE.md, contracts/, and these sections of docs/PLAN.md: "Prediction and scoring" and "Data model".
+You are lane C (models) for RentOrKnot. Read CLAUDE.md, contracts/, and these sections of docs/PLAN.md: "Prediction and scoring" and "Data model".
 
 You may edit only api/ml/, worker/train.py and api/tests/test_{forecast,scoring,fair_rent,listing_analysis}.py.
 

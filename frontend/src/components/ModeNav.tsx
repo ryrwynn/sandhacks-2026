@@ -14,7 +14,7 @@ export default function ModeNav() {
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur print:hidden">
       <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-2">
-        <Link href="/" className="text-lg font-bold text-indigo-800">RentWatch</Link>
+        <Link href="/" className="text-lg font-bold text-indigo-800">RentOrKnot</Link>
         <nav aria-label="Main" className="flex gap-1">
           {LINKS.map((l) => {
             const active = path === l.href || path.startsWith(l.href + "/");

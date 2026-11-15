@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# RentWatch preflight: checks every key and service the agentic build needs.
+# RentOrKnot preflight: checks every key and service the agentic build needs.
 # Usage: ./scripts/preflight.sh     Prints OK / WARN / FAIL only, never a key's value.
 cd "$(dirname "$0")/.." || exit 1
 [ -f .env ] || { echo "FAIL  no .env in $(pwd)"; exit 1; }

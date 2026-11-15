@@ -15,7 +15,7 @@ from contracts.api_models import (DaysOnMarket, Gap, LegalGuardrail, ListingAnal
                                   ListingAnalysisResponse, PricePoint, PricePositionRequest,
                                   PricePositionResponse)
 
-log = logging.getLogger("rentwatch.api")
+log = logging.getLogger("rentorknot.api")
 router = APIRouter(prefix="/owner", tags=["owner"])
 MIN_DOM_LISTINGS = 5
 

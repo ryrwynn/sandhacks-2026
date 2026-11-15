@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import LetterView from "@/components/LetterView";
 import type { Lang } from "@/lib/contract";
 
-export const metadata: Metadata = { title: "Reply letter | RentWatch" };
+export const metadata: Metadata = { title: "Reply letter | RentOrKnot" };
 
 const LANGS: Lang[] = ["en", "es", "vi", "tl"];
 

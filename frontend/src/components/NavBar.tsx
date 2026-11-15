@@ -13,7 +13,7 @@ export default function NavBar() {
   const path = usePathname();
   return (
     <header className="nav">
-      <Link href="/" className="brand">SandHacks</Link>
+      <Link href="/" className="brand">RentOrKnot</Link>
       <nav aria-label="Main">
         {LINKS.map((l) => (
           <Link key={l.href} href={l.href} className={path === l.href ? "active" : ""} aria-current={path === l.href ? "page" : undefined}>

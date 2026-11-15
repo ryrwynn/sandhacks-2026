@@ -1,4 +1,4 @@
-# RentWatch: Architecture and Build Plan (SanD Hacks)
+# RentOrKnot: Architecture and Build Plan (SanD Hacks)
 
 Nov 14, 2026 · @Ray
 
@@ -6,7 +6,7 @@ Accounts, keys and the Claude Code workflow are in the next tab: Setup and Claud
 
 ## Product: one data engine, three modes
 
-RentWatch becomes a San Diego housing app with one shared data engine and three modes. Build the engine and Renter mode deep, Buyer mode solid and Owner mode thin. Three shallow products lose to one deep one, and the shared engine is what makes the other two cheap to add.
+RentOrKnot becomes a San Diego housing app with one shared data engine and three modes. Build the engine and Renter mode deep, Buyer mode solid and Owner mode thin. Three shallow products lose to one deep one, and the shared engine is what makes the other two cheap to add.
 
 Pitch line: *know what San Diego housing should cost today, and what it will cost next year.*
 
@@ -27,7 +27,7 @@ How I read the pivot ideas (change these if I got one wrong):
 - **"Young people, cheap rent, few amenities"** is a Starter persona that ranks ZIPs by low rent and weights amenities lightly. **"Generational wealth investments"** is a Wealth builder persona that ranks ZIPs by expected appreciation and rental yield for buying.
 - **Personas rank places by the user's goals and budget, never by who lives there.** Ranking neighborhoods by residents' age, race or family makeup can look like steering under fair housing law, and judges will ask.
 
-**Scope: analysis only.** RentWatch reads public data and interprets it. It never posts, messages, applies or runs tests on any site. Anything it writes, such as the tenant's letter or a plain-language explanation, goes to the user to read or send themselves.
+**Scope: analysis only.** RentOrKnot reads public data and interprets it. It never posts, messages, applies or runs tests on any site. Anything it writes, such as the tenant's letter or a plain-language explanation, goes to the user to read or send themselves.
 
 Build order: engine first, then Renter, Buyer and Owner. Each mode ships only after the one before it works end to end on the live server.
 
@@ -663,7 +663,7 @@ Shared components: `ZipMap` (MapLibre via `react-map-gl`), `ForecastChart` (Rech
 Write the contracts by hand first, then give each agent one lane that owns its own folders. Six lanes: five for agents and one for a person who owns deployment and the demo.
 
 ```text
-rentwatch/
+rentorknot/
 ├─ CLAUDE.md                # short rules every agent reads (Setup tab, step 3)
 ├─ docs/PLAN.md             # this Plan tab, exported as Markdown
 ├─ .env.example
@@ -785,7 +785,7 @@ Letters match the lanes: A data, B rules and Gemini, C models, D API, E web, F o
 Tell it as three San Diegans with one question, in 3 minutes, on the live domain. Renter mode gets the most time because it carries the Data for Good story; Owner mode gets 15 seconds.
 
 1. **0:00 to 0:20, hook.** "Three people, one question: what should housing in San Diego cost today, and what will it cost next year?"
-2. **0:20 to 1:20, Maria, a renter in City Heights.** Her rent goes from $2,100 to $2,350 on Dec 1, 2026. RentWatch finds her 1978 building, applies the 8.2% cap and shows a $2,272.20 maximum, $77.80 a month over. Switch the explanation to Spanish and print the letter. Then paste a 2-bedroom listing she's considering: "above typical range" with the expected rent and range.
+2. **0:20 to 1:20, Maria, a renter in City Heights.** Her rent goes from $2,100 to $2,350 on Dec 1, 2026. RentOrKnot finds her 1978 building, applies the 8.2% cap and shows a $2,272.20 maximum, $77.80 a month over. Switch the explanation to Spanish and print the letter. Then paste a 2-bedroom listing she's considering: "above typical range" with the expected rent and range.
 3. **1:20 to 1:55, Jordan, 23, first apartment.** Starter persona, $1,900 budget, studio or 1-bedroom: ranked ZIPs with plain reasons. Open the top ZIP: rent history, a dashed forecast with its band, and the backtest error underneath.
 4. **1:55 to 2:30, Linda, buying to build long-term wealth.** Wealth builder persona, $750,000 budget: ZIPs ranked by expected appreciation and rental yield, with a stretch list above budget. Open one ZIP's home-value forecast.
 5. **2:30 to 2:45, an owner listing a unit.** Price position table, then the analysis of their listing: completeness score and what comparable listings mention that it doesn't.

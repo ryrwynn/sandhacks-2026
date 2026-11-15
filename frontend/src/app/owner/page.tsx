@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import OwnerTools from "@/components/OwnerTools";
 
-export const metadata: Metadata = { title: "Owner | RentWatch" };
+export const metadata: Metadata = { title: "Owner | RentOrKnot" };
 
 export default function OwnerPage() {
   return (

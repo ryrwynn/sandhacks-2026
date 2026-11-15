@@ -5,7 +5,7 @@ import { getHealth, isMock } from "@/lib/api";
 import { usd } from "@/lib/format";
 import { Card, Disclaimer, MockFlag } from "@/components/ui";
 
-export const metadata: Metadata = { title: "About | RentWatch" };
+export const metadata: Metadata = { title: "About | RentOrKnot" };
 
 const SOURCES = [
   ["Zillow rental and for-sale listings", "Rent, bedrooms, size, year built and price history, collected every few hours for 12 San Diego ZIP codes."],
@@ -46,8 +46,8 @@ async function Models() {
 export default function AboutPage() {
   return (
     <main className="space-y-4">
-      <h1 className="text-2xl font-bold">About RentWatch</h1>
-      <p className="text-slate-700">RentWatch reads public rental and home-price data and explains it. It never contacts landlords or posts anything anywhere.</p>
+      <h1 className="text-2xl font-bold">About RentOrKnot</h1>
+      <p className="text-slate-700">RentOrKnot reads public rental and home-price data and explains it. It never contacts landlords or posts anything anywhere.</p>
       <Card>
         <h2 className="mb-2 text-lg font-bold">Data sources</h2>
         <ul className="space-y-2 text-sm">

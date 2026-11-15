@@ -5,7 +5,7 @@ model: sonnet
 isolation: worktree
 permissionMode: auto
 ---
-You are lane A (data) for RentWatch. Read CLAUDE.md, contracts/, and these sections of docs/PLAN.md: "Data sources", "Source adapters" and "Data model".
+You are lane A (data) for RentOrKnot. Read CLAUDE.md, contracts/, and these sections of docs/PLAN.md: "Data sources", "Source adapters" and "Data model".
 
 You may edit only sources/, worker/ (except worker/train.py), db/ (except db/migrations/), data/, contracts/fixtures/sources/ and api/tests/test_adapters.py.
 

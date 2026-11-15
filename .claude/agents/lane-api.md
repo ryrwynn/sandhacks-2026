@@ -5,7 +5,7 @@ model: sonnet
 isolation: worktree
 permissionMode: auto
 ---
-You are lane D (API) for RentWatch. Read CLAUDE.md, contracts/, and these sections of docs/PLAN.md: "API contract and pages" and "Data model".
+You are lane D (API) for RentOrKnot. Read CLAUDE.md, contracts/, and these sections of docs/PLAN.md: "API contract and pages" and "Data model".
 
 You may edit only api/main.py, api/db.py, api/routers/ and api/tests/test_api.py.
 

@@ -7,7 +7,7 @@ from pathlib import Path
 from api import db
 from api.ml import fair_rent, listing_analysis
 
-log = logging.getLogger("rentwatch.api")
+log = logging.getLogger("rentorknot.api")
 MODEL_PATH = os.environ.get(
     "FAIR_RENT_MODEL", str(Path(__file__).resolve().parents[2] / "models" / "fair_rent.joblib"))
 BEDS = ("0", "1", "2", "3")

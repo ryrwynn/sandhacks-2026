@@ -8,7 +8,7 @@ from api.routers._common import estimate, label_for, percentile_of, safe
 from contracts.api_models import (FairRentEstimate, ListingEvalRequest, ListingEvalResponse, UnitMatch,
                                   UnitSearchResponse)
 
-log = logging.getLogger("rentwatch.api")
+log = logging.getLogger("rentorknot.api")
 router = APIRouter(tags=["listings"])
 
 

@@ -47,7 +47,7 @@ def figures_ok(text: str, allowed: set[str]) -> bool:
     return set(NUMBER.findall(text)) <= allowed
 
 
-log = logging.getLogger("rentwatch.gemini")
+log = logging.getLogger("rentorknot.gemini")
 
 TIMEOUT_MS = 20_000
 BACKOFF = (1, 2, 4)

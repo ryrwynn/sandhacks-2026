@@ -1,4 +1,4 @@
-# RentWatch on one server: Caddy in front, FastAPI engine, cron worker, Next.js.
+# RentOrKnot on one server: Caddy in front, FastAPI engine, cron worker, Next.js.
 # Every service reads .env at runtime (never baked into an image).
 services:
   api:
