@@ -1,0 +1,18 @@
+{
+ "attachments": [
+  {
+   "url": "https://example.com/img.jpg"
+  }
+ ],
+ "content": "Room in 2BR Hillcrest 92103, $1,350/mo, utilities included. Message Alex Kim at 619-555-0188 or alex.kim@example.com",
+ "date_posted": "2026-11-10T17:02:11Z",
+ "num_likes": 3,
+ "post_id": "p1",
+ "profile_id": "1000p1",
+ "url": "https://www.facebook.com/groups/example/posts/p1",
+ "user_id": "up1",
+ "user_is_verified": false,
+ "user_name": "Example Person",
+ "user_url": "https://www.facebook.com/user/p1",
+ "user_username_raw": "user_p1"
+}

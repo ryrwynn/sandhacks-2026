@@ -1,0 +1,18 @@
+{
+ "attachments": [
+  {
+   "url": "https://example.com/img.jpg"
+  }
+ ],
+ "content": "Studio for rent in North Park, $1,725. Pets ok. Text Priya 858-555-0119",
+ "date_posted": "2026-11-12T20:15:40Z",
+ "num_likes": 3,
+ "post_id": "p3",
+ "profile_id": "1000p3",
+ "url": "https://www.facebook.com/groups/example/posts/p3",
+ "user_id": "up3",
+ "user_is_verified": false,
+ "user_name": "Example Person",
+ "user_url": "https://www.facebook.com/user/p3",
+ "user_username_raw": "user_p3"
+}

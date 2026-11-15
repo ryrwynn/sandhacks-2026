@@ -1,0 +1,28 @@
+{
+ "address": "4545 Fairmount Ave",
+ "amenities": [
+  "Laundry",
+  "Parking"
+ ],
+ "contact_email": "dana@example-leasing.com",
+ "description": "Bright unit near transit. Call Dana Reyes at (619) 555-0142 or dana@example-leasing.com for a tour.",
+ "floor_plans": [
+  {
+   "baths": 1,
+   "beds": 1,
+   "id": "fp4",
+   "name": "1BR",
+   "rent_max": 2100,
+   "rent_min": 2100,
+   "sqft_min": 600
+  }
+ ],
+ "id": "ac-3",
+ "leasing_agent_name": "Dana Reyes",
+ "leasing_agent_phone": "(619) 555-0142",
+ "owner_name": "Reyes Holdings LLC",
+ "pet_policy": "Cats and small dogs",
+ "property_type": "apartment",
+ "year_built": 1990,
+ "zip": "92105"
+}

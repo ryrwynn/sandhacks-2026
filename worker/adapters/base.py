@@ -34,3 +34,12 @@ class SourceAdapter(ABC):
     def drop_personal(self, payload: dict) -> dict:
         drop = set(self.template.get("drop_fields") or [])
         return {k: v for k, v in payload.items() if k not in drop}
+
+    def clean_payload(self, row: dict) -> dict:
+        """Drop personal fields, then scrub names, phones and emails from the template's text fields."""
+        from worker.clean import redact_text
+        p = self.drop_personal(row)
+        for f in self.template.get("redact_fields") or []:
+            if isinstance(p.get(f), str):
+                p[f] = redact_text(p[f])
+        return p

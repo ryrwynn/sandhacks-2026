@@ -1,0 +1,287 @@
+{
+ "abbreviatedAddress": "2519 El Cajon Blvd #210",
+ "address": {
+  "city": "San Diego",
+  "state": "CA",
+  "streetAddress": "2519 El Cajon Blvd",
+  "zipcode": "92104"
+ },
+ "availability_date": "2026-11-17T08:00:00.000Z",
+ "base_rent": 2395,
+ "bathrooms": 1,
+ "bedrooms": 1,
+ "city": "San Diego",
+ "community_details": null,
+ "construction": [
+  {
+   "title": "Type & style",
+   "values": [
+    "Home type: Apartment",
+    "Property subType: Apartment"
+   ]
+  }
+ ],
+ "contingent_listing_type": null,
+ "country": "USA",
+ "county": "San Diego County",
+ "countyFIPS": null,
+ "currency": "USD",
+ "days_on_zillow": null,
+ "description": "Welcome to Niima Outpost, North Park's most architecturally distinctive address and the city's first mass timber residential building. Designed for those who appreciate elevated design, sustainability, and modern comfort, Niima blends natural materials with contemporary luxury in a way you won't find anywhere else in San Diego.\n\nOur brand-new loft residences feature dramatic exposed wood ceilings, stunning spiral staircases (select units), oversized windows, and thoughtfully designed open-concept layouts. Every home is finished with high-end details including luxury vinyl plank flooring, premium cabinetry, designer fixtures, full-sized kitchens, in-unit washer and dryer, air conditioning and heat, walk-in closets, and private balconies.\n\nLease Term: 15-18 Month Lease \n\nBeyond its striking design, Niima Outpost was built with sustainability at its core. Constructed using responsibly sourced mass timber and outfitted with highly efficient fixtures, the building delivers modern luxury while maintaining a lower carbon footprint.\n\nLocated in the heart of North Park, you're just steps from award-winning restaurants, coffee shops, boutique retail, grocery stores, yoga studios, and gyms. An exclusive on-site dining concept is coming soon. With easy freeway access and close proximity to San Diego International Airport, commuting or exploring the city is effortless.\n\nPets are welcome with minimal additional fees and some restrictions. Residents are responsible for utilities.\n\nThis is more than an apartment it's a statement in design, sustainability, and lifestyle.\n\nContact Urban Coast Properties today to schedule your private tour:\n\nProfessionally Managed by: Urban Coast Properties\nDRE: 02010392",
+ "financial": null,
+ "financial_listing_details": null,
+ "getting_around": {
+  "bike": null,
+  "transit": {
+   "description": "Good Transit",
+   "score": 55
+  },
+  "walk": {
+   "description": "Walker's Paradise",
+   "score": 94
+  }
+ },
+ "getting_around_scores": {
+  "bike_score": null,
+  "transit_score": "55/100 | Good Transit",
+  "walk_score": "94/100 | Walker's Paradise"
+ },
+ "hasPublicVideo": false,
+ "has_3d_tour": false,
+ "hoa_details": {
+  "amenities_included": null,
+  "services_included": null
+ },
+ "homeStatus": "FOR_RENT",
+ "homeType": "APARTMENT",
+ "interior": {
+  "bedrooms_and_bathrooms": {
+   "bathrooms": 1,
+   "bedrooms": 1,
+   "full_bathrooms": 1,
+   "half_bathroom": "0"
+  },
+  "other_interior_features": "Total interior livable area :453 sqft"
+ },
+ "isInstantOfferEnabled": "No",
+ "isOffMarket": false,
+ "isVerifiedClaimedByCurrentSignedInUser": "No",
+ "is_flipped_within_12_months": true,
+ "is_listed_by_management_company": true,
+ "is_showcased": false,
+ "latitude": 32.754894,
+ "listingDataSource": "Phoenix",
+ "listing_provided_by": {
+  "company": "Urban Coast Properties Inc",
+  "email": null,
+  "name": "Leasing Agent",
+  "phone_number": "(858) 477-3260"
+ },
+ "longitude": -117.137135,
+ "management_company_phone_number": "(858) 477-3260",
+ "mls_id": null,
+ "num_of_applications": null,
+ "num_of_contacts": null,
+ "open_house_details": null,
+ "originating_mls": null,
+ "other": null,
+ "photoCount": 9,
+ "price": 2395,
+ "priceHistory": [
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2026-10-30",
+   "event": "Price change",
+   "postingIsRental": true,
+   "price": 2395,
+   "priceChangeRate": -0.06809338521400778,
+   "pricePerSquareFoot": 5,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1793318400000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2026-10-28",
+   "event": "Listed for rent",
+   "postingIsRental": true,
+   "price": 2570,
+   "priceChangeRate": 0,
+   "pricePerSquareFoot": 6,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1793145600000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2026-03-04",
+   "event": "Listing removed",
+   "postingIsRental": true,
+   "price": 2570,
+   "priceChangeRate": 0,
+   "pricePerSquareFoot": 6,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1772582400000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2026-02-13",
+   "event": "Price change",
+   "postingIsRental": true,
+   "price": 2570,
+   "priceChangeRate": -0.03925233644859813,
+   "pricePerSquareFoot": 6,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1770940800000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2026-02-09",
+   "event": "Listed for rent",
+   "postingIsRental": true,
+   "price": 2675,
+   "priceChangeRate": 0.21867881548974943,
+   "pricePerSquareFoot": 6,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1770595200000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2025-01-23",
+   "event": "Listing removed",
+   "postingIsRental": true,
+   "price": 2195,
+   "priceChangeRate": 0,
+   "pricePerSquareFoot": 5,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1737590400000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2024-12-23",
+   "event": "Listed for rent",
+   "postingIsRental": true,
+   "price": 2195,
+   "priceChangeRate": 0,
+   "pricePerSquareFoot": 5,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1734912000000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2024-12-01",
+   "event": "Listing removed",
+   "postingIsRental": true,
+   "price": 2195,
+   "priceChangeRate": 0,
+   "pricePerSquareFoot": 5,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1733011200000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2024-11-23",
+   "event": "Price change",
+   "postingIsRental": true,
+   "price": 2195,
+   "priceChangeRate": -0.17790262172284643,
+   "pricePerSquareFoot": 5,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1732320000000
+  },
+  {
+   "attributeSource": {
+    "infoString2": "Zillow Rentals"
+   },
+   "date": "2024-09-25",
+   "event": "Listed for rent",
+   "postingIsRental": true,
+   "price": 2670,
+   "priceChangeRate": 0,
+   "pricePerSquareFoot": 6,
+   "showCountyLink": false,
+   "source": "Zillow Rentals",
+   "source_listing_id": null,
+   "source_name": "Zillow Rentals",
+   "time": 1727222400000
+  }
+ ],
+ "property": [
+  {
+   "title": "Features",
+   "values": [
+    "Patio & porch: Patio",
+    "Exterior features: Available Parking,Controlled Access,Floor To Ceiling Windows,On-Site Restaurant/Bar,Stainless Steel Oven/Stove"
+   ]
+  }
+ ],
+ "publish_url": "https://www.zillow.com/renter-hub/clickRedirect?alias=2zujuy95p1jgd&r=zillow&mobileFriendly=true",
+ "selfTour": {
+  "hasSelfTour": false
+ },
+ "sold_to_list_ratio": null,
+ "sold_to_zestimate_ratio": null,
+ "special_offer": "UP TO 1 MONTH FREE! (ask for details)",
+ "sqft": 453,
+ "state": "CA",
+ "streetAddress": "2519 El Cajon Blvd",
+ "tag": null,
+ "tags": [
+  "Special offer",
+  "New construction"
+ ],
+ "timestamp": "2026-11-15T02:13:22.515Z",
+ "unit_amenities": [
+  "Microwave",
+  "Dryer",
+  "Washer"
+ ],
+ "unit_number": "Unit 210",
+ "url": "https://www.zillow.com/apartments/san-diego-ca/niima/CkBCxR/",
+ "utilities": [],
+ "zipcode": "92104",
+ "zpid": 440774995
+}
