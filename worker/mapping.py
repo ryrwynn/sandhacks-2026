@@ -169,7 +169,7 @@ def build_listing(draft: dict) -> CanonicalListing | None:
     d = dict(draft)
     conf = d.get("field_confidence", {})
     llm = [k for k, v in conf.items() if v < 1.0]
-    mapped = [k for k, v in conf.items() if v >= 1.0]
+    mapped = [k for k, v in conf.items() if v >= 1.0 and k != "text_redacted"]   # the text is input, not a fact
     d["extraction"] = "mapped" if not llm else ("llm" if not mapped else "mixed")
     return CanonicalListing(**d)
 

@@ -10,7 +10,7 @@ from typing import Iterator
 import httpx
 
 from worker.adapters.base import RawRecord, SourceAdapter
-from worker.clean import content_hash, redact_text
+from worker.clean import content_hash
 from worker.mapping import load_zips
 
 log = logging.getLogger("worker.brightdata")
@@ -36,10 +36,7 @@ class BrightDataCollectorAdapter(SourceAdapter):
             d = httpx.get(f"{API}/dataset", params={"id": rid}, headers=self._headers(), timeout=120)
             if d.status_code == 200 and isinstance(d.json(), list):
                 for row in d.json():
-                    p = self.drop_personal(row)
-                    for fld in self.template.get("redact_fields") or []:
-                        if isinstance(p.get(fld), str):
-                            p[fld] = redact_text(p[fld])
+                    p = self.clean_payload(row)
                     yield RawRecord(self.source_key, p, content_hash(p, self.template.get("hash_ignore")), rid)
                 return
             time.sleep(30)

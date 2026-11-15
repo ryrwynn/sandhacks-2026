@@ -90,13 +90,6 @@ class BrightDataDatasetAdapter(SourceAdapter):
         return rows
 
     # -- adapter ------------------------------------------------------------
-    def clean_payload(self, row: dict) -> dict:
-        p = self.drop_personal(row)
-        for f in self.template.get("redact_fields") or []:
-            if isinstance(p.get(f), str):
-                p[f] = redact_text(p[f])
-        return p
-
     def fetch(self, inputs: list[dict] | None = None, snapshot_id: str | None = None) -> Iterator[RawRecord]:
         if snapshot_id is None:
             snapshot_id = self.trigger(inputs or self.build_inputs())

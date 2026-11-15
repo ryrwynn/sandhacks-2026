@@ -62,6 +62,7 @@ def fill_missing(template: dict, draft: dict, budget: LlmBudget) -> bool:
     if parsed is None:
         budget.empty += 1
         return not spec.get("keep_if")
+    draft.setdefault("extras", {})["llm_parsed"] = True     # later runs skip this listing
     values = parsed.model_dump()
     keep = spec.get("keep_if")
     if keep and values.get(keep) is False:
