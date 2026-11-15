@@ -365,3 +365,57 @@ def test_facebook_sd_sample_has_no_personal_fields():
     assert {"user_url", "user_username_raw", "profile_id", "user_is_verified"} <= set(t["drop_fields"])
     groups = __import__("yaml").safe_load((ROOT / "sources/facebook_groups/groups.yaml").read_text())["groups"]
     assert all(g["url"] is None or g["url"].startswith("https://www.facebook.com/groups/") for g in groups)
+
+
+# ---- on-request areas: added, and repeats (final run) --------------------------------------------
+def test_is_covered_core_county_and_fresh_on_demand():
+    from datetime import timedelta
+    from api.routers import coverage as cov
+    now = datetime.now(timezone.utc)
+    assert cov.is_covered({"tier": "core"}) and cov.is_covered({"tier": "county"})
+    assert not cov.is_covered({"tier": "index", "last_scraped_at": now})
+    assert cov.is_covered({"tier": "on_demand", "last_scraped_at": now - timedelta(days=3)})
+    assert not cov.is_covered({"tier": "on_demand", "last_scraped_at": now - timedelta(days=31)})
+    assert not cov.is_covered({"tier": "on_demand", "last_scraped_at": None})
+
+
+def test_repeat_request_for_a_recently_added_zip_is_not_queued_again(fake_db):
+    from datetime import timedelta
+    added = {**AREAS["94110"], "geo_id": "94117", "tier": "on_demand",
+             "last_scraped_at": datetime.now(timezone.utc) - timedelta(days=2)}
+    stale = {**added, "geo_id": "94118", "last_scraped_at": datetime.now(timezone.utc) - timedelta(days=40)}
+    AREAS.update({"94117": added, "94118": stale})
+    try:
+        r = client.post("/areas/requests", json={"query": "94117"}).json()
+        assert r["already_covered"] and r["status"] == "loaded" and r["queue_position"] is None
+        r2 = client.post("/areas/requests", json={"query": "94118"}).json()        # older than 30 days: refresh
+        assert r2["status"] == "queued" and not r2["already_covered"]
+        r3 = client.post("/areas/requests", json={"query": "94118"}).json()        # asked again while queued
+        assert r3["request_id"] == r2["request_id"]
+        assert sum(1 for q in fake_db["requests"] if q["geo_id"] == "94118") == 1
+    finally:
+        AREAS.pop("94117"); AREAS.pop("94118")
+
+
+def test_ondemand_skips_fresh_zips_and_marks_loaded_zips_on_demand(monkeypatch):
+    monkeypatch.setenv("BRIGHTDATA_BUDGET_USD", "10")
+    monkeypatch.setenv("ONDEMAND_DAILY_USD", "1")
+    staged = []
+    monkeypatch.setattr(ondemand, "stage", lambda conn, t: staged.append(t["source_key"]) or 7)
+
+    def h(sql, args):
+        if "note LIKE" in sql:
+            return [(1,)]
+        if sql.lstrip().startswith("SELECT request_id"):
+            return [(uuid.uuid4(), "zip", "94110", "94110", 0.04)]
+        if "FROM areas WHERE geo_type='zip' AND geo_id=%s" in sql:
+            assert "tier = 'index' OR (tier = 'on_demand'" in sql and "30 days" in sql   # fresh on_demand skipped
+            return [(args[0],)]
+        if "SELECT zip, city_slug" in sql:
+            return [("94110", "san-francisco")]
+        return spent_handler(0)(sql, args)
+    conn = FakeConn(h)
+    out = ondemand.process_queue(conn, client=FakeClient(n_rows=5), sleep=lambda s: None)
+    assert out["taken"] == 1 and out["staged"] == 7 and staged == ["zillow_rent_ondemand"]
+    assert any(s.startswith("UPDATE areas SET tier = 'on_demand'") for s, _ in conn.log)
+    assert any("status='loaded'" in s for s, _ in conn.log)

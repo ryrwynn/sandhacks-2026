@@ -8,3 +8,6 @@
 # --cron refuses unless sources.terms_checked_on is set for facebook_groups_sd (the owner sets it).
 # Shared target loads data/zips.txt ZIPs only; other ZIPs stay in staging.
 0 15 * * 1,4 /app/docker/worker-job.sh python -m worker.facebook collect --limit 50 --target shared --confirm-shared --cron
+# Areas people asked for (/areas "Add this area"): daily, within ONDEMAND_DAILY_USD (default $1) and the overall
+# Bright Data budget; requests that don't fit wait for the next day. Rows go to raw_records and staging only.
+30 13 * * *  /app/docker/worker-job.sh python -m worker.ondemand

@@ -44,6 +44,9 @@ async function CoveredZip({ zip, token, all }: { zip: string; token: string | nu
         <Stat label="Typical rent (ZORI)" value={usd(a.typical_rent_usd)} />
         <Stat label="Typical home value (ZHVI)" value={usd(a.typical_home_value_usd)} />
         {a.last_scraped_at && <Stat label="Listings last sampled" value={new Date(a.last_scraped_at).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" })} />}
+        {a.listings_sampled != null && a.median_asking_rent_usd != null && (
+          <Stat label="Median asking rent (sampled)" value={usd(a.median_asking_rent_usd)} note={`${a.listings_sampled} listings sampled`} />
+        )}
       </div>
       <ZipMap token={token} zips={all} focus={zip} focusCenter={center} heightClass="h-56 sm:h-72" />
       <Disclaimer kind="estimate" />

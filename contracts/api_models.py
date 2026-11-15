@@ -499,6 +499,9 @@ class AreaSummary(BaseModel):
     typical_rent_usd: float | None = None       # latest ZORI
     typical_home_value_usd: float | None = None # latest ZHVI
     last_scraped_at: datetime | None = None
+    # Final run: listings sampled for county / on-request ZIPs (staging), so an added area shows what it gained.
+    listings_sampled: int | None = None
+    median_asking_rent_usd: float | None = None
 
 
 class AreasResponse(BaseModel):                 # GET /areas?tier=&county=&q=&limit=

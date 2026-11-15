@@ -4,8 +4,12 @@ uv run python -m worker.ondemand [--dry-run]      # needs DATABASE_URL and BRIGH
 
 Takes queued requests oldest first while their estimates fit today's on-demand budget
 (ONDEMAND_DAILY_USD, default 1.00) and the overall Bright Data budget, batches every ZIP into ONE trigger,
-stores raw records under the disabled source zillow_rent_ondemand and nothing else; replay later maps
-them into staging. Requests that do not fit stay queued for tomorrow. Never touches shared tables.
+stores raw records under the disabled source zillow_rent_ondemand, replays them into staging_listings, and
+marks the ZIPs tier 'on_demand' with last_scraped_at. Requests that do not fit stay queued for tomorrow.
+Never touches the shared listing tables.
+
+Repeats: a ZIP added within FRESH_DAYS counts as covered (the API answers "already added", and this job
+skips it); after that a new request refreshes it. Runs daily from docker/worker.crontab.
 """
 import argparse
 import logging
@@ -16,16 +20,20 @@ from worker import bd, load
 from worker.mapping import load_template
 
 log = logging.getLogger("worker.ondemand")
+FRESH_DAYS = 30           # keep in step with api/routers/coverage.py
+# ZIPs that still need a scrape: index tier, or added on request longer than FRESH_DAYS ago.
+NEEDS_SCRAPE = ("(tier = 'index' OR (tier = 'on_demand' AND (last_scraped_at IS NULL "
+                f"OR last_scraped_at < now() - interval '{FRESH_DAYS} days')))")
 
 
 def zips_for_request(conn, geo_type: str, geo_id: str, name: str) -> list[str]:
     """ZIPs that still need scraping for a request (core and county ZIPs are covered elsewhere)."""
     if geo_type == "zip":
-        rows = conn.execute("SELECT geo_id FROM areas WHERE geo_type='zip' AND geo_id=%s AND tier IN ('index','on_demand')",
+        rows = conn.execute(f"SELECT geo_id FROM areas WHERE geo_type='zip' AND geo_id=%s AND {NEEDS_SCRAPE}",
                             (geo_id,)).fetchall()
     else:
         rows = conn.execute("SELECT geo_id FROM areas WHERE geo_type='zip' AND lower(name)=lower(%s) "
-                            "AND tier IN ('index','on_demand') ORDER BY geo_id LIMIT %s",
+                            f"AND {NEEDS_SCRAPE} ORDER BY geo_id LIMIT %s",
                             (name, bd.ONDEMAND_MAX_ZIPS)).fetchall()
     return [r[0] for r in rows]
 
@@ -40,6 +48,12 @@ def pick(requests: list[dict], remaining_usd: float) -> tuple[list[dict], list[d
         else:
             deferred.append(r)
     return taken, deferred
+
+
+def stage(conn, template: dict) -> int:
+    """Raw on-demand records -> staging_listings (idempotent; no Gemini). The live listing queries never read these."""
+    from worker.replay import replay_listings
+    return replay_listings(conn, template, "staging", float(template.get("trust_weight", 1.0)), 0, None)["listings"]
 
 
 def process_queue(conn, client=None, sleep=time.sleep, dry_run: bool = False) -> dict:
@@ -80,6 +94,9 @@ def process_queue(conn, client=None, sleep=time.sleep, dry_run: bool = False) ->
         bd.mark_scraped(conn, zips)
         out["records"] += res["records"]
         out["usd"] += res["usd"]
+        out["staged"] = stage(conn, template)
+        conn.execute("UPDATE areas SET tier = 'on_demand' WHERE geo_type = 'zip' AND geo_id = ANY(%s) AND tier = 'index'",
+                     (zips,))
         conn.execute("UPDATE area_requests SET status='loaded', finished_at=now() WHERE request_id = ANY(%s)", (ids,))
     except bd.BudgetExceeded as e:
         conn.execute("UPDATE area_requests SET status='queued', started_at=NULL, note=%s WHERE request_id = ANY(%s)",
