@@ -85,7 +85,8 @@ def health_info() -> dict:
         counts[r["source_key"]] = r["n"]
     last = fetch("SELECT max(last_seen) AS t FROM listings")[0]["t"]
     runs = fetch("SELECT DISTINCT ON (kind) run_id, kind, trained_at, n_rows, metrics "
-                 "FROM model_runs ORDER BY kind, trained_at DESC")
+                 "FROM model_runs WHERE kind IN ('fair_rent', 'forecast') "   # newer kinds (scenario_forecast) aren't in HealthResponse
+                 "ORDER BY kind, trained_at DESC")
     return {"row_counts": counts, "last_scrape_at": last,
             "model_runs": [{**r, "metrics": r["metrics"] or {}} for r in runs]}
 
