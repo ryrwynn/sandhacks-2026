@@ -89,9 +89,14 @@ def test_zips_and_profile(monkeypatch):
     assert client.get("/zips/99999").status_code == 404
 
 
+def _not_implemented(*a, **k):
+    raise NotImplementedError
+
+
 def test_profile_without_scoring_engine(monkeypatch):
     _zip_db(monkeypatch)
-    p = client.get("/zips/92104").json()   # score_zips raises NotImplementedError until lane C lands
+    monkeypatch.setattr(scoring, "score_zips", _not_implemented)
+    p = client.get("/zips/92104").json()
     assert p["persona_scores"] == {"starter": None, "wealth": None}
 
 
@@ -128,9 +133,8 @@ def test_demo_check_max_legal_rent(monkeypatch):
 
     monkeypatch.setattr(ab1482, "check_increase", fake_check)
     monkeypatch.setattr(db, "insert_check", fake_insert)
-    monkeypatch.setattr(db, "read_rent_caps", lambda: [{
-        "region": "san_diego_county", "period_start": date(2026, 8, 1), "period_end": date(2027, 7, 31),
-        "cap_pct": Decimal("8.20"), "source_url": "x"}])
+    monkeypatch.setattr(checks_router, "load_caps", lambda: [ab1482.RentCap(
+        "san_diego_county", date(2026, 8, 1), date(2027, 7, 31), Decimal("8.20"), "x")])
     r = client.post("/checks", json=fx("requests/checks.json"))
     assert r.status_code == 200
     j = r.json()
@@ -141,7 +145,8 @@ def test_demo_check_max_legal_rent(monkeypatch):
     assert seen["caps"][0].cap_pct == Decimal("8.20")
 
 
-def test_check_503_when_engine_missing():
+def test_check_503_when_engine_missing(monkeypatch):
+    monkeypatch.setattr(ab1482, "check_increase", _not_implemented)
     r = client.post("/checks", json=fx("requests/checks.json"))
     assert r.status_code == 503 and "not available" in r.json()["detail"]
 
@@ -236,7 +241,8 @@ def test_rank_summaries_for_top_three_only(monkeypatch, persona):
     assert all(x["summary"] is None for x in j["stretch"]) and j["weights"] == fixture["weights"]
 
 
-def test_rank_503_without_scoring_engine():
+def test_rank_503_without_scoring_engine(monkeypatch):
+    monkeypatch.setattr(scoring, "score_zips", _not_implemented)
     r = client.post("/neighborhoods/rank", json=fx("requests/neighborhoods_rank_starter.json"))
     assert r.status_code == 503
 
