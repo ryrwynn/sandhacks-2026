@@ -1,6 +1,6 @@
 # Overnight run status
 
-Heartbeat: 2026-11-15 00:58 PST — Phase 2 starting
+Heartbeat: 2026-11-15 00:59 PST — Phase 2: data, forecast, match, web running; rules and accounts queued
 
 ## Phase 0, setup
 - [x] preflight: all clear; WARN no DEV_DATABASE_URL (stage in shared DB), WARN no Google keys (sign-in off), WARN no local Docker
@@ -14,10 +14,10 @@ Heartbeat: 2026-11-15 00:58 PST — Phase 2 starting
 - [x] contracts commit on night
 
 ## Phase 2, features
-- [ ] night-data
-- [ ] night-forecast
-- [ ] night-match
-- [ ] night-web
+- [ ] night-data (running)
+- [ ] night-forecast (running)
+- [ ] night-match (running)
+- [ ] night-web (running)
 - [ ] night-rules
 - [ ] night-accounts
 
