@@ -30,7 +30,7 @@ Branch `night`, **draft PR #2 to `Setup`: https://github.com/ryrwynn/sandhacks-2
 | Area | State |
 | --- | --- |
 | Contracts | `db/migrations/002_night.sql`, models + fixtures for every new endpoint, routers in `api/main.py`, regenerated `api.generated.ts` |
-| Rent gouging (Penal Code 396) | `POST /checks/gouging`, 20 tests. Tropical Storm Rachel (Imperial, LA, Orange, San Diego; 2026-10-15 to 11-14) verified on Cal OES + gov.ca.gov. Statute text and the 160%-of-FMR rule unverified (leginfo 403), so the FMR path answers `unclear` |
+| Rent gouging (Penal Code 396) | `POST /checks/gouging`, 20 tests. Tropical Storm Rachel (Imperial, LA, Orange, San Diego; 2026-10-15 to 11-14) verified on Cal OES + gov.ca.gov. 160%-of-FMR rule verified by the owner on 2026-11-15 (`FMR_RULE_VERIFIED = True`); the FMR figures are still a third-party mirror (HUD refused downloads again in the final run), so the FMR path still answers `unclear` |
 | Forecasts | Macro loader (FRED: CASAND5URN, SDXRSA, MORTGAGE30US, CUSR0000SAH1), Fed 2026 baseline / severely adverse transcribed from the PDF, growth = 80th percentile of history. Pooled ridge model + rolling conformal cones. `docs/MODEL_CARD.md` |
 | Trends | `GET /zips/{zip}/trends`, `GET /listings/{id}/trends` (market signals, never legal findings) |
 | Coverage | Tiers (core 12, county 103, index 1,687), `GET /areas`, `POST /areas/requests` with estimate and queue, `GET /geo/zips`, 58 county GeoJSON files (3.1 MB), budget-guarded Bright Data client (sample-first, batched, `scrape_runs`), on-demand worker, replay, `docs/TIGER_CAPACITY.md` |
@@ -112,7 +112,7 @@ today), and the live API doesn't filter by data/zips.txt.
   checked only by tsc and the build. `/apartments/{id}` has no `<h1>` in its server HTML.
 - **Facebook groups**: `sources/facebook_groups/groups.yaml` lists 10 localities with `url: null`. Web search found only
   business pages and Marketplace; a person must confirm each group is public and paste its URL.
-- **Gouging data**: read Penal Code 396 on leginfo (the 160% FMR rule comes only from NIGHT.md), download HUD FY2026
+- **Gouging data**: ~~read Penal Code 396~~ (done 2026-11-15: the owner verified the 160% rule), download HUD FY2026
   SAFMRs for San Diego ZIPs (huduser.gov refused automated downloads; the county FMRs in `api/rules/data/fmr.yaml` are from
   a third-party mirror, marked unverified), and check the Sept 2026 "Super El Niño" proclamation PDF (unread).
 

@@ -48,7 +48,7 @@ export default function MarketOverview({ map }: { map: ReactNode }) {
           <h1 className="text-xl font-bold tracking-tight sm:text-2xl">Rental market overview</h1>
           <p className="text-muted">See how asking rents change over time, then track the places you love.</p>
         </div>
-        {updated && <p className="text-sm text-muted">Updated {fmtDate(updated)}</p>}
+        {updated && <p className="text-sm text-muted">Updated weekly · last {fmtDate(updated)}</p>}
       </section>
 
       <FilterBar value={filters} onChange={setFilters} />

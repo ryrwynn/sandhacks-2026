@@ -1,5 +1,7 @@
 # m h dom mon dow  command   (UTC; logs go to the container's stdout)
-0 */3 * * *  /app/docker/worker-job.sh python -m worker.run --source zillow_rent
+# Zillow rentals once a week: Thursday 12:00 UTC = 4:00 AM Pacific standard time (5:00 AM during daylight time).
+# Weekly because limit_per_input isn't a hard cap (~1,777 records a run); see docs/WAKEUP.md for the cost.
+0 12 * * 4   /app/docker/worker-job.sh python -m worker.run --source zillow_rent
 30 4 * * *   /app/docker/worker-job.sh python -m worker.run --source zillow_sale
 0 6 * * *    /app/docker/worker-job.sh python -m worker.train
 # Facebook rental groups, Mondays and Thursdays 15:00 UTC (7-8am Pacific), up to 50 posts per group.

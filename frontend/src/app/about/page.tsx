@@ -18,7 +18,7 @@ const FB_GROUPS = [
 ];   // "UCSD Student Off-Campus Housing" is private (checked 2026-11-15), so it is not read.
 
 const SOURCES = [
-  ["Zillow rental and for-sale listings", "Rent, bedrooms, size, year built and price history, collected every few hours for 12 San Diego ZIP codes."],
+  ["Zillow rental and for-sale listings", "Rent, bedrooms, size, year built and price history for 12 San Diego ZIP codes. Rentals are updated weekly (Thursdays), for-sale listings daily."],
   ["Zillow Research ZORI and ZHVI", "Monthly typical rent and typical home value by ZIP, with years of history. Used for trends and forecasts."],
   ["Census ACS 5-year", "Median household income and median gross rent. Shown as context, never used in a score."],
   ["OpenStreetMap", "Counts of grocery stores, transit stops, parks, cafes and restaurants, and gyms per ZIP."],

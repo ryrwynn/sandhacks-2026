@@ -69,7 +69,7 @@ def _canon_county(name: str, known: set[str]) -> str:
 
 
 FMR_RULE_UNVERIFIED = "the 160%-of-Fair-Market-Rent rule (statute text not yet checked)"
-FMR_RULE_VERIFIED = False      # flip after reading Penal Code 396 on leginfo (MORNING.md "Gouging data")
+FMR_RULE_VERIFIED = True       # Penal Code 396(e): 160% of HUD Fair Market Rent; owner verified the statute 2026-11-15
 
 
 def _result(verdict, county, reasons, *, limit=None, pct=None, basis="none", fmr=None, fmr_source=None, em=None,

@@ -56,7 +56,7 @@ export default function Alerts() {
           <section aria-labelledby="hit-h" className="space-y-3">
             <h2 id="hit-h" className="text-xl font-bold">Needs a look <span className="text-base font-normal text-muted">· {hits.length}</span></h2>
             {hits.length === 0 ? (
-              <p className={`${cardCls} p-5 text-muted`}>Nothing has hit a target or changed price since you last looked. Check back after the next update.</p>
+              <p className={`${cardCls} p-5 text-muted`}>Nothing has hit a target or changed price since you last looked. Listing-site prices are updated weekly (Thursdays); Facebook posts twice a week. Check back after the next update.</p>
             ) : (
               <ul className="space-y-3">
                 {hits.map(({ item, l, kind }) => (

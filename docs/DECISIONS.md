@@ -213,6 +213,9 @@ Dataset `gd_lfqkr8wm13ixtbd8f5` (Zillow properties listing information), the one
   leginfo and HUD refused automated fetches, so the statute text and the 160%-of-FMR rule are `verified: false`, and the
   San Diego FMRs come from the scout's third-party mirror. The 160% path therefore answers `unclear` with the estimated
   limit and says the figure is unchecked. ZIP-to-county covers San Diego County only; others are `unclear` without a county.
+- **Final run (2026-11-15):** the owner verified the 160%-of-FMR rule, so `FMR_RULE_VERIFIED = True`. One more try at
+  HUD's FY2026 SAFMR file got HTTP 202 with an empty body (bot wall), so `fmr.yaml` stays `verified: false` and the 160%
+  path still answers `unclear` until someone downloads the file by hand into `api/rules/data/`.
 
 ### Overnight run, Phase 3: integrate (2026-11-15)
 

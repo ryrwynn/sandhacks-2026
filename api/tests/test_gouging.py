@@ -117,8 +117,15 @@ def test_fmr_160_falls_back_to_county_fmr(monkeypatch):
     assert r["fmr_usd"] == D("2500")
 
 
+def test_fmr_rule_is_verified():
+    assert gouging.FMR_RULE_VERIFIED is True     # owner checked Penal Code 396(e) on 2026-11-15
+    r = chk("4160.01", pre_emergency_rent=None, beds=1)            # verified rule + verified (test) SAFMR: firm
+    assert r["verdict"] == "likely_violation" and r["unverified"] == []
+
+
 def test_unverified_rule_or_data_answers_unclear_and_says_so(monkeypatch):
-    r = chk("4160.01", pre_emergency_rent=None, beds=1)            # statute's 160% rule not verified yet
+    monkeypatch.setattr(gouging, "FMR_RULE_VERIFIED", False)
+    r = chk("4160.01", pre_emergency_rent=None, beds=1)            # if the rule were unverified: unclear
     assert r["verdict"] == "unclear" and r["limit_usd"] == D("4160.00")
     assert any("160%" in u for u in r["unverified"]) and "not verified" in r["reasons"][-1]
     monkeypatch.setattr(gouging, "load_emergencies", lambda: [{**EMERG[0], "verified": False}])
@@ -136,6 +143,13 @@ def test_unverified_fmr_is_unclear(monkeypatch):
     monkeypatch.setattr(gouging, "load_fmr", lambda: bad)
     r = chk("9000", zip_="92011", pre_emergency_rent=None, beds=1)
     assert r["verdict"] == "unclear" and r["fmr_usd"] == D("2500")
+    assert not any("160%" in u for u in r["unverified"])           # the rule itself is verified now
+
+
+def test_real_fmr_file_stays_unclear():
+    """The shipped fmr.yaml is a third-party mirror (HUD refused downloads), so the 160% path answers unclear."""
+    fmr = REAL_FMR()
+    assert fmr["county_fmr"]["San Diego"]["verified"] is False
 
 
 def test_result_keys_match_contract():
