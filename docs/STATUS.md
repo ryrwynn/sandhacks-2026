@@ -1,6 +1,6 @@
 # Overnight run status
 
-Heartbeat: 2026-11-15 01:13 PST — Phase 2: data, forecast running; rules merged; match, web, accounts done awaiting merge
+Heartbeat: 2026-11-15 01:18 PST — Phase 4: night-theme running
 
 ## Phase 0, setup
 - [x] preflight: all clear; WARN no DEV_DATABASE_URL (stage in shared DB), WARN no Google keys (sign-in off), WARN no local Docker
@@ -14,22 +14,22 @@ Heartbeat: 2026-11-15 01:13 PST — Phase 2: data, forecast running; rules merge
 - [x] contracts commit on night
 
 ## Phase 2, features
-- [ ] night-data (running)
-- [ ] night-forecast (running)
-- [x] night-match (done, branch worktree-agent-ade3964715f2939f5; merge after rules, forecast, data)
-- [x] night-web (done, branch worktree-agent-a558ba42fb0d711d1)
+- [x] night-data (merged)
+- [x] night-forecast (merged)
+- [x] night-match (merged)
+- [x] night-web (merged)
 - [x] night-rules (merged into night)
-- [x] night-accounts (done, branch worktree-agent-a96f582a5e1cb1f4f)
+- [x] night-accounts (merged)
 
 ## Phase 3, integrate
-- [ ] merge rules (done), forecast, data, match, accounts, web
-- [ ] regenerate frontend types
-- [ ] pytest + tsc + build
-- [ ] local smoke + smoke.sh endpoints
-- [ ] push night
+- [x] merge rules, forecast, data, match, accounts, web
+- [x] regenerate frontend types
+- [x] pytest (247) + tsc + build
+- [x] local smoke (new endpoints pass; 4 DB-only checks fail locally, no DB) + smoke.sh endpoints
+- [x] push night
 
 ## Phase 4, interface
-- [ ] night-theme merged, checks rerun, pushed
+- [ ] night-theme merged, checks rerun, pushed (running)
 
 ## Phase 5, hand-off
 - [ ] draft PR night -> Setup
