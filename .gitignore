@@ -19,3 +19,4 @@ npm-debug.log*
 /out/
 /build
 .vercel
+docs/reference/raw/

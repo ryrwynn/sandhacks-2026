@@ -153,7 +153,28 @@ else
   fail ".github/workflows/deploy.yml isn't committed"
 fi
 cur=$(git branch --show-current)
-[ "$cur" = "$BRANCH" ] && ok "checked out on $BRANCH" || fail "checked out on '$cur'; start the orchestrator on $BRANCH"
+if [ "$cur" = "$BRANCH" ]; then ok "checked out on $BRANCH"; elif [ "$cur" = night ]; then ok "on night (overnight run; it never deploys)"; else fail "checked out on '$cur'; start the orchestrator on $BRANCH"; fi
+
+echo "10. Overnight run (docs/NIGHT.md)"
+if [ -n "$DATABASE_URL" ]; then
+  for ext in postgis vector vectorscale; do
+    v=$(psql "$DATABASE_URL" -tAc "select default_version from pg_available_extensions where name='$ext'" 2>/dev/null)
+    [ -n "$v" ] && ok "extension $ext $v available" || warn "extension $ext not available (NIGHT.md falls back)"
+  done
+fi
+if [ -n "${DEV_DATABASE_URL:-}" ]; then
+  psql "$DEV_DATABASE_URL" -tAc "select 1" >/dev/null 2>&1 && ok "DEV_DATABASE_URL connects" || fail "DEV_DATABASE_URL is set but doesn't connect"
+else
+  warn "no DEV_DATABASE_URL: new areas will be staged in the shared database"
+fi
+[ -n "${BRIGHTDATA_BUDGET_USD:-}" ] && ok "BRIGHTDATA_BUDGET_USD = $BRIGHTDATA_BUDGET_USD" || warn "BRIGHTDATA_BUDGET_USD unset: the run caps spend at \$10"
+if [ -n "${GOOGLE_CLIENT_ID:-}" ] && [ -n "${GOOGLE_CLIENT_SECRET:-}" ] && [ -n "${AUTH_SECRET:-}" ]; then ok "Google sign-in keys set"; else warn "Google sign-in keys not set: sign-in is built but stays off"; fi
+for d in brightdata tigerdata mastra; do
+  n=$(find docs/reference/raw/$d -type f 2>/dev/null | wc -l | tr -d ' ')
+  [ "${n:-0}" -gt 0 ] && ok "docs/reference/raw/$d: $n file(s)" || warn "docs/reference/raw/$d is empty: the scout falls back to public docs"
+done
+cur=$(git branch --show-current)
+[ "$cur" = night ] && ok "checked out on night" || warn "checked out on '$cur'; the overnight run starts on night"
 
 echo "9. This laptop"
 pmset -g batt | grep -q "AC Power" && ok "on AC power" || fail "on battery; plug in before walking away"
