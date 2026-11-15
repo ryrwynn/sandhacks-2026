@@ -34,7 +34,7 @@ SELECT DISTINCT ON (po.listing_id)
 FROM price_observations po
 JOIN listings l ON l.listing_id = po.listing_id
 JOIN properties p ON p.property_id = l.property_id
-WHERE po.listing_type = 'rent' AND po.source_key = ANY(%s)
+WHERE po.listing_type = 'rent' AND po.source_key = ANY(%s) AND po.source_key NOT LIKE 'facebook%%'
   AND l.location_precision = 'address' AND po.price_usd > 0
 ORDER BY po.listing_id, po.observed_at DESC
 """

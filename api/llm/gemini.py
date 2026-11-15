@@ -378,6 +378,51 @@ def parse_needs(text: str) -> dict | None:
         return None
 
 
+# ---- Facebook group posts, about 10 per request (PARSE_MODEL, a Flash Lite model on the free tier) ----
+class PostFields(BaseModel):
+    i: int                                   # the post's number in the prompt
+    is_rental_offer: bool | None = None
+    price_usd: int | None = None
+    beds: int | None = None
+    baths: float | None = None
+    unit_type: str | None = None             # 'entire_unit' | 'room' | 'sublet'
+    neighborhood: str | None = None
+    zip: str | None = None
+    available_date: str | None = None        # YYYY-MM-DD
+    pets_allowed: bool | None = None
+    parking: bool | None = None
+    laundry: bool | None = None
+    utilities_included: bool | None = None
+
+
+class PostBatch(BaseModel):
+    posts: list[PostFields] = []
+
+
+POSTS_PROMPT = (
+    "Each numbered item below is a post from a San Diego housing group. For every item return one object "
+    "with its number i. is_rental_offer is true only when the post offers a place for rent (not someone "
+    "looking for a place or a roommate, not an ad for a service). price_usd is the monthly rent (the lowest "
+    "if several). beds: bedrooms offered (studio = 0; a single room for rent = 1). unit_type: 'entire_unit' "
+    "for a whole apartment or house, 'room' for a room in a shared home, 'sublet' for a temporary sublease. "
+    "neighborhood: the San Diego neighborhood or city named in the post. zip: only a 5-digit ZIP written in "
+    "the post. available_date as YYYY-MM-DD (today is {today}). laundry is true for in-unit or on-site "
+    "laundry. Use null for anything the post doesn't state; do not guess. Never include names, phone "
+    "numbers or emails.\n\n")
+
+
+def parse_posts(texts: list[str], today: str) -> list[dict] | None:
+    """Fields for a batch of (already redacted) posts, cached by the batch. None when Gemini gives nothing.
+    Callers validate each returned item on its own: a bad item never sinks the batch."""
+    try:
+        body = "\n\n".join(f"[{i}] {t.strip()[:1500]}" for i, t in enumerate(texts))
+        out = _cached_call("parse_fb_posts", POSTS_PROMPT.format(today=today) + body, None, "PARSE_MODEL",
+                           PostBatch)
+        return list(out.get("posts") or []) if out else None
+    except Exception:
+        return None
+
+
 # ---- embeddings (gemini-embedding-2, 768 dimensions, at most EMBED_REQUEST_BUDGET requests) ----
 EMBED_MODEL = "gemini-embedding-2"
 EMBED_DIMS = 768

@@ -14,7 +14,8 @@ RESPONSES = {
     "listings_evaluate.json": m.ListingEvalResponse, "neighborhoods_rank_starter.json": m.RankResponse,
     "neighborhoods_rank_wealth.json": m.RankResponse, "owner_price_position.json": m.PricePositionResponse,
     "owner_listing_analysis.json": m.ListingAnalysisResponse,
-    "listings.json": m.ListingsResponse, "listing_detail.json": m.ListingDetail, "market.json": m.MarketResponse,
+    "listings.json": m.ListingsResponse, "listing_detail.json": m.ListingDetail,
+    "listing_detail_facebook.json": m.ListingDetail, "market.json": m.MarketResponse,
     # overnight additions
     "zip_series_scenarios.json": m.SeriesResponse, "areas.json": m.AreasResponse,
     "area_request.json": m.AreaRequestStatus, "geo_zips.json": m.GeoZipsResponse,

@@ -110,11 +110,17 @@ class BrightDataClient:
             raise RuntimeError(f"trigger failed: HTTP {r.status_code} {r.text[:150]}")
         return r.json()["snapshot_id"]
 
-    def progress(self, snapshot_id: str) -> str:
+    def progress_info(self, snapshot_id: str) -> dict:
         r = self._req("GET", f"/progress/{snapshot_id}")
         if r.status_code >= 400:
             raise RuntimeError(f"progress failed: HTTP {r.status_code}")
-        return r.json().get("status", "")
+        return r.json()
+
+    def progress(self, snapshot_id: str) -> str:
+        return self.progress_info(snapshot_id).get("status", "")
+
+    def cancel(self, snapshot_id: str) -> None:
+        self._req("POST", f"/snapshot/{snapshot_id}/cancel")
 
     def snapshot(self, snapshot_id: str) -> list[dict]:
         r = self._req("GET", f"/snapshot/{snapshot_id}", params={"format": "json"})

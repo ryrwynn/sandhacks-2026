@@ -30,5 +30,19 @@
         "coverage_80": 0.78
       }
     }
+  ],
+  "sources": [
+    {
+      "source_key": "facebook_groups_sd",
+      "kind": "social",
+      "listings": 15,
+      "active": 15
+    },
+    {
+      "source_key": "zillow_rent",
+      "kind": "listing_site",
+      "listings": 1788,
+      "active": 640
+    }
   ]
 }

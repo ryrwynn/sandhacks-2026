@@ -164,6 +164,7 @@ export interface HealthResponse {
   last_scrape_at: string | null;
   row_counts: Record<string, number>;
   model_runs: ModelRunSummary[];
+  sources: SourceCount[];
 }
 
 export interface LegalGuardrail {
@@ -226,6 +227,17 @@ export interface ListingDetail {
   last_seen: string;
   active: boolean;
   source_url: string | null;
+  source_kind: "listing_site" | "social";
+  source_label: string | null;
+  unit_type: "entire_unit" | "room" | "sublet" | null;
+  location_precision: "address" | "street" | "zip" | "neighborhood" | "city";
+  post_url: string | null;
+  group_name: string | null;
+  posted_at: string | null;
+  available_date: string | null;
+  amenities: string[];
+  unusual_price: boolean;
+  trust_weight: number;
   observations: Observation[];
   year_built: number | null;
   estimate: FairRentEstimate | null;
@@ -278,6 +290,17 @@ export interface ListingSummary {
   last_seen: string;
   active: boolean;
   source_url: string | null;
+  source_kind: "listing_site" | "social";
+  source_label: string | null;
+  unit_type: "entire_unit" | "room" | "sublet" | null;
+  location_precision: "address" | "street" | "zip" | "neighborhood" | "city";
+  post_url: string | null;
+  group_name: string | null;
+  posted_at: string | null;
+  available_date: string | null;
+  amenities: string[];
+  unusual_price: boolean;
+  trust_weight: number;
 }
 
 export interface ListingTrendsResponse {
@@ -332,6 +355,8 @@ export interface MarketResponse {
   beats_naive: boolean | null;
   notes: string[];
   disclaimer: string;
+  sources: SourceBreakdown;
+  listing_sites_only: boolean;
 }
 
 export interface MatchRequest {
@@ -541,6 +566,27 @@ export interface SeriesResponse {
   coverage_80: number | null;
 }
 
+export interface SourceBreakdown {
+  listing_sites: SourceStat;
+  facebook: SourceStat;
+  facebook_rooms: SourceStat;
+  facebook_unusual: number;
+  facebook_weight: number;
+  listing_sites_only: boolean;
+}
+
+export interface SourceCount {
+  source_key: string;
+  kind: string;
+  listings: number;
+  active: number;
+}
+
+export interface SourceStat {
+  count: number;
+  median_usd: number | null;
+}
+
 export interface SparkPoint {
   month: string;
   price_usd: number;
@@ -606,6 +652,8 @@ export interface ZipProfile {
   amenities: AmenityCounts;
   persona_scores: Partial<Record<"starter" | "wealth", number | null>>;
   listings_30d: number;
+  sources: SourceBreakdown | null;
+  listing_sites_only: boolean;
 }
 
 export interface ZipSummary {

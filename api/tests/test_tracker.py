@@ -129,7 +129,7 @@ def test_detail_not_enough_comps_and_404(monkeypatch):
 def patch_market(monkeypatch):
     zori = [{"month": date(2026, m, 1), "value": Decimal(2500 + m * 10)} for m in range(1, 11)]
     monkeypatch.setattr(db, "zori_monthly", lambda z: zori)
-    monkeypatch.setattr(db, "listing_monthly_medians", lambda z, b, t: [
+    monkeypatch.setattr(db, "listing_monthly_medians", lambda z, b, t, *a: [
         {"month": date(2026, 8, 1), "value": Decimal("2590"), "n": 12},
         {"month": date(2026, 9, 1), "value": Decimal("2605"), "n": 3},
         {"month": date(2026, 11, 1), "value": Decimal("2650"), "n": 9}])
@@ -137,7 +137,9 @@ def patch_market(monkeypatch):
         {"month": date(2026, 11, 1), "value": Decimal("2618"), "lo80": Decimal("2500"), "hi80": Decimal("2740"),
          "backtest_mape": Decimal("3.1"), "run_id": RUN}])
     monkeypatch.setattr(db, "forecast_run_metrics", lambda r: {"by_series": {"92104:zori": {"naive_mape": 2.4}}})
-    monkeypatch.setattr(db, "active_rent_count", lambda z, b, t: 136)
+    monkeypatch.setattr(db, "active_by_source", lambda z, b, t: [
+        {"kind": "listing_site", "source_key": "zillow_rent", "unit_type": None, "unusual": False, "cur": 2600,
+         "w": 1.0}] * 136)
     monkeypatch.setattr(db, "last_scrape_at", lambda: T(2026, 11, 14))
 
 

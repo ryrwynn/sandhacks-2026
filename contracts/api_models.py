@@ -36,12 +36,20 @@ class ModelRunSummary(BaseModel):
     metrics: dict = Field(default_factory=dict)   # e.g. {"mae_usd": 212.0, "coverage_80": 0.79}
 
 
+class SourceCount(BaseModel):                     # per-source listing counts (morning run)
+    source_key: str
+    kind: str                                       # 'listing_site' | 'social' | ...
+    listings: int
+    active: int
+
+
 class HealthResponse(BaseModel):
     status: Literal["ok", "degraded"]
     database: bool
     last_scrape_at: datetime | None = None
     row_counts: dict[str, int] = Field(default_factory=dict)   # table or source_key -> rows
     model_runs: list[ModelRunSummary] = Field(default_factory=list)
+    sources: list[SourceCount] = Field(default_factory=list)
 
 
 # ---------- GET /zips ----------
@@ -84,6 +92,8 @@ class ZipProfile(BaseModel):
     amenities: AmenityCounts
     persona_scores: dict[Persona, float | None]     # 0 to 100, default weights, no budget filter
     listings_30d: int = 0
+    sources: "SourceBreakdown | None" = None        # morning run: active listings by source
+    listing_sites_only: bool = False
 
 
 # ---------- GET /zips/{zip}/series?metric= ----------
@@ -330,6 +340,12 @@ class SparkPoint(BaseModel):
     price_usd: float                            # the last observed asking rent in that month
 
 
+SourceKind = Literal["listing_site", "social"]
+UnitType = Literal["entire_unit", "room", "sublet"]
+LocationPrecision = Literal["address", "street", "zip", "neighborhood", "city"]
+ListingSource = Literal["all", "listing_sites", "facebook"]
+
+
 class ListingSummary(BaseModel):                # GET /listings items; also the head of GET /listings/{id}
     id: int                                     # listings.listing_id
     address: str | None = None                  # display address, e.g. '2519 El Cajon Blvd'
@@ -348,8 +364,20 @@ class ListingSummary(BaseModel):                # GET /listings items; also the 
     sparkline: list[SparkPoint]                 # monthly, from real observations only; may be a single point
     fair_rent_label: FairRentLabel | None = None   # null when there aren't enough comparables
     last_seen: datetime
-    active: bool                                # seen in the latest scrape
+    active: bool                                # seen in the latest scrape; Facebook: posted in the last 21 days
     source_url: str | None = None               # public listing-site page; null for social posts and unknown
+    # Morning run: Facebook group listings. Never post text, author names, profile links or photos.
+    source_kind: SourceKind = "listing_site"
+    source_label: str | None = None             # 'Zillow', 'Facebook group'
+    unit_type: UnitType | None = None           # Facebook only; listing-site rows are whole units
+    location_precision: LocationPrecision = "address"
+    post_url: str | None = None                 # Facebook: the public group post, so a renter can act on it
+    group_name: str | None = None               # Facebook: the group's public name
+    posted_at: datetime | None = None           # Facebook: the latest post (or repost)
+    available_date: date | None = None
+    amenities: list[str] = Field(default_factory=list)   # Facebook: pets_allowed, parking, laundry, utilities_included
+    unusual_price: bool = False                 # below 40% or above 250% of the ZIP's listing-site median
+    trust_weight: float = 1.0                   # Facebook 0.5
 
 
 class ListingsResponse(BaseModel):
@@ -403,7 +431,21 @@ class MarketForecastPoint(BaseModel):
     hi80: float
 
 
-class MarketResponse(BaseModel):                # GET /market?zip=&beds=&type=&range=
+class SourceStat(BaseModel):
+    count: int = 0
+    median_usd: float | None = None
+
+
+class SourceBreakdown(BaseModel):               # active rental listings by where they came from
+    listing_sites: SourceStat = Field(default_factory=SourceStat)
+    facebook: SourceStat = Field(default_factory=SourceStat)        # whole units; median excludes unusual prices
+    facebook_rooms: SourceStat = Field(default_factory=SourceStat)  # rooms and sublets, never in unit medians
+    facebook_unusual: int = 0                   # whole units flagged "unusual price" (counted, not in the median)
+    facebook_weight: float = 0.5
+    listing_sites_only: bool = False            # when true, Facebook rows are left out of counts and medians
+
+
+class MarketResponse(BaseModel):                # GET /market?zip=&beds=&type=&range=&listing_sites_only=
     zip: str | None = None                      # null = all 12 ZIPs
     beds: int | None = None
     property_type: str | None = None
@@ -421,6 +463,8 @@ class MarketResponse(BaseModel):                # GET /market?zip=&beds=&type=&r
     beats_naive: bool | None = None
     notes: list[str] = Field(default_factory=list)   # e.g. which months fell back to ZORI and why
     disclaimer: str = DISCLAIMER_ESTIMATE
+    sources: SourceBreakdown = Field(default_factory=SourceBreakdown)
+    listing_sites_only: bool = False
 
 
 # ======================================================================================
@@ -698,3 +742,6 @@ class AccountSavesResponse(BaseModel):
 class PutSavesRequest(BaseModel):
     items: list[SavedItem]
     merge: bool = True                          # true: union with stored saves (first sign-in); false: replace
+
+
+ZipProfile.model_rebuild()   # SourceBreakdown is defined after ZipProfile

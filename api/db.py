@@ -14,6 +14,52 @@ log = logging.getLogger("rentorknot.db")
 
 ZIPS_FILE = Path(__file__).resolve().parents[1] / "data" / "zips.txt"
 LISTING_SITE_FILTER = "s.kind = 'listing_site'"
+FB_SOURCE = "facebook_groups_sd"
+FB_INACTIVE_DAYS = 21
+# Rows that count toward unit medians and counts: listing sites, plus whole-unit Facebook listings that
+# aren't flagged "unusual price" (those carry trust weight 0.5 through price_observations.trust_weight).
+MEDIAN_SOURCES = (f"(s.kind = 'listing_site' OR (l.source_key = '{FB_SOURCE}' AND l.extras->>'unit_type' = "
+                  "'entire_unit' AND COALESCE(l.extras->>'unusual_price', 'false') <> 'true'))")
+_L_COLS = ("listing_id, source_key, external_id_hash, property_id, listing_type, zip, neighborhood, "
+           "location_precision, beds, baths, sqft, text_redacted, extras, field_confidence, extraction, "
+           "first_seen, last_seen")
+_PO_COLS = ("observed_at, listing_id, property_id, source_key, listing_type, zip, beds, price_usd, price_max_usd, "
+            "trust_weight, event")
+
+
+def read_staging() -> bool:
+    """Local testing only: RENTORKNOT_READ_STAGING=1 adds staged Facebook rows to the listing queries.
+    Default (unset): the shared tables only."""
+    return os.environ.get("RENTORKNOT_READ_STAGING") == "1"
+
+
+def L() -> str:
+    if not read_staging():
+        return "listings"
+    return (f"(SELECT {_L_COLS} FROM listings UNION ALL SELECT {_L_COLS} FROM staging_listings "
+            f"WHERE source_key = '{FB_SOURCE}')")
+
+
+def PO() -> str:
+    if not read_staging():
+        return "price_observations"
+    return (f"(SELECT {_PO_COLS} FROM price_observations UNION ALL SELECT {_PO_COLS} FROM staging_price_observations "
+            f"WHERE source_key = '{FB_SOURCE}')")
+
+
+def weighted_median(pairs: list[tuple[float, float]]) -> float | None:
+    """(value, weight) pairs -> the value where the cumulative weight first reaches half the total."""
+    pairs = sorted((float(v), float(w)) for v, w in pairs if w and w > 0)
+    if not pairs:
+        return None
+    half, acc = sum(w for _, w in pairs) / 2, 0.0
+    for i, (v, w) in enumerate(pairs):
+        acc += w
+        if abs(acc - half) < 1e-9 and i + 1 < len(pairs):
+            return (v + pairs[i + 1][0]) / 2
+        if acc > half:
+            return v
+    return pairs[-1][0]
 
 _pool = None
 _lock = threading.Lock()
@@ -81,14 +127,22 @@ def health_info() -> dict:
     counts: dict[str, int] = {}
     for t in ("listings", "price_observations", "area_metrics", "forecasts"):
         counts[t] = fetch(f"SELECT count(*) AS n FROM {t}")[0]["n"]
-    for r in fetch("SELECT source_key, count(*) AS n FROM listings GROUP BY source_key"):
+    for r in fetch(f"SELECT source_key, count(*) AS n FROM {L()} l GROUP BY source_key"):
         counts[r["source_key"]] = r["n"]
     last = fetch("SELECT max(last_seen) AS t FROM listings")[0]["t"]
     runs = fetch("SELECT DISTINCT ON (kind) run_id, kind, trained_at, n_rows, metrics "
                  "FROM model_runs WHERE kind IN ('fair_rent', 'forecast') "   # newer kinds (scenario_forecast) aren't in HealthResponse
                  "ORDER BY kind, trained_at DESC")
-    return {"row_counts": counts, "last_scrape_at": last,
+    return {"row_counts": counts, "last_scrape_at": last, "sources": source_counts(),
             "model_runs": [{**r, "metrics": r["metrics"] or {}} for r in runs]}
+
+
+def source_counts() -> list[dict]:
+    """Per source: kind, listings, active listings (Facebook: posted in the last 21 days)."""
+    return fetch(f"WITH {_WIN} SELECT l.source_key, s.kind, count(*) AS listings, "
+                 f"count(*) FILTER (WHERE {_ACTIVE_SQL}) AS active FROM {L()} l "
+                 "JOIN sources s ON s.source_key = l.source_key LEFT JOIN win w ON w.source_key = l.source_key "
+                 "GROUP BY l.source_key, s.kind ORDER BY l.source_key")
 
 
 def ping() -> bool:
@@ -112,20 +166,22 @@ def forecast_end_values() -> dict[tuple[str, str], float]:
     return {(r["zip"], r["metric"]): float(r["mean_usd"]) for r in rows}
 
 
-def median_rent_by_beds(days: int = 30) -> dict[str, dict[int, tuple[int, int]]]:
-    """zip -> beds -> (median rent, n listings); latest price per rental listing on listing sites."""
+def median_rent_by_beds(days: int = 30, listing_sites_only: bool = False) -> dict[str, dict[int, tuple[int, int]]]:
+    """zip -> beds -> (median rent, n listings); latest price per rental listing. Listing sites, plus whole-unit
+    Facebook listings at their trust weight (0.5) unless listing_sites_only; rooms and unusual prices never."""
+    srcs = LISTING_SITE_FILTER if listing_sites_only else MEDIAN_SOURCES
     rows = fetch(
-        "SELECT zip, beds, percentile_cont(0.5) WITHIN GROUP (ORDER BY price_usd) AS med, count(*) AS n "
-        "FROM (SELECT DISTINCT ON (po.listing_id) po.listing_id, po.zip, po.beds, po.price_usd "
-        "      FROM price_observations po JOIN sources s ON s.source_key = po.source_key "
-        f"      WHERE po.listing_type = 'rent' AND {LISTING_SITE_FILTER} AND po.zip IS NOT NULL "
-        "        AND po.event <> 'removed' AND po.observed_at >= now() - make_interval(days => %s) "
-        "      ORDER BY po.listing_id, po.observed_at DESC) t "
-        "GROUP BY zip, beds", (days,))
-    out: dict[str, dict[int, tuple[int, int]]] = {}
+        "SELECT DISTINCT ON (po.listing_id) po.zip, po.beds, po.price_usd, po.trust_weight "
+        f"FROM {PO()} po JOIN {L()} l ON l.listing_id = po.listing_id JOIN sources s ON s.source_key = po.source_key "
+        f"WHERE po.listing_type = 'rent' AND {srcs} AND po.zip IS NOT NULL AND po.beds IS NOT NULL "
+        "  AND po.event <> 'removed' AND po.observed_at >= now() - make_interval(days => %s) "
+        "ORDER BY po.listing_id, po.observed_at DESC", (days,))
+    groups: dict[tuple[str, int], list] = {}
     for r in rows:
-        if r["beds"] is not None:
-            out.setdefault(r["zip"].strip(), {})[int(r["beds"])] = (round(float(r["med"])), int(r["n"]))
+        groups.setdefault((r["zip"].strip(), int(r["beds"])), []).append((r["price_usd"], r["trust_weight"]))
+    out: dict[str, dict[int, tuple[int, int]]] = {}
+    for (z, b), pairs in groups.items():
+        out.setdefault(z, {})[b] = (round(weighted_median(pairs)), len(pairs))
     return out
 
 
@@ -275,11 +331,19 @@ _SORTS = {
 }
 _WIN = ("win AS (SELECT source_key, max(last_seen) - interval '36 hours' AS cutoff "
         "FROM listings GROUP BY source_key)")
-_ACTIVE_SQL = "l.last_seen >= w.cutoff"
+# Listing sites: seen in the source's latest scrape. Facebook: reposted within the last 21 days.
+_ACTIVE_SQL = (f"(CASE WHEN l.source_key = '{FB_SOURCE}' THEN l.last_seen >= now() - interval '{FB_INACTIVE_DAYS} days' "
+               "ELSE l.last_seen >= w.cutoff END)")
+SOURCES = {"all": None, "listing_sites": LISTING_SITE_FILTER, "facebook": f"l.source_key = '{FB_SOURCE}'"}
 
 
-def _listing_filters(zip_, beds, type_, ids) -> tuple[str, dict]:
+def _listing_filters(zip_, beds, type_, ids, source: str = "all", unit_type: str | None = None) -> tuple[str, dict]:
     where, p = [], {}
+    if SOURCES.get(source):
+        where.append(SOURCES[source])
+    if unit_type:   # listing-site rows are whole units
+        where.append("COALESCE(l.extras->>'unit_type', 'entire_unit') = %(unit_type)s")
+        p["unit_type"] = unit_type
     if ids is not None:
         where.append("l.listing_id = ANY(%(ids)s)")
         p["ids"] = ids
@@ -298,9 +362,11 @@ def _listing_filters(zip_, beds, type_, ids) -> tuple[str, dict]:
 
 
 def listing_page(zip_=None, beds=None, type_=None, max_price=None, sort="recent", limit=24, offset=0,
-                 ids: list[int] | None = None, min_obs: int | None = None) -> list[dict]:
-    """One row per listing with first/current price, observation count and active flag; total in `total`."""
-    where, p = _listing_filters(zip_, beds, type_, ids)
+                 ids: list[int] | None = None, min_obs: int | None = None, source: str = "all",
+                 unit_type: str | None = None) -> list[dict]:
+    """One row per listing with first/current price, observation count and active flag; total in `total`.
+    Facebook listings carry only extracted fields: never post text, author names or profile links."""
+    where, p = _listing_filters(zip_, beds, type_, ids, source, unit_type)
     conds = []
     if max_price is not None:
         conds.append("t.cur <= %(max_price)s")
@@ -314,18 +380,23 @@ def listing_page(zip_=None, beds=None, type_=None, max_price=None, sort="recent"
     WITH {_WIN}
     SELECT t.*, count(*) OVER () AS total FROM (
       SELECT l.listing_id, l.zip, l.listing_type, l.beds, l.baths, l.sqft, l.last_seen, p.address_norm,
-             p.unit_label, p.property_type, p.year_built, s.kind AS source_kind,
+             p.unit_label, p.property_type, p.year_built, s.kind AS source_kind, l.source_key,
+             l.location_precision, l.neighborhood AS post_neighborhood,
              l.extras->>'source_url' AS source_url, {_ACTIVE_SQL} AS active,
+             l.extras->>'unit_type' AS unit_type, l.extras->>'post_url' AS post_url,
+             l.extras->>'group_name' AS group_name, l.extras->>'posted_at' AS posted_at,
+             l.extras->>'available_date' AS available_date, l.extras->'amenities' AS amenities,
+             COALESCE(l.extras->>'unusual_price', 'false') = 'true' AS unusual_price,
              o.n, o.cur, o.first_price, o.first_observed
-      FROM listings l
+      FROM {L()} l
       JOIN sources s ON s.source_key = l.source_key
-      JOIN win w ON w.source_key = l.source_key
+      LEFT JOIN win w ON w.source_key = l.source_key
       LEFT JOIN properties p ON p.property_id = l.property_id
       JOIN (SELECT listing_id, count(*) AS n,
                    (array_agg(price_usd ORDER BY observed_at DESC) FILTER (WHERE event <> 'removed'))[1] AS cur,
                    (array_agg(price_usd ORDER BY observed_at) FILTER (WHERE event <> 'removed'))[1] AS first_price,
                    min(observed_at)::date AS first_observed
-            FROM price_observations GROUP BY listing_id) o ON o.listing_id = l.listing_id AND o.cur IS NOT NULL
+            FROM {PO()} po0 GROUP BY listing_id) o ON o.listing_id = l.listing_id AND o.cur IS NOT NULL
       WHERE {where}) t
     {having}
     ORDER BY {_SORTS[sort]} LIMIT %(limit)s OFFSET %(offset)s"""
@@ -338,7 +409,7 @@ def listing_one(listing_id: int) -> dict | None:
 
 
 def listing_observations(ids: list[int]) -> list[dict]:
-    return fetch("SELECT listing_id, observed_at, event, price_usd FROM price_observations "
+    return fetch(f"SELECT listing_id, observed_at, event, price_usd FROM {PO()} po "
                  "WHERE listing_id = ANY(%s) ORDER BY listing_id, observed_at, event", (ids,))
 
 
@@ -352,11 +423,28 @@ def last_scrape_at():
     return fetch("SELECT max(last_seen) AS t FROM listings")[0]["t"]
 
 
-def active_rent_count(zip_=None, beds=None, type_=None) -> int:
+def active_rent_count(zip_=None, beds=None, type_=None, listing_sites_only: bool = False) -> int:
+    """Active rental listings that count as units: listing sites plus whole-unit Facebook listings."""
     where, p = _listing_filters(zip_, beds, type_, None)
-    return fetch(f"WITH {_WIN} SELECT count(*) AS n FROM listings l JOIN win w ON w.source_key = l.source_key "
-                 f"LEFT JOIN properties p ON p.property_id = l.property_id WHERE {where} AND {_ACTIVE_SQL}",
+    srcs = LISTING_SITE_FILTER if listing_sites_only else (
+        f"(s.kind = 'listing_site' OR (l.source_key = '{FB_SOURCE}' AND l.extras->>'unit_type' = 'entire_unit'))")
+    return fetch(f"WITH {_WIN} SELECT count(*) AS n FROM {L()} l LEFT JOIN win w ON w.source_key = l.source_key "
+                 "JOIN sources s ON s.source_key = l.source_key "
+                 f"LEFT JOIN properties p ON p.property_id = l.property_id WHERE {where} AND {srcs} AND {_ACTIVE_SQL}",
                  p)[0]["n"]
+
+
+def active_by_source(zip_=None, beds=None, type_=None) -> list[dict]:
+    """Every active rental listing's current price with what the source breakdown needs."""
+    where, p = _listing_filters(zip_, beds, type_, None)
+    return fetch(
+        f"WITH {_WIN} SELECT s.kind, l.source_key, l.extras->>'unit_type' AS unit_type, "
+        "COALESCE(l.extras->>'unusual_price', 'false') = 'true' AS unusual, o.cur, o.w "
+        f"FROM {L()} l LEFT JOIN win w ON w.source_key = l.source_key JOIN sources s ON s.source_key = l.source_key "
+        "LEFT JOIN properties p ON p.property_id = l.property_id "
+        "JOIN (SELECT DISTINCT ON (listing_id) listing_id, price_usd AS cur, trust_weight AS w "
+        f"      FROM {PO()} po WHERE event <> 'removed' ORDER BY listing_id, observed_at DESC) o "
+        f"  ON o.listing_id = l.listing_id WHERE {where} AND {_ACTIVE_SQL}", p)
 
 
 def zori_monthly(zip_: str | None) -> list[dict]:
@@ -366,19 +454,23 @@ def zori_monthly(zip_: str | None) -> list[dict]:
                  "AND (%(z)s::text IS NULL OR geo_id = %(z)s) GROUP BY period ORDER BY period", {"z": zip_})
 
 
-def listing_monthly_medians(zip_, beds, type_) -> list[dict]:
-    """Per month: median of each listing's last non-removed observation in that month, and listing count."""
+def listing_monthly_medians(zip_, beds, type_, listing_sites_only: bool = False) -> list[dict]:
+    """Per month: weighted median of each listing's last non-removed observation in that month (Facebook whole
+    units at weight 0.5 unless listing_sites_only; rooms and unusual prices never), and listing count."""
     where, p = _listing_filters(zip_, beds, type_, None)
-    return fetch(
-        "SELECT month, percentile_cont(0.5) WITHIN GROUP (ORDER BY price_usd) AS value, count(*) AS n FROM ("
+    srcs = LISTING_SITE_FILTER if listing_sites_only else MEDIAN_SOURCES
+    rows = fetch(
         " SELECT DISTINCT ON (po.listing_id, date_trunc('month', po.observed_at)) "
-        "  date_trunc('month', po.observed_at)::date AS month, po.price_usd "
-        " FROM price_observations po JOIN listings l ON l.listing_id = po.listing_id "
+        "  date_trunc('month', po.observed_at)::date AS month, po.price_usd, po.trust_weight "
+        f" FROM {PO()} po JOIN {L()} l ON l.listing_id = po.listing_id "
         " JOIN sources s ON s.source_key = l.source_key "
-        f" LEFT JOIN properties p ON p.property_id = l.property_id WHERE {where} AND {LISTING_SITE_FILTER} "
+        f" LEFT JOIN properties p ON p.property_id = l.property_id WHERE {where} AND {srcs} "
         "  AND po.event <> 'removed' "
-        " ORDER BY po.listing_id, date_trunc('month', po.observed_at), po.observed_at DESC) t "
-        "GROUP BY month ORDER BY month", p)
+        " ORDER BY po.listing_id, date_trunc('month', po.observed_at), po.observed_at DESC", p)
+    by: dict = {}
+    for r in rows:
+        by.setdefault(r["month"], []).append((r["price_usd"], r["trust_weight"]))
+    return [{"month": m, "value": weighted_median(v), "n": len(v)} for m, v in sorted(by.items())]
 
 
 def forecast_latest(zip_: str | None) -> list[dict]:
