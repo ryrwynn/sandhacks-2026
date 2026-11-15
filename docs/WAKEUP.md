@@ -1,4 +1,20 @@
-# Wake-up report: morning run, 2026-11-15
+# Final run (2026-11-15, afternoon)
+
+## Bright Data cost after the merge (from Bright Data's snapshot list, `dataset_size`)
+
+Zillow dataset `gd_lfqkr8wm13ixtbd8f5` snapshots today (UTC): `zillow_rent` 06:00 **486**, 09:00 **759**, 12:00
+**1,777**, 15:00 **1,777**, 18:00 **348**; `zillow_sale` 04:30 **240**; county sample 14:11 96. At $1.50 per 1,000 records:
+
+| Job | Schedule | Records a month | USD a month |
+| --- | --- | --- | --- |
+| `zillow_rent` | weekly, Thu 12:00 UTC | 4.35 runs × 348–1,777 ≈ 1,500–7,700 | **$2.30–$11.60** (plan for the high end) |
+| `zillow_sale` | daily 04:30 UTC (unchanged) | 30 × 240 ≈ 7,200 | ≈ $10.80 |
+| Facebook groups | Mon + Thu 15:00 UTC | ≈ 2,600 | ≈ $3.90 |
+| **Total** | | ≈ 11,000–17,500 | **≈ $17–$26** (was ≈ $650) |
+
+Until the merge deploys, the server still runs `zillow_rent` every 3 hours (each run up to ≈ $2.70).
+
+# Wake-up report: morning run, 2026-11-15 (earlier)
 
 Branch `night` (draft PR #2 → Setup). Nothing pushed to Setup or main, PR #2 not merged, no deploy, no change to
 deploy.yml, secrets or the server. Local servers stopped.

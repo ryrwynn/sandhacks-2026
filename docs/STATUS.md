@@ -83,10 +83,10 @@ Heartbeat: 2026-11-15 07:40 PST — steps 1–7 done except DB-bound items; wait
 
 # Final run (2026-11-15)
 
-Heartbeat: 2026-11-15 — step 1 done, starting step 2
+Heartbeat: 2026-11-15 10:35 PST — step 2 done, starting step 3
 
 - [x] 1. Connectivity: database ok (8 s timeout)
-- [ ] 2. Schedules and rules (weekly zillow_rent, FMR rule verified, HUD SAFMR download, Bright Data estimate)
+- [x] 2. Schedules and rules: weekly zillow_rent Thu 12:00 UTC; FMR_RULE_VERIFIED=True; HUD SAFMR refused (202 empty), fmr.yaml stays unverified; BD estimate ≈ $17–26/month in WAKEUP.md
 - [ ] 3. Facebook roommate offers + full-run re-extract (staging only)
 - [ ] 4. Live-query ZIP filter in api/db.py + test
 - [ ] 5. Partner fixes a–g
