@@ -298,43 +298,44 @@ def market(zip: str | None = Query(None, pattern=r"^\d{5}$"), beds: int | None =
         raise HTTPException(404, f"{zip} is not one of the ZIPs RentOrKnot covers")
     notes: list[str] = []
     zori = {r["month"]: float(r["value"]) for r in safe(db.zori_monthly, zip, default=[])}
-    if beds is None:
-        series = {m: (v, "zori", None) for m, v in zori.items()}
-        if type:
-            notes.append("ZORI is not split by property type, so the property type filter does not change the "
-                         "rent line; pick a bedroom count to see listing medians.")
-    else:
+    meds: dict = {}
+    if beds is not None:
         meds = {r["month"]: (float(r["value"]), int(r["n"]))
                 for r in safe(db.listing_monthly_medians, zip, beds, type, listing_sites_only, default=[])
                 if int(r["n"]) >= MIN_MONTH_LISTINGS}
-        series = {}
-        for m in sorted(set(zori) | set(meds)):
-            series[m] = (meds[m][0], "listings", meds[m][1]) if m in meds else (zori[m], "zori", None)
-    months = sorted(series)
+    elif type:
+        notes.append("ZORI is not split by property type, so the property type filter does not change the "
+                     "rent line; pick a bedroom count to see listing medians.")
+    # Two separate series, never spliced: ZORI (Zillow's typical rent, all bedroom counts) for every month, and,
+    # with a bedroom filter, the median asking rent of our listings for months with enough listings. Points are
+    # ordered by month, ZORI first within a month, so the last point is the newest value.
+    months = sorted(set(zori) | set(meds))
     if range != "all" and months:
         last = months[-1]
         idx = last.year * 12 + last.month - 1 - _RANGE_MONTHS[range]
         floor = date(idx // 12, idx % 12 + 1, 1)
         months = [m for m in months if m >= floor]
-    points = [MarketPoint(month=m, value=round(series[m][0], 2), basis=series[m][1], n_listings=series[m][2])
-              for m in months]
+    points = []
+    for m in months:
+        if m in zori:
+            points.append(MarketPoint(month=m, value=round(zori[m], 2), basis="zori", n_listings=None))
+        if m in meds:
+            points.append(MarketPoint(month=m, value=round(meds[m][0], 2), basis="listings", n_listings=meds[m][1]))
+    zp = [p for p in points if p.basis == "zori"]
+    lp = [p for p in points if p.basis == "listings"]
     if beds is not None:
-        fell_back = [p.month for p in points if p.basis == "zori"]
-        if fell_back:
-            notes.append(f"{len(fell_back)} month(s) use ZORI because fewer than {MIN_MONTH_LISTINGS} "
-                         f"{beds}-bedroom listings had a price then: {_month_name(fell_back[0])} to "
-                         f"{_month_name(fell_back[-1])}. ZORI covers all bedroom counts.")
-        if fell_back and len(fell_back) < len(points):
-            notes.append("Listing medians (current asking rents) and ZORI (an index of typical rent) measure "
-                         "different things, so a step where the source changes is not a market move.")
-    cur = points[-1].value if points else None
+        if lp:
+            notes.append(f"The dotted line is the median asking rent of {beds}-bedroom listings, shown for months with "
+                         f"at least {MIN_MONTH_LISTINGS} listings ({len(lp)} in this range). The solid line is ZORI, "
+                         "Zillow's typical rent across all bedroom counts; the two measure different things.")
+        else:
+            notes.append(f"Fewer than {MIN_MONTH_LISTINGS} {beds}-bedroom listings had a price in every month of "
+                         "this range, so only ZORI (all bedroom counts) is shown.")
+    head = lp if beds is not None and lp else zp      # the headline value: the bedroom median when there is one
+    cur = head[-1].value if head else None
     change = since = None
-    if len(points) > 1 and points[0].value and len({p.basis for p in points}) == 1:
-        change, since = round((cur / points[0].value - 1) * 100, 2), points[0].month
-    elif len({p.basis for p in points}) > 1:
-        # ZORI (an index of typical rent) and listing medians (asking rents) are different measures: a step
-        # between them is not a market move, so no percentage change is reported for a mixed series.
-        notes.append("No percentage change is shown because this range mixes ZORI and listing medians.")
+    if len(head) > 1 and head[0].value:
+        change, since = round((cur / head[0].value - 1) * 100, 2), head[0].month
 
     fc_rows = safe(db.forecast_latest, zip, default=[])
     forecast = [MarketForecastPoint(month=r["month"], value=round(float(r["value"]), 2),

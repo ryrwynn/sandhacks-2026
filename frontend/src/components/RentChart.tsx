@@ -5,14 +5,26 @@ import { fmtMonth, type MarketRange, type MarketResponse } from "@/lib/tracker";
 
 const RANGES: [MarketRange, string][] = [["1m", "1M"], ["3m", "3M"], ["6m", "6M"], ["1y", "1Y"], ["all", "All"]];
 
-type Row = { month: string; actual?: number; basis?: string; n?: number | null; forecast?: number; band?: [number, number] };
+type Row = { month: string; zori?: number; listings?: number; n?: number | null; forecast?: number; band?: [number, number] };
 
+/** One row per month, sorted, so a forecast month never lands after a later history month. ZORI and listing
+ *  medians are separate series (never spliced); the forecast (a ZORI forecast) joins the last ZORI point. */
 function rowsOf(m: MarketResponse): Row[] {
-  const rows: Row[] = m.points.map((p) => ({ month: p.month, actual: p.value, basis: p.basis, n: p.n_listings }));
-  const last = rows[rows.length - 1];
-  if (last && m.forecast.length) last.forecast = last.actual;   // join the dashed line to the last real point
-  for (const f of m.forecast) rows.push({ month: f.month, forecast: f.value, band: [f.lo80, f.hi80] });
-  return rows;
+  const by = new Map<string, Row>();
+  const row = (month: string) => { let r = by.get(month); if (!r) { r = { month }; by.set(month, r); } return r; };
+  for (const p of m.points) {
+    const r = row(p.month);
+    if (p.basis === "zori") r.zori = p.value; else { r.listings = p.value; r.n = p.n_listings; }
+  }
+  const lastZori = [...m.points].reverse().find((p) => p.basis === "zori");
+  if (lastZori && m.forecast.length) row(lastZori.month).forecast = lastZori.value;
+  for (const f of m.forecast) {
+    if (lastZori && f.month <= lastZori.month) continue;
+    const r = row(f.month);
+    r.forecast = f.value;
+    r.band = [f.lo80, f.hi80];
+  }
+  return [...by.values()].sort((a, b) => a.month.localeCompare(b.month));
 }
 
 export function RangeToggle({ value, onChange }: { value: MarketRange; onChange: (r: MarketRange) => void }) {
@@ -35,9 +47,8 @@ function Tip({ active, payload, label }: TipProps) {
   return (
     <div className="rounded-lg bg-ink px-3 py-2 text-sm text-on-ink shadow-lg">
       <div className="font-semibold">{fmtMonth(label)}</div>
-      {r.actual != null && (
-        <div>{usd(r.actual)}<span className="text-on-ink/70"> {r.basis === "zori" ? "Zillow typical rent" : `median asking${r.n ? `, ${r.n} listings` : ""}`}</span></div>
-      )}
+      {r.listings != null && <div>{usd(r.listings)}<span className="text-on-ink/70"> median asking{r.n ? `, ${r.n} listings` : ""}</span></div>}
+      {r.zori != null && <div>{usd(r.zori)}<span className="text-on-ink/70"> Zillow typical rent (all units)</span></div>}
       {r.band && (
         <div>Forecast {usd(r.forecast)}<span className="block text-on-ink/70">80% range {usd(r.band[0])} to {usd(r.band[1])}</span></div>
       )}
@@ -61,10 +72,12 @@ export default function RentChart({ market, range, onRange, loading }: {
   market: MarketResponse; range: MarketRange; onRange: (r: MarketRange) => void; loading?: boolean;
 }) {
   const rows = rowsOf(market);
-  const last = market.points[market.points.length - 1];
+  const hasListings = market.points.some((p) => p.basis === "listings");
+  // The tagged dot is the headline value: the newest bedroom median when there is one, else the newest ZORI.
+  const last = [...market.points].reverse().find((p) => p.basis === (hasListings ? "listings" : "zori"));
   const hasForecast = market.forecast.length > 0;
-  const lows = rows.flatMap((r) => [r.actual, r.band?.[0]]).filter((x): x is number => x != null);
-  const highs = rows.flatMap((r) => [r.actual, r.band?.[1]]).filter((x): x is number => x != null);
+  const lows = rows.flatMap((r) => [r.zori, r.listings, r.band?.[0]]).filter((x): x is number => x != null);
+  const highs = rows.flatMap((r) => [r.zori, r.listings, r.band?.[1]]).filter((x): x is number => x != null);
   const lo = Math.floor((Math.min(...lows) - 50) / 100) * 100, hi = Math.ceil((Math.max(...highs) + 50) / 100) * 100;
 
   return (
@@ -82,7 +95,11 @@ export default function RentChart({ market, range, onRange, loading }: {
               <YAxis width={56} domain={[lo, hi]} tickFormatter={(v: number) => `$${v.toLocaleString()}`} fontSize={12} stroke="var(--muted)" tickLine={false} axisLine={false} />
               <Tooltip content={<Tip />} cursor={{ stroke: "var(--ink)", strokeOpacity: 0.4 }} />
               <Area dataKey="band" stroke="var(--sage)" strokeOpacity={0.6} fill="var(--line)" fillOpacity={0.6} isAnimationActive={false} activeDot={false} />
-              <Line dataKey="actual" stroke="var(--primary)" strokeWidth={2} dot={rows.length < 4 ? { r: 3, fill: "var(--primary)" } : false} activeDot={{ r: 4 }} isAnimationActive={false} />
+              <Line dataKey="zori" name="Zillow typical rent" stroke="var(--primary)" strokeWidth={2} connectNulls dot={rows.length < 4 ? { r: 3, fill: "var(--primary)" } : false} activeDot={{ r: 4 }} isAnimationActive={false} />
+              {hasListings && (
+                <Line dataKey="listings" name="Median asking rent" stroke="var(--ink)" strokeWidth={2} strokeDasharray="2 3" connectNulls
+                  dot={{ r: 3.5, fill: "var(--ink)", strokeWidth: 0 }} activeDot={{ r: 5 }} isAnimationActive={false} />
+              )}
               <Line dataKey="forecast" stroke="var(--accent-strong)" strokeWidth={2} strokeDasharray="6 4" dot={false} activeDot={{ r: 4 }} isAnimationActive={false} />
               {last && (
                 <ReferenceDot x={last.month} y={last.value} r={5} fill="var(--accent)" stroke="var(--ink)" ifOverflow="extendDomain"
@@ -101,7 +118,7 @@ export default function RentChart({ market, range, onRange, loading }: {
         </div>
       )}
       <p className="mt-2 text-xs text-muted">
-        USD / month · Monthly values. Solid line is history{hasForecast ? ", dashed line is the 12-month forecast, shaded area is its 80% range" : ""}.
+        USD / month · Monthly values. Solid line: Zillow typical rent (all units){hasListings ? "; dotted line with dots: median asking rent of our listings for the chosen bedrooms (months with 5+ listings)" : ""}{hasForecast ? "; dashed line: 12-month forecast of the Zillow line, shaded area its 80% range" : ""}.
       </p>
       <p className="mt-1 text-sm text-ink">
         {hasForecast && <BacktestNote mape={market.backtest_mape} naive={market.naive_mape} beats={market.beats_naive} />}

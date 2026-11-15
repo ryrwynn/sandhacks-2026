@@ -36,8 +36,10 @@ export default function MarketOverview({ map }: { map: ReactNode }) {
   }, [filters.zip, filters.beds, filters.type, range, sitesOnly]);
 
   const updated = market?.updated_at ?? scrape;
-  const last = market?.points[market.points.length - 1];
-  const label = !last ? "Rent" : last.basis === "zori" ? "Typical rent (Zillow index)" : "Median asking rent";
+  // The headline is the bedroom median when the API sent listing points, else ZORI (see /market).
+  const label = !market?.points.length ? "Rent"
+    : market.points.some((p) => p.basis === "listings") ? `Median asking rent${market.beds != null ? `, ${market.beds === 0 ? "studios" : `${market.beds} bed`}` : ""}`
+    : "Typical rent (Zillow index)";
   const c = market?.change_pct;
   const shown = items.slice(0, 4).map((i) => ({ item: i, l: listings[i.id] })).filter((x) => x.l);
 
@@ -79,11 +81,7 @@ export default function MarketOverview({ map }: { map: ReactNode }) {
             </div>
             <ul className="mt-3 space-y-1 text-sm text-muted">
               {market.notes.map((n) => <li key={n}>{n}</li>)}
-              <li>
-                {filters.beds === "any"
-                  ? "With any number of bedrooms this is Zillow's typical-rent index (ZORI) for the area."
-                  : "By bedroom count this is the monthly median of asking rents in our listings; months with fewer than 5 listings use Zillow's index instead."}
-              </li>
+              {filters.beds === "any" && <li>With any number of bedrooms this is Zillow&apos;s typical-rent index (ZORI) for the area.</li>}
             </ul>
           </>
         )}
