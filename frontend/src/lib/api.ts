@@ -54,7 +54,7 @@ function base(): string {
   return process.env.API_INTERNAL_URL || "http://localhost:8000";
 }
 
-function useMock<T extends object>(fixture: T): T {
+function serveMock<T extends object>(fixture: T): T {
   // Fresh copy so each result is its own object (and can be tracked in the WeakSet).
   const copy = structuredClone(fixture);
   mocked.add(copy);
@@ -63,7 +63,7 @@ function useMock<T extends object>(fixture: T): T {
 }
 
 async function call<T extends object>(path: string, fixture: T, init?: RequestInit): Promise<T> {
-  const mock = () => useMock(fixture);
+  const mock = () => serveMock(fixture);
   if (FORCE_MOCKS) return mock();
   try {
     const ctl = new AbortController();

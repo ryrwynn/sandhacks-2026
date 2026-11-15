@@ -104,7 +104,7 @@ function MapView({ token, zips, highlight = [], focus, heightClass = "h-72 sm:h-
     const lats = pts.map((p) => p[1]);
     ref.current.fitBounds([[Math.min(...lngs), Math.min(...lats)], [Math.max(...lngs), Math.max(...lats)]], { padding: 24, duration: 0 });
   };
-  useEffect(fit, [focus, shapes]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(fit, [focus, shapes]);
 
   if (failed || !isFinite(min)) return <ZipList zips={zips} highlight={highlight} />;
 
