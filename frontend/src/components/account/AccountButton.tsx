@@ -79,7 +79,7 @@ export function AccountButton({ className = "" }: { className?: string }) {
   }, [state]);
 
   if (state === "off" || state === "unknown") return null;
-  const base = `inline-flex min-h-11 items-center rounded-lg border border-line bg-surface px-3 text-sm font-medium text-ink hover:bg-slate-100 ${className}`;
+  const base = `inline-flex min-h-11 whitespace-nowrap items-center rounded-lg border border-line bg-surface px-3 text-sm font-medium text-ink hover:bg-slate-100 ${className}`;
   return (
     <span className="inline-flex items-center gap-2">
       {state === "in" ? (
