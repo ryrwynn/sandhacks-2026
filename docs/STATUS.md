@@ -101,4 +101,4 @@ Heartbeat: 2026-11-15 11:25 PST (real clock; earlier heartbeat times in this sec
   - [x] capacity SQL (read-only) recorded in TIGER_CAPACITY.md
   - [x] sign-in: /auth/session null signed out (no email/name), button shows, /auth/saves 401 without session, wrong token 401 handled quietly
 - [x] 9. Servers stopped, night pushed, PR #2 ready for review, WAKEUP.md final-run section
-- [ ] 10. Wait for "go"
+- [ ] 10. Waiting for "go" (PR #2 ready, mergeable)
