@@ -189,17 +189,9 @@ def market(zip: str | None = Query(None, pattern=r"^\d{5}$"), beds: int | None =
         meds = {r["month"]: (float(r["value"]), int(r["n"]))
                 for r in safe(db.listing_monthly_medians, zip, beds, type, default=[])
                 if int(r["n"]) >= MIN_MONTH_LISTINGS}
-        series, fell_back = {}, []
+        series = {}
         for m in sorted(set(zori) | set(meds)):
-            if m in meds:
-                series[m] = (meds[m][0], "listings", meds[m][1])
-            else:
-                series[m] = (zori[m], "zori", None)
-                fell_back.append(m)
-        if fell_back:
-            notes.append(f"{len(fell_back)} month(s) use ZORI because fewer than {MIN_MONTH_LISTINGS} "
-                         f"{beds}-bedroom listings had a price then: {_month_name(fell_back[0])} to "
-                         f"{_month_name(fell_back[-1])}. ZORI covers all bedroom counts.")
+            series[m] = (meds[m][0], "listings", meds[m][1]) if m in meds else (zori[m], "zori", None)
     months = sorted(series)
     if range != "all" and months:
         last = months[-1]
@@ -208,6 +200,15 @@ def market(zip: str | None = Query(None, pattern=r"^\d{5}$"), beds: int | None =
         months = [m for m in months if m >= floor]
     points = [MarketPoint(month=m, value=round(series[m][0], 2), basis=series[m][1], n_listings=series[m][2])
               for m in months]
+    if beds is not None:
+        fell_back = [p.month for p in points if p.basis == "zori"]
+        if fell_back:
+            notes.append(f"{len(fell_back)} month(s) use ZORI because fewer than {MIN_MONTH_LISTINGS} "
+                         f"{beds}-bedroom listings had a price then: {_month_name(fell_back[0])} to "
+                         f"{_month_name(fell_back[-1])}. ZORI covers all bedroom counts.")
+        if fell_back and len(fell_back) < len(points):
+            notes.append("Listing medians (current asking rents) and ZORI (an index of typical rent) measure "
+                         "different things, so a step where the source changes is not a market move.")
     cur = points[-1].value if points else None
     change = since = None
     if len(points) > 1 and points[0].value:

@@ -174,9 +174,33 @@ def fair_rent_metrics() -> dict:
 
 
 # ---------- comparables ----------
+_comp_cache: dict = {"at": 0.0, "groups": {}}
+COMP_TTL_S = 300
+
+
+def _comp_groups() -> dict[tuple[str, int], list[float]]:
+    import time
+    if time.monotonic() - _comp_cache["at"] > COMP_TTL_S or not _comp_cache["groups"]:
+        rows = fetch(
+            "SELECT DISTINCT ON (po.listing_id) po.zip, po.beds, po.price_usd FROM price_observations po "
+            "JOIN sources s ON s.source_key = po.source_key "
+            f"WHERE po.listing_type = 'rent' AND {LISTING_SITE_FILTER} AND po.zip IS NOT NULL "
+            "AND po.beds IS NOT NULL AND po.event <> 'removed' AND po.observed_at >= now() - interval '90 days' "
+            "ORDER BY po.listing_id, po.observed_at DESC")
+        groups: dict[tuple[str, int], list[float]] = {}
+        for r in rows:
+            groups.setdefault((r["zip"].strip(), int(r["beds"])), []).append(float(r["price_usd"]))
+        _comp_cache.update(at=time.monotonic(), groups=groups)
+    return _comp_cache["groups"]
 def comparable_rents(zip_: str, beds: int | None, days: int = 90) -> list[float]:
     """Latest price per rental listing in the last `days`; same ZIP and, when given, same beds.
-    Never widened across bedroom counts: a studio isn't a comparable for a 2-bedroom."""
+    Never widened across bedroom counts: a studio isn't a comparable for a 2-bedroom.
+    The default 90-day window is served from one bulk query kept for a few minutes (listing pages ask per group)."""
+    if days == 90:
+        groups = _comp_groups()
+        if beds is not None:
+            return list(groups.get((zip_, int(beds)), []))
+        return [r for (z, _), rs in groups.items() if z == zip_ for r in rs]
     base = ("SELECT DISTINCT ON (po.listing_id) po.price_usd FROM price_observations po "
             "JOIN sources s ON s.source_key = po.source_key "
             f"WHERE po.listing_type = 'rent' AND {LISTING_SITE_FILTER} AND po.zip = %s AND po.event <> 'removed' "
@@ -248,8 +272,9 @@ _SORTS = {
     "price_desc": "t.cur DESC, t.listing_id",
     "biggest_drop": "(t.cur - t.first_price) ASC, t.listing_id",
 }
-_ACTIVE_SQL = ("l.last_seen >= (SELECT max(l2.last_seen) FROM listings l2 WHERE l2.source_key = l.source_key)"
-               " - interval '36 hours'")
+_WIN = ("win AS (SELECT source_key, max(last_seen) - interval '36 hours' AS cutoff "
+        "FROM listings GROUP BY source_key)")
+_ACTIVE_SQL = "l.last_seen >= w.cutoff"
 
 
 def _listing_filters(zip_, beds, type_, ids) -> tuple[str, dict]:
@@ -281,6 +306,7 @@ def listing_page(zip_=None, beds=None, type_=None, max_price=None, sort="recent"
         p["max_price"] = max_price
     p.update(limit=limit, offset=offset)
     sql = f"""
+    WITH {_WIN}
     SELECT t.*, count(*) OVER () AS total FROM (
       SELECT l.listing_id, l.zip, l.listing_type, l.beds, l.baths, l.sqft, l.last_seen, p.address_norm,
              p.unit_label, p.property_type, p.year_built, s.kind AS source_kind,
@@ -288,13 +314,13 @@ def listing_page(zip_=None, beds=None, type_=None, max_price=None, sort="recent"
              o.n, o.cur, o.first_price, o.first_observed
       FROM listings l
       JOIN sources s ON s.source_key = l.source_key
+      JOIN win w ON w.source_key = l.source_key
       LEFT JOIN properties p ON p.property_id = l.property_id
-      JOIN LATERAL (
-        SELECT count(*) AS n,
-               (array_agg(price_usd ORDER BY observed_at DESC) FILTER (WHERE event <> 'removed'))[1] AS cur,
-               (array_agg(price_usd ORDER BY observed_at) FILTER (WHERE event <> 'removed'))[1] AS first_price,
-               min(observed_at)::date AS first_observed
-        FROM price_observations po WHERE po.listing_id = l.listing_id) o ON o.cur IS NOT NULL
+      JOIN (SELECT listing_id, count(*) AS n,
+                   (array_agg(price_usd ORDER BY observed_at DESC) FILTER (WHERE event <> 'removed'))[1] AS cur,
+                   (array_agg(price_usd ORDER BY observed_at) FILTER (WHERE event <> 'removed'))[1] AS first_price,
+                   min(observed_at)::date AS first_observed
+            FROM price_observations GROUP BY listing_id) o ON o.listing_id = l.listing_id AND o.cur IS NOT NULL
       WHERE {where}) t
     {having}
     ORDER BY {_SORTS[sort]} LIMIT %(limit)s OFFSET %(offset)s"""
@@ -323,8 +349,9 @@ def last_scrape_at():
 
 def active_rent_count(zip_=None, beds=None, type_=None) -> int:
     where, p = _listing_filters(zip_, beds, type_, None)
-    return fetch("SELECT count(*) AS n FROM listings l LEFT JOIN properties p ON p.property_id = l.property_id "
-                 f"WHERE {where} AND {_ACTIVE_SQL}", p)[0]["n"]
+    return fetch(f"WITH {_WIN} SELECT count(*) AS n FROM listings l JOIN win w ON w.source_key = l.source_key "
+                 f"LEFT JOIN properties p ON p.property_id = l.property_id WHERE {where} AND {_ACTIVE_SQL}",
+                 p)[0]["n"]
 
 
 def zori_monthly(zip_: str | None) -> list[dict]:
