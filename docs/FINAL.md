@@ -10,7 +10,10 @@ BRIGHTDATA_BUDGET_USD=10, ONDEMAND_DAILY_USD=1 and LLM_EXTRACT_MAX_PER_RUN=40 al
 Decisions (filled into the prompt below): Zillow weekly on Thursdays at 4:00 AM Pacific; Facebook `terms_checked_on`
 kept; Penal Code 396 160% rule verified; Google sign-in keys set.
 
-Still yours:
+Also done: consent screen published (In production, External); database reachable from the laptop again; contact
+email chosen; PR #1 decision made (everything goes into it).
+
+Still yours (items 1, 3 and 5 below are done; kept for reference):
 
 1. **Database access from this laptop.** Since about 07:00 the laptop can't open a TCP connection to Tiger (DNS
    works and the live site is fine). Switch network or VPN, or add your IP to the service's allow list in the Tiger
@@ -51,7 +54,8 @@ My decisions:
 - Facebook: keep sources.facebook_groups_sd.terms_checked_on as it is.
 - Penal Code 396: the 160%-of-Fair-Market-Rent rule is verified.
 - Google sign-in: keys are set (local and server .env).
-- Contact email for /privacy and /terms: ____
+- Contact email for /privacy and /terms: rayghoreal@gmail.com
+- PR #1: fine for night to land in PR #1 (Setup -> main); no separate handling.
 
 1. Connectivity. Check the database (8-second connect timeout). If it fails, stop and tell me.
 
