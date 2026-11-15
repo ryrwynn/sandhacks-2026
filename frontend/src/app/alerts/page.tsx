@@ -5,7 +5,7 @@ import { Delta } from "@/components/ApartmentCard";
 import { cardCls, inputCls } from "@/components/styles";
 import { usd } from "@/lib/format";
 import { alertOf, useSaved } from "@/lib/saved";
-import { fmtDate } from "@/lib/tracker";
+import { FB_BADGE, fmtDate, isFacebook, listingTitle } from "@/lib/tracker";
 
 function TargetForm({ id, target, price }: { id: number; target?: number | null; price: number }) {
   const { setTarget } = useSaved();
@@ -62,9 +62,10 @@ export default function Alerts() {
                 {hits.map(({ item, l, kind }) => (
                   <li key={item.id} className={`${cardCls} flex flex-wrap items-center justify-between gap-3 p-4`}>
                     <div className="min-w-0">
-                      <Link href={`/apartments/${l.id}`} className="font-bold underline decoration-line underline-offset-2">{l.address ?? "Address not listed"}</Link>
+                      <Link href={`/apartments/${l.id}`} className="font-bold underline decoration-line underline-offset-2">{listingTitle(l)}</Link>
+                      {isFacebook(l) && <span className="ml-2 inline-block rounded-full bg-line px-2 py-0.5 text-xs font-medium">{FB_BADGE}</span>}
                       <p className="text-sm text-muted">
-                        {kind === "target" ? `Below your target of ${usd(item.target)}` : "Price changed since you last checked"} · last seen {fmtDate(l.last_seen)}
+                        {kind === "target" ? `Below your target of ${usd(item.target)}` : "Price changed since you last checked"} · {isFacebook(l) ? "last posted" : "last seen"} {fmtDate(l.last_seen)}
                       </p>
                     </div>
                     <div className="flex items-center gap-4">
@@ -86,7 +87,8 @@ export default function Alerts() {
               {rows.map(({ item, l }) => (
                 <li key={item.id} className={`${cardCls} space-y-3 p-4`}>
                   <div className="flex flex-wrap items-baseline justify-between gap-2">
-                    <Link href={`/apartments/${l.id}`} className="font-bold underline decoration-line underline-offset-2">{l.address ?? "Address not listed"}</Link>
+                    <Link href={`/apartments/${l.id}`} className="font-bold underline decoration-line underline-offset-2">{listingTitle(l)}</Link>
+                      {isFacebook(l) && <span className="ml-2 inline-block rounded-full bg-line px-2 py-0.5 text-xs font-medium">{FB_BADGE}</span>}
                     <span className="text-muted">Now <strong className="text-ink tabular-nums">{usd(l.current_price_usd)}</strong>{item.target != null && <> · target <strong className="text-ink tabular-nums">{usd(item.target)}</strong></>}</span>
                   </div>
                   <TargetForm key={`${item.id}-${item.target ?? ""}`} id={item.id} target={item.target} price={l.current_price_usd} />

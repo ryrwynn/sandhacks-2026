@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { usd } from "@/lib/format";
-import { bedsText, changeOf, FAIR_LABEL, fmtDate, fmtMonth, type ListingSummary } from "@/lib/tracker";
+import { bedsText, changeOf, FAIR_LABEL, FB_BADGE, fmtDate, fmtMonth, isFacebook, listingTitle, UNIT_TYPE_TEXT, type ListingSummary } from "@/lib/tracker";
 import { cardCls } from "./styles";
 import Sparkline from "./Sparkline";
 import PropertyIcon from "./PropertyIcon";
@@ -59,13 +59,22 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
   sinceSaved?: number;            // price when saved; shows "since you saved it"
 }) {
   const isRent = l.listing_type === "rent";
-  const title = [l.address ?? "Address not listed", l.unit_label ? `#${l.unit_label}` : null].filter(Boolean).join(" ");
-  const facts = [l.neighborhood, bedsText(l.beds), l.sqft ? `${l.sqft.toLocaleString()} sq ft` : null].filter(Boolean).join(" · ");
+  const fb = isFacebook(l);
+  const title = listingTitle(l);
+  const facts = fb
+    ? [l.unit_type ? UNIT_TYPE_TEXT[l.unit_type] : null, l.zip, l.posted_at ? `Posted ${fmtDate(l.posted_at, { month: "short", day: "numeric" })}` : null].filter(Boolean).join(" · ")
+    : [l.neighborhood, bedsText(l.beds), l.sqft ? `${l.sqft.toLocaleString()} sq ft` : null].filter(Boolean).join(" · ");
   const many = l.sparkline.length > 1 && l.n_observations > 1;
   const first = l.sparkline[0], last = l.sparkline[l.sparkline.length - 1];
   return (
     <article className={`${cardCls} relative flex flex-col p-4 transition-shadow focus-within:outline focus-within:outline-2 focus-within:outline-primary hover:shadow-[0_2px_6px_rgba(46,49,39,0.18),0_8px_22px_rgba(46,49,39,0.08)]`}>
       {note && <p className="mb-2 w-fit rounded-full bg-line px-2.5 py-0.5 text-xs font-medium text-ink">{note}</p>}
+      {fb && (
+        <p className="mb-2 text-xs text-muted">
+          <span className="mr-1.5 inline-block rounded-full bg-line px-2.5 py-0.5 font-medium text-ink">{FB_BADGE}</span>
+          {l.group_name && <span className="break-words">{l.group_name}</span>}
+        </p>
+      )}
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <h3 className="text-base font-bold leading-snug">
@@ -108,8 +117,18 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
         </div>
       </div>
 
-      {isRent && l.fair_rent_label && (
-        <p className="mt-3 w-fit rounded-full bg-bg px-2.5 py-1 text-xs font-medium text-ink">{FAIR_LABEL[l.fair_rent_label]}</p>
+      {(isRent && l.fair_rent_label) || l.unusual_price ? (
+        <p className="mt-3 flex flex-wrap gap-1.5">
+          {isRent && l.fair_rent_label && <span className="rounded-full bg-bg px-2.5 py-1 text-xs font-medium text-ink">{FAIR_LABEL[l.fair_rent_label]}</span>}
+          {l.unusual_price && <span className="rounded-full bg-bg px-2.5 py-1 text-xs font-medium text-warn">Unusual price</span>}
+        </p>
+      ) : null}
+
+      {fb && l.post_url && (
+        <a href={l.post_url} target="_blank" rel="noopener noreferrer"
+          className="relative z-10 mt-3 inline-flex min-h-11 w-fit items-center text-sm font-semibold text-primary underline underline-offset-2">
+          View post on Facebook<span className="sr-only"> (opens in a new tab)</span>
+        </a>
       )}
 
       {showSave && onToggle && (

@@ -41,3 +41,24 @@ export function fmtDate(iso: string | null | undefined, opts: Intl.DateTimeForma
   return d.toLocaleDateString("en-US", { ...opts, timeZone: "UTC" });
 }
 export const fmtMonth = (iso: string) => fmtDate(iso, { month: "short", year: "numeric" });
+
+// ---- Facebook group listings (morning run) ----
+export const isFacebook = (l: Pick<ListingSummary, "source_kind">) => l.source_kind === "social";
+export const FB_BADGE = "Facebook group · lower confidence";
+export const UNIT_TYPE_TEXT: Record<NonNullable<ListingSummary["unit_type"]>, string> = {
+  entire_unit: "Whole unit", room: "Room", sublet: "Sublet",
+};
+
+/** Address for listing sites; for Facebook, a title built from extracted fields ("2-bed apartment in North Park"). */
+export function listingTitle(l: ListingSummary): string {
+  if (!isFacebook(l)) return [l.address ?? "Address not listed", l.unit_label ? `#${l.unit_label}` : null].filter(Boolean).join(" ");
+  const where = l.neighborhood ?? l.zip ?? "San Diego";
+  const size = l.beds == null ? null : l.beds === 0 ? "Studio" : `${l.beds}-bed`;
+  if (l.unit_type === "room") return `Room in ${where}`;
+  if (l.unit_type === "sublet") return `${size ? size + " sublet" : "Sublet"} in ${where}`;
+  return `${size ? (l.beds === 0 ? "Studio apartment" : `${size} apartment`) : "Apartment"} in ${where}`;
+}
+
+export const AMENITY_TEXT: Record<string, string> = {
+  pets_allowed: "Pets allowed", parking: "Parking", laundry: "Laundry", utilities_included: "Utilities included",
+};

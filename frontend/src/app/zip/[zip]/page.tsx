@@ -10,6 +10,7 @@ import { ScoreCard } from "@/components/cards";
 import { Card, Disclaimer, MockFlag } from "@/components/ui";
 import ScenarioPanel from "@/components/ScenarioPanel";
 import { ZipTrends } from "@/components/Trends";
+import { ZipSourceCard } from "@/components/SourceBreakdown";
 
 export const metadata: Metadata = { title: "ZIP profile | RentOrKnot" };
 
@@ -43,6 +44,7 @@ async function Zip({ params }: { params: Promise<{ zip: string }> }) {
         <Stat label="Listings, last 30 days" value={String(p.listings_30d)} />
       </div>
       <ZipMap token={token} zips={all.zips} focus={p.zip} heightClass="h-56 sm:h-72" />
+      <ZipSourceCard zip={p.zip} />
       <Card><ForecastChart series={rent} title="Typical rent" /></Card>
       <Card><ForecastChart series={value} title="Typical home value" /></Card>
       <ScenarioPanel zip={p.zip} />
@@ -57,6 +59,7 @@ async function Zip({ params }: { params: Promise<{ zip: string }> }) {
       </section>
       <Card>
         <h2 className="mb-2 text-lg font-bold">Rent by bedrooms (listings, last 30 days)</h2>
+        <p className="mb-2 text-xs text-muted">Listing sites, plus whole units from Facebook groups at half weight. Rooms, sublets and unusual prices are left out.</p>
         <dl className="grid grid-cols-4 gap-2 text-center text-sm">
           {(["0", "1", "2", "3"] as const).map((b) => (
             <div key={b}><dt className="text-xs text-slate-600">{b === "0" ? "Studio" : `${b} bed`}</dt><dd className="font-semibold tabular-nums">{usd(p.median_rent_by_beds[b])}</dd></div>

@@ -11,16 +11,16 @@ import { ListingTrends } from "./Trends";
 import { errorMessage, getListing, isMock } from "@/lib/api";
 import { usd } from "@/lib/format";
 import { useSaved } from "@/lib/saved";
-import { bedsText, FAIR_LABEL, fmtDate, type ListingDetail, type Observation } from "@/lib/tracker";
+import { AMENITY_TEXT, bedsText, FAIR_LABEL, FB_BADGE, fmtDate, isFacebook, listingTitle, UNIT_TYPE_TEXT, type ListingDetail, type Observation } from "@/lib/tracker";
 
-type Kind = "Listed" | "Price change" | "Removed" | "Seen";
+type Kind = "Listed" | "Price change" | "Removed" | "Seen" | "Reposted";
 type Ev = { t: number; date: string; price: number; kind: Kind; diff: number };
 
 /** Label each real observation. Nothing is added: a "Seen" row is a scrape that saw the same price again. */
 function events(obs: Observation[]): Ev[] {
   return obs.map((o, i) => {
     const prev = i > 0 ? obs[i - 1].price_usd : o.price_usd;
-    const kind: Kind = o.event === "removed" ? "Removed" : o.event === "posted" || i === 0 ? "Listed" : o.price_usd !== prev ? "Price change" : "Seen";
+    const kind: Kind = o.event === "removed" ? "Removed" : i === 0 ? "Listed" : o.event === "posted" ? (o.price_usd !== prev ? "Price change" : "Reposted") : o.price_usd !== prev ? "Price change" : "Seen";
     return { t: new Date(o.date + "T00:00:00Z").getTime(), date: o.date, price: o.price_usd, kind, diff: o.price_usd - prev };
   });
 }
@@ -30,13 +30,14 @@ const MARK: Record<Kind, { fill: string; label: string }> = {
   "Price change": { fill: "var(--accent-strong)", label: "diamond" },
   Removed: { fill: "var(--warn)", label: "square" },
   Seen: { fill: "var(--grid)", label: "dot" },
+  Reposted: { fill: "var(--grid)", label: "dot" },
 };
 
 function Marker({ cx, cy, payload }: { cx?: number; cy?: number; payload?: Ev }) {
   if (cx == null || cy == null || !payload) return <g />;
   const { kind } = payload;
   const f = MARK[kind].fill;
-  if (kind === "Seen") return <circle cx={cx} cy={cy} r={2.5} fill={f} />;
+  if (kind === "Seen" || kind === "Reposted") return <circle cx={cx} cy={cy} r={2.5} fill={f} />;
   if (kind === "Price change") return <rect x={cx - 5} y={cy - 5} width={10} height={10} fill={f} stroke="var(--surface)" strokeWidth={1.5} transform={`rotate(45 ${cx} ${cy})`} />;
   if (kind === "Removed") return <rect x={cx - 5} y={cy - 5} width={10} height={10} fill={f} stroke="var(--surface)" strokeWidth={1.5} />;
   return <circle cx={cx} cy={cy} r={6} fill={f} stroke="var(--surface)" strokeWidth={1.5} />;
@@ -92,20 +93,24 @@ export default function ApartmentView({ id }: { id: string }) {
     return () => { cancelled = true; };
   }, [n]);
 
-  if (err) return <main className="space-y-3"><ErrorNote>{err}</ErrorNote><Link href="/find" className="font-semibold underline">Find apartments</Link></main>;
-  if (!d) return <main className="space-y-4"><div className="skeleton h-28" /><div className="skeleton h-80" /><div className="skeleton h-40" /></main>;
+  if (err) return <main className="space-y-3"><h1 className="text-xl font-bold">Apartment</h1><ErrorNote>{err}</ErrorNote><Link href="/find" className="font-semibold underline">Find apartments</Link></main>;
+  if (!d) return <main className="space-y-4"><h1 className="sr-only">Apartment</h1><div className="skeleton h-28" /><div className="skeleton h-80" /><div className="skeleton h-40" /></main>;
 
   const ev = events(d.observations);
   const isRent = d.listing_type === "rent";
-  const title = [d.address ?? "Address not listed", d.unit_label ? `#${d.unit_label}` : null].filter(Boolean).join(" ");
+  const fb = isFacebook(d);
+  const title = listingTitle(d);
   const facts = [
     d.neighborhood ? `${d.neighborhood}${d.zip ? ` (${d.zip})` : ""}` : d.zip,
     bedsText(d.beds),
     d.baths != null ? `${d.baths} bath` : null,
     d.sqft ? `${d.sqft.toLocaleString()} sq ft` : null,
+    fb && d.unit_type ? UNIT_TYPE_TEXT[d.unit_type] : null,
     d.property_type ? d.property_type.replace("_", " ") : null,
     d.year_built ? `built ${d.year_built}` : null,
+    d.available_date ? `available ${fmtDate(d.available_date, { month: "short", day: "numeric" })}` : null,
   ].filter(Boolean);
+  const amenities = (d.amenities ?? []).map((a) => AMENITY_TEXT[a] ?? a);
   const rentCheck = `/renter?${new URLSearchParams({ ...(d.address ? { address: d.address + (d.unit_label ? ` ${d.unit_label}` : "") } : {}), ...(d.year_built ? { year_built: String(d.year_built) } : {}), ...(d.zip ? { zip: d.zip } : {}) }).toString()}`;
   const f = d.forecast;
   const e = d.estimate;
@@ -118,6 +123,12 @@ export default function ApartmentView({ id }: { id: string }) {
       <header className={`${cardCls} flex flex-col gap-4 p-4 sm:flex-row sm:items-start sm:justify-between sm:p-6`}>
         <div className="min-w-0">
           <Link href="/find" className="mb-2 inline-flex min-h-11 items-center text-sm font-medium text-accent-strong underline underline-offset-2">← Find apartments</Link>
+          {fb && (
+            <p className="mb-2 text-sm text-muted">
+              <span className="mr-1.5 inline-block rounded-full bg-line px-2.5 py-0.5 text-xs font-medium text-ink">{FB_BADGE}</span>
+              {d.group_name}
+            </p>
+          )}
           <h1 className="text-xl font-bold tracking-tight sm:text-2xl">{title}</h1>
           <p className="flex items-center gap-1.5 text-muted">{d.property_type && <PropertyIcon type={d.property_type} size={20} />}<span className="min-w-0">{facts.join(" · ")}</span></p>
           <p className="mt-3">
@@ -125,13 +136,25 @@ export default function ApartmentView({ id }: { id: string }) {
             <span className="text-muted">{isRent ? " / mo" : " asking price"}</span>
             {d.n_observations > 1 && <span className="ml-3 inline-block align-middle"><Delta now={d.current_price_usd} then={d.first_price_usd} suffix={`since ${fmtDate(d.first_observed)}`} /></span>}
           </p>
-          {!d.active && <p className="mt-1 text-sm text-warn">Not seen in our latest update. It may no longer be available.</p>}
+          {fb && (
+            <p className="mt-1 text-sm text-muted">
+              {d.posted_at && <>Posted {fmtDate(d.posted_at)} · </>}Tracking since {fmtDate(d.first_observed)}
+              {amenities.length > 0 && <> · {amenities.join(", ")}</>}
+            </p>
+          )}
+          {d.unusual_price && (
+            <p className="mt-1 text-sm text-warn">Unusual price: far from what listing sites ask for {bedsText(d.beds)?.toLowerCase() ?? "this size"} in {d.zip}. Check the post before relying on it; it is left out of our medians.</p>
+          )}
+          {!d.active && <p className="mt-1 text-sm text-warn">{fb ? "Not reposted in the last 21 days." : "Not seen in our latest update."} It may no longer be available.</p>}
         </div>
         <div className="flex flex-col gap-2 sm:items-end">
           <button type="button" aria-pressed={has(d.id)} onClick={() => toggle(d)}
             className={`min-h-11 rounded-lg px-5 font-semibold ${has(d.id) ? "bg-line text-ink" : "bg-primary text-on-primary hover:bg-primary-hover"}`}>
             {has(d.id) ? "Saved ✓" : "+ Save apartment"}
           </button>
+          {fb && d.post_url && (
+            <a href={d.post_url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-lg px-3 font-medium text-accent-strong underline underline-offset-2">View post on Facebook ↗</a>
+          )}
           {d.source_url && (
             <a href={d.source_url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-lg px-3 font-medium text-accent-strong underline underline-offset-2">View original listing ↗</a>
           )}
@@ -158,7 +181,7 @@ export default function ApartmentView({ id }: { id: string }) {
           <li><span className="mr-1 inline-block h-3 w-3 rounded-full bg-primary align-middle" />Listed</li>
           <li><span className="mr-1 inline-block h-2.5 w-2.5 rotate-45 bg-accent-strong align-middle" />Price change</li>
           <li><span className="mr-1 inline-block h-2.5 w-2.5 bg-warn align-middle" />Removed</li>
-          <li><span className="mr-1 inline-block h-2 w-2 rounded-full bg-grid align-middle" />Seen again at the same price</li>
+          <li><span className="mr-1 inline-block h-2 w-2 rounded-full bg-grid align-middle" />{fb ? "Reposted at the same price" : "Seen again at the same price"}</li>
         </ul>
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
@@ -195,12 +218,13 @@ export default function ApartmentView({ id }: { id: string }) {
                 </p>
               )}
               <p className="text-sm text-muted">
+                {fb && "From the ZIP and bedroom count only, since the post gives no address. "}
                 {e.method === "model" ? "Estimated by a model trained on listings" : "The median of comparable listings"}
                 {e.mae_usd != null && <>; it is typically off by about {usd(e.mae_usd)}</>}. {d.disclaimer}
               </p>
             </>
           ) : (
-            <p className="text-muted">There are not enough comparable listings yet to estimate a typical rent for this apartment.</p>
+            <p className="text-muted">{fb && d.unit_type !== "entire_unit" ? "Rooms and sublets aren't compared with whole-unit rents, so there is no estimate for this one." : "There are not enough comparable listings yet to estimate a typical rent for this apartment."}</p>
           )}
         </Section>
       )}
@@ -225,7 +249,7 @@ export default function ApartmentView({ id }: { id: string }) {
 
       <Section id="trend-h" title="Price trends"><ListingTrends id={d.id} /></Section>
 
-      {isRent && (
+      {isRent && !fb && (
         <Section id="own-h" title="Renting here already?">
           <p className="text-muted">If you already live in this building and got a rent increase notice, check it against California&apos;s AB 1482 cap.</p>
           <Link href={rentCheck} className="inline-flex min-h-11 items-center rounded-lg bg-primary px-5 font-semibold text-on-primary hover:bg-primary-hover">Check a rent increase</Link>

@@ -1,64 +1,82 @@
 {
- "zip": "92104",
- "beds": 1,
- "property_type": null,
- "range": "6m",
- "points": [
-  {
-   "month": "2026-06-01",
-   "value": 2550,
-   "basis": "listings",
-   "n_listings": 14
+  "zip": "92104",
+  "beds": 1,
+  "property_type": null,
+  "range": "6m",
+  "points": [
+    {
+      "month": "2026-06-01",
+      "value": 2550,
+      "basis": "listings",
+      "n_listings": 14
+    },
+    {
+      "month": "2026-07-01",
+      "value": 2575,
+      "basis": "listings",
+      "n_listings": 17
+    },
+    {
+      "month": "2026-08-01",
+      "value": 2590,
+      "basis": "listings",
+      "n_listings": 12
+    },
+    {
+      "month": "2026-09-01",
+      "value": 2605,
+      "basis": "zori",
+      "n_listings": 3
+    },
+    {
+      "month": "2026-10-01",
+      "value": 2610,
+      "basis": "zori",
+      "n_listings": 4
+    }
+  ],
+  "forecast": [
+    {
+      "month": "2026-11-01",
+      "value": 2618.0,
+      "lo80": 2500.0,
+      "hi80": 2740.0
+    },
+    {
+      "month": "2026-12-01",
+      "value": 2626.0,
+      "lo80": 2495.0,
+      "hi80": 2760.0
+    }
+  ],
+  "current_value": 2610.0,
+  "change_pct": 2.4,
+  "change_since": "2026-06-01",
+  "active_listings": 145,
+  "updated_at": "2026-11-14T18:30:00Z",
+  "backtest_mape": 3.1,
+  "naive_mape": 2.4,
+  "beats_naive": false,
+  "notes": [
+    "September and October use ZORI: fewer than 5 one-bedroom listings with a price in those months."
+  ],
+  "disclaimer": "Estimates with ranges from public data, not financial advice or measured results.",
+  "sources": {
+    "listing_sites": {
+      "count": 136,
+      "median_usd": 2600.0
+    },
+    "facebook": {
+      "count": 9,
+      "median_usd": 2550.0
+    },
+    "facebook_rooms": {
+      "count": 6,
+      "median_usd": 1250.0
+    },
+    "facebook_unusual": 1,
+    "facebook_weight": 0.5,
+    "listing_sites_only": false
   },
-  {
-   "month": "2026-07-01",
-   "value": 2575,
-   "basis": "listings",
-   "n_listings": 17
-  },
-  {
-   "month": "2026-08-01",
-   "value": 2590,
-   "basis": "listings",
-   "n_listings": 12
-  },
-  {
-   "month": "2026-09-01",
-   "value": 2605,
-   "basis": "zori",
-   "n_listings": 3
-  },
-  {
-   "month": "2026-10-01",
-   "value": 2610,
-   "basis": "zori",
-   "n_listings": 4
-  }
- ],
- "forecast": [
-  {
-   "month": "2026-11-01",
-   "value": 2618.0,
-   "lo80": 2500.0,
-   "hi80": 2740.0
-  },
-  {
-   "month": "2026-12-01",
-   "value": 2626.0,
-   "lo80": 2495.0,
-   "hi80": 2760.0
-  }
- ],
- "current_value": 2610.0,
- "change_pct": 2.4,
- "change_since": "2026-06-01",
- "active_listings": 136,
- "updated_at": "2026-11-14T18:30:00Z",
- "backtest_mape": 3.1,
- "naive_mape": 2.4,
- "beats_naive": false,
- "notes": [
-  "September and October use ZORI: fewer than 5 one-bedroom listings with a price in those months."
- ],
- "disclaimer": "Estimates with ranges from public data, not financial advice or measured results."
+  "listing_sites_only": false
 }

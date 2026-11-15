@@ -11,10 +11,12 @@ import { useSaved } from "@/lib/saved";
 import { DEFAULT_FILTERS, type Filters } from "@/lib/types";
 import { fmtDate, fmtMonth, type MarketRange, type MarketResponse } from "@/lib/tracker";
 import { ErrorNote } from "./ui";
+import { SourceBreakdownView } from "./SourceBreakdown";
 
 export default function MarketOverview({ map }: { map: ReactNode }) {
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
   const [range, setRange] = useState<MarketRange>("1y");
+  const [sitesOnly, setSitesOnly] = useState(false);
   const [market, setMarket] = useState<MarketResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
@@ -26,12 +28,12 @@ export default function MarketOverview({ map }: { map: ReactNode }) {
     let cancelled = false;
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setLoading(true);
-    getMarket({ zip: filters.zip, beds: filters.beds, type: filters.type, range })
+    getMarket({ zip: filters.zip, beds: filters.beds, type: filters.type, range, listingSitesOnly: sitesOnly })
       .then((m) => { if (!cancelled) { setMarket(m); setErr(""); } })
       .catch((e) => { if (!cancelled) setErr(errorMessage(e)); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
-  }, [filters.zip, filters.beds, filters.type, range]);
+  }, [filters.zip, filters.beds, filters.type, range, sitesOnly]);
 
   const updated = market?.updated_at ?? scrape;
   const last = market?.points[market.points.length - 1];
@@ -72,6 +74,9 @@ export default function MarketOverview({ map }: { map: ReactNode }) {
               Across {market.active_listings.toLocaleString()} active listings
             </p>
             <RentChart market={market} range={range} onRange={setRange} loading={loading} />
+            <div className="mt-3 border-t border-line pt-3">
+              <SourceBreakdownView sources={market.sources} sitesOnly={sitesOnly} onToggle={setSitesOnly} />
+            </div>
             <ul className="mt-3 space-y-1 text-sm text-muted">
               {market.notes.map((n) => <li key={n}>{n}</li>)}
               <li>

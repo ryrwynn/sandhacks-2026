@@ -24,9 +24,23 @@ export default function Find() {
   const [err, setErr] = useState("");
   const { has, toggle } = useSaved();
 
+  // Deep links such as /find?source=facebook&unit=room preset the source filters.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    const source = q.get("source"), unit = q.get("unit");
+    if (source === "facebook" || source === "listing_sites" || (unit && ["entire_unit", "room", "sublet"].includes(unit))) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time read of the URL after hydration
+      setFilters((f) => ({
+        ...f,
+        source: source === "facebook" || source === "listing_sites" ? source : f.source,
+        unitType: unit === "entire_unit" || unit === "room" || unit === "sublet" ? unit : f.unitType,
+      }));
+    }
+  }, []);
+
   const load = (from: number) => {
     setLoading(true);
-    getListings({ zip: filters.zip, beds: filters.beds, type: filters.type, maxPrice: filters.maxPrice || undefined, sort, limit: PAGE, offset: from })
+    getListings({ zip: filters.zip, beds: filters.beds, type: filters.type, maxPrice: filters.maxPrice || undefined, sort, limit: PAGE, offset: from, source: filters.source, unitType: filters.unitType })
       .then((r) => {
         setErr("");
         setTotal(r.total);
@@ -52,7 +66,10 @@ export default function Find() {
         <p className="text-muted">Compare asking rents and save the ones you like to watch how their price changes.</p>
       </section>
 
-      <FilterBar value={filters} onChange={setFilters} showPrice />
+      <FilterBar value={filters} onChange={setFilters} showPrice showSource />
+      {filters.source !== "listing_sites" && (
+        <p className="text-sm text-muted">Listings from Facebook groups are marked &ldquo;lower confidence&rdquo;: they come from public posts, have no street address, and count at half weight in our medians.</p>
+      )}
 
       <details className="rounded-xl bg-surface p-3 shadow-[0_1px_3px_rgba(46,49,39,0.12)]">
         <summary className="min-h-11 cursor-pointer py-2.5 text-sm font-semibold">Looking somewhere else? Search another area</summary>
@@ -60,7 +77,7 @@ export default function Find() {
       </details>
 
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-lg font-semibold" aria-live="polite">{loading && items.length === 0 ? "Searching..." : `${count.toLocaleString()} apartments in ${area}`}</h2>
+        <h2 className="text-lg font-semibold" aria-live="polite">{loading && items.length === 0 ? "Searching..." : `${count.toLocaleString()} ${filters.unitType === "room" ? "rooms" : filters.unitType === "sublet" ? "sublets" : "places"} in ${area}`}</h2>
         <select aria-label="Sort" className={selectCls} value={sort} onChange={(e) => setSort(e.target.value as ListingSort)}>
           <option value="recent">Sort: Recommended</option>
           <option value="price_asc">Price: low to high</option>

@@ -4,8 +4,8 @@ import type { Filters } from "@/lib/types";
 import { ZIP_OPTIONS } from "@/lib/format";
 import { selectCls } from "./styles";
 
-export default function FilterBar({ value, onChange, showPrice }: {
-  value: Filters; onChange: (f: Filters) => void; showPrice?: boolean;
+export default function FilterBar({ value, onChange, showPrice, showSource }: {
+  value: Filters; onChange: (f: Filters) => void; showPrice?: boolean; showSource?: boolean;
 }) {
   const [more, setMore] = useState(value.maxPrice > 0);
   const set = (patch: Partial<Filters>) => onChange({ ...value, ...patch });
@@ -29,6 +29,21 @@ export default function FilterBar({ value, onChange, showPrice }: {
           <option value="condo">Condo</option>
           <option value="house">House</option>
         </select>
+        {showSource && (
+          <>
+            <select aria-label="Source" className={selectCls} value={value.source ?? "all"} onChange={(e) => set({ source: e.target.value as Filters["source"] })}>
+              <option value="all">All sources</option>
+              <option value="listing_sites">Listing sites</option>
+              <option value="facebook">Facebook groups</option>
+            </select>
+            <select aria-label="Whole unit or room" className={selectCls} value={value.unitType ?? "any"} onChange={(e) => set({ unitType: e.target.value as Filters["unitType"] })}>
+              <option value="any">Whole units and rooms</option>
+              <option value="entire_unit">Whole units only</option>
+              <option value="room">Rooms only</option>
+              <option value="sublet">Sublets only</option>
+            </select>
+          </>
+        )}
         {showPrice && (
           <button type="button" aria-expanded={more} onClick={() => setMore((m) => !m)} className="min-h-11 rounded-lg px-3 text-base font-medium text-accent-strong underline underline-offset-2">
             {more ? "Fewer filters" : "More filters"}
