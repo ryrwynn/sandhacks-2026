@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LegalDoc, Contact } from "@/components/LegalDoc";
+import { LegalDoc } from "@/components/LegalDoc";
 
 export const metadata: Metadata = { title: "Terms · RentOrKnot" };
 
@@ -21,7 +21,6 @@ export default function TermsPage() {
         { h: "No warranty, limited liability", body: <p>The site is provided &ldquo;as is&rdquo; without warranty of any kind. To the extent the law allows, we are not liable for losses from using it.</p> },
         { h: "Governing law", body: <p>California law governs these terms.</p> },
         { h: "Changes", body: <p>We may change these terms. When we do, we update the date at the top of this page.</p> },
-        { h: "Contact", body: <p>Questions: <Contact />.</p> },
       ]}
     />
   );

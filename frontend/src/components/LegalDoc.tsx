@@ -1,11 +1,5 @@
 import { Card } from "@/components/ui";
 
-export const CONTACT = "rayghoreal@gmail.com";
-
-export function Contact() {
-  return <a href={`mailto:${CONTACT}`} className="font-medium text-primary underline">{CONTACT}</a>;
-}
-
 /** Shared layout for /privacy and /terms: one h1, the date, then short sections. */
 export function LegalDoc({ title, intro, sections }: { title: string; intro: string; sections: { h: string; body: React.ReactNode }[] }) {
   return (
