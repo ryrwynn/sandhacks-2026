@@ -29,8 +29,8 @@ RENT_SOURCES = ("zillow_rent", "apartments_com")
 
 SERIES_SQL = """
 SELECT geo_id AS zip, period, value::float8 AS value FROM area_metrics
-WHERE geo_type = 'zip' AND metric = %s AND source_key = 'zillow_research'
-ORDER BY geo_id, period
+WHERE geo_type = 'zip' AND metric = %s AND source_key IN ('zillow_research', 'zillow_research_ca')
+ORDER BY geo_id, period, (source_key = 'zillow_research') DESC
 """
 LONG_MONTHS, SHORT_MONTHS = 96, 60
 STAGING_SERIES_SQL = SERIES_SQL.replace("FROM area_metrics", "FROM staging_area_metrics")
@@ -99,13 +99,14 @@ def _summ(vals: list[dict]) -> dict:
 
 def compute_forecasts(conn, run_id, made_at, staging: bool = False, zips: set[str] | None = None):
     """Forecast and backtest every served ZIP with 36+ months of ZORI or ZHVI. Returns (rows, metrics) or None."""
-    zips = served_zips(conn) if zips is None else zips
+    # Every ZIP series with enough months (the old coverage) plus the served set (a subset of it): never fewer ZIPs.
+    # `zips` restricts only when given explicitly.
     mapes, beat, n_series, skipped = [], 0, 0, 0
     by_series = {}   # "zip:metric" -> backtest; the series endpoint reads naive_mape from here
     rows = []
     for metric in ("zori", "zhvi"):
         for z, s in load_series(conn, metric, staging).items():
-            if z not in zips:
+            if zips is not None and z not in zips:
                 continue
             try:
                 bt = backtest(s)

@@ -82,7 +82,7 @@ class FakeCursor:
             self.rows = [("92101",), ("92102",), ("91901",)]   # 91901 is a "new" (county) ZIP
         elif "area_metrics" in low:
             staging = "staging_area_metrics" in low
-            zips = ["91901", "92101"] if staging else ["92101", "92102"]   # 92102 is short below
+            zips = ["91901", "92101"] if staging else ["92101", "92102", "93000"]   # 92102 is short below
             self.rows = []
             for z in zips:
                 n = 20 if z == "92102" else 60
@@ -115,9 +115,10 @@ class FakeConn:
 def test_forecasts_cover_served_zips_with_36_months_and_skip_short(monkeypatch):
     monkeypatch.setattr(train, "served_zips", lambda c: {"92101", "92102", "91901"})
     rows, m = train.compute_forecasts(FakeConn(), "r", dt.datetime.now(), staging=True)
-    assert {r[3] for r in rows} == {"92101", "91901"}      # 92102 has 20 months; staging adds 91901
-    assert m["zips"] == 2 and m["skipped"] >= 1
-    assert train.compute_forecasts(FakeConn(), "r", dt.datetime.now(), staging=False)[1]["zips"] == 1
+    # 93000 is not served but keeps its forecast (coverage never shrinks); 92102 has 20 months; staging adds 91901
+    assert {r[3] for r in rows} == {"92101", "91901", "93000"}
+    assert m["zips"] == 3 and m["skipped"] >= 1
+    assert train.compute_forecasts(FakeConn(), "r", dt.datetime.now(), staging=False)[1]["zips"] == 2
 
 
 def test_dry_run_prints_summary_and_never_writes(monkeypatch):
