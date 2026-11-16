@@ -6,6 +6,7 @@ raises DBUnavailable, which routers turn into empty data or a 503.
 import logging
 import os
 import threading
+from collections.abc import Mapping
 from datetime import date
 from decimal import Decimal
 from pathlib import Path
@@ -78,12 +79,126 @@ def load_zip_names() -> dict[str, str]:
     return names
 
 
-ZIP_NAMES = load_zip_names()
-# The live API answers for these ZIPs only (data/zips.txt). Other areas (county and index tiers, Facebook posts in
-# other ZIPs) live in staging tables; every market, listing, median, comparable and feature query below filters
-# to this list so nothing outside it can leak into the live site even if a row lands in a shared table.
-CORE_ZIPS: list[str] = sorted(ZIP_NAMES)
-CORE = {"core": CORE_ZIPS}
+# ---------- served areas ----------
+# The API answers for the served set: areas.tier in (core, county, on_demand) with at least MIN_ACTIVE active
+# listings in the shared tables (plus staged ones when RENTORKNOT_READ_STAGING=1, local testing only). Index-tier
+# areas and ZIPs that only have staged rows never appear. One query, cached 5 minutes; data/zips.txt is the
+# fallback when the query fails.
+SERVED_TIERS = ("core", "county", "on_demand")
+MIN_ACTIVE = 5
+SERVED_TTL_S = 300
+FALLBACK_TTL_S = 30
+_served_cache: dict = {"at": 0.0, "ttl": SERVED_TTL_S, "areas": {}}
+
+
+def _fallback_areas() -> dict[str, dict]:
+    return {z: {"zip": z, "name": n, "county": "San Diego", "tier": "core", "lat": None, "lng": None,
+                "listings": 0} for z, n in sorted(load_zip_names().items())}
+
+
+def _served_sql() -> str:
+    cand = "SELECT zip, source_key, last_seen, listing_type FROM listings"
+    if read_staging():
+        cand += " UNION ALL SELECT zip, source_key, last_seen, listing_type FROM staging_listings"
+    return (f"WITH cand AS ({cand}), "
+            "win AS (SELECT source_key, max(last_seen) - interval '36 hours' AS cutoff FROM cand GROUP BY source_key), "
+            "n AS (SELECT c.zip, count(*) AS listings FROM cand c JOIN win w ON w.source_key = c.source_key "
+            "      WHERE c.listing_type = 'rent' AND (CASE WHEN c.source_key = %(fb)s "
+            "        THEN c.last_seen >= now() - make_interval(days => %(fb_days)s) ELSE c.last_seen >= w.cutoff END) "
+            "      GROUP BY c.zip) "
+            "SELECT a.geo_id AS zip, a.name, a.county, a.tier, a.centroid_lat AS lat, a.centroid_lng AS lng, "
+            "n.listings FROM areas a JOIN n ON n.zip = a.geo_id "
+            "WHERE a.geo_type = 'zip' AND a.tier = ANY(%(tiers)s) AND n.listings >= %(min)s")
+
+
+def served_areas() -> dict[str, dict]:
+    """ZIP -> {zip, name, county, tier, lat, lng, listings}, in tier order (core, county, on_demand) then name."""
+    import time
+    c = _served_cache
+    if c["areas"] and time.monotonic() - c["at"] < c["ttl"]:
+        return c["areas"]
+    try:
+        rows = fetch(_served_sql(), {"tiers": list(SERVED_TIERS), "min": MIN_ACTIVE, "fb": FB_SOURCE,
+                                     "fb_days": FB_INACTIVE_DAYS})
+        areas = {r["zip"].strip(): {"zip": r["zip"].strip(), "name": r["name"], "county": r["county"],
+                                    "tier": r["tier"], "lat": r["lat"], "lng": r["lng"],
+                                    "listings": int(r["listings"])} for r in rows}
+        ttl = SERVED_TTL_S
+        if not areas:
+            raise DBUnavailable("no served areas in the database")
+    except DBUnavailable as e:
+        log.warning("served areas: using data/zips.txt (%s)", e)
+        areas, ttl = _fallback_areas(), FALLBACK_TTL_S
+    order = {t: i for i, t in enumerate(SERVED_TIERS)}
+    areas = dict(sorted(areas.items(), key=lambda kv: (order.get(kv[1]["tier"], 9), kv[1]["name"], kv[0])))
+    c.update(at=time.monotonic(), ttl=ttl, areas=areas)
+    return areas
+
+
+def served_zips() -> list[str]:
+    return sorted(served_areas())
+
+
+def _core() -> dict:
+    return {"core": served_zips()}
+
+
+class _ServedNames(Mapping):
+    """Live ZIP -> name view of the served set, so `zip in db.ZIP_NAMES` always means "served"."""
+    def _d(self):
+        return served_areas()
+
+    def __getitem__(self, k):
+        return self._d()[k]["name"]
+
+    def __iter__(self):
+        return iter(self._d())
+
+    def __len__(self):
+        return len(self._d())
+
+
+ZIP_NAMES = _ServedNames()
+
+
+# ---------- data_version: the data lane bumps it after each load; a change clears the API's caches ----------
+VERSION_CHECK_S = 30
+_cache_clearers: list = []
+_version: dict = {"checked": 0.0, "seen": None}
+
+
+def register_cache(fn) -> None:
+    """Register a zero-argument function that empties a cache; called when data_version changes."""
+    if fn not in _cache_clearers:
+        _cache_clearers.append(fn)
+
+
+def clear_caches() -> None:
+    _served_cache.update(at=0.0, areas={})
+    _comp_cache.update(at=0.0, groups={})
+    for fn in list(_cache_clearers):
+        try:
+            fn()
+        except Exception as e:
+            log.warning("cache clear failed: %s", e)
+
+
+def check_data_version() -> None:
+    """At most every VERSION_CHECK_S: read data_version.version; when it changed, clear caches.
+    A missing table or no database is ignored quietly."""
+    import time
+    now = time.monotonic()
+    if now - _version["checked"] < VERSION_CHECK_S:
+        return
+    _version["checked"] = now
+    try:
+        rows = _raw_fetch("SELECT version FROM data_version WHERE id = 1")
+    except Exception:
+        return
+    v = rows[0]["version"] if rows else None
+    if _version["seen"] is not None and v != _version["seen"]:
+        clear_caches()
+    _version["seen"] = v
 
 
 def get_pool():
@@ -102,6 +217,11 @@ def get_pool():
 
 
 def fetch(sql: str, params: dict | tuple | None = None) -> list[dict]:
+    check_data_version()
+    return _raw_fetch(sql, params)
+
+
+def _raw_fetch(sql: str, params: dict | tuple | None = None) -> list[dict]:
     try:
         with get_pool().connection() as conn:
             return list(conn.execute(sql, params).fetchall())
@@ -147,7 +267,7 @@ def source_counts() -> list[dict]:
     return fetch(f"WITH {_WIN} SELECT l.source_key, s.kind, count(*) AS listings, "
                  f"count(*) FILTER (WHERE {_ACTIVE_SQL}) AS active FROM {L()} l "
                  "JOIN sources s ON s.source_key = l.source_key LEFT JOIN win w ON w.source_key = l.source_key "
-                 "WHERE l.zip = ANY(%(core)s) GROUP BY l.source_key, s.kind ORDER BY l.source_key", CORE)
+                 "WHERE l.zip = ANY(%(core)s) GROUP BY l.source_key, s.kind ORDER BY l.source_key", _core())
 
 
 def ping() -> bool:
@@ -159,7 +279,7 @@ def ping() -> bool:
 def latest_index_values() -> dict[tuple[str, str], float]:
     rows = fetch("SELECT DISTINCT ON (geo_id, metric) geo_id, metric, value FROM area_metrics "
                  "WHERE geo_type = 'zip' AND metric IN ('zori','zhvi') AND source_key = 'zillow_research' "
-                 "AND geo_id = ANY(%(core)s) ORDER BY geo_id, metric, period DESC", CORE)
+                 "AND geo_id = ANY(%(core)s) ORDER BY geo_id, metric, period DESC", _core())
     return {(r["geo_id"], r["metric"]): float(r["value"]) for r in rows}
 
 
@@ -167,7 +287,7 @@ def forecast_end_values() -> dict[tuple[str, str], float]:
     """Mean forecast for the last (12th) forecast month of the latest forecast run."""
     rows = fetch("SELECT DISTINCT ON (zip, metric) zip, metric, mean_usd FROM forecasts "
                  "WHERE run_id = (SELECT run_id FROM model_runs WHERE kind = 'forecast' "
-                 "ORDER BY trained_at DESC LIMIT 1) AND zip = ANY(%(core)s) ORDER BY zip, metric, month DESC", CORE)
+                 "ORDER BY trained_at DESC LIMIT 1) AND zip = ANY(%(core)s) ORDER BY zip, metric, month DESC", _core())
     return {(r["zip"], r["metric"]): float(r["mean_usd"]) for r in rows}
 
 
@@ -180,7 +300,7 @@ def median_rent_by_beds(days: int = 30, listing_sites_only: bool = False) -> dic
         f"FROM {PO()} po JOIN {L()} l ON l.listing_id = po.listing_id JOIN sources s ON s.source_key = po.source_key "
         f"WHERE po.listing_type = 'rent' AND {srcs} AND po.zip = ANY(%s) AND po.beds IS NOT NULL "
         "  AND po.event <> 'removed' AND po.observed_at >= now() - make_interval(days => %s) "
-        "ORDER BY po.listing_id, po.observed_at DESC", (CORE_ZIPS, days))
+        "ORDER BY po.listing_id, po.observed_at DESC", (served_zips(), days))
     groups: dict[tuple[str, int], list] = {}
     for r in rows:
         groups.setdefault((r["zip"].strip(), int(r["beds"])), []).append((r["price_usd"], r["trust_weight"]))
@@ -191,7 +311,7 @@ def median_rent_by_beds(days: int = 30, listing_sites_only: bool = False) -> dic
 
 
 def zip_features() -> dict[str, dict]:
-    rows = fetch("SELECT * FROM zip_features WHERE zip = ANY(%(core)s)", CORE)
+    rows = fetch("SELECT * FROM zip_features WHERE zip = ANY(%(core)s)", _core())
     return {r["zip"].strip(): {k: num(v) for k, v in r.items()} for r in rows}
 
 
@@ -200,7 +320,7 @@ def zhvi_volatility() -> dict[str, float]:
     import statistics
     rows = fetch("SELECT geo_id, value FROM area_metrics WHERE geo_type = 'zip' AND metric = 'zhvi' "
                  "AND source_key = 'zillow_research' AND period >= now() - INTERVAL '5 years' "
-                 "AND geo_id = ANY(%(core)s) ORDER BY geo_id, period", CORE)
+                 "AND geo_id = ANY(%(core)s) ORDER BY geo_id, period", _core())
     series: dict[str, list[float]] = {}
     for r in rows:
         series.setdefault(r["geo_id"], []).append(float(r["value"]))
@@ -250,7 +370,7 @@ def _comp_groups() -> dict[tuple[str, int], list[float]]:
             "JOIN sources s ON s.source_key = po.source_key "
             f"WHERE po.listing_type = 'rent' AND {LISTING_SITE_FILTER} AND po.zip = ANY(%(core)s) "
             "AND po.beds IS NOT NULL AND po.event <> 'removed' AND po.observed_at >= now() - interval '90 days' "
-            "ORDER BY po.listing_id, po.observed_at DESC", CORE)
+            "ORDER BY po.listing_id, po.observed_at DESC", _core())
         groups: dict[tuple[str, int], list[float]] = {}
         for r in rows:
             groups.setdefault((r["zip"].strip(), int(r["beds"])), []).append(float(r["price_usd"]))
@@ -310,7 +430,7 @@ def search_units(query: str, limit: int = 10) -> list[dict]:
     like = "%" + " ".join(query.split()) + "%"
     return fetch("SELECT property_id, address_norm, unit_label, zip, beds, year_built, property_type "
                  "FROM properties WHERE address_norm ILIKE %s AND zip = ANY(%s) ORDER BY address_norm, unit_label LIMIT %s",
-                 (like, CORE_ZIPS, limit))
+                 (like, served_zips(), limit))
 
 
 # ---------- rent caps and checks ----------
@@ -351,7 +471,7 @@ SOURCES = {"all": None, "listing_sites": LISTING_SITE_FILTER, "facebook": f"l.so
 
 
 def _listing_filters(zip_, beds, type_, ids, source: str = "all", unit_type: str | None = None) -> tuple[str, dict]:
-    where, p = ["l.zip = ANY(%(core)s)"], {"core": CORE_ZIPS}
+    where, p = ["l.zip = ANY(%(core)s)"], {"core": served_zips()}
     if SOURCES.get(source):
         where.append(SOURCES[source])
     if unit_type:   # listing-site rows are whole units
@@ -465,7 +585,7 @@ def zori_monthly(zip_: str | None) -> list[dict]:
     """ZORI by month for a ZIP, or the mean across ZIPs; [{month, value}] oldest first."""
     return fetch("SELECT period AS month, avg(value) AS value FROM area_metrics WHERE geo_type = 'zip' "
                  "AND metric = 'zori' AND source_key = 'zillow_research' AND geo_id = ANY(%(core)s) "
-                 "AND (%(z)s::text IS NULL OR geo_id = %(z)s) GROUP BY period ORDER BY period", {"z": zip_, **CORE})
+                 "AND (%(z)s::text IS NULL OR geo_id = %(z)s) GROUP BY period ORDER BY period", {"z": zip_, **_core()})
 
 
 def listing_monthly_medians(zip_, beds, type_, listing_sites_only: bool = False) -> list[dict]:
@@ -494,4 +614,4 @@ def forecast_latest(zip_: str | None) -> list[dict]:
         "avg(f.backtest_mape) AS backtest_mape, (array_agg(f.run_id))[1] AS run_id FROM forecasts f "
         "WHERE f.run_id = (SELECT run_id FROM model_runs WHERE kind = 'forecast' ORDER BY trained_at DESC LIMIT 1) "
         "AND f.metric = 'zori' AND f.zip = ANY(%(core)s) AND (%(z)s::text IS NULL OR f.zip = %(z)s) "
-        "GROUP BY f.month ORDER BY f.month", {"z": zip_, **CORE})
+        "GROUP BY f.month ORDER BY f.month", {"z": zip_, **_core()})
