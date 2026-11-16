@@ -2,7 +2,7 @@
 import { useEffect, useSyncExternalStore, type ReactNode } from "react";
 import { getMockSnapshot, markMock, subscribeMock } from "@/lib/mockflag";
 import { DISCLAIMER_ESTIMATE, DISCLAIMER_LEGAL } from "@/lib/contract";
-import { ZIP_OPTIONS } from "@/lib/format";
+import { AreaOptions } from "@/lib/areas";
 
 import { inputCls } from "./styles";
 
@@ -23,11 +23,7 @@ export function Field({ label, hint, children }: { label: string; hint?: string;
 export function ZipSelect({ value, onChange }: { value: string; onChange: (z: string) => void }) {
   return (
     <select className={inputCls} value={value} onChange={(e) => onChange(e.target.value)}>
-      {ZIP_OPTIONS.map((z) => (
-        <option key={z.zip} value={z.zip}>
-          {z.zip} {z.name}
-        </option>
-      ))}
+      <AreaOptions />
     </select>
   );
 }
