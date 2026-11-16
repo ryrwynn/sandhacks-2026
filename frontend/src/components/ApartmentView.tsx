@@ -148,16 +148,23 @@ export default function ApartmentView({ id }: { id: string }) {
           {!d.active && <p className="mt-1 text-sm text-warn">{fb ? "Not reposted in the last 21 days." : "Not seen in our latest update."} It may no longer be available.</p>}
         </div>
         <div className="flex flex-col gap-2 sm:items-end">
-          <button type="button" aria-pressed={has(d.id)} onClick={() => toggle(d)}
-            className={`min-h-11 rounded-lg px-5 font-semibold ${has(d.id) ? "bg-line text-ink" : "bg-primary text-on-primary hover:bg-primary-hover"}`}>
-            {has(d.id) ? "Saved ✓" : "+ Save apartment"}
-          </button>
-          {fb && d.post_url && (
-            <a href={d.post_url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-lg px-3 font-medium text-accent-strong underline underline-offset-2">View post on Facebook ↗</a>
-          )}
+          <div className="flex items-center gap-2 sm:justify-end">
+            {fb && d.post_url && (
+              <a href={d.post_url} target="_blank" rel="noopener noreferrer" aria-label={`Open the Facebook post for ${title} in a new tab`}
+                className="flex h-11 w-11 items-center justify-center rounded-full text-muted hover:bg-bg">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></svg>
+              </a>
+            )}
+            <button type="button" aria-pressed={has(d.id)} onClick={() => toggle(d)}
+              className={`min-h-11 rounded-lg px-5 font-semibold ${has(d.id) ? "bg-line text-ink" : "bg-primary text-on-primary hover:bg-primary-hover"}`}>
+              {has(d.id) ? "Saved ✓" : "+ Save apartment"}
+            </button>
+          </div>
           {d.source_url && (
             <a href={d.source_url} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-lg px-3 font-medium text-accent-strong underline underline-offset-2">View original listing ↗</a>
           )}
+          {/* TODO(report): placeholder until a report endpoint exists */}
+          <a href="/api/health" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center rounded-lg px-3 text-sm font-medium text-muted underline underline-offset-2">Report this listing<span className="sr-only"> (opens in a new tab)</span></a>
         </div>
       </header>
 
@@ -252,7 +259,7 @@ export default function ApartmentView({ id }: { id: string }) {
       {isRent && !fb && (
         <Section id="own-h" title="Renting here already?">
           <p className="text-muted">If you already live in this building and got a rent increase notice, check it against California&apos;s AB 1482 cap.</p>
-          <Link href={rentCheck} className="inline-flex min-h-11 items-center rounded-lg bg-primary px-5 font-semibold text-on-primary hover:bg-primary-hover">Check a rent increase</Link>
+          <Link href={rentCheck} className="inline-flex min-h-11 items-center rounded-lg bg-primary px-5 font-semibold text-on-primary hover:bg-primary-hover">Check the Rent Cap</Link>
         </Section>
       )}
     </main>

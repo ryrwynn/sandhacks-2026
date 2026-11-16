@@ -39,7 +39,7 @@ Ten of the twelve features are core, and most reuse the same four analytics, so 
 | --- | --- | --- | --- | --- |
 | All | ZIP map | Map of 12 ZIP codes shaded by median rent, with the 12-month forecast change on hover | Listings, ZORI | Core |
 | All | ZIP profile page | Rent and value history, forecasts with ranges, persona scores, amenity counts | Everything | Core |
-| Renter | Rent increase check | AB 1482 rules decide whether an increase is over the cap | Tenant's numbers, building age from listings | Core |
+| Renter | Rent Cap (the AB 1482 increase check) | AB 1482 rules decide whether an increase is over the cap | Tenant's numbers, building age from listings | Core |
 | Renter | Reply letter | Gemini explains the verdict in 4 languages and drafts the English letter | Check result | Core |
 | Renter | Listing price check | Fair-rent model gives an expected rent and range; flags listings above the range | Scraped rentals | Core |
 | Renter | Rent forecast | 12-month forecast per ZIP with a range and its backtest error | ZORI | Core |
