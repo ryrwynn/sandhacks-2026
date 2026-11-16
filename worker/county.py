@@ -64,12 +64,14 @@ def run(conn, zips: list[str], *, sample: bool, limit: int | None, dry_run: bool
         return out
     inputs = bd.zillow_inputs(template, zips)
     res = bd.run_batch(conn, template, inputs, limit=limit, sample=sample, client=client, note="county " + ",".join(zips))
-    new_raw = bd.store_rows(conn, template, res["snapshot_id"], res["rows"])
     bd.mark_scraped(conn, zips)
     trust = float(load.enabled_sources(conn).get(SOURCE, {}).get("trust_weight", 1.0))
-    staged = to_staging(conn, template, res["rows"], trust, gemini_budget)
+    import orjson
+    from worker import fast
+    stats = fast.run_pipeline(fast.chunk_lines(orjson.dumps(r) for r in res["rows"]), template_key=SOURCE,
+                              connect=load.connect, trust=trust, snapshot_id=res["snapshot_id"])
     out.update({"run_id": res["run_id"], "snapshot_id": res["snapshot_id"], "records": res["records"],
-                "usd": res["usd"], "new_raw": new_raw, **staged})
+                "usd": res["usd"], **stats})
     return out
 
 
