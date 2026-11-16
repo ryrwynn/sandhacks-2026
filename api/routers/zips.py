@@ -14,7 +14,7 @@ def _summary(d: dict) -> ZipSummary:
     return ZipSummary(zip=d["zip"], name=d["name"], median_rent_by_beds=d["median_rent_by_beds"],
                       typical_rent_usd=d["zori"], typical_home_value_usd=d["zhvi"],
                       rent_forecast_change_pct=d["rent_fc"], value_forecast_change_pct=d["value_fc"],
-                      listings_30d=d["listings_30d"])
+                      listings_30d=d["listings_30d"], tier=d["tier"], county=d["county"])
 
 
 @router.get("", response_model=ZipsResponse)
@@ -30,7 +30,7 @@ def _int(v):
 def zip_profile(zip: str, listing_sites_only: bool = False) -> ZipProfile:
     data = zip_data(listing_sites_only)
     if zip not in data:
-        raise HTTPException(404, f"{zip} is not one of the {len(data)} ZIPs RentOrKnot covers")
+        raise HTTPException(404, f"{zip} is not a ZIP RentOrKnot serves yet")
     d = data[zip]
     f = d["features"]
     income = f.get("median_income_usd")
@@ -62,7 +62,7 @@ def zip_profile(zip: str, listing_sites_only: bool = False) -> ZipProfile:
 @router.get("/{zip}/series", response_model=SeriesResponse)
 def zip_series(zip: str, metric: Metric = "zori", scenario: Scenario | None = None) -> SeriesResponse:
     if zip not in db.ZIP_NAMES:
-        raise HTTPException(404, f"{zip} is not one of the ZIPs RentOrKnot covers")
+        raise HTTPException(404, f"{zip} is not a ZIP RentOrKnot serves yet")
     if scenario is not None:   # overnight: scenario forecasts (night-forecast); default response unchanged
         return forecasts.scenario_series(zip, metric, scenario)
     rows = safe(db.series, zip, metric, default=[])
