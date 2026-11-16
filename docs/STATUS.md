@@ -1,6 +1,6 @@
 # Overnight run status
 
-Heartbeat: 2026-11-15 — api, mcp, models, web merged (5e6b025; 342 tests, tsc, build pass; Gmail grep clean); data lane running
+Heartbeat: 2026-11-15 11:25 PST (real clock; earlier heartbeat times in this section were estimates and ran ahead) — steps 1–9 done; waiting for "go"
 
 ## Phase 0, setup
 - [x] preflight: all clear; WARN no DEV_DATABASE_URL (stage in shared DB), WARN no Google keys (sign-in off), WARN no local Docker
@@ -38,7 +38,7 @@ Heartbeat: 2026-11-15 — api, mcp, models, web merged (5e6b025; 342 tests, tsc,
 
 # Morning run (2026-11-15)
 
-Heartbeat: 2026-11-15 — api, mcp, models, web merged (5e6b025; 342 tests, tsc, build pass; Gmail grep clean); data lane running
+Heartbeat: 2026-11-15 11:25 PST (real clock; earlier heartbeat times in this section were estimates and ran ahead) — steps 1–9 done; waiting for "go"
 
 ## 1. Data
 - [x] Load the data 1: index tier staged (160,122 and 3,056 rows) — ran by owner this morning, not rerun
@@ -83,7 +83,7 @@ Heartbeat: 2026-11-15 — api, mcp, models, web merged (5e6b025; 342 tests, tsc,
 
 # Final run (2026-11-15)
 
-Heartbeat: 2026-11-15 — api, mcp, models, web merged (5e6b025; 342 tests, tsc, build pass; Gmail grep clean); data lane running
+Heartbeat: 2026-11-15 11:25 PST (real clock; earlier heartbeat times in this section were estimates and ran ahead) — steps 1–9 done; waiting for "go"
 
 - [x] 1. Connectivity: database ok (8 s timeout)
 - [x] 2. Schedules and rules: weekly zillow_rent Thu 12:00 UTC; FMR_RULE_VERIFIED=True; HUD SAFMR refused (202 empty), fmr.yaml stays unverified; BD estimate ≈ $17–26/month in WAKEUP.md
@@ -105,7 +105,7 @@ Heartbeat: 2026-11-15 — api, mcp, models, web merged (5e6b025; 342 tests, tsc,
 
 # Sprint (2026-11-15, docs/SPRINT.md)
 
-Heartbeat: 2026-11-16 — all five lanes merged; checks running; web lane fixing prefill/e2e items
+Heartbeat: 2026-11-16 — all lanes merged, checks done, docs/SPRINT_REPORT.md written; waiting for "go"
 
 Settings: Bright Data budget $40; areas = data/zips_county.txt + queued requests + 95014; county refresh monthly;
 contact none; Apartments.com collector none (D4 skipped).
@@ -115,9 +115,10 @@ contact none; Apartments.com collector none (D4 skipped).
 - [x] Lanes merged: api (1857a80, f028993), mcp (89304c7), models (52c39bb), web (64259c5), data (368c840)
 - [x] Data: $17.44 of $40 spent; 8,371 Zillow listings staged; 64 county ZIPs with ≥ 5; nothing in shared tables
 - [x] Retrain dry run on staging: fair rent keeps the median method (model coverage 0.56 < 0.78)
-- [~] Checks before go: pytest 354, tsc, build, preflight, MCP client 10/10 pass; e2e and sprint-check have
-      open items with the web lane (renter ZIP prefill, rank on prefill, React #441, /areas, ZIP h1)
-- [ ] docs/SPRINT_REPORT.md, push night, wait for "go"
+- [x] Checks before go: pytest 355, tsc, build, preflight, MCP 10/10, sprint-check 17/17 (one isolated rerun);
+      e2e and ui-check failures are DB-link timeouts or headless WebGL, each rechecked alone (see SPRINT_REPORT)
+- [x] Fixed on night: per-(source, ZIP) active window; scenario series for served ZIPs; mark-areas county only
+- [x] docs/SPRINT_REPORT.md written, night pushed; waiting for "go"
 
 Errors that stopped a thread: none. Environment: the laptop's connection to Tiger drops at times (SSL timeouts,
 pool waits over 3 s); browser checks are rerun one at a time.
