@@ -74,3 +74,10 @@ def test_concurrent_streamed_gzip_download_and_follow(monkeypatch, tmp_path):
     got = [sum(1 for _ in sprint.follow(d)) for d in ds]
     srv.shutdown()
     assert got == [5000, 5000] and all(d.error is None for d in ds)
+
+
+def test_county_zip_form_urls():
+    from worker.mapping import load_template
+    got = bd.zillow_zip_inputs(load_template("zillow_rent_county"), ["92004", "92129"])
+    assert [g["url"] for g in got] == ["https://www.zillow.com/homes/for_rent/92004_rb/",
+                                       "https://www.zillow.com/homes/for_rent/92129_rb/"]

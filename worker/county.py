@@ -62,7 +62,7 @@ def run(conn, zips: list[str], *, sample: bool, limit: int | None, dry_run: bool
            "spent_24h": bd.spent_usd(conn), "budget": bd.budget_usd()}
     if dry_run or not zips:
         return out
-    inputs = bd.zillow_inputs(template, zips)
+    inputs = bd.zillow_zip_inputs(template, zips)
     res = bd.run_batch(conn, template, inputs, limit=limit, sample=sample, client=client, note="county " + ",".join(zips))
     bd.mark_scraped(conn, zips)
     trust = float(load.enabled_sources(conn).get(SOURCE, {}).get("trust_weight", 1.0))

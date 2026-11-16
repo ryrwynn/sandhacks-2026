@@ -334,6 +334,7 @@ def main(argv=None) -> int:
     ap.add_argument("--ratio", type=int, default=RATIO)
     ap.add_argument("--note", default="")
     ap.add_argument("--snapshots", help="comma list of already-triggered snapshot ids (resume)")
+    ap.add_argument("--zip-form", action="store_true", help="ZIP-only search URLs (template zip_url)")
     ap.add_argument("--cities", help="zip=slug,zip=slug overrides for the search URL city")
     a = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO)
@@ -359,7 +360,8 @@ def main(argv=None) -> int:
         inputs = [{"url": u.strip()} for u in Path(a.urls).read_text().splitlines() if u.strip()]
     else:
         slugs = dict(kv.split("=") for kv in a.cities.split(",")) if a.cities else {}
-        inputs = bd.zillow_inputs(template, [z.strip() for z in a.zips.split(",")], slugs)
+        zl = [z.strip() for z in a.zips.split(",")]
+        inputs = bd.zillow_zip_inputs(template, zl) if a.zip_form else bd.zillow_inputs(template, zl, slugs)
     runs = plan_and_trigger(conn, template, inputs, a.limit, note=a.note, ratio=a.ratio, group=a.group,
                             dry_run=a.cmd == "plan")
     if a.cmd == "plan":

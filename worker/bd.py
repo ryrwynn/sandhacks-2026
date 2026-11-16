@@ -171,6 +171,12 @@ def zillow_inputs(template: dict, zips: list[str], city_slug: dict[str, str] | N
     return out
 
 
+def zillow_zip_inputs(template: dict, zips: list[str]) -> list[dict]:
+    """ZIP-only search URLs (template fetch.zip_url): about 130 records a ZIP at limit 10, against 5 to 60 for
+    the city URL, and no aborted building pages. Used by the county refresh."""
+    return [{"url": template["fetch"]["zip_url"].format(zip=z)} for z in zips]
+
+
 def sample_inputs(inputs: list[dict], limit: int) -> tuple[list[dict], int]:
     """Shrink a batch to a 20-record sample: as many inputs as fit at the per-input cap."""
     cap = max(1, min(limit, SAMPLE_RECORDS))
