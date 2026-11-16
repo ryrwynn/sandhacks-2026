@@ -60,6 +60,7 @@ export default function AboutPage() {
     <main className="space-y-4">
       <h1 className="text-xl font-bold sm:text-2xl">About RentOrKnot</h1>
       <p className="text-slate-700">RentOrKnot reads public rental and home-price data and explains it. It never contacts landlords or posts anything anywhere.</p>
+      <p className="text-sm text-slate-700">Assistants such as Claude can run the same checks through our read-only MCP server at https://rentorknot.us/api/mcp and get back a link that opens the right form filled in; it stores nothing and never submits anything.</p>
       <Card>
         <h2 className="mb-2 text-lg font-bold">Data sources</h2>
         <ul className="space-y-2 text-sm">
