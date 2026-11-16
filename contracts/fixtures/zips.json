@@ -13,7 +13,9 @@
       "typical_home_value_usd": 760000.0,
       "rent_forecast_change_pct": 1.2,
       "value_forecast_change_pct": 0.8,
-      "listings_30d": 60
+      "listings_30d": 60,
+      "tier": "core",
+      "county": "San Diego"
     },
     {
       "zip": "92101",
@@ -28,7 +30,9 @@
       "typical_home_value_usd": 690000.0,
       "rent_forecast_change_pct": 1.8,
       "value_forecast_change_pct": 1.7,
-      "listings_30d": 69
+      "listings_30d": 69,
+      "tier": "core",
+      "county": "San Diego"
     },
     {
       "zip": "92103",
@@ -43,7 +47,9 @@
       "typical_home_value_usd": 870000.0,
       "rent_forecast_change_pct": 2.4,
       "value_forecast_change_pct": 2.6,
-      "listings_30d": 78
+      "listings_30d": 78,
+      "tier": "core",
+      "county": "San Diego"
     },
     {
       "zip": "92104",
@@ -58,7 +64,9 @@
       "typical_home_value_usd": 820000.0,
       "rent_forecast_change_pct": 3.0,
       "value_forecast_change_pct": 3.5,
-      "listings_30d": 87
+      "listings_30d": 87,
+      "tier": "core",
+      "county": "San Diego"
     },
     {
       "zip": "92105",
@@ -73,7 +81,9 @@
       "typical_home_value_usd": 610000.0,
       "rent_forecast_change_pct": 3.6,
       "value_forecast_change_pct": 0.8,
-      "listings_30d": 96
+      "listings_30d": 96,
+      "tier": "core",
+      "county": "San Diego"
     },
     {
       "zip": "92107",
@@ -88,7 +98,9 @@
       "typical_home_value_usd": 1150000.0,
       "rent_forecast_change_pct": 1.2,
       "value_forecast_change_pct": 1.7,
-      "listings_30d": 105
+      "listings_30d": 105,
+      "tier": "core",
+      "county": "San Diego"
     },
     {
       "zip": "92108",
@@ -103,7 +115,9 @@
       "typical_home_value_usd": 640000.0,
       "rent_forecast_change_pct": 1.8,
       "value_forecast_change_pct": 2.6,
-      "listings_30d": 114
+      "listings_30d": 114,
+      "tier": "core",
+      "county": "San Diego"
     },
     {
       "zip": "92109",
@@ -118,7 +132,9 @@
       "typical_home_value_usd": 1100000.0,
       "rent_forecast_change_pct": 2.4,
       "value_forecast_change_pct": 3.5,
-      "listings_30d": 123
+      "listings_30d": 123,
+      "tier": "core",
+      "county": "San Diego"
     },
     {
       "zip": "92111",
@@ -133,7 +149,9 @@
       "typical_home_value_usd": 780000.0,
       "rent_forecast_change_pct": 3.0,
       "value_forecast_change_pct": 0.8,
-      "listings_30d": 132
+      "listings_30d": 132,
+      "tier": "core",
+      "county": "San Diego"
     },
     {
       "zip": "92117",
@@ -148,7 +166,9 @@
       "typical_home_value_usd": 950000.0,
       "rent_forecast_change_pct": 3.6,
       "value_forecast_change_pct": 1.7,
-      "listings_30d": 141
+      "listings_30d": 141,
+      "tier": "core",
+      "county": "San Diego"
     },
     {
       "zip": "92122",
@@ -163,7 +183,9 @@
       "typical_home_value_usd": 880000.0,
       "rent_forecast_change_pct": 1.2,
       "value_forecast_change_pct": 2.6,
-      "listings_30d": 150
+      "listings_30d": 150,
+      "tier": "core",
+      "county": "San Diego"
     },
     {
       "zip": "92126",
@@ -178,7 +200,9 @@
       "typical_home_value_usd": 890000.0,
       "rent_forecast_change_pct": 1.8,
       "value_forecast_change_pct": 3.5,
-      "listings_30d": 159
+      "listings_30d": 159,
+      "tier": "core",
+      "county": "San Diego"
     }
   ]
 }

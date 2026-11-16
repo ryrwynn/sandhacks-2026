@@ -102,3 +102,22 @@ Heartbeat: 2026-11-15 11:25 PST (real clock; earlier heartbeat times in this sec
   - [x] sign-in: /auth/session null signed out (no email/name), button shows, /auth/saves 401 without session, wrong token 401 handled quietly
 - [x] 9. Servers stopped, night pushed, PR #2 ready for review, WAKEUP.md final-run section
 - [ ] 10. Waiting for "go" (PR #2 ready, mergeable)
+
+# Sprint (2026-11-15, docs/SPRINT.md)
+
+Heartbeat: 2026-11-15 — step 0 done; lanes starting
+
+Settings: Bright Data budget $40; areas = data/zips_county.txt + queued requests + 95014; county refresh monthly;
+contact none; Apartments.com collector none (D4 skipped).
+
+- [x] Preflight run; database reachable (TimescaleDB 2.32.0; raw_records 11,339; areas core 12 / county 103 /
+      index 1,684 / on_demand 3; area_requests loaded 9, queued 1, failed 4)
+- [x] Step 0: `ZipSummary.tier` + `county`, `contracts/prefill.py` (shared prefill table) with generated
+      `frontend/src/lib/prefill.ts`, regenerated `api.generated.ts`; personal address removed from docs/FINAL.md
+- [ ] Lanes: data, api, models, web, mcp
+- [ ] Merges + checks
+- [ ] Retrain on staging, fair-rent decision
+- [ ] Checks before go
+- [ ] docs/SPRINT_REPORT.md, push night, wait for "go"
+
+Errors that stopped a thread: none yet.

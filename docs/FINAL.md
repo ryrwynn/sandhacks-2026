@@ -54,7 +54,7 @@ My decisions:
 - Facebook: keep sources.facebook_groups_sd.terms_checked_on as it is.
 - Penal Code 396: the 160%-of-Fair-Market-Rent rule is verified.
 - Google sign-in: keys are set (local and server .env).
-- Contact email for /privacy and /terms: rayghoreal@gmail.com
+- Contact email for /privacy and /terms: none (removed in the sprint; the pages show no address)
 - PR #1: fine for night to land in PR #1 (Setup -> main); no separate handling.
 
 1. Connectivity. Check the database (8-second connect timeout). If it fails, stop and tell me.

@@ -677,6 +677,8 @@ export interface ZipSummary {
   rent_forecast_change_pct: number | null;
   value_forecast_change_pct: number | null;
   listings_30d: number;
+  tier: "core" | "county" | "on_demand";
+  county: string | null;
 }
 
 export interface ZipTrendsResponse {
