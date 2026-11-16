@@ -107,14 +107,12 @@ def test_scenario_series_without_scenario_rows_returns_history(monkeypatch):
     """Sprint: a served ZIP with history but no scenario run yet gets history only, not a 404."""
     from datetime import date
 
-    from api.ml import scenarios
     from api.routers import forecasts
 
-    def fake_fetch(sql, args=()):
-        if sql == scenarios.ACTUAL_SQL:
-            return [{"month": date(2026, 9, 1), "value": 3000.0}, {"month": date(2026, 10, 1), "value": 3010.0}]
-        return []
-
-    monkeypatch.setattr(forecasts.db, "fetch", fake_fetch)
+    monkeypatch.setattr(forecasts.db, "fetch", lambda sql, args=(): [])
+    monkeypatch.setattr(forecasts.db, "series", lambda z, m: [
+        {"month": date(2026, 9, 1), "value": 3000.0, "kind": "actual"},
+        {"month": date(2026, 10, 1), "value": 3010.0, "kind": "actual"},
+        {"month": date(2026, 11, 1), "value": 3020.0, "kind": "forecast"}])
     r = forecasts.scenario_series("92037", "zori", "baseline")
     assert [p.kind for p in r.points] == ["actual", "actual"] and r.scenarios == [] and r.scenario == "baseline"

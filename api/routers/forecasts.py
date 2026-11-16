@@ -14,14 +14,12 @@ def scenario_series(zip_: str, metric: str, scenario: str) -> SeriesResponse:
         r = scenarios.scenario_series(zip_, metric, scenario)
     except LookupError as e:
         # Sprint: a served ZIP without scenario forecasts yet (new areas before a retrain, or under 60 months of
-        # history) gets its actual history and no scenario lines, not a 404. Unserved ZIPs still 404 in zips.py.
+        # history) gets its actual history and no scenario lines, not a 404. An empty history is an empty series; unserved ZIPs still 404 in zips.py.
         try:
-            actual = db.fetch(scenarios.ACTUAL_SQL, (zip_, metric))
+            hist = [h for h in db.series(zip_, metric) if h["kind"] == "actual"]
         except db.DBUnavailable:
             raise HTTPException(503, "Database unavailable")
-        if not actual:
-            raise HTTPException(404, str(e))
-        r = {"points": [scenarios._pt(a["month"], a["value"], None, None, "actual") for a in actual]}
+        r = {"points": [scenarios._pt(h["month"], h["value"], None, None, "actual") for h in hist]}
     except db.DBUnavailable:
         raise HTTPException(503, "Database unavailable")
     return SeriesResponse(zip=zip_, metric=metric, scenario=scenario, **r)
