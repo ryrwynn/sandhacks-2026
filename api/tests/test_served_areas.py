@@ -69,3 +69,35 @@ def test_zips_endpoint_lists_served_areas_with_tier_and_county(monkeypatch):
     assert r.status_code == 404 and "12" not in r.json()["detail"]
     assert c.get("/market?zip=92037").status_code == 200
     assert c.get("/market?zip=95014").status_code == 404
+
+
+_STAGING_CALLS = [
+    lambda: db.listing_page(),
+    lambda: db.median_rent_by_beds(),
+    lambda: db.comparable_rents("92104", 1),
+    lambda: db.comparable_rents("92104", 1, days=30),
+    lambda: db.source_counts(),
+    lambda: db.active_rent_count(),
+    lambda: db.active_by_source(),
+    lambda: db.listing_monthly_medians(None, None, None),
+    lambda: db.served_areas(),
+]
+
+
+@pytest.mark.parametrize("flag", [False, True])
+def test_staged_rows_of_any_source_only_with_the_local_flag(monkeypatch, flag):
+    if flag:
+        monkeypatch.setenv("RENTORKNOT_READ_STAGING", "1")
+    else:
+        monkeypatch.delenv("RENTORKNOT_READ_STAGING", raising=False)
+    seen = []
+    monkeypatch.setattr(db, "fetch", lambda sql, params=None: seen.append(" ".join(sql.split())) or ([{"n": 0}] if "count(*) AS n" in sql else []))
+    for call in _STAGING_CALLS:
+        db._comp_cache.update(at=0.0, groups={})
+        db._served_cache.update(at=0.0, areas={})
+        db._served_cache["areas"] = {}
+        call()
+    assert seen
+    for sql in seen:
+        assert ("staging_" in sql) == flag, sql
+        assert "source_key = 'facebook_groups_sd')" not in sql      # staged rows aren't limited to Facebook
