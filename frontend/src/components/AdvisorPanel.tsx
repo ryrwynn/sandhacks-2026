@@ -10,13 +10,15 @@ import { postMatch } from "@/lib/night-api";
 import type { MatchResponse } from "@/lib/night-types";
 import { useSaved } from "@/lib/saved";
 import { usd } from "@/lib/format";
+import { usePrefill } from "@/lib/useprefill";
 
 const STARTERS = ["Is a 12% rent increase legal in San Diego?", "Which ZIPs are getting cheaper?", "What can I do if my landlord raised rent during a wildfire emergency?"];
 
 /** Chat with the housing advisor. All network access is in lib/advisor-client.ts. */
 export function AdvisorChat() {
+  const q = usePrefill();
   const [msgs, setMsgs] = useState<AdvisorMessage[]>([]);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(q.text("ask", 2000));   // typed in, not sent
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const abort = useRef<AbortController | null>(null);
@@ -87,7 +89,8 @@ export function AdvisorChat() {
 
 /** "Find by needs": plain-language needs matched against listings (POST /match). */
 export function MatchPanel() {
-  const [text, setText] = useState("");
+  const q = usePrefill();
+  const [text, setText] = useState(q.text("needs", 2000));   // typed in, not sent
   const [res, setRes] = useState<MatchResponse | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");

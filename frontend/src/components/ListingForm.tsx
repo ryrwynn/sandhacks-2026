@@ -5,16 +5,18 @@ import type { ListingEvalResponse, PropertyType } from "@/lib/contract";
 import { btnCls, inputCls } from "./styles";
 import { BedsSelect, ErrorNote, Field, ZipSelect } from "./ui";
 import { ListingCheckCard } from "./cards";
+import { usePrefill } from "@/lib/useprefill";
 
 export default function ListingForm() {
-  const [zip, setZip] = useState("92104");
-  const [beds, setBeds] = useState("1");
-  const [rent, setRent] = useState("");
-  const [baths, setBaths] = useState("");
-  const [sqft, setSqft] = useState("");
+  const q = usePrefill();
+  const [zip, setZip] = useState(q.zip() || "92104");
+  const [beds, setBeds] = useState(q.beds() || "1");
+  const [rent, setRent] = useState(q.num("asking"));
+  const [baths, setBaths] = useState(q.num("baths"));
+  const [sqft, setSqft] = useState(q.int("sqft"));
   const [year, setYear] = useState("");
-  const [ptype, setPtype] = useState<PropertyType>("unknown");
-  const [text, setText] = useState("");
+  const [ptype, setPtype] = useState<PropertyType>((q.homeType() || "unknown") as PropertyType);
+  const [text, setText] = useState(q.text("text"));
   const [res, setRes] = useState<ListingEvalResponse | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
