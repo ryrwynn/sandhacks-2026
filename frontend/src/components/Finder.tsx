@@ -29,8 +29,9 @@ export default function Finder({
       setBusy(false);
     }
   }
+  // With prefill values the fields are filled in and the person presses the button; nothing ranks on its own.
   useEffect(() => {
-    run();
+    if (!initial?.budget && !initial?.beds) run();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const priceLabel = wealth ? "Typical home value" : "Typical rent";

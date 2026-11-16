@@ -78,6 +78,7 @@ export default function CheckForm({ prefill }: { prefill?: { address: string; zi
           </ul>
         )}
         <div className="grid grid-cols-2 gap-3">
+          <Field label="ZIP code" hint="Optional."><input className={inputCls} inputMode="numeric" pattern="\d{5}" maxLength={5} value={zip} onChange={(e) => setZip(e.target.value)} placeholder="92104" /></Field>
           <Field label="Lowest rent, past 12 months ($)"><input className={inputCls} type="number" inputMode="decimal" min="1" step="any" value={lowest} onChange={(e) => setLowest(e.target.value)} required /></Field>
           <Field label="New rent ($)"><input className={inputCls} type="number" inputMode="decimal" min="1" step="any" value={next} onChange={(e) => setNext(e.target.value)} required /></Field>
           <Field label="Takes effect on"><input className={inputCls} type="date" value={date} onChange={(e) => setDate(e.target.value)} required /></Field>

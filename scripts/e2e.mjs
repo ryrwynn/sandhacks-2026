@@ -185,8 +185,17 @@ async function main() {
   // ---------------- Apartment pages ----------------
   let siteId, fbId, roomId;
   await step("apartment", async () => {
-    const j = await (await fetch(`${BASE}/api/listings?source=listing_sites&limit=5`)).json();
-    siteId = j.items.find((l) => l.n_observations > 1)?.id ?? j.items[0].id;
+    // The rent-check link carries the address when the listing has one (many county listings have none): look for one in
+    // the first 300, else take the first listing and check the ZIP instead.
+    let pick, first;
+    for (let off = 0; off < 300 && !pick; off += 100) {
+      const j = await (await fetch(`${BASE}/api/listings?source=listing_sites&limit=100&offset=${off}`)).json();
+      if (!j.items?.length) break;
+      first ??= j.items[0];
+      pick = j.items.find((l) => l.address && l.n_observations > 1) ?? j.items.find((l) => l.address);
+    }
+    pick ??= first;
+    siteId = pick.id;
     await go(`/apartments/${siteId}`);
     await noSample();
     await page.locator("h1").first().waitFor();
@@ -200,8 +209,11 @@ async function main() {
     await link.click();
     await page.waitForURL(/\/renter/);
     await page.waitForTimeout(1500);
-    const addr = await page.getByLabel("Your address").inputValue();
-    expect(addr.length > 3, "rent check not prefilled with the address");
+    if (pick.address) {
+      const addr = await page.getByLabel("Your address").inputValue();
+      expect(addr.length > 3, "rent check not prefilled with the address");
+    }
+    expect((await page.getByLabel("ZIP code").inputValue()) === pick.zip, "rent check not prefilled with the ZIP");
   });
   await step("apartment-facebook", async () => {
     const j = await (await fetch(`${BASE}/api/listings?source=facebook&limit=50`)).json();
