@@ -7,6 +7,7 @@ import { pct, usd } from "@/lib/format";
 import { postGouging } from "@/lib/night-api";
 import type { GougingResponse, GougingVerdict } from "@/lib/night-types";
 import { fmtDate } from "@/lib/tracker";
+import { usePrefill } from "@/lib/useprefill";
 
 export const NOT_LEGAL_ADVICE = "This is not legal advice. Penal Code 396 applies only during a declared emergency.";
 const DEFAULT_LINKS = [
@@ -72,11 +73,12 @@ export function GougingResult({ r }: { r: GougingResponse }) {
 }
 
 export default function GougingCheck() {
-  const [zip, setZip] = useState("");
-  const [rent, setRent] = useState("");
-  const [date, setDate] = useState("");
-  const [before, setBefore] = useState("");
-  const [beds, setBeds] = useState("");
+  const q = usePrefill();
+  const [zip, setZip] = useState(q.zip());
+  const [rent, setRent] = useState(q.num("new"));
+  const [date, setDate] = useState(q.date("date"));
+  const [before, setBefore] = useState(q.num("before"));
+  const [beds, setBeds] = useState(q.beds());
   const [res, setRes] = useState<GougingResponse | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");

@@ -5,19 +5,22 @@ import type { CheckResponse, PropertyType, UnitMatch } from "@/lib/contract";
 import { btnCls, btnGhostCls, inputCls } from "./styles";
 import { ErrorNote, Field, TriState, triToBool } from "./ui";
 import { VerdictCard } from "./cards";
+import { usePrefill } from "@/lib/useprefill";
 
 export default function CheckForm({ prefill }: { prefill?: { address: string; zip: string; year: string } }) {
-  const [address, setAddress] = useState(prefill?.address ?? "");
-  const [zip, setZip] = useState(prefill?.zip ?? "");
-  const [lowest, setLowest] = useState("");
-  const [next, setNext] = useState("");
-  const [date, setDate] = useState("");
-  const [year, setYear] = useState(prefill?.year ?? "");
-  const [ptype, setPtype] = useState<PropertyType>("unknown");
-  const [notice, setNotice] = useState("");
-  const [corp, setCorp] = useState("");
+  // Query parameters (lib/prefill.ts) fill the fields; nothing is submitted until the person presses the button.
+  const q = usePrefill();
+  const [address, setAddress] = useState(q.text("address", 200) || prefill?.address || "");
+  const [zip, setZip] = useState(q.zip() || prefill?.zip || "");
+  const [lowest, setLowest] = useState(q.num("lowest"));
+  const [next, setNext] = useState(q.num("new"));
+  const [date, setDate] = useState(q.date("effective"));
+  const [year, setYear] = useState(q.year() || q.year("year_built") || prefill?.year || "");
+  const [ptype, setPtype] = useState<PropertyType>((q.homeType() || "unknown") as PropertyType);
+  const [notice, setNotice] = useState(q.yesNo("notice"));
+  const [corp, setCorp] = useState(q.yesNo("corp"));
   const [other, setOther] = useState(false);
-  const [incs, setIncs] = useState("0");
+  const [incs, setIncs] = useState(q.int("increases") || "0");
   const [matches, setMatches] = useState<UnitMatch[] | null>(null);
   const [result, setResult] = useState<CheckResponse | null>(null);
   const [busy, setBusy] = useState(false);

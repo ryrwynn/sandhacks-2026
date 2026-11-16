@@ -6,21 +6,23 @@ import { pct, usd } from "@/lib/format";
 import { btnCls, inputCls } from "./styles";
 import { Bar, BedsSelect, Card, Disclaimer, ErrorNote, Field, TriState, triToBool, ZipSelect } from "./ui";
 import { ListingAnalysisCard } from "./cards";
+import { usePrefill } from "@/lib/useprefill";
 
 const LABELS = { low: "Low end of the estimate", expected: "Expected", high: "High end of the estimate", target: "Your target" } as const;
 
 export default function OwnerTools() {
-  const [zip, setZip] = useState("92104");
-  const [beds, setBeds] = useState("2");
-  const [target, setTarget] = useState("");
-  const [sqft, setSqft] = useState("");
-  const [year, setYear] = useState("");
-  const [ptype, setPtype] = useState<PropertyType>("unknown");
-  const [occupied, setOccupied] = useState(false);
-  const [lowest, setLowest] = useState("");
-  const [date, setDate] = useState("");
-  const [notice, setNotice] = useState("");
-  const [corp, setCorp] = useState("");
+  const q = usePrefill();
+  const [zip, setZip] = useState(q.zip() || "92104");
+  const [beds, setBeds] = useState(q.beds() || "2");
+  const [target, setTarget] = useState(q.num("target"));
+  const [sqft, setSqft] = useState(q.int("sqft"));
+  const [year, setYear] = useState(q.year());
+  const [ptype, setPtype] = useState<PropertyType>((q.homeType() || "unknown") as PropertyType);
+  const [occupied, setOccupied] = useState(!!(q.num("lowest") || q.date("effective")));   // the lease questions show when they are given
+  const [lowest, setLowest] = useState(q.num("lowest"));
+  const [date, setDate] = useState(q.date("effective"));
+  const [notice, setNotice] = useState(q.yesNo("notice"));
+  const [corp, setCorp] = useState(q.yesNo("corp"));
   const [pos, setPos] = useState<PricePositionResponse | null>(null);
   const [text, setText] = useState("");
   const [ana, setAna] = useState<ListingAnalysisResponse | null>(null);

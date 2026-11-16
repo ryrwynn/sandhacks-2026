@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import CheckForm from "./CheckForm";
 import ListingForm from "./ListingForm";
 
@@ -11,7 +12,8 @@ const TABS = [
 export type Prefill = { address: string; zip: string; year: string };
 
 export default function RenterTabs({ prefill }: { prefill?: Prefill }) {
-  const [tab, setTab] = useState<(typeof TABS)[number]["id"]>("check");
+  const q = useSearchParams();
+  const [tab, setTab] = useState<(typeof TABS)[number]["id"]>(q.get("tab") === "listing" ? "listing" : "check");
   return (
     <div className="space-y-4">
       <div role="tablist" aria-label="Renter tools" className="grid grid-cols-2 gap-1 rounded-xl bg-slate-200 p-1">
