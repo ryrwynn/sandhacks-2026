@@ -1,6 +1,6 @@
 # Overnight run status
 
-Heartbeat: 2026-11-15 11:25 PST (real clock; earlier heartbeat times in this section were estimates and ran ahead) — steps 1–9 done; waiting for "go"
+Heartbeat: 2026-11-15 — api lane merged (1857a80, 313 tests); data, models, web, mcp running; api lane widening the local staging flag
 
 ## Phase 0, setup
 - [x] preflight: all clear; WARN no DEV_DATABASE_URL (stage in shared DB), WARN no Google keys (sign-in off), WARN no local Docker
@@ -38,7 +38,7 @@ Heartbeat: 2026-11-15 11:25 PST (real clock; earlier heartbeat times in this sec
 
 # Morning run (2026-11-15)
 
-Heartbeat: 2026-11-15 11:25 PST (real clock; earlier heartbeat times in this section were estimates and ran ahead) — steps 1–9 done; waiting for "go"
+Heartbeat: 2026-11-15 — api lane merged (1857a80, 313 tests); data, models, web, mcp running; api lane widening the local staging flag
 
 ## 1. Data
 - [x] Load the data 1: index tier staged (160,122 and 3,056 rows) — ran by owner this morning, not rerun
@@ -83,7 +83,7 @@ Heartbeat: 2026-11-15 11:25 PST (real clock; earlier heartbeat times in this sec
 
 # Final run (2026-11-15)
 
-Heartbeat: 2026-11-15 11:25 PST (real clock; earlier heartbeat times in this section were estimates and ran ahead) — steps 1–9 done; waiting for "go"
+Heartbeat: 2026-11-15 — api lane merged (1857a80, 313 tests); data, models, web, mcp running; api lane widening the local staging flag
 
 - [x] 1. Connectivity: database ok (8 s timeout)
 - [x] 2. Schedules and rules: weekly zillow_rent Thu 12:00 UTC; FMR_RULE_VERIFIED=True; HUD SAFMR refused (202 empty), fmr.yaml stays unverified; BD estimate ≈ $17–26/month in WAKEUP.md
@@ -105,7 +105,7 @@ Heartbeat: 2026-11-15 11:25 PST (real clock; earlier heartbeat times in this sec
 
 # Sprint (2026-11-15, docs/SPRINT.md)
 
-Heartbeat: 2026-11-15 — step 0 done; lanes starting
+Heartbeat: 2026-11-15 — api lane merged (1857a80, 313 tests); data, models, web, mcp running; api lane widening the local staging flag
 
 Settings: Bright Data budget $40; areas = data/zips_county.txt + queued requests + 95014; county refresh monthly;
 contact none; Apartments.com collector none (D4 skipped).
@@ -114,7 +114,7 @@ contact none; Apartments.com collector none (D4 skipped).
       index 1,684 / on_demand 3; area_requests loaded 9, queued 1, failed 4)
 - [x] Step 0: `ZipSummary.tier` + `county`, `contracts/prefill.py` (shared prefill table) with generated
       `frontend/src/lib/prefill.ts`, regenerated `api.generated.ts`; personal address removed from docs/FINAL.md
-- [ ] Lanes: data, api, models, web, mcp
+- [~] Lanes running on sprint/<lane>: data, api, models, web, mcp
 - [ ] Merges + checks
 - [ ] Retrain on staging, fair-rent decision
 - [ ] Checks before go

@@ -102,8 +102,11 @@ _AREA_TTL = 600
 _area_cache: dict = {"at": 0.0, "tags": {}}
 
 
+db.register_cache(lambda: _area_cache.update(at=0.0, tags={}))
+
+
 def area_tags_by_zip(feats: dict[str, dict]) -> dict[str, list[str]]:
-    """ZIP -> area tags: a feature tags a ZIP when its count per km² is in the top third of the 12 ZIPs."""
+    """ZIP -> area tags: a feature tags a ZIP when its count per km² is in the top third of the served ZIPs."""
     out: dict[str, list[str]] = {}
     for key, label in AREA_FEATURES.items():
         dens = {z: float(f[key]) / float(f["area_km2"]) for z, f in feats.items()
@@ -296,7 +299,7 @@ def market(zip: str | None = Query(None, pattern=r"^\d{5}$"), beds: int | None =
            type: str | None = Query(None, pattern="^(apartment|condo|house)$"),
            range: MarketRange = "1y", listing_sites_only: bool = False) -> MarketResponse:
     if zip is not None and zip not in db.ZIP_NAMES:
-        raise HTTPException(404, f"{zip} is not one of the ZIPs RentOrKnot covers")
+        raise HTTPException(404, f"{zip} is not a ZIP RentOrKnot serves yet")
     notes: list[str] = []
     zori = {r["month"]: float(r["value"]) for r in safe(db.zori_monthly, zip, default=[])}
     meds: dict = {}
