@@ -94,13 +94,19 @@ def _fallback_areas() -> dict[str, dict]:
                 "listings": 0} for z, n in sorted(load_zip_names().items())}
 
 
+# Sprint: "active" means seen in the latest scrape of that source FOR THAT ZIP (36 h slack), because one source key
+# carries ZIPs on different schedules (core weekly, county monthly, on-demand once). Capped at 45 days, so a ZIP that
+# stops being scraped (or whose listings all left) goes inactive instead of staying active forever.
+_CUTOFF = "GREATEST(max(last_seen) - interval '36 hours', now() - interval '45 days')"
+
+
 def _served_sql() -> str:
     cand = "SELECT zip, source_key, last_seen, listing_type FROM listings"
     if read_staging():
         cand += " UNION ALL SELECT zip, source_key, last_seen, listing_type FROM staging_listings"
     return (f"WITH cand AS ({cand}), "
-            "win AS (SELECT source_key, max(last_seen) - interval '36 hours' AS cutoff FROM cand GROUP BY source_key), "
-            "n AS (SELECT c.zip, count(*) AS listings FROM cand c JOIN win w ON w.source_key = c.source_key "
+            f"win AS (SELECT source_key, zip, {_CUTOFF} AS cutoff FROM cand GROUP BY source_key, zip), "
+            "n AS (SELECT c.zip, count(*) AS listings FROM cand c JOIN win w ON w.source_key = c.source_key AND w.zip = c.zip "
             "      WHERE c.listing_type = 'rent' AND (CASE WHEN c.source_key = %(fb)s "
             "        THEN c.last_seen >= now() - make_interval(days => %(fb_days)s) ELSE c.last_seen >= w.cutoff END) "
             "      GROUP BY c.zip) "
@@ -264,7 +270,7 @@ def source_counts() -> list[dict]:
     """Per source: kind, listings, active listings (Facebook: posted in the last 21 days)."""
     return fetch(f"WITH {_win()} SELECT l.source_key, s.kind, count(*) AS listings, "
                  f"count(*) FILTER (WHERE {_ACTIVE_SQL}) AS active FROM {L()} l "
-                 "JOIN sources s ON s.source_key = l.source_key LEFT JOIN win w ON w.source_key = l.source_key "
+                 "JOIN sources s ON s.source_key = l.source_key LEFT JOIN win w ON w.source_key = l.source_key AND w.zip = l.zip "
                  "WHERE l.zip = ANY(%(core)s) GROUP BY l.source_key, s.kind ORDER BY l.source_key", _core())
 
 
@@ -461,8 +467,8 @@ _SORTS = {
     "biggest_drop": "(t.cur - t.first_price) ASC, t.listing_id",
 }
 def _win() -> str:
-    return ("win AS (SELECT source_key, max(last_seen) - interval '36 hours' AS cutoff "
-            f"FROM {L()} x GROUP BY source_key)")
+    return (f"win AS (SELECT source_key, zip, {_CUTOFF} AS cutoff "
+            f"FROM {L()} x GROUP BY source_key, zip)")
 # Listing sites: seen in the source's latest scrape. Facebook: reposted within the last 21 days.
 _ACTIVE_SQL = (f"(CASE WHEN l.source_key = '{FB_SOURCE}' THEN l.last_seen >= now() - interval '{FB_INACTIVE_DAYS} days' "
                "ELSE l.last_seen >= w.cutoff END)")
@@ -523,7 +529,7 @@ def listing_page(zip_=None, beds=None, type_=None, max_price=None, sort="recent"
              o.n, o.cur, o.first_price, o.first_observed
       FROM {L()} l
       JOIN sources s ON s.source_key = l.source_key
-      LEFT JOIN win w ON w.source_key = l.source_key
+      LEFT JOIN win w ON w.source_key = l.source_key AND w.zip = l.zip
       LEFT JOIN properties p ON p.property_id = l.property_id
       JOIN (SELECT listing_id, count(*) AS n,
                    (array_agg(price_usd ORDER BY observed_at DESC) FILTER (WHERE event <> 'removed'))[1] AS cur,
@@ -561,7 +567,7 @@ def active_rent_count(zip_=None, beds=None, type_=None, listing_sites_only: bool
     where, p = _listing_filters(zip_, beds, type_, None)
     srcs = LISTING_SITE_FILTER if listing_sites_only else (
         f"(s.kind = 'listing_site' OR (l.source_key = '{FB_SOURCE}' AND l.extras->>'unit_type' = 'entire_unit'))")
-    return fetch(f"WITH {_win()} SELECT count(*) AS n FROM {L()} l LEFT JOIN win w ON w.source_key = l.source_key "
+    return fetch(f"WITH {_win()} SELECT count(*) AS n FROM {L()} l LEFT JOIN win w ON w.source_key = l.source_key AND w.zip = l.zip "
                  "JOIN sources s ON s.source_key = l.source_key "
                  f"LEFT JOIN properties p ON p.property_id = l.property_id WHERE {where} AND {srcs} AND {_ACTIVE_SQL}",
                  p)[0]["n"]
@@ -573,7 +579,7 @@ def active_by_source(zip_=None, beds=None, type_=None) -> list[dict]:
     return fetch(
         f"WITH {_win()} SELECT s.kind, l.source_key, l.extras->>'unit_type' AS unit_type, "
         "COALESCE(l.extras->>'unusual_price', 'false') = 'true' AS unusual, o.cur, o.w "
-        f"FROM {L()} l LEFT JOIN win w ON w.source_key = l.source_key JOIN sources s ON s.source_key = l.source_key "
+        f"FROM {L()} l LEFT JOIN win w ON w.source_key = l.source_key AND w.zip = l.zip JOIN sources s ON s.source_key = l.source_key "
         "LEFT JOIN properties p ON p.property_id = l.property_id "
         "JOIN (SELECT DISTINCT ON (listing_id) listing_id, price_usd AS cur, trust_weight AS w "
         f"      FROM {PO()} po WHERE event <> 'removed' ORDER BY listing_id, observed_at DESC) o "
