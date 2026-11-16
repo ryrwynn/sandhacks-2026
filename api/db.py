@@ -29,7 +29,7 @@ _PO_COLS = ("observed_at, listing_id, property_id, source_key, listing_type, zip
 
 
 def read_staging() -> bool:
-    """Local testing only: RENTORKNOT_READ_STAGING=1 adds staged Facebook rows to the listing queries.
+    """Local testing only: RENTORKNOT_READ_STAGING=1 adds staged rows of every source to the listing queries.
     Default (unset): the shared tables only."""
     return os.environ.get("RENTORKNOT_READ_STAGING") == "1"
 
@@ -37,15 +37,13 @@ def read_staging() -> bool:
 def L() -> str:
     if not read_staging():
         return "listings"
-    return (f"(SELECT {_L_COLS} FROM listings UNION ALL SELECT {_L_COLS} FROM staging_listings "
-            f"WHERE source_key = '{FB_SOURCE}')")
+    return (f"(SELECT {_L_COLS} FROM listings UNION ALL SELECT {_L_COLS} FROM staging_listings)")
 
 
 def PO() -> str:
     if not read_staging():
         return "price_observations"
-    return (f"(SELECT {_PO_COLS} FROM price_observations UNION ALL SELECT {_PO_COLS} FROM staging_price_observations "
-            f"WHERE source_key = '{FB_SOURCE}')")
+    return (f"(SELECT {_PO_COLS} FROM price_observations UNION ALL SELECT {_PO_COLS} FROM staging_price_observations)")
 
 
 def weighted_median(pairs: list[tuple[float, float]]) -> float | None:
@@ -264,7 +262,7 @@ def health_info() -> dict:
 
 def source_counts() -> list[dict]:
     """Per source: kind, listings, active listings (Facebook: posted in the last 21 days)."""
-    return fetch(f"WITH {_WIN} SELECT l.source_key, s.kind, count(*) AS listings, "
+    return fetch(f"WITH {_win()} SELECT l.source_key, s.kind, count(*) AS listings, "
                  f"count(*) FILTER (WHERE {_ACTIVE_SQL}) AS active FROM {L()} l "
                  "JOIN sources s ON s.source_key = l.source_key LEFT JOIN win w ON w.source_key = l.source_key "
                  "WHERE l.zip = ANY(%(core)s) GROUP BY l.source_key, s.kind ORDER BY l.source_key", _core())
@@ -366,7 +364,7 @@ def _comp_groups() -> dict[tuple[str, int], list[float]]:
     import time
     if time.monotonic() - _comp_cache["at"] > COMP_TTL_S or not _comp_cache["groups"]:
         rows = fetch(
-            "SELECT DISTINCT ON (po.listing_id) po.zip, po.beds, po.price_usd FROM price_observations po "
+            f"SELECT DISTINCT ON (po.listing_id) po.zip, po.beds, po.price_usd FROM {PO()} po "
             "JOIN sources s ON s.source_key = po.source_key "
             f"WHERE po.listing_type = 'rent' AND {LISTING_SITE_FILTER} AND po.zip = ANY(%(core)s) "
             "AND po.beds IS NOT NULL AND po.event <> 'removed' AND po.observed_at >= now() - interval '90 days' "
@@ -387,7 +385,7 @@ def comparable_rents(zip_: str, beds: int | None, days: int = 90) -> list[float]
         if beds is not None:
             return list(groups.get((zip_, int(beds)), []))
         return [r for (z, _), rs in groups.items() if z == zip_ for r in rs]
-    base = ("SELECT DISTINCT ON (po.listing_id) po.price_usd FROM price_observations po "
+    base = (f"SELECT DISTINCT ON (po.listing_id) po.price_usd FROM {PO()} po "
             "JOIN sources s ON s.source_key = po.source_key "
             f"WHERE po.listing_type = 'rent' AND {LISTING_SITE_FILTER} AND po.zip = %s AND po.event <> 'removed' "
             "AND po.observed_at >= now() - make_interval(days => %s)")
@@ -462,8 +460,9 @@ _SORTS = {
     "price_desc": "t.cur DESC, t.listing_id",
     "biggest_drop": "(t.cur - t.first_price) ASC, t.listing_id",
 }
-_WIN = ("win AS (SELECT source_key, max(last_seen) - interval '36 hours' AS cutoff "
-        "FROM listings GROUP BY source_key)")
+def _win() -> str:
+    return ("win AS (SELECT source_key, max(last_seen) - interval '36 hours' AS cutoff "
+            f"FROM {L()} x GROUP BY source_key)")
 # Listing sites: seen in the source's latest scrape. Facebook: reposted within the last 21 days.
 _ACTIVE_SQL = (f"(CASE WHEN l.source_key = '{FB_SOURCE}' THEN l.last_seen >= now() - interval '{FB_INACTIVE_DAYS} days' "
                "ELSE l.last_seen >= w.cutoff END)")
@@ -510,7 +509,7 @@ def listing_page(zip_=None, beds=None, type_=None, max_price=None, sort="recent"
     having = ("WHERE " + " AND ".join(conds)) if conds else ""
     p.update(limit=limit, offset=offset)
     sql = f"""
-    WITH {_WIN}
+    WITH {_win()}
     SELECT t.*, count(*) OVER () AS total FROM (
       SELECT l.listing_id, l.zip, l.listing_type, l.beds, l.baths, l.sqft, l.last_seen, p.address_norm,
              p.unit_label, p.property_type, p.year_built, s.kind AS source_kind, l.source_key,
@@ -562,7 +561,7 @@ def active_rent_count(zip_=None, beds=None, type_=None, listing_sites_only: bool
     where, p = _listing_filters(zip_, beds, type_, None)
     srcs = LISTING_SITE_FILTER if listing_sites_only else (
         f"(s.kind = 'listing_site' OR (l.source_key = '{FB_SOURCE}' AND l.extras->>'unit_type' = 'entire_unit'))")
-    return fetch(f"WITH {_WIN} SELECT count(*) AS n FROM {L()} l LEFT JOIN win w ON w.source_key = l.source_key "
+    return fetch(f"WITH {_win()} SELECT count(*) AS n FROM {L()} l LEFT JOIN win w ON w.source_key = l.source_key "
                  "JOIN sources s ON s.source_key = l.source_key "
                  f"LEFT JOIN properties p ON p.property_id = l.property_id WHERE {where} AND {srcs} AND {_ACTIVE_SQL}",
                  p)[0]["n"]
@@ -572,7 +571,7 @@ def active_by_source(zip_=None, beds=None, type_=None) -> list[dict]:
     """Every active rental listing's current price with what the source breakdown needs."""
     where, p = _listing_filters(zip_, beds, type_, None)
     return fetch(
-        f"WITH {_WIN} SELECT s.kind, l.source_key, l.extras->>'unit_type' AS unit_type, "
+        f"WITH {_win()} SELECT s.kind, l.source_key, l.extras->>'unit_type' AS unit_type, "
         "COALESCE(l.extras->>'unusual_price', 'false') = 'true' AS unusual, o.cur, o.w "
         f"FROM {L()} l LEFT JOIN win w ON w.source_key = l.source_key JOIN sources s ON s.source_key = l.source_key "
         "LEFT JOIN properties p ON p.property_id = l.property_id "
