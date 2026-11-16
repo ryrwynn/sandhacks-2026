@@ -9,7 +9,7 @@ fetch:
   dataset_id: gd_lfqkr8wm13ixtbd8f5
   discover_by: url
   zip_file: data/zips_county.txt
-  input_url: "https://www.zillow.com/{city}-ca-{zip}/rentals/"
+  input_url: "https://www.zillow.com/homes/for_rent/{zip}_rb/"   # the city form returned 5-60 records a ZIP; this one about 130
   # Not a hard cap: buildings expand into one record per unit. The credit is shared; keep it low.
   # City slug per ZIP comes from data/areas_ca.csv (a wrong city 404s). ZIPs with no city use the ZIP-only search.
   zip_url: "https://www.zillow.com/homes/for_rent/{zip}_rb/"
