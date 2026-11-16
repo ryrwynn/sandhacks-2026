@@ -60,22 +60,37 @@ def _flush_area(conn, table: str, batch: list) -> int:
     return len(batch)
 
 
-def staging_insert(conn, l, trust: float, raw_id: int | None) -> None:
-    """A listing into staging_listings. No properties table in staging, so the address facts ride in extras
-    (a shared-target replay re-maps from raw_records and resolves properties then)."""
+STAGING_SQL = (
+    "INSERT INTO staging_listings (source_key, external_id_hash, listing_type, zip, neighborhood, location_precision, "
+    "beds, baths, sqft, text_redacted, extras, field_confidence, extraction, price_usd, observed_at, raw_record_id) "
+    "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) "
+    "ON CONFLICT (source_key, external_id_hash) DO UPDATE SET last_seen = now(), price_usd = EXCLUDED.price_usd, "
+    " observed_at = EXCLUDED.observed_at, extras = staging_listings.extras || EXCLUDED.extras")
+
+
+def staging_extras(l, trust: float) -> dict:
     extras = dict(l.extras)
     extras.update({k: v for k, v in {"address_norm": l.address_norm, "unit_label": l.unit_label, "lat": l.lat,
                                      "lng": l.lng, "year_built": l.year_built, "property_type": l.property_type,
                                      "price_history": l.price_history, "trust_weight": trust}.items() if v})
-    conn.execute(
-        "INSERT INTO staging_listings (source_key, external_id_hash, listing_type, zip, neighborhood, location_precision, "
-        "beds, baths, sqft, text_redacted, extras, field_confidence, extraction, price_usd, observed_at, raw_record_id) "
-        "VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) "
-        "ON CONFLICT (source_key, external_id_hash) DO UPDATE SET last_seen = now(), price_usd = EXCLUDED.price_usd, "
-        " observed_at = EXCLUDED.observed_at, extras = staging_listings.extras || EXCLUDED.extras",
-        (l.source_key, l.external_id_hash, l.listing_type, l.zip, l.neighborhood, l.location_precision, l.beds, l.baths,
-         l.sqft, l.text_redacted, json.dumps(extras, default=str), json.dumps(l.field_confidence), l.extraction,
-         l.price_usd, l.observed_at, raw_id))
+    return extras
+
+
+def staging_args(l, trust: float, raw_id: int | None) -> tuple:
+    """The parameters of one staging_listings row (json columns as Python objects). The fast path
+    (worker.fast) must produce the same values; api/tests/test_fast_path.py checks it."""
+    return (l.source_key, l.external_id_hash, l.listing_type, l.zip, l.neighborhood, l.location_precision, l.beds,
+            l.baths, l.sqft, l.text_redacted, staging_extras(l, trust), l.field_confidence, l.extraction, l.price_usd,
+            l.observed_at, raw_id)
+
+
+def staging_insert(conn, l, trust: float, raw_id: int | None) -> None:
+    """A listing into staging_listings. No properties table in staging, so the address facts ride in extras
+    (a shared-target replay re-maps from raw_records and resolves properties then)."""
+    a = list(staging_args(l, trust, raw_id))
+    a[10] = json.dumps(a[10], default=str)
+    a[11] = json.dumps(a[11])
+    conn.execute(STAGING_SQL, a)
 
 
 def replay_listings(conn, template: dict, target: str, trust: float, gemini_budget: int, limit: int | None) -> dict:

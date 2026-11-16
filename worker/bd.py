@@ -69,10 +69,13 @@ def sample_done(conn, source_key: str) -> bool:
                         "LIMIT 1", (source_key,)).fetchone() is not None
 
 
-def plan_run(conn, source_key: str, inputs: list, limit: int, *, note: str = "", budget: float | None = None) -> dict:
-    """Estimate, then either record a 'refused' row and raise, or record an 'estimated' row."""
+def plan_run(conn, source_key: str, inputs: list, limit: int, *, note: str = "", budget: float | None = None,
+             est_per_input: int | None = None) -> dict:
+    """Estimate, then either record a 'refused' row and raise, or record an 'estimated' row.
+    est_per_input: expected records per input from observed ratios (Zillow overshoots limit_per_input, so the
+    limit alone underestimates); default is the worst case at the limit."""
     budget = budget_usd() if budget is None else budget
-    records, usd = estimate(len(inputs), limit)
+    records, usd = estimate(len(inputs), est_per_input or limit)
     spent = spent_usd(conn)
     ok = spent + usd <= budget + 1e-9
     row = conn.execute(
@@ -145,10 +148,33 @@ def wait_ready(client, snapshot_id: str, *, max_wait: int = 3600, sleep=time.sle
 
 
 # ---------------------------------------------------------------- inputs
+def area_slugs() -> dict[str, str]:
+    """ZIP -> Zillow city slug from data/areas_ca.csv (ZIPs with no Census place have none)."""
+    import csv
+    from worker.mapping import ROOT
+    with open(ROOT / "data" / "areas_ca.csv") as fh:
+        return {r["zip"]: r["city_slug"] for r in csv.DictReader(fh) if r.get("city_slug")}
+
+
 def zillow_inputs(template: dict, zips: list[str], city_slug: dict[str, str] | None = None) -> list[dict]:
+    """Search URLs. City slug precedence: explicit, template city_by_zip, areas_ca.csv, then the template's
+    `zip_url` (ZIP-only search, for ZIPs with no city), then san-diego. A wrong city 404s (billed as 1 record)."""
     f = template["fetch"]
-    slugs = {**(f.get("city_by_zip") or {}), **(city_slug or {})}
-    return [{"url": f["input_url"].format(zip=z, city=slugs.get(z) or "san-diego")} for z in zips]
+    known = area_slugs() if "{city}" in f["input_url"] else {}
+    slugs = {**known, **(f.get("city_by_zip") or {}), **(city_slug or {})}
+    out = []
+    for z in zips:
+        if slugs.get(z) or not f.get("zip_url"):
+            out.append({"url": f["input_url"].format(zip=z, city=slugs.get(z) or "san-diego")})
+        else:
+            out.append({"url": f["zip_url"].format(zip=z)})
+    return out
+
+
+def zillow_zip_inputs(template: dict, zips: list[str]) -> list[dict]:
+    """ZIP-only search URLs (template fetch.zip_url): about 130 records a ZIP at limit 10, against 5 to 60 for
+    the city URL, and no aborted building pages. Used by the county refresh."""
+    return [{"url": template["fetch"]["zip_url"].format(zip=z)} for z in zips]
 
 
 def sample_inputs(inputs: list[dict], limit: int) -> tuple[list[dict], int]:
