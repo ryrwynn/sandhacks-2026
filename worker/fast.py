@@ -455,3 +455,20 @@ def chunk_lines(lines, size: int = CHUNK):
             buf = []
     if buf:
         yield buf
+
+
+def backfill_staging_observations(conn) -> int:
+    """One 'seen'/'posted' observation per staged listing that has a price and no observation yet (rows staged
+    by the older row-by-row county/on-demand path wrote none). Idempotent."""
+    cur = conn.execute(
+        "INSERT INTO staging_price_observations (observed_at, listing_id, property_id, source_key, listing_type, zip, "
+        "beds, price_usd, price_max_usd, trust_weight, event) "
+        "SELECT (date_trunc('day', s.observed_at AT TIME ZONE 'UTC') AT TIME ZONE 'UTC'), s.listing_id, NULL, "
+        "s.source_key, s.listing_type, s.zip, s.beds, s.price_usd, NULL, "
+        "COALESCE((s.extras->>'trust_weight')::numeric, 1), "
+        "CASE WHEN s.location_precision IN ('zip','neighborhood','city') THEN 'posted' ELSE 'seen' END "
+        "FROM staging_listings s WHERE s.price_usd IS NOT NULL AND s.observed_at IS NOT NULL AND NOT EXISTS "
+        "(SELECT 1 FROM staging_price_observations o WHERE o.listing_id = s.listing_id) "
+        "ON CONFLICT (listing_id, observed_at, event) DO NOTHING")
+    conn.commit()
+    return cur.rowcount
