@@ -98,7 +98,7 @@ def test_train_scenarios_writes_core_zips_only(monkeypatch, macro_frame):
 
     panel = synthetic_panel(zips=4)
     series = {z: panel[z] for z in panel.columns}
-    monkeypatch.setattr(train, "load_series", lambda conn, metric: series)
+    monkeypatch.setattr(train, "load_series", lambda conn, metric, staging=False: series)
     monkeypatch.setattr(train, "load_macro", lambda conn: macro_frame.reindex(
         pd.date_range("2000-01-01", "2026-10-01", freq="MS")).ffill())
     monkeypatch.setattr(train.scenario_run, "run_metric", lambda p, m, **k: _ORIG_RUN(p, m, with_ets=False))
