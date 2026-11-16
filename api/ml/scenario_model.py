@@ -89,8 +89,8 @@ def predict(models: list, Y: np.ndarray, t: int, deltas: np.ndarray | None) -> n
 
 
 # ---------- backtest ----------
-def origins(n: int) -> list[int]:
-    return list(range(MIN_ORIGIN, n - H, STEP))
+def origins(n: int, min_origin: int = MIN_ORIGIN) -> list[int]:
+    return list(range(min_origin, n - H, STEP))
 
 
 def _ets_log(panel: pd.DataFrame, t: int):
@@ -104,7 +104,8 @@ def _ets_log(panel: pd.DataFrame, t: int):
     return np.array(means).T, np.array(los).T, np.array(his).T
 
 
-def backtest(panel: pd.DataFrame, macro_frame: pd.DataFrame, fed: dict | None = None, with_ets: bool = True) -> dict:
+def backtest(panel: pd.DataFrame, macro_frame: pd.DataFrame, fed: dict | None = None, with_ets: bool = True,
+             min_origin: int = MIN_ORIGIN) -> dict:
     """Rolling-origin backtest. Returns arrays over (origin, horizon, zip) of log forecasts for each method:
     naive, ets, own (pooled, no macro), x_flat (baseline backtest: macro held flat), x_recession, x_growth,
     x_oracle (realized macro) and the log actuals."""
@@ -112,7 +113,7 @@ def backtest(panel: pd.DataFrame, macro_frame: pd.DataFrame, fed: dict | None = 
     M = align_macro(panel, macro_frame)
     fed = fed or mc.load_fed()
     deltas = mc.scenario_deltas(macro_frame, fed)
-    O = origins(len(Y))
+    O = origins(len(Y), min_origin)
     keys = ["naive", "own", "x_flat", "x_recession", "x_growth", "x_oracle", "actual"] + (["ets", "ets_lo", "ets_hi"] if with_ets else [])
     res = {k: [] for k in keys}
     for t in O:

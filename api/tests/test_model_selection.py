@@ -112,7 +112,8 @@ class FakeConn:
         return False
 
 
-def test_forecasts_cover_served_zips_with_36_months_and_skip_short():
+def test_forecasts_cover_served_zips_with_36_months_and_skip_short(monkeypatch):
+    monkeypatch.setattr(train, "served_zips", lambda c: {"92101", "92102", "91901"})
     rows, m = train.compute_forecasts(FakeConn(), "r", dt.datetime.now(), staging=True)
     assert {r[3] for r in rows} == {"92101", "91901"}      # 92102 has 20 months; staging adds 91901
     assert m["zips"] == 2 and m["skipped"] >= 1
@@ -127,6 +128,7 @@ def test_dry_run_prints_summary_and_never_writes(monkeypatch):
     monkeypatch.setattr(train, "record_run", lambda *a, **k: pytest.fail("dry run wrote model_runs"))
     monkeypatch.setattr(fair_rent, "save", lambda *a, **k: pytest.fail("dry run saved a model"))
     monkeypatch.setattr(train, "served_zips", lambda c: {"92101", "91901"})
+    monkeypatch.setattr(train, "core_zips", lambda: {"92101"})
     out = train.dry_run(conn, staging=True)
     assert out["dry_run"] and out["rentals_used"] == 1000 and out["new_zips"] >= 1
     assert out["fair_rent"]["decision"] == "model" and out["fair_rent"]["median_method"]["coverage_80"] == 0.81

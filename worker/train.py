@@ -32,8 +32,8 @@ SELECT geo_id AS zip, period, value::float8 AS value FROM area_metrics
 WHERE geo_type = 'zip' AND metric = %s AND source_key = 'zillow_research'
 ORDER BY geo_id, period
 """
+LONG_MONTHS, SHORT_MONTHS = 96, 60
 STAGING_SERIES_SQL = SERIES_SQL.replace("FROM area_metrics", "FROM staging_area_metrics")
-SERVED_SQL = "SELECT geo_id FROM areas WHERE geo_type = 'zip' AND tier IN ('core', 'county', 'on_demand')"
 
 RENTALS_SQL = """
 SELECT DISTINCT ON (po.listing_id)
@@ -61,12 +61,15 @@ WHERE sl.listing_type = 'rent' AND sl.source_key = ANY(%s) AND sl.source_key NOT
 
 
 def served_zips(conn) -> set[str]:
-    """ZIPs the site serves (areas.tier core, county or on_demand); data/zips.txt when areas is empty."""
-    from api.db import ZIP_NAMES
-    with conn.cursor() as cur:
-        cur.execute(SERVED_SQL)
-        got = {r[0] for r in cur.fetchall()}
-    return got or set(ZIP_NAMES)
+    """The API's served set (db.served_areas: tier core, county or on_demand with enough active listings; staged
+    listings count when RENTORKNOT_READ_STAGING=1); data/zips.txt when the database is unreachable."""
+    from api import db
+    return set(db.served_zips())
+
+
+def core_zips() -> set[str]:
+    from api import db
+    return set(db.load_zip_names())
 
 
 def load_series(conn, metric: str, staging: bool = False) -> dict[str, pd.Series]:
@@ -218,13 +221,32 @@ def compute_scenarios(conn, run_id, made_at, staging: bool = False, zips: set[st
     for metric in ("zori", "zhvi"):
         series = {z: s for z, s in load_series(conn, metric, staging).items()
                   if z in core and len(s.dropna()) >= MIN_MONTHS}
-        if len(series) < 2:
-            continue
-        res = scenario_run.run_metric(scenario_model.panel_from_series(series), macro_frame)
-        rows += scenario_run.forecast_rows(metric, res, str(run_id), made_at, core)
-        summary[metric] = res["summary"]
-        for z, r in res["by_series"].items():
-            by_series[f"{z}:{metric}"] = r
+        # The pooled model needs every ZIP in one panel with complete months, so ZIPs are grouped by history:
+        # long (96+ months, the usual backtest) and short (60-95 months, a backtest with earlier origins and
+        # fewer test origins). ZIPs with 36-59 months, or not current to the latest month, get the ETS
+        # forecasts only (the `forecasts` table); history is never padded.
+        last = max((s.dropna().index[-1] for s in series.values()), default=None)
+        groups = {"": {}, "_short": {}}
+        for z, s in series.items():
+            n = len(s.dropna())
+            if s.dropna().index[-1] == last:
+                if n >= LONG_MONTHS:
+                    groups[""][z] = s
+                elif n >= SHORT_MONTHS:
+                    groups["_short"][z] = s
+        for suffix, grp in groups.items():
+            if len(grp) < 2:
+                continue
+            panel = scenario_model.panel_from_series(grp)
+            n = len(panel)
+            if n < SHORT_MONTHS:
+                continue
+            min_origin = min(scenario_model.MIN_ORIGIN, max(24, n - 42))
+            res = scenario_run.run_metric(panel, macro_frame, min_origin=min_origin)
+            rows += scenario_run.forecast_rows(metric, res, str(run_id), made_at, core)
+            summary[metric + suffix] = res["summary"]
+            for z, r in res["by_series"].items():
+                by_series[f"{z}:{metric}"] = r
     if not rows:
         return None
     return rows, {"by_series": by_series, "summary": summary}
@@ -251,10 +273,9 @@ def _rnd(d: dict | None) -> dict | None:
 
 def dry_run(conn, staging: bool) -> dict:
     """Everything in memory on a read-only connection; returns the compact summary. Writes nothing."""
-    from api.db import ZIP_NAMES
     made_at, run_id = datetime.now(timezone.utc), uuid.uuid4()
     served = served_zips(conn)
-    new = served - set(ZIP_NAMES)
+    new = served - core_zips()
     out: dict = {"dry_run": True, "read_staging": staging, "served_zips": len(served), "new_zips": len(new)}
     rentals = load_rentals(conn, staging)
     out["rentals_used"] = int(len(rentals))
@@ -293,6 +314,8 @@ def main() -> int:
     args = sys.argv[1:]
     staging = "--read-staging" in args or os.environ.get("RENTORKNOT_READ_STAGING") == "1"
     if "--dry-run" in args:
+        if staging:
+            os.environ["RENTORKNOT_READ_STAGING"] = "1"   # the API's served set counts staged listings too
         with psycopg.connect(url) as conn:
             conn.read_only = True      # the database refuses any write on this connection
             print(json.dumps(dry_run(conn, staging), default=str, separators=(",", ":")))
