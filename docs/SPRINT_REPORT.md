@@ -98,7 +98,28 @@ Benchmark on 5,036 `zillow_rent` rows already in `raw_records` (no scrape), shar
 
 ## Checks before "go"
 
-CHECKS_PLACEHOLDER
+Local production build on :3010 against a local API on :8010 with `RENTORKNOT_READ_STAGING=1`. The laptop's link to
+Tiger dropped connections throughout (the API log shows 227 "couldn't get a connection after 3.00 sec" pool waits and SSL
+timeouts during one browser run), so every failure of a full run was rerun on its own.
+
+| Check | Result |
+| --- | --- |
+| `uv run pytest api/tests -q` | **355 passed** (new: fast path 13, served areas 9, data_version, model selection, prefill contract, MCP 16+) |
+| `npx tsc --noEmit`, `npm run build` | pass |
+| `./scripts/preflight.sh` | no FAIL. WARN: extra tables in public, no DEV_DATABASE_URL, no local Docker. (The first run hung on the server ssh step and was stopped; the rerun passed it.) |
+| `uv run python scripts/mcp-check.py` (new) | **10/10**: a real MCP client lists 10 tools; each call returns a result and a `form_url` that opens with 200 |
+| `node scripts/sprint-check.mjs` (new; the extra browser checks) | **17/17** after one isolated rerun of the Find paging check (it timed out in the full run): sidebar on the left edge at 1280 and 1920; Facebook card button top right, badge in tags; Saved opens the sources, Remove + Undo restores both; all 8 forms fill from their prefill link and don't submit; sidebar order and the renamed headings and titles; Max price visible; 15 per page, Per page, page 2 differs, filter goes to page 1; county ZIPs in the area dropdown |
+| `node scripts/e2e.mjs` | full run 18/23. The 5 failures: find-filters and find-starter pass on their own; zip-pages passes on its own; tools-themes-legal and mobile fail only on "Failed to initialize WebGL" (Mapbox in headless Chromium, which runs out of software WebGL contexts) |
+| `node scripts/ui-check.mjs` | full run 154/186. Every failure is a `/zip/...` page: HTTP 500/503 from pool timeouts, page loads over 45 s, or React error #441 (the minified form of the page's "couldn't reach our data service" error). The same endpoints answer 200 in 0.5 to 3 s on their own. `/zip/92115` alone still timed out while the link was down; it should be rechecked live after "go" |
+| `grep -rnE "[a-z0-9.]+@gmail\.com" frontend/src api docs` | nothing |
+
+Bugs found by the checks and fixed: the Rent Cap form had no ZIP field (prefill and the apartment page link now fill
+it); /buyer and the Starter finder ranked on load when a prefill link set them (they now wait for the button); new
+served ZIPs got 404s on the scenario chart; county listings would have gone inactive after the next weekly scrape.
+
+Not a code change but worth knowing: the API's connection pool is 5 connections opened on demand with a 3 s wait. On the
+server (close to Tiger) that has been fine; from this laptop a page that fires about 10 requests at once can wait past
+3 s. If the live ZIP pages are slow after "go", raising `max_size` or `min_size` is the first thing to try.
 
 ## Skipped, and why
 
