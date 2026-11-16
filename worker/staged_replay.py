@@ -66,7 +66,7 @@ ON CONFLICT (listing_id, observed_at, event) DO NOTHING
 
 MARK_AREAS_SQL = """
 UPDATE areas a SET tier = %s, last_scraped_at = COALESCE(a.last_scraped_at, now())
-WHERE a.geo_type = 'zip' AND a.tier IN ('county', 'index') AND a.geo_id IN (
+WHERE a.geo_type = 'zip' AND a.tier = 'county' AND a.geo_id IN (   -- sprint: never promote index ZIPs
   SELECT zip FROM listings WHERE source_key = %s AND zip IS NOT NULL AND last_seen > now() - interval '30 days'
   GROUP BY zip HAVING count(*) >= 5)
 """
