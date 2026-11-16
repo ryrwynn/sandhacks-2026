@@ -39,11 +39,12 @@ def zip_data(listing_sites_only: bool = False) -> dict[str, dict]:
     feats = safe(db.zip_features, default={})
     vol = safe(db.zhvi_volatility, default={})
     out = {}
-    for z, name in db.ZIP_NAMES.items():
+    for z, a in db.served_areas().items():
+        name = a["name"]
         m = meds.get(z, {})
         zori, zhvi = latest.get((z, "zori")), latest.get((z, "zhvi"))
         out[z] = {
-            "zip": z, "name": name, "zori": zori, "zhvi": zhvi,
+            "zip": z, "name": name, "tier": a["tier"], "county": a["county"], "zori": zori, "zhvi": zhvi,
             "median_rent_by_beds": {b: (m[int(b)][0] if int(b) in m else None) for b in BEDS},
             "listings_30d": sum(n for _, n in m.values()),
             "rent_fc": pct_change(fc.get((z, "zori")), zori),

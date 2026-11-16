@@ -3,6 +3,7 @@
 import { createTool } from "@mastra/core/tools";
 import { z } from "zod";
 import { apiCall } from "./api";
+import { PREFILL_FORMS, prefillLink } from "./prefill";
 
 /** Keep tool output small for the model: first N items only. */
 const brief = <T,>(items: T[] | undefined, n: number) => (items ?? []).slice(0, n);
@@ -96,4 +97,20 @@ export const zipSeries = createTool({
   },
 });
 
-export const advisorTools = { matchListings, searchListings, marketSnapshot, rentIncreaseCheck, gougingCheck, zipSeries };
+export const prefillForm = createTool({
+  id: "prefill_form",
+  description:
+    "Build a button that opens one of the site's forms with the person's numbers filled in (it only fills the fields; they press submit themselves). " +
+    "Use it after a check or when the person wants to try the numbers on a form. Forms: renter (rent increase check), listing (is this asking rent fair), " +
+    "gouging, owner, owner_reach, buyer, find, advisor. Parameter names per form: renter address, zip, lowest, new, effective, year, type, increases, notice, corp; " +
+    "listing zip, beds, asking, baths, sqft, type, text; gouging zip, beds, new, date, before; owner zip, beds, target, sqft, year, type, lowest, effective, notice, corp; " +
+    "owner_reach zip, beds, ask, text; buyer budget, beds; find zip, beds, type, max, starter_budget, starter_beds; advisor needs. " +
+    "Dates are YYYY-MM-DD; notice and corp are yes, no or unsure. Do not repeat the link in your answer: the button shows under it.",
+  inputSchema: z.object({
+    form: z.enum(PREFILL_FORMS),
+    values: z.record(z.string(), z.union([z.string(), z.number(), z.boolean()])).default({}),
+  }),
+  execute: async (input) => prefillLink(input.form, input.values),
+});
+
+export const advisorTools = { matchListings, searchListings, marketSnapshot, rentIncreaseCheck, gougingCheck, zipSeries, prefillForm };
