@@ -7,6 +7,7 @@ export type AdvisorAnswer = {
   steps: number;            // model steps used, at most 4
   ungrounded: string[];     // figures in the answer that no tool result supports (should be empty)
   cached: boolean;
+  links?: { form: string; url: string; button: string }[];   // buttons that open a form with numbers filled in
 };
 
 export async function askAdvisor(text: string, signal?: AbortSignal): Promise<AdvisorAnswer> {
