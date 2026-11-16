@@ -141,9 +141,11 @@ async function main() {
     const prices = (await page.locator("article strong").allInnerTexts()).map(money).slice(0, 12);
     expect(prices.every((p, i) => i === 0 || p >= prices[i - 1]), `not ascending: ${prices.join(",")}`);
     const before = await cards.count();
-    await page.getByRole("button", { name: "Load more" }).click();
+    const first = await page.locator("article h3").first().innerText();
+    await page.getByRole("button", { name: "Next" }).click();
     await page.waitForTimeout(3000);
-    expect((await cards.count()) > before, "Load more added nothing");
+    expect((await page.locator("article h3").first().innerText()) !== first, "Next page showed the same first card");
+    expect((await page.locator("[data-testid=find-showing]").innerText()).startsWith("Showing 16"), "page 2 does not say Showing 16");
   });
   await step("find-save", async () => {
     await go("/find");
@@ -229,12 +231,12 @@ async function main() {
     expect((await bar.innerText()).includes("2 selected"), "bar doesn't say 2 selected");
     // Open in new tabs: a popup opens (or the blocked-links list shows)
     const pop = ctx.waitForEvent("page", { timeout: 4000 }).catch(() => null);
-    await bar.getByRole("button", { name: /Open selected/ }).click();
+    await bar.getByRole("button", { name: /Open sources/ }).click();
     const p2 = await pop;
     const blocked = await page.locator("[data-testid=saved-blocked-links]").count();
     expect(p2 || blocked, "nothing opened and no blocked-links list");
     if (p2) await p2.close();
-    await bar.getByRole("button", { name: /Remove selected/ }).click();
+    await bar.getByRole("button", { name: /Remove from saved/ }).click();
     await page.waitForTimeout(500);
     expect((await cards.count()) === n0 - 2, `remove: ${n0} -> ${await cards.count()}`);
     await page.locator("[data-testid=saved-undo-toast]").getByRole("button", { name: "Undo" }).click();
