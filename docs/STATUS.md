@@ -1,6 +1,6 @@
 # Overnight run status
 
-Heartbeat: 2026-11-15 — api lane merged (1857a80, 313 tests); data, models, web, mcp running; api lane widening the local staging flag
+Heartbeat: 2026-11-15 — api + mcp merged (89304c7; 329 tests, tsc, build pass); data, models, web running
 
 ## Phase 0, setup
 - [x] preflight: all clear; WARN no DEV_DATABASE_URL (stage in shared DB), WARN no Google keys (sign-in off), WARN no local Docker
@@ -38,7 +38,7 @@ Heartbeat: 2026-11-15 — api lane merged (1857a80, 313 tests); data, models, we
 
 # Morning run (2026-11-15)
 
-Heartbeat: 2026-11-15 — api lane merged (1857a80, 313 tests); data, models, web, mcp running; api lane widening the local staging flag
+Heartbeat: 2026-11-15 — api + mcp merged (89304c7; 329 tests, tsc, build pass); data, models, web running
 
 ## 1. Data
 - [x] Load the data 1: index tier staged (160,122 and 3,056 rows) — ran by owner this morning, not rerun
@@ -83,7 +83,7 @@ Heartbeat: 2026-11-15 — api lane merged (1857a80, 313 tests); data, models, we
 
 # Final run (2026-11-15)
 
-Heartbeat: 2026-11-15 — api lane merged (1857a80, 313 tests); data, models, web, mcp running; api lane widening the local staging flag
+Heartbeat: 2026-11-15 — api + mcp merged (89304c7; 329 tests, tsc, build pass); data, models, web running
 
 - [x] 1. Connectivity: database ok (8 s timeout)
 - [x] 2. Schedules and rules: weekly zillow_rent Thu 12:00 UTC; FMR_RULE_VERIFIED=True; HUD SAFMR refused (202 empty), fmr.yaml stays unverified; BD estimate ≈ $17–26/month in WAKEUP.md
@@ -105,7 +105,7 @@ Heartbeat: 2026-11-15 — api lane merged (1857a80, 313 tests); data, models, we
 
 # Sprint (2026-11-15, docs/SPRINT.md)
 
-Heartbeat: 2026-11-15 — api lane merged (1857a80, 313 tests); data, models, web, mcp running; api lane widening the local staging flag
+Heartbeat: 2026-11-15 — api + mcp merged (89304c7; 329 tests, tsc, build pass); data, models, web running
 
 Settings: Bright Data budget $40; areas = data/zips_county.txt + queued requests + 95014; county refresh monthly;
 contact none; Apartments.com collector none (D4 skipped).
