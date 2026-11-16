@@ -3,7 +3,8 @@
 import { askAdvisor as askMatchAdvisor } from "@/advisor/client";
 import { markMock } from "./mockflag";
 
-export type AdvisorMessage = { role: "user" | "assistant"; content: string };
+export type AdvisorLink = { form: string; url: string; button: string };
+export type AdvisorMessage = { role: "user" | "assistant"; content: string; links?: AdvisorLink[] };
 
 const SAMPLE =
   "This is a sample answer: the housing advisor is not connected yet. When it is, it will use RentOrKnot's own data (asking rents, forecasts, the AB 1482 cap and the gouging rules) and will say which figures it used. It cannot give legal advice.";
@@ -18,7 +19,7 @@ async function* sample(): AsyncGenerator<string> {
 
 /** Asks the advisor (night-match's JSON client: POST /advisor/chat {text}) and yields the answer. The advisor is
  * stateless, so the latest user message is sent, with the previous turn as context. Falls back to a labeled sample. */
-export async function* askAdvisor(messages: AdvisorMessage[], signal?: AbortSignal): AsyncGenerator<string> {
+export async function* askAdvisor(messages: AdvisorMessage[], signal?: AbortSignal): AsyncGenerator<string | AdvisorLink[]> {
   if (process.env.NEXT_PUBLIC_USE_MOCKS === "true") return yield* sample();
   const users = messages.filter((m) => m.role === "user");
   const last = users[users.length - 1]?.content ?? "";
@@ -27,6 +28,7 @@ export async function* askAdvisor(messages: AdvisorMessage[], signal?: AbortSign
   try {
     const res = await askMatchAdvisor(text, signal);
     yield res.answer;
+    if (res.links?.length) yield res.links;   // buttons that open a form filled in; never submitted
   } catch {
     if (signal?.aborted) return;
     return yield* sample();   // 404/501 or network error: not connected
