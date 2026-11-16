@@ -9,7 +9,7 @@ Sources: the Figma prototype (one frame, "Rental market overview", grayscale wir
 One top bar for the whole site (merge `NavBar` and `ModeNav`):
 
 - Brand at left: **RentOrKnot**, matching the domain rentorknot.us (the Figma's "SandHacks" is a placeholder).
-- Market overview (`/`) · Saved apartments (`/saved`) · Price alerts (`/alerts`) · Find apartments (`/find`) · Tools ▾ (Rent increase check, Buy, Own, About, and the newer tools).
+- Market overview (`/`) · Saved apartments (`/saved`) · Price alerts (`/alerts`) · Find apartments (`/find`) · Tools ▾ (Find by needs, Rent Cap, Emergency Rent Limits, Buy, Own, About, and the newer tools; "Rent Cap" is the AB 1482 check and "Emergency Rent Limits" is the Penal Code 396 check).
 - Saved apartments shows a count badge; Price alerts shows a badge when a saved apartment hit its target.
 - An optional "Sign in" (Google) button appears only when sign-in is configured. Without it the site works fully with local saves.
 - A small footer on every page: Privacy · Terms · About.
@@ -31,13 +31,13 @@ Where the chart's numbers come from: with "Any" bedrooms, the ZIP's Zillow typic
 
 From the Figma card, top to bottom:
 
-- Address (bold) and a round link button at top right that opens the source listing in a new tab (only for listing-site records with a public URL; never for social posts).
+- Address (bold) and a round link button at top right that opens the source in a new tab: `source_url` for listing-site records, `post_url` for Facebook posts (aria-label "Open the Facebook post for {title} in a new tab"). Shown only when that URL exists. The ⋯ menu has "Report this listing" (placeholder link to /api/health for now, `TODO(report)`) and, on Saved, "Remove from saved".
 - "{Neighborhood} · {beds} bed · {sqft} sq ft" (Studio for 0 beds).
 - Price "$2,950 / mo" (always with a thousands separator), and at right the change since tracking started: "↓ $100 (3.3%)". Drops use the "good" color, rises the "warn" color, and the arrow and words always say which way, so color is never the only signal.
 - A sparkline of real price observations, with the first and last observation months under it. With a single observation, show a dot and "Tracking since {date}".
 - New: a small label from the fair-rent engine: "In typical range", "Above typical range" or "Below typical range" (never "illegal").
 - Tags from real data only, at most 4 after the fair-rent label: the listing's amenities (filled chips), then area tags about the ZIP (outlined, always ending "(ZIP)", e.g. "Groceries nearby (ZIP)"). Facebook rooms carry "Roommate wanted" and sublets "Sublet".
-- Facebook listings: a "Facebook group · lower confidence" badge, the group name, a title built from extracted fields (no street address), and a "View post on Facebook" link.
+- Facebook listings: the "Facebook group · lower confidence" badge as a normal chip in the tags row, the group name, a title built from extracted fields (no street address). The post link is the round top-right button; there is no text link at the bottom. The apartment page uses the same order.
 - On `/find`: a full-width "+ Save apartment" / "Saved ✓" toggle, always at the bottom of the card (cards in a row are equal height, so the buttons line up). On saved cards: a remove action in a small menu.
 - The whole card links to the apartment page.
 
@@ -47,7 +47,7 @@ From the Figma card, top to bottom:
 - **Price history chart:** a step line (asking rent changes in steps) over every real observation, with event markers for Listed, Price change and Removed, and a table of the same events below it.
 - "What it should rent for": the fair-rent estimate with its range and label, and its percentile among comparable listings (same ZIP and bedrooms).
 - Neighborhood context: the ZIP's 12-month rent forecast with its band, linking to `/zip/[zip]`.
-- "Renting here already?": a link to the rent increase check, prefilled with the address and year built.
+- "Renting here already?": a "Check the Rent Cap" button, prefilled with the address and year built.
 
 ## Saved apartments (`/saved`)
 

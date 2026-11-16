@@ -6,10 +6,11 @@ import { handleChatStream } from "@mastra/ai-sdk";
 import { createUIMessageStreamResponse } from "ai";
 import { MAX_STEPS, makeMastra } from "@/advisor";
 import { ungroundedFigures } from "@/advisor/figures";
+import { linksFromResults, type PrefillLink } from "@/advisor/prefill";
 
 
 const MAX_TEXT = 1500;
-const cache = new Map<string, { answer: string; steps: number; ungrounded: string[] }>();
+const cache = new Map<string, { answer: string; steps: number; ungrounded: string[]; links: PrefillLink[] }>();
 let mastra: ReturnType<typeof makeMastra> | null = null;
 
 async function getMastra() {
@@ -39,7 +40,7 @@ export async function POST(req: Request) {
     if (hit) return Response.json({ ...hit, cached: true });
     const res = await m.getAgent("advisor").generate(text, { maxSteps: MAX_STEPS });
     const results = (res.toolResults ?? []).map((t: { payload?: { result?: unknown }; result?: unknown }) => t.payload?.result ?? t.result);
-    const out = { answer: res.text, steps: res.steps?.length ?? 0, ungrounded: ungroundedFigures(res.text, results) };
+    const out = { answer: res.text, steps: res.steps?.length ?? 0, ungrounded: ungroundedFigures(res.text, results), links: linksFromResults(results) };
     if (!out.ungrounded.length) {
       if (cache.size > 200) cache.clear();
       cache.set(text, out);

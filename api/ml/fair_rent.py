@@ -17,6 +17,7 @@ from threadpoolctl import threadpool_limits
 FEATURES = ["beds", "baths", "log_sqft", "zip_code", "year_built", "ptype_code", "lat", "lng"]
 MIN_ROWS_FOR_MODEL = 1000
 QUANTILES = (0.1, 0.5, 0.9)
+MIN_COVERAGE = 0.78                # the model must reach this held-out 80% coverage to be served
 Label = Literal["above_typical_range", "in_range", "below_typical_range"]
 
 
@@ -46,7 +47,7 @@ def fit(df) -> dict:
     with threadpool_limits(limits=1):  # OpenMP oversubscription made small fits take 40s+
         models = {q: HistGradientBoostingRegressor(
             loss="quantile", quantile=q, categorical_features=cat, max_iter=300,
-            learning_rate=0.05, random_state=0).fit(X, y, sample_weight=w) for q in QUANTILES}
+            learning_rate=0.05, max_depth=6, max_leaf_nodes=15, random_state=0).fit(X, y, sample_weight=w) for q in QUANTILES}
     models["encoders"] = enc
     return models
 
@@ -183,6 +184,32 @@ def fallback_cross_validate(df, folds: int = 5) -> dict:
     return {"mae_usd": float(np.mean(errs)), "median_ae_usd": float(np.median(errs)),
             "coverage_80": float(np.mean(hits)), "n": int(len(df)), "n_scored": len(errs),
             "spread": calibrate_spread(df, folds=folds)}
+
+
+def select_method(df, folds: int = 5, min_rows: int = MIN_ROWS_FOR_MODEL) -> dict:
+    """Held-out comparison of the gradient-boosted model and the ZIP-and-bedroom median method.
+    Returns {"decision": "model"|"zip_bed_median", "reason": str, "n": int, "model": {...}|None, "median": {...}}.
+    The model is served only with at least `min_rows` rows, a lower held-out median absolute error than the median
+    method AND 80% coverage of at least MIN_COVERAGE. The median method's check always runs (its spread is what
+    the API uses when it is served)."""
+    median = fallback_cross_validate(df, folds=folds)
+    n = int(len(df))
+    if n < min_rows:
+        return {"decision": "zip_bed_median", "n": n, "model": None, "median": median,
+                "reason": f"{n} address-level rentals, fewer than {min_rows}: model not trained"}
+    model = cross_validate(df, folds=folds)
+    m_ae, b_ae = model["median_ae_usd"], median.get("median_ae_usd")
+    cov = model["coverage_80"]
+    if b_ae is None:
+        ok = cov >= MIN_COVERAGE
+        why = f"median method could not be scored; model 80% coverage {cov:.2f} " + ("meets" if ok else "is below") + f" {MIN_COVERAGE}"
+    elif m_ae >= b_ae:
+        ok, why = False, f"model median error ${m_ae:.0f} is not lower than the median method's ${b_ae:.0f}"
+    elif cov < MIN_COVERAGE:
+        ok, why = False, f"model median error ${m_ae:.0f} beats the median method's ${b_ae:.0f} but 80% coverage {cov:.2f} is below {MIN_COVERAGE}"
+    else:
+        ok, why = True, f"model median error ${m_ae:.0f} is lower than the median method's ${b_ae:.0f} and 80% coverage is {cov:.2f}"
+    return {"decision": "model" if ok else "zip_bed_median", "n": n, "model": model, "median": median, "reason": why}
 
 
 def label(asking_rent: float, estimate: dict) -> Label:

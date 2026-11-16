@@ -10,13 +10,15 @@ import { postMatch } from "@/lib/night-api";
 import type { MatchResponse } from "@/lib/night-types";
 import { useSaved } from "@/lib/saved";
 import { usd } from "@/lib/format";
+import { usePrefill } from "@/lib/useprefill";
 
 const STARTERS = ["Is a 12% rent increase legal in San Diego?", "Which ZIPs are getting cheaper?", "What can I do if my landlord raised rent during a wildfire emergency?"];
 
 /** Chat with the housing advisor. All network access is in lib/advisor-client.ts. */
 export function AdvisorChat() {
+  const q = usePrefill();
   const [msgs, setMsgs] = useState<AdvisorMessage[]>([]);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(q.text("ask", 2000));   // typed in, not sent
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
   const abort = useRef<AbortController | null>(null);
@@ -36,9 +38,10 @@ export function AdvisorChat() {
     abort.current = new AbortController();
     try {
       let acc = "";
+      let links: AdvisorMessage["links"];
       for await (const chunk of askAdvisor(next, abort.current.signal)) {
-        acc += chunk;
-        setMsgs([...next, { role: "assistant", content: acc }]);
+        if (typeof chunk === "string") acc += chunk; else links = chunk;
+        setMsgs([...next, { role: "assistant", content: acc, links }]);
       }
       if (!acc) setMsgs(next);
     } catch (e) {
@@ -67,6 +70,9 @@ export function AdvisorChat() {
           <div key={i} className={`max-w-[92%] whitespace-pre-wrap rounded-xl px-3 py-2 text-sm ${m.role === "user" ? "ml-auto bg-primary text-on-primary" : "bg-bg"}`}>
             <span className="sr-only">{m.role === "user" ? "You: " : "Advisor: "}</span>
             {m.content || (busy ? "Thinking..." : "")}
+            {m.links?.map((l) => (
+              <a key={l.url} href={l.url} className={`${btnCls} mt-2 block w-full text-center sm:w-auto`}>{l.button}</a>
+            ))}
           </div>
         ))}
         <div ref={end} />
@@ -83,7 +89,8 @@ export function AdvisorChat() {
 
 /** "Find by needs": plain-language needs matched against listings (POST /match). */
 export function MatchPanel() {
-  const [text, setText] = useState("");
+  const q = usePrefill();
+  const [text, setText] = useState(q.text("needs", 2000));   // typed in, not sent
   const [res, setRes] = useState<MatchResponse | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");

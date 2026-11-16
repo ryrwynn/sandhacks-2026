@@ -1,20 +1,30 @@
 "use client";
 import { useState } from "react";
 import type { Filters } from "@/lib/types";
-import { ZIP_OPTIONS } from "@/lib/format";
+import { AreaOptions } from "@/lib/areas";
 import { selectCls } from "./styles";
 
-export default function FilterBar({ value, onChange, showPrice, showSource }: {
+export const MAX_PRICES = [2000, 2500, 3000, 3500, 4000, 5000];
+
+export default function FilterBar({ value, onChange, showPrice, showSource, priceAlways }: {
   value: Filters; onChange: (f: Filters) => void; showPrice?: boolean; showSource?: boolean;
+  /** Max price is always in the filter row, with no "More filters" toggle (Find). The home page keeps the toggle. */
+  priceAlways?: boolean;
 }) {
   const [more, setMore] = useState(value.maxPrice > 0);
   const set = (patch: Partial<Filters>) => onChange({ ...value, ...patch });
+  const priceSelect = (
+    <select aria-label="Max price" className={selectCls} value={value.maxPrice} onChange={(e) => set({ maxPrice: Number(e.target.value) })}>
+      <option value={0}>Any price</option>
+      {MAX_PRICES.map((p) => <option key={p} value={p}>Up to ${p.toLocaleString()} a month</option>)}
+    </select>
+  );
   return (
     <div role="group" aria-label="Filters" className="space-y-2">
       <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap">
         <select aria-label="Area" className={`${selectCls} col-span-2 sm:col-span-1 sm:min-w-52`} value={value.zip} onChange={(e) => set({ zip: e.target.value })}>
           <option value="">All San Diego areas</option>
-          {ZIP_OPTIONS.map((z) => <option key={z.zip} value={z.zip}>{z.name} ({z.zip})</option>)}
+          <AreaOptions />
         </select>
         <select aria-label="Bedrooms" className={selectCls} value={value.beds} onChange={(e) => set({ beds: e.target.value })}>
           <option value="any">Any bedrooms</option>
@@ -44,18 +54,14 @@ export default function FilterBar({ value, onChange, showPrice, showSource }: {
             </select>
           </>
         )}
-        {showPrice && (
+        {showPrice && priceAlways && priceSelect}
+        {showPrice && !priceAlways && (
           <button type="button" aria-expanded={more} onClick={() => setMore((m) => !m)} className="min-h-11 rounded-lg px-3 text-base font-medium text-accent-strong underline underline-offset-2">
             {more ? "Fewer filters" : "More filters"}
           </button>
         )}
       </div>
-      {showPrice && more && (
-        <select aria-label="Max price" className={selectCls} value={value.maxPrice} onChange={(e) => set({ maxPrice: Number(e.target.value) })}>
-          <option value={0}>Any price</option>
-          {[2000, 2500, 3000, 3500, 4000, 5000].map((p) => <option key={p} value={p}>Up to ${p.toLocaleString()} a month</option>)}
-        </select>
-      )}
+      {showPrice && !priceAlways && more && priceSelect}
     </div>
   );
 }

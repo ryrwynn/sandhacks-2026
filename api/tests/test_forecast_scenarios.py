@@ -98,7 +98,7 @@ def test_train_scenarios_writes_core_zips_only(monkeypatch, macro_frame):
 
     panel = synthetic_panel(zips=4)
     series = {z: panel[z] for z in panel.columns}
-    monkeypatch.setattr(train, "load_series", lambda conn, metric: series)
+    monkeypatch.setattr(train, "load_series", lambda conn, metric, staging=False: series)
     monkeypatch.setattr(train, "load_macro", lambda conn: macro_frame.reindex(
         pd.date_range("2000-01-01", "2026-10-01", freq="MS")).ffill())
     monkeypatch.setattr(train.scenario_run, "run_metric", lambda p, m, **k: _ORIG_RUN(p, m, with_ets=False))
@@ -178,9 +178,14 @@ def test_series_default_response_unchanged(monkeypatch):
     assert j["scenario"] is None and j["scenarios"] == [] and j["coverage_80"] is None
 
 
-def test_series_scenario_without_run_is_404(monkeypatch):
+def test_series_scenario_without_run_is_empty_for_a_served_zip(monkeypatch):
+    # Sprint: a served ZIP with no scenario run yet answers 200 with its history (here none) and no scenario lines;
+    # an unserved ZIP still 404s.
     monkeypatch.setattr(db, "fetch", lambda *a, **k: [])
-    assert client.get("/zips/92104/series", params={"scenario": "growth"}).status_code == 404
+    monkeypatch.setattr(db, "series", lambda z, m: [])
+    r = client.get("/zips/92104/series", params={"scenario": "growth"})
+    assert r.status_code == 200 and r.json()["points"] == [] and r.json()["scenarios"] == []
+    assert client.get("/zips/00000/series", params={"scenario": "growth"}).status_code == 404
 
 
 def test_series_scenario_db_down_is_503(monkeypatch):

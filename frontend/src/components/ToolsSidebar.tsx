@@ -9,10 +9,10 @@ import {
 } from "lucide-react";
 
 export const TOOLS: { href: string; label: string; hint: string; icon: LucideIcon }[] = [
-  { href: "/renter", label: "Rent increase check", hint: "AB 1482 cap", icon: ShieldCheck },
-  { href: "/gouging", label: "Gouging check", hint: "Emergency price limits", icon: Siren },
-  { href: "/scenarios", label: "Forecast scenarios", hint: "Recession and growth", icon: ChartLine },
   { href: "/advisor", label: "Find by needs", hint: "Advisor and matching", icon: Sparkles },
+  { href: "/renter", label: "Rent Cap", hint: "AB 1482", icon: ShieldCheck },
+  { href: "/gouging", label: "Emergency Rent Limits", hint: "Penal Code 396", icon: Siren },
+  { href: "/scenarios", label: "Forecast scenarios", hint: "Recession and growth", icon: ChartLine },
   { href: "/owner/reach", label: "Owner reach", hint: "Who would shortlist it", icon: Target },
   { href: "/buyer", label: "Buy", hint: "Wealth builder", icon: House },
   { href: "/owner", label: "Own", hint: "Pricing and listing tools", icon: Building },

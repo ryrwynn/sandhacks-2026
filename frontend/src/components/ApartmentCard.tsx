@@ -21,7 +21,10 @@ export function Delta({ now, then, suffix }: { now: number; then: number; suffix
   );
 }
 
-function RemoveMenu({ onRemove, label }: { onRemove: () => void; label: string }) {
+// TODO(report): point this at the report endpoint once it exists; /api/health is a placeholder.
+export const REPORT_URL = "/api/health";
+
+function CardMenu({ onRemove, label }: { onRemove?: () => void; label: string }) {
   const [open, setOpen] = useState(false);
   const box = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -40,9 +43,15 @@ function RemoveMenu({ onRemove, label }: { onRemove: () => void; label: string }
       </button>
       {open && (
         <div className="absolute right-0 top-full mt-1 w-48 rounded-xl bg-surface p-1 shadow-[0_6px_24px_rgba(46,49,39,0.2)]">
-          <button type="button" onClick={() => { setOpen(false); onRemove(); }} className="flex min-h-11 w-full items-center rounded-lg px-3 text-left text-base text-warn hover:bg-bg">
-            Remove from saved
-          </button>
+          {/* TODO(report): placeholder link, see REPORT_URL */}
+          <a href={REPORT_URL} target="_blank" rel="noopener noreferrer" onClick={() => setOpen(false)} className="flex min-h-11 w-full items-center rounded-lg px-3 text-left text-base text-ink hover:bg-bg">
+            Report this listing<span className="sr-only"> (opens in a new tab)</span>
+          </a>
+          {onRemove && (
+            <button type="button" onClick={() => { setOpen(false); onRemove(); }} className="flex min-h-11 w-full items-center rounded-lg px-3 text-left text-base text-warn hover:bg-bg">
+              Remove from saved
+            </button>
+          )}
         </div>
       )}
     </div>
@@ -72,12 +81,7 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
   return (
     <article className={`${cardCls} relative flex h-full flex-col p-4 transition-shadow focus-within:outline focus-within:outline-2 focus-within:outline-primary hover:shadow-[0_2px_6px_rgba(46,49,39,0.18),0_8px_22px_rgba(46,49,39,0.08)]`}>
       {note && <p className="mb-2 w-fit rounded-full bg-line px-2.5 py-0.5 text-xs font-medium text-ink">{note}</p>}
-      {fb && (
-        <p className="mb-2 text-xs text-muted">
-          <span className="mr-1.5 inline-block rounded-full bg-line px-2.5 py-0.5 font-medium text-ink">{FB_BADGE}</span>
-          {l.group_name && <span className="break-words">{l.group_name}</span>}
-        </p>
-      )}
+      {fb && l.group_name && <p className="mb-2 break-words text-xs text-muted">{l.group_name}</p>}
       <div className="flex items-start justify-between gap-2">
         <div className="min-w-0">
           <h3 className="text-base font-bold leading-snug">
@@ -88,13 +92,14 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
           {(facts || l.property_type) && <p className="flex items-center gap-1.5 text-sm text-muted">{l.property_type && <PropertyIcon type={l.property_type} />}<span className="min-w-0">{facts}</span></p>}
         </div>
         <div className="relative z-10 -mr-2 -mt-2 flex shrink-0">
-          {l.source_url && (
-            <a href={l.source_url} target="_blank" rel="noopener noreferrer" aria-label={`Open the listing for ${title} in a new tab`}
+          {(fb ? l.post_url : l.source_url) && (
+            <a href={(fb ? l.post_url : l.source_url) ?? undefined} target="_blank" rel="noopener noreferrer"
+              aria-label={fb ? `Open the Facebook post for ${title} in a new tab` : `Open the listing for ${title} in a new tab`}
               className="flex h-11 w-11 items-center justify-center rounded-full text-muted hover:bg-bg">
               <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5" /></svg>
             </a>
           )}
-          {onRemove && <RemoveMenu onRemove={onRemove} label={title} />}
+          <CardMenu onRemove={onRemove} label={title} />
         </div>
       </div>
 
@@ -120,8 +125,9 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
         </div>
       </div>
 
-      {(isRent && l.fair_rent_label) || l.unusual_price || kindTag || tags.length > 0 ? (
+      {fb || (isRent && l.fair_rent_label) || l.unusual_price || kindTag || tags.length > 0 ? (
         <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Tags">
+          {fb && <li className="rounded-full bg-line px-2.5 py-1 text-xs font-medium text-ink">{FB_BADGE}</li>}
           {isRent && l.fair_rent_label && <li className="rounded-full bg-bg px-2.5 py-1 text-xs font-medium text-ink">{FAIR_LABEL[l.fair_rent_label]}</li>}
           {kindTag && <li className="rounded-full bg-line px-2.5 py-1 text-xs font-medium text-ink">{kindTag}</li>}
           {l.unusual_price && <li className="rounded-full bg-bg px-2.5 py-1 text-xs font-medium text-warn">Unusual price</li>}
@@ -133,13 +139,6 @@ export default function ApartmentCard({ listing: l, saved, onToggle, onRemove, s
           ))}
         </ul>
       ) : null}
-
-      {fb && l.post_url && (
-        <a href={l.post_url} target="_blank" rel="noopener noreferrer"
-          className="relative z-10 mt-3 inline-flex min-h-11 w-fit items-center text-sm font-semibold text-primary underline underline-offset-2">
-          View post on Facebook<span className="sr-only"> (opens in a new tab)</span>
-        </a>
-      )}
 
       {showSave && onToggle && (
         <div className="mt-auto pt-4">

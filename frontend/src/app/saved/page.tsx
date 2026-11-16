@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState, type MouseEvent } fr
 import ApartmentCard, { CardSkeletons } from "@/components/ApartmentCard";
 import { selectCls, cardCls, btnGhostCls } from "@/components/styles";
 import { useSaved, type SavedItem } from "@/lib/saved";
-import { listingTitle } from "@/lib/tracker";
+import { isFacebook, listingTitle } from "@/lib/tracker";
 
 type Sort = "recent" | "price" | "drop";
 
@@ -26,6 +26,7 @@ export default function Saved() {
   const [selectMode, setSelectMode] = useState(false);
   const [selected, setSelected] = useState<Set<number>>(new Set());
   const [blocked, setBlocked] = useState<{ id: number; title: string }[]>([]);
+  const [notice, setNotice] = useState("");
   const [undo, setUndo] = useState<{ removed: SavedItem[]; before: SavedItem[] } | null>(null);
   const anchor = useRef<number | null>(null);
   const undoTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -50,7 +51,7 @@ export default function Saved() {
     if (!(range && a != null)) anchor.current = id;
   }, [rows]);
 
-  const clear = useCallback(() => { setSelected(new Set()); setBlocked([]); anchor.current = null; }, []);
+  const clear = useCallback(() => { setSelected(new Set()); setBlocked([]); setNotice(""); anchor.current = null; }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -77,13 +78,17 @@ export default function Saved() {
 
   function openSelected() {
     const bad: { id: number; title: string }[] = [];
+    let fallback = 0;
     for (const { item, l } of chosen) {
+      const src = isFacebook(l) ? l.post_url : l.source_url;
+      if (!src) fallback++;
       // No "noopener" feature: with it window.open returns null even on success, so a block could not be told apart.
-      const w = window.open(`/apartments/${item.id}`, "_blank");
+      const w = window.open(src || `/apartments/${item.id}`, "_blank");
       if (w) { try { w.opener = null; } catch { /* nothing to clear */ } }
       else bad.push({ id: item.id, title: listingTitle(l) });
     }
     setBlocked(bad);
+    setNotice(fallback ? `${fallback} ${fallback === 1 ? "apartment has" : "apartments have"} no source link, so ${fallback === 1 ? "its" : "their"} apartment ${fallback === 1 ? "page" : "pages"} opened instead.` : "");
   }
 
   function removeSelected() {
@@ -194,8 +199,9 @@ export default function Saved() {
           className={`fixed inset-x-0 ${above} z-30 border-t border-line bg-surface shadow-[0_-2px_8px_rgba(46,49,39,0.12)]`}>
           <div className="mx-auto flex max-w-6xl flex-wrap items-center gap-2 px-4 py-2">
             <span className="mr-auto font-semibold">{n} selected</span>
-            <button type="button" onClick={openSelected} className={`${btnGhostCls} min-h-11 ${focusCls}`}>Open selected in new tabs</button>
-            <button type="button" onClick={removeSelected} className={`${btnGhostCls} min-h-11 ${focusCls}`}>Remove selected</button>
+            {notice && <span role="status" className="basis-full text-sm text-muted">{notice}</span>}
+            <button type="button" onClick={openSelected} className={`${btnGhostCls} min-h-11 ${focusCls}`}>Open sources in new tabs</button>
+            <button type="button" onClick={removeSelected} className={`${btnGhostCls} min-h-11 ${focusCls}`}>Remove from saved</button>
             <button type="button" onClick={clear} className={`${btnGhostCls} min-h-11 ${focusCls}`}>Clear</button>
           </div>
         </div>

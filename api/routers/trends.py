@@ -11,7 +11,7 @@ router = APIRouter(tags=["trends"])
 @router.get("/zips/{zip}/trends", response_model=ZipTrendsResponse)
 def zip_trends(zip: str) -> ZipTrendsResponse:
     if zip not in db.ZIP_NAMES:
-        raise HTTPException(404, f"{zip} is not one of the ZIPs RentOrKnot covers")
+        raise HTTPException(404, f"{zip} is not a ZIP RentOrKnot serves yet")
     try:
         return ZipTrendsResponse(**trends.zip_trends(zip))
     except db.DBUnavailable:

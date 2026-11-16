@@ -16,6 +16,9 @@ dependencies = [
   "statsmodels>=0.14",
   "joblib>=1.4",
   "google-genai>=1.0",
+  "orjson>=3.13.0",
+  "polars>=2.1.0",
+  "mcp>=2.3.0",
 ]
 
 [dependency-groups]

@@ -7,14 +7,16 @@ import { errorMessage, isMock } from "@/lib/api";
 import { usd } from "@/lib/format";
 import { postOwnerReach } from "@/lib/night-api";
 import type { OwnerReachResponse } from "@/lib/night-types";
+import { usePrefill } from "@/lib/useprefill";
 
 const FACTS = ["pets", "parking", "laundry", "air_conditioning", "utilities_included"];
 
 export default function OwnerReach() {
-  const [zip, setZip] = useState("92104");
-  const [beds, setBeds] = useState("1");
-  const [target, setTarget] = useState("");
-  const [text, setText] = useState("");
+  const q = usePrefill();
+  const [zip, setZip] = useState(q.zip() || "92104");
+  const [beds, setBeds] = useState(q.beds() || "1");
+  const [target, setTarget] = useState(q.num("ask"));
+  const [text, setText] = useState(q.text("text"));
   const [res, setRes] = useState<OwnerReachResponse | null>(null);
   const [target0, setTarget0] = useState(0);
   const [busy, setBusy] = useState(false);

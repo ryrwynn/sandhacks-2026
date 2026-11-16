@@ -11,3 +11,6 @@
 # Areas people asked for (/areas "Add this area"): daily, within ONDEMAND_DAILY_USD (default $1) and the overall
 # Bright Data budget; requests that don't fit wait for the next day. Rows go to raw_records and staging only.
 30 13 * * *  /app/docker/worker-job.sh python -m worker.ondemand
+# County (San Diego County ZIPs) refresh: MONTHLY, the 1st at 11:00 UTC. One pass is about 15,000 records (about
+# $23); weekly would be about $100 a month. Fast path into raw_records and staging only; the replay to the shared
+# tables is a separate human step.0 11 1 * *   /app/docker/worker-job.sh python -m worker.county --limit 10 --max-age-days 25

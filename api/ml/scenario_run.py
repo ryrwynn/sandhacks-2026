@@ -17,10 +17,11 @@ def _f(x):
     return None if x is None or (isinstance(x, float) and np.isnan(x)) else round(float(x), 3)
 
 
-def run_metric(panel: pd.DataFrame, macro_frame: pd.DataFrame, fed: dict | None = None, with_ets: bool = True) -> dict:
+def run_metric(panel: pd.DataFrame, macro_frame: pd.DataFrame, fed: dict | None = None, with_ets: bool = True,
+               min_origin: int = sm.MIN_ORIGIN) -> dict:
     """Backtest + forecast one metric. Returns {"by_series": {zip: {...}}, "forecast": {...}, "selected": str,
     "summary": {...}}."""
-    bt = sm.backtest(panel, macro_frame, fed, with_ets=with_ets)
+    bt = sm.backtest(panel, macro_frame, fed, with_ets=with_ets, min_origin=min_origin)
     ev = sm.evaluate(bt)
     fc = sm.forecast_all(panel, macro_frame, bt, fed)
     m = ev["methods"]

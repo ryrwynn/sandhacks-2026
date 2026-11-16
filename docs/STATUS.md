@@ -102,3 +102,23 @@ Heartbeat: 2026-11-15 11:25 PST (real clock; earlier heartbeat times in this sec
   - [x] sign-in: /auth/session null signed out (no email/name), button shows, /auth/saves 401 without session, wrong token 401 handled quietly
 - [x] 9. Servers stopped, night pushed, PR #2 ready for review, WAKEUP.md final-run section
 - [ ] 10. Waiting for "go" (PR #2 ready, mergeable)
+
+# Sprint (2026-11-15, docs/SPRINT.md)
+
+Heartbeat: 2026-11-16 — all lanes merged, checks done, docs/SPRINT_REPORT.md written; waiting for "go"
+
+Settings: Bright Data budget $40; areas = data/zips_county.txt + queued requests + 95014; county refresh monthly;
+contact none; Apartments.com collector none (D4 skipped).
+
+- [x] Preflight; database reachable (8 s timeout). Preflight rerun: no FAIL.
+- [x] Step 0 (46d4947): ZipSummary.tier + county, contracts/prefill.py + generated frontend/src/lib/prefill.ts, types
+- [x] Lanes merged: api (1857a80, f028993), mcp (89304c7), models (52c39bb), web (64259c5), data (368c840)
+- [x] Data: $17.44 of $40 spent; 8,371 Zillow listings staged; 64 county ZIPs with ≥ 5; nothing in shared tables
+- [x] Retrain dry run on staging: fair rent keeps the median method (model coverage 0.56 < 0.78)
+- [x] Checks before go: pytest 355, tsc, build, preflight, MCP 10/10, sprint-check 17/17 (one isolated rerun);
+      e2e and ui-check failures are DB-link timeouts or headless WebGL, each rechecked alone (see SPRINT_REPORT)
+- [x] Fixed on night: per-(source, ZIP) active window; scenario series for served ZIPs; mark-areas county only
+- [x] docs/SPRINT_REPORT.md written, night pushed; waiting for "go"
+
+Errors that stopped a thread: none. Environment: the laptop's connection to Tiger drops at times (SSL timeouts,
+pool waits over 3 s); browser checks are rerun one at a time.

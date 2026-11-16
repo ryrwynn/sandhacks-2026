@@ -95,6 +95,30 @@ function MapView({ token, zips, highlight = [], focus, focusCenter, heightClass 
       .catch(() => setFailed(true));
   }, []);
 
+  // Merge one county shape file into the map, by ZIP (files already loaded are skipped).
+  const addFile = async (url: string) => {
+    if (loadedFiles.current.has(url) || !url.startsWith("/geo/")) return;
+    loadedFiles.current.add(url);
+    const fc = await fetch(url).then((r) => (r.ok ? r.json() : null), () => null) as GeoJSON.FeatureCollection | null;
+    if (!fc?.features) { loadedFiles.current.delete(url); return; }
+    setShapes((cur) => {
+      const have = new Set((cur?.features ?? []).map(zipOf));
+      const add = fc.features.filter((x) => zipOf(x) && !have.has(zipOf(x))).map((x) => ({ ...x, properties: { ...x.properties, zip: zipOf(x) } }));
+      return { type: "FeatureCollection", features: [...(cur?.features ?? []), ...add] };
+    });
+  };
+
+  // Every served ZIP gets a shape: load the county files of all served areas, not only those in view.
+  useEffect(() => {
+    if (!explore) return;
+    const counties = new Set(zips.map((z) => (z.county ?? "").toLowerCase()).filter(Boolean));
+    if (!counties.size) return;
+    fetch("/geo/index.json").then((r) => (r.ok ? r.json() : null), () => null).then(async (idx: { counties: { county: string; url: string }[] } | null) => {
+      for (const c of idx?.counties ?? []) if (counties.has(c.county.toLowerCase())) await addFile(c.url);
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [explore, zips]);
+
   // Load county geometry as the viewport moves: ask GET /geo/zips which county files it needs, fetch any not yet loaded, merge by ZIP.
   const loadViewport = () => {
     const b = ref.current?.getBounds();
@@ -103,17 +127,7 @@ function MapView({ token, zips, highlight = [], focus, focusCenter, heightClass 
     moveTimer.current = setTimeout(async () => {
       try {
         const g = await getGeoZips([b.getWest(), b.getSouth(), b.getEast(), b.getNorth()]);
-        for (const f of g.files) {
-          if (loadedFiles.current.has(f.url) || !f.url.startsWith("/geo/")) continue;
-          loadedFiles.current.add(f.url);
-          const fc = await fetch(f.url).then((r) => (r.ok ? r.json() : null), () => null) as GeoJSON.FeatureCollection | null;
-          if (!fc?.features) { loadedFiles.current.delete(f.url); continue; }
-          setShapes((cur) => {
-            const have = new Set((cur?.features ?? []).map(zipOf));
-            const add = fc.features.filter((x) => zipOf(x) && !have.has(zipOf(x))).map((x) => ({ ...x, properties: { ...x.properties, zip: zipOf(x) } }));
-            return { type: "FeatureCollection", features: [...(cur?.features ?? []), ...add] };
-          });
-        }
+        for (const f of g.files) await addFile(f.url);
       } catch { /* geometry is optional: the base shapes stay */ }
     }, 500);
   };

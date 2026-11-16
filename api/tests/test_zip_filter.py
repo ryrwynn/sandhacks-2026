@@ -1,11 +1,24 @@
-"""The live API answers for data/zips.txt ZIPs only: every market, listing, median, comparable and feature query in
-api/db.py filters to that list, so rows for other areas can't leak into the live site (final run, 2026-11-15)."""
+"""The API answers for the served-area set only: every market, listing, median, comparable and feature query in
+api/db.py filters to it (areas.tier core/county/on_demand with enough active listings), so staged-only or
+index-only ZIPs can't leak into the live site. Sprint A1."""
+import time
+
 import pytest
 
 from api import db
 
-CORE = sorted(db.ZIP_NAMES)
-OUTSIDE = "92037"            # La Jolla: staged by the county sample, not one of the 12
+CORE = ["92104", "92122", "92037"]
+OUTSIDE = "95014"            # Cupertino: an index-only or staged-only ZIP, never served
+
+
+@pytest.fixture(autouse=True)
+def served(monkeypatch):
+    areas = {z: {"zip": z, "name": z, "county": "San Diego", "tier": "core", "lat": None, "lng": None,
+                 "listings": 9} for z in CORE}
+    monkeypatch.setitem(db._served_cache, "areas", areas)
+    monkeypatch.setitem(db._served_cache, "at", time.monotonic())
+    monkeypatch.setitem(db._served_cache, "ttl", 300)
+    monkeypatch.setitem(db._version, "checked", time.monotonic())
 
 
 @pytest.fixture
@@ -22,11 +35,11 @@ def calls(monkeypatch):
 
 def _has_core(params) -> bool:
     vals = params.values() if isinstance(params, dict) else (params or ())
-    return any(v == CORE for v in vals)
+    return any(v == sorted(CORE) for v in vals)
 
 
-def test_core_list_is_the_twelve_zips():
-    assert len(db.CORE_ZIPS) == 12 and db.CORE_ZIPS == CORE and OUTSIDE not in CORE
+def test_queries_use_the_served_set_not_a_fixed_list():
+    assert db.served_zips() == sorted(CORE) and OUTSIDE not in db.ZIP_NAMES
 
 
 @pytest.mark.parametrize("call", [
@@ -50,7 +63,7 @@ def test_core_list_is_the_twelve_zips():
 ], ids=["zip_features", "index", "forecast_end", "volatility", "medians", "medians_sites", "comparables",
         "listing_page", "listing_by_id", "listing_filtered", "active_count", "active_by_source", "monthly_medians",
         "zori_mean", "forecast_mean", "source_counts", "search_units"])
-def test_every_live_query_filters_to_core_zips(calls, call):
+def test_every_live_query_filters_to_served_zips(calls, call):
     call()
     assert calls, "expected a query"
     for sql, params in calls:
@@ -64,12 +77,12 @@ def test_every_live_query_filters_to_core_zips(calls, call):
     lambda: db.days_on_market(OUTSIDE, 1),
     lambda: db.series(OUTSIDE, "zori"),
 ])
-def test_zip_outside_the_list_gets_nothing_without_a_query(calls, call):
+def test_zip_outside_the_served_set_gets_nothing_without_a_query(calls, call):
     assert call() == []
     assert calls == []
 
 
-def test_comparables_drop_rows_outside_core_from_the_bulk_cache(monkeypatch):
+def test_comparables_drop_rows_outside_the_served_set_from_the_bulk_cache(monkeypatch):
     rows = [{"zip": "92104", "beds": 1, "price_usd": 2400}, {"zip": OUTSIDE, "beds": 1, "price_usd": 9000}]
     monkeypatch.setattr(db, "fetch", lambda sql, params=None: rows if "ANY(" in sql else [])
     db._comp_cache.update(at=0.0, groups={})

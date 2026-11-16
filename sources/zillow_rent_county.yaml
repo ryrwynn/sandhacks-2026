@@ -11,7 +11,11 @@ fetch:
   zip_file: data/zips_county.txt
   input_url: "https://www.zillow.com/{city}-ca-{zip}/rentals/"
   # Not a hard cap: buildings expand into one record per unit. The credit is shared; keep it low.
-  city_by_zip: {"91910": chula-vista}   # every other ZIP uses san-diego
+  # City slug per ZIP comes from data/areas_ca.csv (a wrong city 404s). ZIPs with no city use the ZIP-only search.
+  # zip_url (ZIP-only search) returned about 130 records a ZIP at limit 10 against 5-60 for the city URL: worker.county and
+  # worker.sprint use it through bd.zillow_zip_inputs; the city URL stays for ZIPs a caller names explicitly.
+  zip_url: "https://www.zillow.com/homes/for_rent/{zip}_rb/"
+  city_by_zip: {"91910": chula-vista}
   limit_per_input: 10
 # Never stored: contact people, phones, brokerages; bulk fields we don't use.
 drop_fields:

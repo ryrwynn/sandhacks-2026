@@ -9,11 +9,11 @@ import { BedsSelect, Disclaimer, ErrorNote, Field } from "./ui";
 
 /** Starter finder (renter) and Wealth builder finder (buyer): budget and bedrooms in, ranked ZIPs out. */
 export default function Finder({
-  persona, token, zips, showMap = false, onPickZip,
-}: { persona: Persona; token?: string | null; zips?: ZipSummary[]; showMap?: boolean; onPickZip?: (zip: string) => void }) {
+  persona, token, zips, showMap = false, onPickZip, initial,
+}: { persona: Persona; initial?: { budget?: string; beds?: string }; token?: string | null; zips?: ZipSummary[]; showMap?: boolean; onPickZip?: (zip: string) => void }) {
   const wealth = persona === "wealth";
-  const [budget, setBudget] = useState(wealth ? "900000" : "3000");
-  const [beds, setBeds] = useState("");
+  const [budget, setBudget] = useState(initial?.budget ?? (wealth ? "900000" : "3000"));
+  const [beds, setBeds] = useState(initial?.beds ?? "");
   const [res, setRes] = useState<RankResponse | null>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState("");
@@ -29,8 +29,9 @@ export default function Finder({
       setBusy(false);
     }
   }
+  // With prefill values the fields are filled in and the person presses the button; nothing ranks on its own.
   useEffect(() => {
-    run();
+    if (!initial?.budget && !initial?.beds) run();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const priceLabel = wealth ? "Typical home value" : "Typical rent";

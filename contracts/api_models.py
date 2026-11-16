@@ -53,6 +53,11 @@ class HealthResponse(BaseModel):
 
 
 # ---------- GET /zips ----------
+# Sprint step 0: GET /zips lists every served area: areas.tier in core/county/on_demand and >= 5 active
+# listings in the shared tables. Index-only and staged-only ZIPs never appear.
+ServedTier = Literal["core", "county", "on_demand"]
+
+
 class ZipSummary(BaseModel):
     zip: str
     name: str                                       # 'North Park'
@@ -62,6 +67,8 @@ class ZipSummary(BaseModel):
     rent_forecast_change_pct: float | None = None   # 12-month forecast change of ZORI
     value_forecast_change_pct: float | None = None  # 12-month forecast change of ZHVI
     listings_30d: int = 0
+    tier: ServedTier = "core"                     # sprint: core | county | on_demand
+    county: str | None = None                       # 'San Diego', 'Santa Clara'
 
 
 class ZipsResponse(BaseModel):
