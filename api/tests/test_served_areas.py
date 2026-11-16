@@ -116,3 +116,16 @@ def test_scenario_series_without_scenario_rows_returns_history(monkeypatch):
         {"month": date(2026, 11, 1), "value": 3020.0, "kind": "forecast"}])
     r = forecasts.scenario_series("92037", "zori", "baseline")
     assert [p.kind for p in r.points] == ["actual", "actual"] and r.scenarios == [] and r.scenario == "baseline"
+
+
+def test_active_window_is_per_source_and_zip():
+    """Sprint: county ZIPs (monthly) share the zillow_rent key with core ZIPs (weekly); a weekly core scrape must not
+    make every county listing inactive. The window is per (source, ZIP), capped at 45 days."""
+    from api import db
+    for sql in (db._served_sql(), db._win()):
+        assert "GROUP BY source_key, zip" in sql and "45 days" in sql
+    import inspect
+    import re
+    src = inspect.getsource(db)
+    joins = re.findall(r"JOIN win w ON [^\"]*", src)
+    assert joins and all("w.zip = " in j for j in joins), joins

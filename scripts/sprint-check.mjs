@@ -132,16 +132,19 @@ for (const [url, want] of forms) {
 await check("Find: Max price visible, 15 per page, Per page changes it, page 2 differs, filter -> page 1", async () => {
   const { ctx, page } = await newPage();
   await page.goto(`${BASE}/find`, { waitUntil: "domcontentloaded" });
+  await page.getByLabel("Max price").waitFor({ state: "visible", timeout: 15000 }).catch(() => {});
   expect(await page.getByLabel("Max price").isVisible(), "Max price not visible");
   const showing = page.getByTestId("find-showing");
   await showing.waitFor({ timeout: 45000 });
   expect(/^Showing 1–15 of/.test(await showing.innerText()), await showing.innerText());
-  const titles = async () => (await page.locator("main article h3, main article h2").allInnerTexts()).join("|");
+  const titles = async () => (await page.locator("main article a[href^=\"/apartments/\"]").evaluateAll((as) => as.map((a) => a.getAttribute("href")))).join("|");
   const p1 = await titles();
   await page.getByRole("button", { name: "Next" }).click();
   await page.waitForFunction(() => /Showing 16–/.test(document.querySelector('[data-testid="find-showing"]')?.textContent || ""), null, { timeout: 45000 });
   expect(new URL(page.url()).searchParams.get("page") === "2", `url ${page.url()}`);
-  expect((await titles()) !== p1, "page 2 shows the same listings");
+  let p2 = await titles();
+  for (let i = 0; i < 60 && p2 === p1; i++) { await page.waitForTimeout(500); p2 = await titles(); }
+  expect(p1 && p2 !== p1, `page 2 shows the same listings (${p1.slice(0, 60)})`);
   await page.getByLabel("Bedrooms").selectOption({ index: 2 });
   await page.waitForFunction(() => /Showing 1–/.test(document.querySelector('[data-testid="find-showing"]')?.textContent || ""), null, { timeout: 45000 });
   await page.locator("select").filter({ has: page.locator('option[value="30"]') }).last().selectOption("30");
@@ -155,7 +158,8 @@ await check("area dropdown lists the staged county ZIPs (RENTORKNOT_READ_STAGING
   await page.goto(`${BASE}/find`, { waitUntil: "domcontentloaded" });
   const group = page.locator('select[aria-label="Area"] optgroup[label="San Diego County"]');
   await group.waitFor({ state: "attached", timeout: 30000 });
-  const n = await group.locator("option").count();
+  let n = await group.locator("option").count();
+  for (let i = 0; i < 40 && n !== zips.length; i++) { await page.waitForTimeout(500); n = await group.locator("option").count(); }
   await ctx.close();
   expect(n === zips.length, `dropdown county options ${n}, /zips county ${zips.length}`);
 });

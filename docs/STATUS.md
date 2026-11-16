@@ -105,19 +105,19 @@ Heartbeat: 2026-11-15 — api, mcp, models, web merged (5e6b025; 342 tests, tsc,
 
 # Sprint (2026-11-15, docs/SPRINT.md)
 
-Heartbeat: 2026-11-15 — api, mcp, models, web merged (5e6b025; 342 tests, tsc, build pass; Gmail grep clean); data lane running
+Heartbeat: 2026-11-16 — all five lanes merged; checks running; web lane fixing prefill/e2e items
 
 Settings: Bright Data budget $40; areas = data/zips_county.txt + queued requests + 95014; county refresh monthly;
 contact none; Apartments.com collector none (D4 skipped).
 
-- [x] Preflight run; database reachable (TimescaleDB 2.32.0; raw_records 11,339; areas core 12 / county 103 /
-      index 1,684 / on_demand 3; area_requests loaded 9, queued 1, failed 4)
-- [x] Step 0: `ZipSummary.tier` + `county`, `contracts/prefill.py` (shared prefill table) with generated
-      `frontend/src/lib/prefill.ts`, regenerated `api.generated.ts`; personal address removed from docs/FINAL.md
-- [~] Lanes running on sprint/<lane>: data, api, models, web, mcp
-- [ ] Merges + checks
-- [ ] Retrain on staging, fair-rent decision
-- [ ] Checks before go
+- [x] Preflight; database reachable (8 s timeout). Preflight rerun: no FAIL.
+- [x] Step 0 (46d4947): ZipSummary.tier + county, contracts/prefill.py + generated frontend/src/lib/prefill.ts, types
+- [x] Lanes merged: api (1857a80, f028993), mcp (89304c7), models (52c39bb), web (64259c5), data (368c840)
+- [x] Data: $17.44 of $40 spent; 8,371 Zillow listings staged; 64 county ZIPs with ≥ 5; nothing in shared tables
+- [x] Retrain dry run on staging: fair rent keeps the median method (model coverage 0.56 < 0.78)
+- [~] Checks before go: pytest 354, tsc, build, preflight, MCP client 10/10 pass; e2e and sprint-check have
+      open items with the web lane (renter ZIP prefill, rank on prefill, React #441, /areas, ZIP h1)
 - [ ] docs/SPRINT_REPORT.md, push night, wait for "go"
 
-Errors that stopped a thread: none yet.
+Errors that stopped a thread: none. Environment: the laptop's connection to Tiger drops at times (SSL timeouts,
+pool waits over 3 s); browser checks are rerun one at a time.
