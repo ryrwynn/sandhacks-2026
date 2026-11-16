@@ -117,3 +117,23 @@ database.
 
 The index tier landed at 23 MB, in line with the 25 MB estimate above. Both hot queries are well under 50 ms. Storage
 is not the constraint; Bright Data cost is (docs/WAKEUP.md).
+
+## Sprint measurements (2026-11-16, data lane, shared Tiger service, TimescaleDB 2.32.0)
+
+| What | Measured |
+| --- | --- |
+| Database size | 126 MB before the sprint backfill, **208 MB** after (raw_records 87 MB / 22,241 rows, staging_listings 16 MB / 8,478 rows, staging_price_observations 2 MB / 11,330 rows) |
+| Shared tables | unchanged: listings 2,103, price_observations 3,342 (the backfill only touched raw_records and the staging tables) |
+| Bytes per record | raw_records about 4.0 KB per stored payload (87 MB − 31 MB over 11,300 new rows is about 5 KB incl. index); staging_listings about 1.9 KB per row |
+| Backfill yield | 11,628 Bright Data records billed (about $17.44) became 8,371 staged Zillow listings; the rest were repeats, errors (building pages the crawl aborted) or non-rentals |
+| Load speed | current row-by-row path about 10 rows/s (one round trip per row over the WAN); fast path about 620 rows/s with 4 loader connections (binary COPY plus one set-based INSERT per target), end to end 550 rows/s including a cold 8-process pool |
+| Connections | the loaders use 4 plus one for the end-of-run steps; `max_connections` is 105 with about 20 in use during a run. The API pool stays under 20, so 5 loader connections are not a limit |
+| Replay to shared (tested in a scratch schema, not the shared tables) | 2,161 listings, 2,132 properties and 2,349 observations in one transaction |
+| Compression | 005_sprint_compression.sql (not applied). Compressed chunks accept INSERT, UPDATE, DELETE and INSERT ... ON CONFLICT on 2.32.0 (tested on a scratch hypertable). price_observations has 423 weekly chunks for 20 MB, so most chunks are tiny: the gain is chunk count and old history, not size |
+| Tiger console | raising compute for a backfill is not needed at this size (the loads ran in seconds); both are console steps for a human if a much larger run is planned |
+
+Cost model learned this sprint: `limit_per_input` is not a cap and is not linear. At the same limit the city-style search URL
+(`/{city}-ca-{zip}/rentals/`) returned 5 to 60 records per ZIP while the ZIP-only URL
+(`/homes/for_rent/{zip}_rb/`) returned about 130 per ZIP at limit 10 and about 415 at limit 40, with no aborted building
+pages. A wrong city in the city URL 404s (billed as one record). The county monthly refresh therefore uses the ZIP form:
+about 100 ZIPs x about 90 records = about 9,000 records, about $13 a month.
